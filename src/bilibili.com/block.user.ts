@@ -8,7 +8,7 @@
 // @include	 https://search.bilibili.com/*
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
-// @run-at   document-idle
+// @run-at   document-start
 // ==/UserScript==
 
 // spell-checker: word bili bilibili upname datetime

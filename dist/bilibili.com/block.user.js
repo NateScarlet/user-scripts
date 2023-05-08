@@ -8,8 +8,8 @@
 // @include	 https://search.bilibili.com/*
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
-// @run-at   document-idle
-// @version   2023.05.08+d0e977f0
+// @run-at   document-start
+// @version   2023.05.09+36c69c54
 // ==/UserScript==
 
 (() => {
