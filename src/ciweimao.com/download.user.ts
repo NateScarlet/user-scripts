@@ -1,16 +1,16 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     刺猬猫章节自动下载
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description 打开刺猬猫章节页面时自动保存文章到本地, 支持付费章节。
 // @grant    none
 // @include	 https://www.ciweimao.com/chapter/*
 // @run-at   document-idle
 // ==/UserScript==
 
-import elementRootText from "./utils/elementRootText";
-import imageToMarkdown from "./utils/imageToMarkdown";
-import loadImage from "./utils/loadImage";
-import sleep from "./utils/sleep";
+import elementRootText from "@/utils/elementRootText";
+import imageToMarkdown from "@/utils/imageToMarkdown";
+import loadImage from "@/utils/loadImage";
+import sleep from "@/utils/sleep";
 
 const __name__ = "刺猬猫章节自动下载";
 

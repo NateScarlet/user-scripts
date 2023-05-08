@@ -1,6 +1,6 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     SF轻小说章节自动下载
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description 打开SF轻小说章节页面时自动保存文章到本地, 支持付费章节。
 // @grant    none
 // @include	 http://book.sfacg.com/Novel/*/*/*/
@@ -8,7 +8,7 @@
 // @include	 https://book.sfacg.com/Novel/*/*/*/
 // @include	 https://book.sfacg.com/vip/c/*/
 // @run-at   document-idle
-// @version   2021.11.20+33a65ce8
+// @version   2023.05.08+374e4d54
 // ==/UserScript==
 
 (() => {
@@ -33,12 +33,12 @@
     });
   };
 
-  // utils/urlLastPart.ts
+  // src/utils/urlLastPart.ts
   function urlLastPart(url) {
     return url.split("/").filter((i) => i).slice(-1)[0];
   }
 
-  // utils/downloadFile.ts
+  // src/utils/downloadFile.ts
   function downloadFile(file, filename = `${urlLastPart(location.pathname)} ${document.title}.md`) {
     const anchor = document.createElement("a");
     anchor.href = URL.createObjectURL(file);
@@ -52,7 +52,7 @@
     }, 0);
   }
 
-  // utils/elementRootText.ts
+  // src/utils/elementRootText.ts
   function elementRootText(element) {
     let ret = "";
     for (const i of element.childNodes) {
@@ -63,12 +63,12 @@
     return ret.trim();
   }
 
-  // utils/canvasToMarkdown.ts
+  // src/utils/canvasToMarkdown.ts
   function canvasToMarkdown(canvas, alt = "", title = "") {
     return `![${alt}](${canvas.toDataURL()} "${title}")`;
   }
 
-  // utils/imageToCanvas.ts
+  // src/utils/imageToCanvas.ts
   function imageToCanvas(img, {
     background
   } = {}) {
@@ -84,14 +84,14 @@
     return canvas;
   }
 
-  // utils/imageToMarkdown.ts
+  // src/utils/imageToMarkdown.ts
   function imageToMarkdown(img, {
     background
   } = {}) {
     return canvasToMarkdown(imageToCanvas(img, { background }), img.alt, img.title);
   }
 
-  // SF轻小说章节自动下载.ts
+  // src/sfacg.com/book-download.user.ts
   var __name__ = "SF轻小说章节自动下载";
   (function() {
     return __async(this, null, function* () {

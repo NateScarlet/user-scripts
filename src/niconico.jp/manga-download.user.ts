@@ -1,18 +1,18 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     NicoNico manga download
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description save loaded manga as html.
 // @grant    none
 // @include	 https://seiga.nicovideo.jp/watch/*
 // @run-at   document-idle
 // ==/UserScript==
 
-import downloadFile from "./utils/downloadFile";
-import sleep from "./utils/sleep";
-import mangaReaderHTML from "./assets/manga_reader.html";
+import downloadFile from "@/utils/downloadFile";
+import sleep from "@/utils/sleep";
+import mangaReaderHTML from "./manga-reader.html";
 import mustache from "mustache";
-import style from "./assets/style.css";
-import imageToCanvas from "./utils/imageToCanvas";
+import style from "./style.css";
+import imageToCanvas from "@/utils/imageToCanvas";
 
 const __name__ = "NicoNico manga download";
 

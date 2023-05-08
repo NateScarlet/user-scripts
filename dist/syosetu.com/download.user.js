@@ -1,12 +1,12 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     小説家になろう book downloader
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description Add `download all chapter` button to syosetu.com (you need login to download chapters )
 // @grant    GM.xmlHttpRequest
 // @include	 /^https?://ncode\.syosetu\.com/\w+/$/
 // @include	 /^https?://novel18\.syosetu\.com/\w+/$/
 // @run-at   document-end
-// @version   2021.11.20+4e6efffe
+// @version   2023.05.08+abe8aa53
 // ==/UserScript==
 
 (() => {
@@ -31,12 +31,12 @@
     });
   };
 
-  // utils/urlLastPart.ts
+  // src/utils/urlLastPart.ts
   function urlLastPart(url) {
     return url.split("/").filter((i) => i).slice(-1)[0];
   }
 
-  // utils/downloadFile.ts
+  // src/utils/downloadFile.ts
   function downloadFile(file, filename = `${urlLastPart(location.pathname)} ${document.title}.md`) {
     const anchor = document.createElement("a");
     anchor.href = URL.createObjectURL(file);
@@ -50,12 +50,12 @@
     }, 0);
   }
 
-  // utils/canvasToMarkdown.ts
+  // src/utils/canvasToMarkdown.ts
   function canvasToMarkdown(canvas, alt = "", title = "") {
     return `![${alt}](${canvas.toDataURL()} "${title}")`;
   }
 
-  // utils/imageToCanvas.ts
+  // src/utils/imageToCanvas.ts
   function imageToCanvas(img, {
     background
   } = {}) {
@@ -71,14 +71,14 @@
     return canvas;
   }
 
-  // utils/imageToMarkdown.ts
+  // src/utils/imageToMarkdown.ts
   function imageToMarkdown(img, {
     background
   } = {}) {
     return canvasToMarkdown(imageToCanvas(img, { background }), img.alt, img.title);
   }
 
-  // utils/loadImage.ts
+  // src/utils/loadImage.ts
   function loadImage(url) {
     return __async(this, null, function* () {
       const img = new Image();
@@ -89,7 +89,7 @@
     });
   }
 
-  // utils/parseHeader.ts
+  // src/utils/parseHeader.ts
   function parseHeader(headers) {
     const ret = new Map();
     for (const line of headers.split("\r\n")) {
@@ -109,7 +109,7 @@
     return ret;
   }
 
-  // utils/loadImageCORS.ts
+  // src/utils/loadImageCORS.ts
   function loadImageCORS(url) {
     return __async(this, null, function* () {
       return new Promise((resolve, reject) => {
@@ -135,7 +135,7 @@
     });
   }
 
-  // utils/sleep.ts
+  // src/utils/sleep.ts
   function sleep(duration) {
     return __async(this, null, function* () {
       return new Promise((resolve) => {
@@ -144,7 +144,7 @@
     });
   }
 
-  // 小説家になろう_book_downloader.ts
+  // src/syosetu.com/download.user.ts
   var __name__ = "小説家になろう book downloader";
   var statusIndicator = document.createElement("span");
   var finishedCount = 0;

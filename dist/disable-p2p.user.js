@@ -1,15 +1,15 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     Disable P2P feature (WebRTC)
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description disable p2p connection on all page (for firefox, go to `about:config` and set `media.peerconnection.enabled` to false instead)
 // @grant    none
 // @run-at   document-start
 // @include	 *
-// @version   2021.12.09+2bcfbdc1
+// @version   2023.05.08+9e0a978a
 // ==/UserScript==
 
 (() => {
-  // disable_p2p.ts
+  // src/disable-p2p.user.ts
   delete window.RTCPeerConnection;
   delete window.mozRTCPeerConnection;
   delete window.webkitRTCPeerConnection;

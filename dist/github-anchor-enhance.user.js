@@ -1,11 +1,11 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     Github anchor enhance
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description Enhance all github link with badges
 // @grant    GM.xmlHttpRequest
 // @run-at   document-end
 // @include	 *
-// @version  18+46ea19a7
+// @version   2023.05.08+8cb9d329
 // ==/UserScript==
 
 (() => {
@@ -30,7 +30,7 @@
     });
   };
 
-  // github_anchor_enhance.ts
+  // src/github-anchor-enhance.user.ts
   var reservedUsername = [
     "topics",
     "search",

@@ -1,11 +1,12 @@
 import { build } from "esbuild";
 
-import { basename } from "path";
-import { readFile, readdir } from "fs/promises";
+import { readFile, readdir, stat } from "fs/promises";
 import { createHash } from "crypto";
 
 import { execSync } from "child_process";
 import * as moment from "moment";
+import { join } from "path";
+import path = require("path");
 const METADATA_START = "// ==UserScript==";
 const METADATA_END = "// ==/UserScript==";
 
@@ -52,33 +53,51 @@ async function getMetadataBlock(p: string): Promise<string> {
   return [METADATA_START, ...lines, METADATA_END].join("\n") + "\n";
 }
 
+async function walk(root: string, cb: (path: string) => Promise<void>) {
+  for (const i of await readdir(root)) {
+    const p = path.join(root, i);
+    const s = await stat(p);
+    if (s.isDirectory()) {
+      await walk(p, cb);
+    } else {
+      await cb(p);
+    }
+  }
+}
+
+function workspacePath(...parts: string[]): string {
+  return path.resolve(__dirname, "..", ...parts);
+}
+
 (async () => {
-  await Promise.all(
-    (
-      await readdir("./")
-    )
-      .filter((i) => i.endsWith(".ts"))
-      .map(async (entry) => {
-        const outfile = `dist/${basename(entry, ".ts")}.js`;
-        const res = await build({
-          entryPoints: [entry],
-          banner: { js: await getMetadataBlock(entry) },
-          bundle: true,
-          target: "es2015",
-          outfile,
-          charset: "utf8",
-          loader: {
-            ".html": "text",
-            ".css": "text",
-          },
-        });
-        res.warnings.forEach((i) => {
-          console.warn(i);
-        });
-        res.errors.forEach((i) => {
-          console.error(i);
-        });
-        console.log(outfile);
-      })
-  );
+  const root = workspacePath("src");
+  await walk(root, async (entry) => {
+    if (!entry.endsWith(".user.ts")) {
+      return;
+    }
+    // spell-checker: word outfile
+    const outfile = workspacePath(
+      "dist",
+      `${path.relative(root, entry).slice(0, -3)}.js`
+    );
+    const res = await build({
+      entryPoints: [entry],
+      banner: { js: await getMetadataBlock(entry) },
+      bundle: true,
+      target: "es2015",
+      outfile,
+      charset: "utf8",
+      loader: {
+        ".html": "text",
+        ".css": "text",
+      },
+    });
+    res.warnings.forEach((i) => {
+      console.warn(i);
+    });
+    res.errors.forEach((i) => {
+      console.error(i);
+    });
+    console.log(path.relative(root, outfile));
+  });
 })();

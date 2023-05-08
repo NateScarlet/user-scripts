@@ -1,6 +1,6 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     小説家になろう book downloader
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description Add `download all chapter` button to syosetu.com (you need login to download chapters )
 // @grant    GM.xmlHttpRequest
 // @include	 /^https?://ncode\.syosetu\.com/\w+/$/
@@ -8,11 +8,11 @@
 // @run-at   document-end
 // ==/UserScript==
 
-import downloadFile from "./utils/downloadFile";
-import imageToMarkdown from "./utils/imageToMarkdown";
-import loadImageCORS from "./utils/loadImageCORS";
-import sleep from "./utils/sleep";
-import urlLastPart from "./utils/urlLastPart";
+import downloadFile from "@/utils/downloadFile";
+import imageToMarkdown from "@/utils/imageToMarkdown";
+import loadImageCORS from "@/utils/loadImageCORS";
+import sleep from "@/utils/sleep";
+import urlLastPart from "@/utils/urlLastPart";
 
 const __name__ = "小説家になろう book downloader";
 const statusIndicator = document.createElement("span");

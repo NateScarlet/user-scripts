@@ -1,11 +1,11 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     NicoNico manga download
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description save loaded manga as html.
 // @grant    none
 // @include	 https://seiga.nicovideo.jp/watch/*
 // @run-at   document-idle
-// @version   2021.11.29+cfcff292
+// @version   2023.05.08+91ce7356
 // ==/UserScript==
 
 (() => {
@@ -30,12 +30,12 @@
     });
   };
 
-  // utils/urlLastPart.ts
+  // src/utils/urlLastPart.ts
   function urlLastPart(url) {
     return url.split("/").filter((i) => i).slice(-1)[0];
   }
 
-  // utils/downloadFile.ts
+  // src/utils/downloadFile.ts
   function downloadFile(file, filename = `${urlLastPart(location.pathname)} ${document.title}.md`) {
     const anchor = document.createElement("a");
     anchor.href = URL.createObjectURL(file);
@@ -49,7 +49,7 @@
     }, 0);
   }
 
-  // utils/sleep.ts
+  // src/utils/sleep.ts
   function sleep(duration) {
     return __async(this, null, function* () {
       return new Promise((resolve) => {
@@ -58,7 +58,7 @@
     });
   }
 
-  // assets/manga_reader.html
+  // src/niconico.jp/manga-reader.html
   var manga_reader_default = '<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset="UTF-8" />\n    <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <title>{{ title }}</title>\n    <style>\n      {{{style}}}\n    </style>\n  </head>\n  <body>\n    <div class="container m-auto">\n      <h1 class="text-lg font-bold text-center">{{ title }}</h1>\n      <a\n        class="block text-center text-blue-400 underline"\n        href="{{ window.location.href }}"\n        >{{ window.location.href }}</a\n      >\n      <div class="sm:space-y-2 md:space-y-4">\n        {{#images}}\n        <img\n          class="block m-auto border"\n          src="{{src}}"\n          alt="{{alt}}"\n          title="{{title}}"\n        />\n        {{/images}}\n      </div>\n    </div>\n  </body>\n</html>\n';
 
   // node_modules/.pnpm/mustache@4.2.0/node_modules/mustache/mustache.mjs
@@ -515,10 +515,10 @@
   mustache.Writer = Writer;
   var mustache_default = mustache;
 
-  // assets/style.css
+  // src/niconico.jp/style.css
   var style_default = "/*! tailwindcss v2.2.19 | MIT License | https://tailwindcss.com*//*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */html{-moz-tab-size:4;-o-tab-size:4;tab-size:4;line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji}hr{height:0;color:inherit}abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:initial}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,select{text-transform:none}button{-webkit-appearance:button}::-moz-focus-inner{border-style:none;padding:0}legend{padding:0}progress{vertical-align:initial}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}button{background-color:initial;background-image:none}fieldset,ol,ul{margin:0;padding:0}ol,ul{list-style:none}html{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5}body{font-family:inherit;line-height:inherit}*,:after,:before{box-sizing:border-box;border:0 solid}hr{border-top-width:1px}img{border-style:solid}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}button{cursor:pointer}table{border-collapse:collapse}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}button,input,optgroup,select,textarea{padding:0;line-height:inherit;color:inherit}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}*,:after,:before{--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity))}.container{width:100%}@media (min-width:640px){.container{max-width:640px}}@media (min-width:768px){.container{max-width:768px}}@media (min-width:1024px){.container{max-width:1024px}}@media (min-width:1280px){.container{max-width:1280px}}@media (min-width:1536px){.container{max-width:1536px}}.m-auto{margin:auto}.block{display:block}.table{display:table}@keyframes spin{to{transform:rotate(1turn)}}@keyframes ping{75%,to{transform:scale(2);opacity:0}}@keyframes pulse{50%{opacity:.5}}@keyframes bounce{0%,to{transform:translateY(-25%);animation-timing-function:cubic-bezier(.8,0,1,1)}50%{transform:none;animation-timing-function:cubic-bezier(0,0,.2,1)}}.border{border-width:1px}.text-center{text-align:center}.text-lg{font-size:1.125rem;line-height:1.75rem}.font-bold{font-weight:700}.text-blue-400{--tw-text-opacity:1;color:rgba(96,165,250,var(--tw-text-opacity))}.underline{text-decoration:underline}*,:after,:before{--tw-shadow:0 0 #0000;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000}@media (min-width:640px){.sm\\:space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}}@media (min-width:768px){.md\\:space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}}";
 
-  // utils/imageToCanvas.ts
+  // src/utils/imageToCanvas.ts
   function imageToCanvas(img, {
     background
   } = {}) {
@@ -534,7 +534,7 @@
     return canvas;
   }
 
-  // niconico_manga_download.ts
+  // src/niconico.jp/manga-download.user.ts
   var __name__ = "NicoNico manga download";
   (function() {
     return __async(this, null, function* () {

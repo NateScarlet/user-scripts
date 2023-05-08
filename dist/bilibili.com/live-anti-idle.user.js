@@ -1,16 +1,16 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     B站直播间防休眠
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description 防止B站直播间自动停止播放
 // @grant    none
 // @include	 https://live.bilibili.com/*
 // @include	 https://www.bilibili.com/blackboard/live/*
 // @run-at   document-idle
-// @version  5+804b52d3
+// @version   2023.05.08+39243f9b
 // ==/UserScript==
 
 (() => {
-  // B站直播间防休眠.ts
+  // src/bilibili.com/live-anti-idle.user.ts
   (() => {
     setInterval(() => {
       setTimeout(() => {

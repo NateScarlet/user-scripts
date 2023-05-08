@@ -1,11 +1,11 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     刺猬猫章节自动下载
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description 打开刺猬猫章节页面时自动保存文章到本地, 支持付费章节。
 // @grant    none
 // @include	 https://www.ciweimao.com/chapter/*
 // @run-at   document-idle
-// @version   2021.11.20+6bca8a06
+// @version   2023.05.08+33e4eae0
 // ==/UserScript==
 
 (() => {
@@ -30,7 +30,7 @@
     });
   };
 
-  // utils/elementRootText.ts
+  // src/utils/elementRootText.ts
   function elementRootText(element) {
     let ret = "";
     for (const i of element.childNodes) {
@@ -41,12 +41,12 @@
     return ret.trim();
   }
 
-  // utils/canvasToMarkdown.ts
+  // src/utils/canvasToMarkdown.ts
   function canvasToMarkdown(canvas, alt = "", title = "") {
     return `![${alt}](${canvas.toDataURL()} "${title}")`;
   }
 
-  // utils/imageToCanvas.ts
+  // src/utils/imageToCanvas.ts
   function imageToCanvas(img, {
     background
   } = {}) {
@@ -62,14 +62,14 @@
     return canvas;
   }
 
-  // utils/imageToMarkdown.ts
+  // src/utils/imageToMarkdown.ts
   function imageToMarkdown(img, {
     background
   } = {}) {
     return canvasToMarkdown(imageToCanvas(img, { background }), img.alt, img.title);
   }
 
-  // utils/loadImage.ts
+  // src/utils/loadImage.ts
   function loadImage(url) {
     return __async(this, null, function* () {
       const img = new Image();
@@ -80,7 +80,7 @@
     });
   }
 
-  // utils/sleep.ts
+  // src/utils/sleep.ts
   function sleep(duration) {
     return __async(this, null, function* () {
       return new Promise((resolve) => {
@@ -89,7 +89,7 @@
     });
   }
 
-  // 刺猬猫章节自动下载.ts
+  // src/ciweimao.com/download.user.ts
   var __name__ = "刺猬猫章节自动下载";
   (function() {
     return __async(this, null, function* () {

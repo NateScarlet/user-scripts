@@ -1,6 +1,6 @@
 // ==UserScript==
-// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @name     B站用户屏蔽
+// @namespace https://github.com/NateScarlet/user-scripts
 // @description 避免看到指定用户上传的视频，在用户个人主页会多出屏蔽按钮。
 // @grant    GM.getValue
 // @grant    GM.setValue
@@ -13,13 +13,13 @@
 
 // spell-checker: word bili bilibili upname datetime
 
-import compare from "./utils/compare";
-import obtainHTMLElement from "./utils/obtainHTMLElement";
-import useGMValue from "./utils/useGMValue";
-import usePolling from "./utils/usePolling";
+import compare from "@/utils/compare";
+import obtainHTMLElement from "@/utils/obtainHTMLElement";
+import useGMValue from "@/utils/useGMValue";
+import usePolling from "@/utils/usePolling";
 import { render, html } from "lit-html";
 import { mdiAccountCancelOutline } from "@mdi/js";
-import setHTMLElementDisplayHidden from "./utils/setHTMLElementDisplayHidden";
+import setHTMLElementDisplayHidden from "@/utils/setHTMLElementDisplayHidden";
 export {};
 
 const blockedUsers = useGMValue(
