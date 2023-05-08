@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     B站直播间防休眠
-// @namespace https://github.com/NateScarlet/user-scripts
+// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @description 防止B站直播间自动停止播放
 // @grant    none
 // @include	 https://live.bilibili.com/*

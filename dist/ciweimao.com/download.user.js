@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name     刺猬猫章节自动下载
-// @namespace https://github.com/NateScarlet/user-scripts
+// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @description 打开刺猬猫章节页面时自动保存文章到本地, 支持付费章节。
 // @grant    none
 // @include	 https://www.ciweimao.com/chapter/*
 // @run-at   document-idle
-// @version   2023.05.08+33e4eae0
+// @version   2023.05.08+2ac88d2d
 // ==/UserScript==
 
 (() => {

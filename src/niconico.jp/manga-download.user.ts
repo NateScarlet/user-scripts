@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     NicoNico manga download
-// @namespace https://github.com/NateScarlet/user-scripts
+// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @description save loaded manga as html.
 // @grant    none
 // @include	 https://seiga.nicovideo.jp/watch/*

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     B站用户屏蔽
-// @namespace https://github.com/NateScarlet/user-scripts
+// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @description 避免看到指定用户上传的视频，在用户个人主页会多出屏蔽按钮。
 // @grant    GM.getValue
 // @grant    GM.setValue

@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name     Github anchor enhance
-// @namespace https://github.com/NateScarlet/user-scripts
+// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @description Enhance all github link with badges
 // @grant    GM.xmlHttpRequest
 // @run-at   document-end
 // @include	 *
-// @version   2023.05.08+8cb9d329
+// @version   2023.05.08+75a7672f
 // ==/UserScript==
 
 (() => {

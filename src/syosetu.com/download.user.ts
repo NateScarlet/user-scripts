@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     小説家になろう book downloader
-// @namespace https://github.com/NateScarlet/user-scripts
+// @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @description Add `download all chapter` button to syosetu.com (you need login to download chapters )
 // @grant    GM.xmlHttpRequest
 // @include	 /^https?://ncode\.syosetu\.com/\w+/$/
