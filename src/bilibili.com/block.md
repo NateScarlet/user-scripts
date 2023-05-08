@@ -2,6 +2,12 @@
 
 提供 B 站当前缺少的屏蔽功能。
 
+隐藏屏蔽用户上传的视频，目前支持以下位置：
+
+- 首页
+- 搜索页
+- 视频详情页右侧推荐
+
 ## 屏蔽和取消屏蔽
 
 ![chrome_2023-05-08_23-14-07.png](https://cdn.jsdelivr.net/gh/NateScarlet/user-scripts@master/src/bilibili.com/img/chrome_2023-05-08_23-14-07.png)
