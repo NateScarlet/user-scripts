@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.05.09+36c69c54
+// @version   2023.05.09+c0ee0386
 // ==/UserScript==
 
 (() => {
@@ -650,14 +650,16 @@
           update: () => {
             renderNav();
             renderActions(userID);
-          }
+          },
+          scheduleNext: (update) => setTimeout(update, 100)
         });
       } else {
         usePolling({
           update: () => {
             renderNav();
             renderVideoCard();
-          }
+          },
+          scheduleNext: (update) => setTimeout(update, 100)
         });
       }
     });

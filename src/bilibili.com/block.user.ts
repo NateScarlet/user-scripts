@@ -257,6 +257,7 @@ async function main() {
         renderNav();
         renderActions(userID);
       },
+      scheduleNext: (update) => setTimeout(update, 100),
     });
   } else {
     usePolling({
@@ -264,6 +265,7 @@ async function main() {
         renderNav();
         renderVideoCard();
       },
+      scheduleNext: (update) => setTimeout(update, 100),
     });
   }
 }
