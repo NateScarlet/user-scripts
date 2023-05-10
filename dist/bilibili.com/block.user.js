@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.05.09+c0ee0386
+// @version   2023.05.10+e06cc091
 // ==/UserScript==
 
 (() => {
@@ -556,20 +556,40 @@
     }
     return match[1];
   }
-  function renderVideoCard() {
+  function parseVideoURL(rawURL) {
+    if (!rawURL) {
+      return;
+    }
+    const url = new URL(rawURL, window.location.href);
+    if (url.host !== "www.bilibili.com") {
+      return;
+    }
+    const match = /^\/video\//.exec(url.pathname);
+    if (!match) {
+      return;
+    }
+    return {};
+  }
+  function renderVideoList() {
     document.querySelectorAll(".bili-video-card").forEach((i2) => {
-      var _a;
+      var _a, _b;
       const rawURL = (_a = i2.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a.getAttribute("href");
+      if (!rawURL) {
+        return;
+      }
       const userID = parseUserURL(rawURL);
       if (!userID) {
         return;
       }
       const isBlocked = !!blockedUsers.value[userID];
-      const container = i2.parentElement.classList.contains("video-list-item") ? i2.parentElement : i2;
+      const container = ((_b = i2.parentElement) == null ? void 0 : _b.classList.contains("video-list-item")) ? i2.parentElement : i2;
       setHTMLElementDisplayHidden(container, isBlocked);
     });
+  }
+  function renderVideoDetail() {
+    const blockedTitles = new Set();
     document.querySelectorAll(".video-page-card-small").forEach((i2) => {
-      var _a;
+      var _a, _b;
       const rawURL = (_a = i2.querySelector(".upname a")) == null ? void 0 : _a.getAttribute("href");
       if (!rawURL) {
         return;
@@ -579,6 +599,21 @@
         return;
       }
       const isBlocked = !!blockedUsers.value[userID];
+      if (isBlocked) {
+        const title = (_b = i2.querySelector(".title[title]")) == null ? void 0 : _b.getAttribute("title");
+        if (title) {
+          blockedTitles.add(title);
+        }
+      }
+      setHTMLElementDisplayHidden(i2, isBlocked);
+    });
+    document.querySelectorAll(".bpx-player-ending-related-item").forEach((i2) => {
+      var _a;
+      const title = (_a = i2.querySelector(".bpx-player-ending-related-item-title")) == null ? void 0 : _a.textContent;
+      if (!title) {
+        return;
+      }
+      const isBlocked = blockedTitles.has(title);
       setHTMLElementDisplayHidden(i2, isBlocked);
     });
   }
@@ -587,7 +622,7 @@
     const now = new Date();
     function getData(id) {
       const value = blockedUsers.value[id];
-      const { blockedAt: rawBlockedAt = 0, name = id } = typeof value === "boolean" ? {} : value;
+      const { blockedAt: rawBlockedAt = 0, name = id } = typeof value === "boolean" ? {} : value != null ? value : {};
       const blockedAt = new Date(rawBlockedAt);
       return {
         id,
@@ -641,27 +676,37 @@
   function main() {
     return __async(this, null, function* () {
       yield migrateV1();
-      if (window.location.host === "space.bilibili.com") {
-        const userID = parseUserURL(window.location.href);
-        if (!userID) {
+      const rawURL = window.location.href;
+      {
+        const userID = parseUserURL(rawURL);
+        if (userID) {
+          usePolling({
+            update: () => {
+              renderNav();
+              renderActions(userID);
+            },
+            scheduleNext: (update) => setTimeout(update, 100)
+          });
           return;
         }
-        usePolling({
-          update: () => {
-            renderNav();
-            renderActions(userID);
-          },
-          scheduleNext: (update) => setTimeout(update, 100)
-        });
-      } else {
-        usePolling({
-          update: () => {
-            renderNav();
-            renderVideoCard();
-          },
-          scheduleNext: (update) => setTimeout(update, 100)
-        });
       }
+      if (parseVideoURL(rawURL)) {
+        usePolling({
+          update: () => {
+            renderNav();
+            renderVideoDetail();
+          },
+          scheduleNext: (update) => setTimeout(update, 100)
+        });
+        return;
+      }
+      usePolling({
+        update: () => {
+          renderNav();
+          renderVideoList();
+        },
+        scheduleNext: (update) => setTimeout(update, 100)
+      });
     });
   }
   main();

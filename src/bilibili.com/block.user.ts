@@ -20,19 +20,17 @@ import usePolling from "@/utils/usePolling";
 import { render, html } from "lit-html";
 import { mdiAccountCancelOutline } from "@mdi/js";
 import setHTMLElementDisplayHidden from "@/utils/setHTMLElementDisplayHidden";
+
 export {};
+
+interface BlockedUser {
+  name: string;
+  blockedAt: number;
+}
 
 const blockedUsers = useGMValue(
   "blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4",
-  {} as Record<
-    string,
-    | {
-        name: string;
-        blockedAt: number;
-      }
-    | true
-    | undefined
-  >
+  {} as Record<string, BlockedUser | true | undefined>
 );
 
 async function migrateV1() {
@@ -61,7 +59,7 @@ function renderActions(userID: string) {
     {
       onCreate: (el) => {
         el.style.display = "inline";
-        parent.append(el, parent.lastChild);
+        parent.append(el, parent.lastChild!);
       },
     }
   );
@@ -103,7 +101,7 @@ function renderNav() {
     {
       onCreate: (el) => {
         el.classList.add("right-entry-item");
-        parent.prepend(parent.firstChild, el);
+        parent.prepend(parent.firstChild!, el);
       },
     }
   );
@@ -149,21 +147,43 @@ function parseUserURL(rawURL: string | undefined): string | undefined {
   return match[1];
 }
 
-function renderVideoCard() {
+function parseVideoURL(rawURL: string | undefined) {
+  if (!rawURL) {
+    return;
+  }
+  const url = new URL(rawURL, window.location.href);
+  if (url.host !== "www.bilibili.com") {
+    return;
+  }
+  const match = /^\/video\//.exec(url.pathname);
+  if (!match) {
+    return;
+  }
+  return {};
+}
+
+function renderVideoList() {
   document.querySelectorAll<HTMLElement>(".bili-video-card").forEach((i) => {
     const rawURL = i
       .querySelector("a.bili-video-card__info--owner")
       ?.getAttribute("href");
+    if (!rawURL) {
+      return;
+    }
     const userID = parseUserURL(rawURL);
     if (!userID) {
       return;
     }
     const isBlocked = !!blockedUsers.value[userID];
-    const container = i.parentElement.classList.contains("video-list-item")
+    const container = i.parentElement?.classList.contains("video-list-item")
       ? i.parentElement
       : i;
     setHTMLElementDisplayHidden(container, isBlocked);
   });
+}
+
+function renderVideoDetail() {
+  const blockedTitles = new Set<string>();
 
   document
     .querySelectorAll<HTMLElement>(".video-page-card-small")
@@ -177,6 +197,25 @@ function renderVideoCard() {
         return;
       }
       const isBlocked = !!blockedUsers.value[userID];
+      if (isBlocked) {
+        const title = i.querySelector(".title[title]")?.getAttribute("title");
+        if (title) {
+          blockedTitles.add(title);
+        }
+      }
+      setHTMLElementDisplayHidden(i, isBlocked);
+    });
+
+  document
+    .querySelectorAll<HTMLElement>(".bpx-player-ending-related-item")
+    .forEach((i) => {
+      const title = i.querySelector(
+        ".bpx-player-ending-related-item-title"
+      )?.textContent;
+      if (!title) {
+        return;
+      }
+      const isBlocked = blockedTitles.has(title);
       setHTMLElementDisplayHidden(i, isBlocked);
     });
 }
@@ -187,7 +226,7 @@ function blockedUsersHTML() {
   function getData(id: string) {
     const value = blockedUsers.value[id];
     const { blockedAt: rawBlockedAt = 0, name = id } =
-      typeof value === "boolean" ? {} : value;
+      typeof value === "boolean" ? {} : value ?? {};
     const blockedAt = new Date(rawBlockedAt);
     return {
       id,
@@ -247,27 +286,39 @@ function blockedUsersURL() {
 
 async function main() {
   await migrateV1();
-  if (window.location.host === "space.bilibili.com") {
-    const userID = parseUserURL(window.location.href);
-    if (!userID) {
+  const rawURL = window.location.href;
+  {
+    const userID = parseUserURL(rawURL);
+    if (userID) {
+      usePolling({
+        update: () => {
+          renderNav();
+          renderActions(userID);
+        },
+        scheduleNext: (update) => setTimeout(update, 100),
+      });
       return;
     }
-    usePolling({
-      update: () => {
-        renderNav();
-        renderActions(userID);
-      },
-      scheduleNext: (update) => setTimeout(update, 100),
-    });
-  } else {
-    usePolling({
-      update: () => {
-        renderNav();
-        renderVideoCard();
-      },
-      scheduleNext: (update) => setTimeout(update, 100),
-    });
   }
+
+  if (parseVideoURL(rawURL)) {
+    usePolling({
+      update: () => {
+        renderNav();
+        renderVideoDetail();
+      },
+      scheduleNext: (update) => setTimeout(update, 100),
+    });
+    return;
+  }
+
+  usePolling({
+    update: () => {
+      renderNav();
+      renderVideoList();
+    },
+    scheduleNext: (update) => setTimeout(update, 100),
+  });
 }
 
 main();
