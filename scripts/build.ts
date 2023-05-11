@@ -1,5 +1,4 @@
 import { build } from "esbuild";
-
 import { readFile, readdir, stat } from "fs/promises";
 import { createHash } from "crypto";
 
@@ -84,9 +83,36 @@ function workspacePath(...parts: string[]): string {
       entryPoints: [entry],
       banner: { js: await getMetadataBlock(entry) },
       bundle: true,
+      treeShaking: true,
       target: "es2015",
       outfile,
       charset: "utf8",
+      plugins: [
+        {
+          name: "lit-html",
+          setup(build) {
+            build.onResolve({ filter: /^lit-html$/ }, async (v) => {
+              return {
+                path: workspacePath(
+                  "node_modules",
+                  "lit-html",
+                  "development",
+                  "lit-html.js"
+                ),
+              };
+            });
+            build.onLoad({ filter: /[\/\\]lit-html.js$/ }, async ({ path }) => {
+              const source = await readFile(path, "utf-8");
+              return {
+                contents: source.replace(
+                  "const DEV_MODE = true",
+                  "const DEV_MODE = false"
+                ),
+              };
+            });
+          },
+        },
+      ],
       loader: {
         ".html": "text",
         ".css": "text",
