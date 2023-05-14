@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.05.10+e06cc091
+// @version   2023.05.15+456654ba
 // ==/UserScript==
 
 (() => {
@@ -1112,14 +1112,18 @@
       return;
     }
     const url = new URL(rawURL, window.location.href);
-    if (url.host !== "space.bilibili.com") {
-      return;
+    switch (url.host) {
+      case "space.bilibili.com": {
+        const match = /^\/(\d+)\/?/.exec(url.pathname);
+        if (!match) {
+          return;
+        }
+        return match[1];
+      }
+      case "cm.bilibili.com": {
+        return url.searchParams.get("space_mid") || void 0;
+      }
     }
-    const match = /^\/(\d+)\/?/.exec(url.pathname);
-    if (!match) {
-      return;
-    }
-    return match[1];
   }
   function parseVideoURL(rawURL) {
     if (!rawURL) {
