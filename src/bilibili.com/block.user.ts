@@ -179,9 +179,11 @@ function renderVideoList() {
       return;
     }
     const isBlocked = !!blockedUsers.value[userID];
-    const container = i.parentElement?.classList.contains("video-list-item")
-      ? i.parentElement
-      : i;
+    let container = i;
+    while (container.parentElement?.childElementCount === 1) {
+      container = i.parentElement!;
+    }
+
     setHTMLElementDisplayHidden(container, isBlocked);
   });
 }

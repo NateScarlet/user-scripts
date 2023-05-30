@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.05.15+456654ba
+// @version   2023.05.30+d100b299
 // ==/UserScript==
 
 (() => {
@@ -1151,7 +1151,10 @@
         return;
       }
       const isBlocked = !!blockedUsers.value[userID];
-      const container = ((_b2 = i.parentElement) == null ? void 0 : _b2.classList.contains("video-list-item")) ? i.parentElement : i;
+      let container = i;
+      while (((_b2 = container.parentElement) == null ? void 0 : _b2.childElementCount) === 1) {
+        container = i.parentElement;
+      }
       setHTMLElementDisplayHidden(container, isBlocked);
     });
   }
