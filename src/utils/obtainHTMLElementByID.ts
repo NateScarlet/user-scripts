@@ -1,4 +1,4 @@
-export default function obtainHTMLElement<
+export default function obtainHTMLElementByID<
   K extends keyof HTMLElementTagNameMap
 >(
   tag: K,
@@ -11,6 +11,6 @@ export default function obtainHTMLElement<
   }
   const el = document.createElement(tag);
   el.id = id;
-  onCreate(el);
+  onCreate?.(el);
   return el;
 }

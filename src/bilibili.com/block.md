@@ -15,6 +15,10 @@
 
 至目标用户个人空间，点击 `屏蔽` 或 `取消屏蔽` 按钮。
 
+![chrome_2023-06-16_01-11-42.png](https://cdn.jsdelivr.net/gh/NateScarlet/user-scripts@master/src/bilibili.com/img/chrome_2023-06-16_01-11-42.png)
+
+或者点击单个视频左上角的屏蔽按钮，误操作时需要从屏蔽列表中找回。
+
 ## 查看已屏蔽的用户
 
 ![chrome_2023-05-08_23-18-47.png](https://cdn.jsdelivr.net/gh/NateScarlet/user-scripts@master/src/bilibili.com/img/chrome_2023-05-08_23-18-47.png)

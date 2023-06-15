@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name     B站用户屏蔽
 // @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
-// @description 避免看到指定用户上传的视频，在用户个人主页会多出屏蔽按钮。
+// @description 避免看到指定用户上传的视频，在用户个人主页和视频左上角会多出屏蔽按钮。
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @grant    GM.deleteValue
@@ -14,12 +14,14 @@
 // spell-checker: word bili bilibili upname datetime
 
 import compare from "@/utils/compare";
-import obtainHTMLElement from "@/utils/obtainHTMLElement";
+import obtainHTMLElement from "@/utils/obtainHTMLElementByID";
 import useGMValue from "@/utils/useGMValue";
 import usePolling from "@/utils/usePolling";
 import { render, html } from "lit-html";
 import { mdiAccountCancelOutline } from "@mdi/js";
 import setHTMLElementDisplayHidden from "@/utils/setHTMLElementDisplayHidden";
+import obtainHTMLElementByDataKey from "@/utils/obtainHTMLElementByDataKey";
+import injectStyle from "@/utils/injectStyle";
 
 export {};
 
@@ -185,7 +187,84 @@ function renderVideoList() {
     }
 
     setHTMLElementDisplayHidden(container, isBlocked);
+    if (!isBlocked) {
+      renderHoverButton(i, {
+        id: userID,
+        name:
+          i
+            .querySelector(".bili-video-card__info--author")
+            ?.getAttribute("title") || userID,
+      });
+    }
   });
+}
+
+function renderHoverButton(
+  parentNode: HTMLElement,
+  user: { id: string; name: string }
+) {
+  const key = "a1161956-2be7-4796-9f1b-528707156b11";
+  injectStyle(
+    key,
+    `\
+[data-${key}] .transition-all {
+  transition: all 0.2s linear 0.2s;
+}
+
+[data-${key}]:hover .group-hover\\:opacity-100 {
+  opacity: 100;
+}
+
+[data-${key}] .opacity-0 {
+  opacity: 0;
+}
+`
+  );
+  const el = obtainHTMLElementByDataKey({
+    tag: "div",
+    key,
+    parentNode,
+    onDidCreate: (el) => {
+      parentNode.setAttribute(`data-${key}`, "");
+      parentNode.append(el);
+    },
+  });
+  render(
+    html`
+<button
+  type="button"
+  class="transition-all opacity-0 group-hover:opacity-100" 
+  title="屏蔽此用户"
+  style="\
+position: absolute;\
+top: 8px;\
+left: 8px;\
+width: 28px;\
+height: 28px;\
+border-radius: 6px;\
+cursor: pointer;\
+color: #fff;\
+background-color: rgba(33,33,33,.8);\
+z-index: 9;\
+"  @click=${(e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      blockedUsers.value = {
+        ...blockedUsers.value,
+        [user.id]: {
+          name: user.name,
+          blockedAt: Date.now(),
+        },
+      };
+    }}
+>
+  <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCancelOutline} fill="currentColor">
+  </svg>
+</button>
+    `,
+    el
+  );
 }
 
 function renderVideoDetail() {

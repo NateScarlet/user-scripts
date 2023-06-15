@@ -1,11 +1,10 @@
-export default function injectStyle(css: string) {
-  const style = document.createElement("style");
-  style.innerHTML = css;
-  document.head.appendChild(style);
-  const dispose = () => {
-    style.remove();
-  };
-  return {
-    dispose,
-  };
+import obtainHTMLElement from "./obtainHTMLElementByID";
+
+export default function injectStyle(id: string, css: string) {
+  obtainHTMLElement("style", id, {
+    onCreate: (el) => {
+      document.head.appendChild(el);
+      el.innerHTML = css;
+    },
+  });
 }

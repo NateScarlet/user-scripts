@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name     B站用户屏蔽
 // @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
-// @description 避免看到指定用户上传的视频，在用户个人主页会多出屏蔽按钮。
+// @description 避免看到指定用户上传的视频，在用户个人主页和视频左上角会多出屏蔽按钮。
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @grant    GM.deleteValue
@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.05.30+d100b299
+// @version   2023.06.16+c47d2bde
 // ==/UserScript==
 
 (() => {
@@ -64,15 +64,15 @@
     return 0;
   }
 
-  // src/utils/obtainHTMLElement.ts
-  function obtainHTMLElement(tag2, id, { onCreate } = {}) {
+  // src/utils/obtainHTMLElementByID.ts
+  function obtainHTMLElementByID(tag2, id, { onCreate } = {}) {
     const match = document.getElementById(id);
     if (match) {
       return match;
     }
     const el = document.createElement(tag2);
     el.id = id;
-    onCreate(el);
+    onCreate == null ? void 0 : onCreate(el);
     return el;
   }
 
@@ -1026,6 +1026,33 @@
     }
   }
 
+  // src/utils/obtainHTMLElementByDataKey.ts
+  function obtainHTMLElementByDataKey({
+    tag: tag2,
+    key,
+    parentNode = document,
+    onDidCreate
+  }) {
+    const match = parentNode.querySelector(`[data-${key}]`);
+    if (match) {
+      return match;
+    }
+    const el = document.createElement(tag2);
+    el.setAttribute(`data-${key}`, "");
+    onDidCreate == null ? void 0 : onDidCreate(el);
+    return el;
+  }
+
+  // src/utils/injectStyle.ts
+  function injectStyle(id, css) {
+    obtainHTMLElementByID("style", id, {
+      onCreate: (el) => {
+        document.head.appendChild(el);
+        el.innerHTML = css;
+      }
+    });
+  }
+
   // src/bilibili.com/block.user.ts
   var blockedUsers = useGMValue("blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4", {});
   function migrateV1() {
@@ -1048,7 +1075,7 @@
     if (!parent) {
       return;
     }
-    const container = obtainHTMLElement("div", "7ced1613-89d7-4754-8989-2ad0d7cfa9db", {
+    const container = obtainHTMLElementByID("div", "7ced1613-89d7-4754-8989-2ad0d7cfa9db", {
       onCreate: (el) => {
         el.style.display = "inline";
         parent.append(el, parent.lastChild);
@@ -1079,7 +1106,7 @@
     if (!parent) {
       return;
     }
-    const container = obtainHTMLElement("li", "db7a644d-1c6c-4078-a9dc-991b15b68014", {
+    const container = obtainHTMLElementByID("li", "db7a644d-1c6c-4078-a9dc-991b15b68014", {
       onCreate: (el) => {
         el.classList.add("right-entry-item");
         parent.prepend(parent.firstChild, el);
@@ -1141,7 +1168,7 @@
   }
   function renderVideoList() {
     document.querySelectorAll(".bili-video-card").forEach((i) => {
-      var _a2, _b2;
+      var _a2, _b2, _c2;
       const rawURL = (_a2 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a2.getAttribute("href");
       if (!rawURL) {
         return;
@@ -1156,7 +1183,69 @@
         container = i.parentElement;
       }
       setHTMLElementDisplayHidden(container, isBlocked);
+      if (!isBlocked) {
+        renderHoverButton(i, {
+          id: userID,
+          name: ((_c2 = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _c2.getAttribute("title")) || userID
+        });
+      }
     });
+  }
+  function renderHoverButton(parentNode, user) {
+    const key = "a1161956-2be7-4796-9f1b-528707156b11";
+    injectStyle(key, `[data-${key}] .transition-all {
+  transition: all 0.2s linear 0.2s;
+}
+
+[data-${key}]:hover .group-hover\\:opacity-100 {
+  opacity: 100;
+}
+
+[data-${key}] .opacity-0 {
+  opacity: 0;
+}
+`);
+    const el = obtainHTMLElementByDataKey({
+      tag: "div",
+      key,
+      parentNode,
+      onDidCreate: (el2) => {
+        parentNode.setAttribute(`data-${key}`, "");
+        parentNode.append(el2);
+      }
+    });
+    render(html`
+<button
+  type="button"
+  class="transition-all opacity-0 group-hover:opacity-100" 
+  title="屏蔽此用户"
+  style="\
+position: absolute;\
+top: 8px;\
+left: 8px;\
+width: 28px;\
+height: 28px;\
+border-radius: 6px;\
+cursor: pointer;\
+color: #fff;\
+background-color: rgba(33,33,33,.8);\
+z-index: 9;\
+"  @click=${(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      blockedUsers.value = __spreadProps(__spreadValues({}, blockedUsers.value), {
+        [user.id]: {
+          name: user.name,
+          blockedAt: Date.now()
+        }
+      });
+    }}
+>
+  <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCancelOutline} fill="currentColor">
+  </svg>
+</button>
+    `, el);
   }
   function renderVideoDetail() {
     const blockedTitles = new Set();
