@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.06.16+c47d2bde
+// @version   2023.06.16+10a90746
 // ==/UserScript==
 
 (() => {
@@ -1184,7 +1184,7 @@
       }
       setHTMLElementDisplayHidden(container, isBlocked);
       if (!isBlocked) {
-        renderHoverButton(i, {
+        renderHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
           id: userID,
           name: ((_c2 = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _c2.getAttribute("title")) || userID
         });
@@ -1192,6 +1192,9 @@
     });
   }
   function renderHoverButton(parentNode, user) {
+    if (!parentNode) {
+      return;
+    }
     const key = "a1161956-2be7-4796-9f1b-528707156b11";
     injectStyle(key, `[data-${key}] .transition-all {
   transition: all 0.2s linear 0.2s;
@@ -1219,17 +1222,18 @@
   type="button"
   class="transition-all opacity-0 group-hover:opacity-100" 
   title="屏蔽此用户"
-  style="\
-position: absolute;\
-top: 8px;\
-left: 8px;\
-width: 28px;\
-height: 28px;\
-border-radius: 6px;\
-cursor: pointer;\
-color: #fff;\
-background-color: rgba(33,33,33,.8);\
-z-index: 9;\
+  style="
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+    background-color: rgba(33,33,33,.8);
+    z-index: 9;
+    border: none;
 "  @click=${(e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -1250,7 +1254,7 @@ z-index: 9;\
   function renderVideoDetail() {
     const blockedTitles = new Set();
     document.querySelectorAll(".video-page-card-small").forEach((i) => {
-      var _a2, _b2;
+      var _a2, _b2, _c2;
       const rawURL = (_a2 = i.querySelector(".upname a")) == null ? void 0 : _a2.getAttribute("href");
       if (!rawURL) {
         return;
@@ -1267,6 +1271,12 @@ z-index: 9;\
         }
       }
       setHTMLElementDisplayHidden(i, isBlocked);
+      if (!isBlocked) {
+        renderHoverButton(i.querySelector(".pic-box"), {
+          id: userID,
+          name: ((_c2 = i.querySelector(".upname .name")) == null ? void 0 : _c2.textContent) || userID
+        });
+      }
     });
     document.querySelectorAll(".bpx-player-ending-related-item").forEach((i) => {
       var _a2;

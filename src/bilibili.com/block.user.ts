@@ -188,7 +188,7 @@ function renderVideoList() {
 
     setHTMLElementDisplayHidden(container, isBlocked);
     if (!isBlocked) {
-      renderHoverButton(i, {
+      renderHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
         id: userID,
         name:
           i
@@ -200,9 +200,12 @@ function renderVideoList() {
 }
 
 function renderHoverButton(
-  parentNode: HTMLElement,
+  parentNode: HTMLElement | null,
   user: { id: string; name: string }
 ) {
+  if (!parentNode) {
+    return;
+  }
   const key = "a1161956-2be7-4796-9f1b-528707156b11";
   injectStyle(
     key,
@@ -235,17 +238,18 @@ function renderHoverButton(
   type="button"
   class="transition-all opacity-0 group-hover:opacity-100" 
   title="屏蔽此用户"
-  style="\
-position: absolute;\
-top: 8px;\
-left: 8px;\
-width: 28px;\
-height: 28px;\
-border-radius: 6px;\
-cursor: pointer;\
-color: #fff;\
-background-color: rgba(33,33,33,.8);\
-z-index: 9;\
+  style="
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+    background-color: rgba(33,33,33,.8);
+    z-index: 9;
+    border: none;
 "  @click=${(e: Event) => {
       e.preventDefault();
       e.stopPropagation();
@@ -289,6 +293,12 @@ function renderVideoDetail() {
         }
       }
       setHTMLElementDisplayHidden(i, isBlocked);
+      if (!isBlocked) {
+        renderHoverButton(i.querySelector(".pic-box"), {
+          id: userID,
+          name: i.querySelector(".upname .name")?.textContent || userID,
+        });
+      }
     });
 
   document
