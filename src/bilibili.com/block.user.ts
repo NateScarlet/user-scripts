@@ -210,16 +210,14 @@ function renderHoverButton(
   injectStyle(
     key,
     `\
-[data-${key}] .transition-all {
-  transition: all 0.2s linear 0.2s;
-}
-
 [data-${key}]:hover .group-hover\\:opacity-100 {
   opacity: 100;
+  transition: opacity 0.2s linear 0.2s;
 }
 
 [data-${key}] .opacity-0 {
   opacity: 0;
+  transition: opacity 0.2s linear 0s;
 }
 `
   );
@@ -236,7 +234,7 @@ function renderHoverButton(
     html`
 <button
   type="button"
-  class="transition-all opacity-0 group-hover:opacity-100" 
+  class="opacity-0 group-hover:opacity-100" 
   title="屏蔽此用户"
   style="
     position: absolute;

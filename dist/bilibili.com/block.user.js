@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.06.16+10a90746
+// @version   2023.06.16+c02e2c15
 // ==/UserScript==
 
 (() => {
@@ -1196,16 +1196,14 @@
       return;
     }
     const key = "a1161956-2be7-4796-9f1b-528707156b11";
-    injectStyle(key, `[data-${key}] .transition-all {
-  transition: all 0.2s linear 0.2s;
-}
-
-[data-${key}]:hover .group-hover\\:opacity-100 {
+    injectStyle(key, `[data-${key}]:hover .group-hover\\:opacity-100 {
   opacity: 100;
+  transition: opacity 0.2s linear 0.2s;
 }
 
 [data-${key}] .opacity-0 {
   opacity: 0;
+  transition: opacity 0.2s linear 0s;
 }
 `);
     const el = obtainHTMLElementByDataKey({
@@ -1220,7 +1218,7 @@
     render(html`
 <button
   type="button"
-  class="transition-all opacity-0 group-hover:opacity-100" 
+  class="opacity-0 group-hover:opacity-100" 
   title="屏蔽此用户"
   style="
     position: absolute;
