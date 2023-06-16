@@ -143,7 +143,7 @@ function renderNav() {
   );
 }
 
-function parseUserURL(rawURL: string | undefined): string | undefined {
+function parseUserURL(rawURL: string | null | undefined): string | undefined {
   if (!rawURL) {
     return;
   }
@@ -208,7 +208,7 @@ function renderVideoList() {
   });
 }
 
-function renderVideoRank() {
+function renderVPopular() {
   document.querySelectorAll<HTMLElement>(".video-card").forEach((i) => {
     const selector = getElementSelector(i);
     const videoData = evalInContentScope(
@@ -228,6 +228,27 @@ function renderVideoRank() {
     setHTMLElementDisplayHidden(i, isBlocked);
     if (!isBlocked) {
       renderHoverButton(i.querySelector(".video-card__content"), {
+        id: userID,
+        name,
+      });
+    }
+  });
+}
+
+function renderVPopularRankAll() {
+  document.querySelectorAll<HTMLElement>(".rank-item").forEach((i) => {
+    const userID = parseUserURL(
+      i.querySelector(".up-name")?.parentElement?.getAttribute("href")
+    );
+    if (!userID) {
+      return;
+    }
+    const name = i.querySelector(".up-name")?.textContent ?? "";
+
+    const isBlocked = !!blockedUsers.value[userID];
+    setHTMLElementDisplayHidden(i, isBlocked);
+    if (!isBlocked) {
+      renderHoverButton(i.querySelector(".img"), {
         id: userID,
         name,
       });
@@ -428,9 +449,14 @@ function createApp(): Component {
     components.push({ render: renderVideoDetail });
   } else if (
     url.host === "www.bilibili.com" &&
+    url.pathname.startsWith("/v/popular/rank/all")
+  ) {
+    components.push({ render: renderVPopularRankAll });
+  } else if (
+    url.host === "www.bilibili.com" &&
     url.pathname.startsWith("/v/popular/")
   ) {
-    components.push({ render: renderVideoRank });
+    components.push({ render: renderVPopular });
   } else {
     components.push({ render: renderVideoList });
   }

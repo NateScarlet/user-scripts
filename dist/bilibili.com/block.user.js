@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.06.17+25a8524c
+// @version   2023.06.17+13e81070
 // ==/UserScript==
 
 (() => {
@@ -1332,7 +1332,7 @@
       }
     });
   }
-  function renderVideoRank() {
+  function renderVPopular() {
     document.querySelectorAll(".video-card").forEach((i) => {
       const selector = getElementSelector(i);
       const videoData = evalInContentScope(`document.querySelector(${JSON.stringify(selector)}).__vue__._props.videoData`);
@@ -1346,6 +1346,24 @@
       setHTMLElementDisplayHidden(i, isBlocked);
       if (!isBlocked) {
         renderHoverButton(i.querySelector(".video-card__content"), {
+          id: userID,
+          name
+        });
+      }
+    });
+  }
+  function renderVPopularRankAll() {
+    document.querySelectorAll(".rank-item").forEach((i) => {
+      var _a2, _b2, _c2, _d2;
+      const userID = parseUserURL((_b2 = (_a2 = i.querySelector(".up-name")) == null ? void 0 : _a2.parentElement) == null ? void 0 : _b2.getAttribute("href"));
+      if (!userID) {
+        return;
+      }
+      const name = (_d2 = (_c2 = i.querySelector(".up-name")) == null ? void 0 : _c2.textContent) != null ? _d2 : "";
+      const isBlocked = !!blockedUsers.value[userID];
+      setHTMLElementDisplayHidden(i, isBlocked);
+      if (!isBlocked) {
+        renderHoverButton(i.querySelector(".img"), {
           id: userID,
           name
         });
@@ -1512,8 +1530,10 @@
       components.push({ render: () => renderActions(userID) });
     } else if (parseVideoURL(rawURL)) {
       components.push({ render: renderVideoDetail });
+    } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/rank/all")) {
+      components.push({ render: renderVPopularRankAll });
     } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/")) {
-      components.push({ render: renderVideoRank });
+      components.push({ render: renderVPopular });
     } else {
       components.push({ render: renderVideoList });
     }
