@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.06.17+13e81070
+// @version   2023.06.17+b9d26427
 // ==/UserScript==
 
 (() => {
@@ -1194,6 +1194,26 @@
     }
   }
 
+  // src/utils/useDisposal.ts
+  function useDisposal() {
+    const filoQueue = [];
+    function push(d2) {
+      filoQueue.push(d2);
+    }
+    function dispose() {
+      while (filoQueue.length > 0) {
+        const next = filoQueue.pop();
+        if (next) {
+          next.dispose();
+        }
+      }
+    }
+    return {
+      push,
+      dispose
+    };
+  }
+
   // src/bilibili.com/block.user.ts
   var blockedUsers = useGMValue("blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4", {});
   function migrateV1() {
@@ -1544,11 +1564,20 @@
   function main() {
     return __async(this, null, function* () {
       yield migrateV1();
+      const initialPath = window.location.pathname;
       const app = createApp();
-      usePolling({
-        update: () => app.render(),
+      const { push, dispose } = useDisposal();
+      push(usePolling({
+        update: () => {
+          if (window.location.pathname !== initialPath) {
+            dispose();
+            main();
+            return;
+          }
+          app.render();
+        },
         scheduleNext: (update) => setTimeout(update, 100)
-      });
+      }));
     });
   }
   main();

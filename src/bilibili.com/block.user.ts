@@ -25,6 +25,7 @@ import injectStyle from "@/utils/injectStyle";
 import castPlainObject from "@/utils/castPlainObject";
 import getElementSelector from "@/utils/getElementSelector";
 import evalInContentScope from "@/utils/evalInContentScope";
+import useDisposal from "@/utils/useDisposal";
 
 export {};
 
@@ -469,12 +470,24 @@ function createApp(): Component {
 async function main() {
   await migrateV1();
 
+  const initialPath = window.location.pathname;
   const app = createApp();
 
-  usePolling({
-    update: () => app.render(),
-    scheduleNext: (update) => setTimeout(update, 100),
-  });
+  const { push, dispose } = useDisposal();
+  push(
+    usePolling({
+      update: () => {
+        if (window.location.pathname !== initialPath) {
+          // route changed
+          dispose();
+          main();
+          return;
+        }
+        app.render();
+      },
+      scheduleNext: (update) => setTimeout(update, 100),
+    })
+  );
 }
 
 main();
