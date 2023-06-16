@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name     Github anchor enhance
 // @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
-// @description Enhance all github link with badges
+// @description Enhance github repository link with badges
 // @grant    GM.xmlHttpRequest
 // @run-at   document-end
 // @include	 *
@@ -11,7 +11,7 @@ export {};
 
 // spell-checker: word codespaces
 
-const reservedUsername = [
+const reservedUsername = new Set([
   "topics",
   "search",
   "ghost",
@@ -38,42 +38,40 @@ const reservedUsername = [
   "codespaces",
   "sponsors",
   "logout",
-];
+  "account",
+]);
 
-const allBadgeClasses = [
-  "added-stars-badge",
-  "added-last-commit-badge",
-  "added-followers-badge",
-];
+const allBadgeClasses = ["added-stars-badge", "added-last-commit-badge"];
 
-class URLParseResult {
-  static EMPTY = new URLParseResult({});
-
-  public readonly user?: string;
-  public readonly repo?: string;
-  constructor({ user, repo }: { user?: string; repo?: string }) {
-    this.user = user;
-    this.repo = repo;
-  }
-  public equals(other: URLParseResult): boolean {
-    return other.repo === this.repo && other.user === this.user;
-  }
+interface ParseURLResult {
+  owner: string;
+  repo: string;
 }
 
-function parseURL(v: string): URLParseResult {
-  const match = v.match(
-    /^https?:\/\/github.com\/([^/]*?)(?:\/([^/]*?))?(?:\.git)?(?:[#?].*)?(?:$|\/)/
-  );
+const current = parseURL(location.href);
+
+function parseURL(rawURL: string): ParseURLResult | undefined {
+  const u = new URL(rawURL, document.baseURI);
+  if (u.hostname !== "github.com") {
+    return;
+  }
+
+  const match = /^\/([^/]+?)\/([^/]+?)(?:.git)?\/?$/.exec(u.pathname);
   if (!match) {
-    return URLParseResult.EMPTY;
+    return;
   }
-  if (reservedUsername.includes(match[1])) {
-    return URLParseResult.EMPTY;
+  const owner = match[1];
+  const repo = match[2];
+  if (owner === current?.owner && repo === current.repo) {
+    return;
   }
-  return new URLParseResult({
-    user: match[1],
-    repo: match[2],
-  });
+  if (reservedUsername.has(owner)) {
+    return;
+  }
+  return {
+    owner,
+    repo,
+  };
 }
 
 async function appendBadge(
@@ -98,7 +96,6 @@ async function appendBadge(
               "badge-container",
             ];
             const selector = containerClassNames.map((i) => "." + i).join("");
-            /** @type {HTMLElement} */
             const container: HTMLElement =
               el.querySelector(selector) || document.createElement("span");
             el.appendChild(container);
@@ -118,42 +115,25 @@ async function appendBadge(
   });
 }
 
-async function appendStarsBadge(el: HTMLAnchorElement): Promise<void> {
-  const { repo, user } = parseURL(el.href);
-
-  if (!(user && repo)) {
-    return;
-  }
+async function appendStarsBadge(
+  el: HTMLAnchorElement,
+  res: ParseURLResult
+): Promise<void> {
   await appendBadge(
     el,
     "added-stars-badge",
-    `https://img.shields.io/github/stars/${user}/${repo}.svg?style=social`
+    `https://img.shields.io/github/stars/${res.owner}/${res.repo}.svg?style=social`
   );
 }
 
-async function appendLastCommitBadge(el: HTMLAnchorElement): Promise<void> {
-  const { repo, user } = parseURL(el.href);
-
-  if (!(user && repo)) {
-    return;
-  }
-
+async function appendLastCommitBadge(
+  el: HTMLAnchorElement,
+  res: ParseURLResult
+): Promise<void> {
   await appendBadge(
     el,
     "added-last-commit-badge",
-    `https://img.shields.io/github/last-commit/${user}/${repo}.svg`
-  );
-}
-
-async function appendFollowersBadge(el: HTMLAnchorElement): Promise<void> {
-  const { user } = parseURL(el.href);
-  if (!user) {
-    return;
-  }
-  await appendBadge(
-    el,
-    "added-followers-badge",
-    `https://img.shields.io/github/followers/${user}.svg?style=social`
+    `https://img.shields.io/github/last-commit/${res.owner}/${res.repo}.svg`
   );
 }
 
@@ -163,16 +143,15 @@ async function appendFollowersBadge(el: HTMLAnchorElement): Promise<void> {
     async (e) => {
       if (e.target instanceof HTMLAnchorElement) {
         const el = e.target;
+        const res = parseURL(el.href);
 
-        if (parseURL(location.href).equals(parseURL(el.href))) {
-          // Skip self link
+        if (!res) {
           return;
         }
         try {
           await Promise.all([
-            appendStarsBadge(el),
-            appendLastCommitBadge(el),
-            appendFollowersBadge(el),
+            appendStarsBadge(el, res),
+            appendLastCommitBadge(el, res),
           ]);
         } catch (err) {
           console.error(err);

@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name     Github anchor enhance
 // @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
-// @description Enhance all github link with badges
+// @description Enhance github repository link with badges
 // @grant    GM.xmlHttpRequest
 // @run-at   document-end
 // @include	 *
-// @version   2023.05.08+ea89c183
+// @version   2023.06.16+ce380046
 // ==/UserScript==
 
 (() => {
@@ -31,7 +31,7 @@
   };
 
   // src/github-anchor-enhance.user.ts
-  var reservedUsername = [
+  var reservedUsername = new Set([
     "topics",
     "search",
     "ghost",
@@ -57,36 +57,32 @@
     "stars",
     "codespaces",
     "sponsors",
-    "logout"
-  ];
-  var allBadgeClasses = [
-    "added-stars-badge",
-    "added-last-commit-badge",
-    "added-followers-badge"
-  ];
-  var _URLParseResult = class {
-    constructor({ user, repo }) {
-      this.user = user;
-      this.repo = repo;
+    "logout",
+    "account"
+  ]);
+  var allBadgeClasses = ["added-stars-badge", "added-last-commit-badge"];
+  var current = parseURL(location.href);
+  function parseURL(rawURL) {
+    const u = new URL(rawURL, document.baseURI);
+    if (u.hostname !== "github.com") {
+      return;
     }
-    equals(other) {
-      return other.repo === this.repo && other.user === this.user;
-    }
-  };
-  var URLParseResult = _URLParseResult;
-  URLParseResult.EMPTY = new _URLParseResult({});
-  function parseURL(v) {
-    const match = v.match(/^https?:\/\/github.com\/([^/]*?)(?:\/([^/]*?))?(?:\.git)?(?:[#?].*)?(?:$|\/)/);
+    const match = /^\/([^/]+?)\/([^/]+?)(?:.git)?\/?$/.exec(u.pathname);
     if (!match) {
-      return URLParseResult.EMPTY;
+      return;
     }
-    if (reservedUsername.includes(match[1])) {
-      return URLParseResult.EMPTY;
+    const owner = match[1];
+    const repo = match[2];
+    if (owner === (current == null ? void 0 : current.owner) && repo === current.repo) {
+      return;
     }
-    return new URLParseResult({
-      user: match[1],
-      repo: match[2]
-    });
+    if (reservedUsername.has(owner)) {
+      return;
+    }
+    return {
+      owner,
+      repo
+    };
   }
   function appendBadge(el, className, url) {
     return __async(this, null, function* () {
@@ -124,31 +120,14 @@
       });
     });
   }
-  function appendStarsBadge(el) {
+  function appendStarsBadge(el, res) {
     return __async(this, null, function* () {
-      const { repo, user } = parseURL(el.href);
-      if (!(user && repo)) {
-        return;
-      }
-      yield appendBadge(el, "added-stars-badge", `https://img.shields.io/github/stars/${user}/${repo}.svg?style=social`);
+      yield appendBadge(el, "added-stars-badge", `https://img.shields.io/github/stars/${res.owner}/${res.repo}.svg?style=social`);
     });
   }
-  function appendLastCommitBadge(el) {
+  function appendLastCommitBadge(el, res) {
     return __async(this, null, function* () {
-      const { repo, user } = parseURL(el.href);
-      if (!(user && repo)) {
-        return;
-      }
-      yield appendBadge(el, "added-last-commit-badge", `https://img.shields.io/github/last-commit/${user}/${repo}.svg`);
-    });
-  }
-  function appendFollowersBadge(el) {
-    return __async(this, null, function* () {
-      const { user } = parseURL(el.href);
-      if (!user) {
-        return;
-      }
-      yield appendBadge(el, "added-followers-badge", `https://img.shields.io/github/followers/${user}.svg?style=social`);
+      yield appendBadge(el, "added-last-commit-badge", `https://img.shields.io/github/last-commit/${res.owner}/${res.repo}.svg`);
     });
   }
   (function() {
@@ -156,14 +135,14 @@
       document.addEventListener("mouseover", (e) => __async(this, null, function* () {
         if (e.target instanceof HTMLAnchorElement) {
           const el = e.target;
-          if (parseURL(location.href).equals(parseURL(el.href))) {
+          const res = parseURL(el.href);
+          if (!res) {
             return;
           }
           try {
             yield Promise.all([
-              appendStarsBadge(el),
-              appendLastCommitBadge(el),
-              appendFollowersBadge(el)
+              appendStarsBadge(el, res),
+              appendLastCommitBadge(el, res)
             ]);
           } catch (err) {
             console.error(err);
