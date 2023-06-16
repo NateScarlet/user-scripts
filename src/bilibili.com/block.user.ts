@@ -22,8 +22,17 @@ import { mdiAccountCancelOutline } from "@mdi/js";
 import setHTMLElementDisplayHidden from "@/utils/setHTMLElementDisplayHidden";
 import obtainHTMLElementByDataKey from "@/utils/obtainHTMLElementByDataKey";
 import injectStyle from "@/utils/injectStyle";
+import castPlainObject from "@/utils/castPlainObject";
+import getElementSelector from "@/utils/getElementSelector";
+import evalInContentScope from "@/utils/evalInContentScope";
 
 export {};
+
+declare global {
+  interface HTMLElement {
+    __vue__?: { _props?: Record<string, unknown> };
+  }
+}
 
 interface BlockedUser {
   name: string;
@@ -194,6 +203,33 @@ function renderVideoList() {
           i
             .querySelector(".bili-video-card__info--author")
             ?.getAttribute("title") || userID,
+      });
+    }
+  });
+}
+
+function renderVideoRank() {
+  document.querySelectorAll<HTMLElement>(".video-card").forEach((i) => {
+    const selector = getElementSelector(i);
+    const videoData = evalInContentScope(
+      `document.querySelector(${JSON.stringify(
+        selector
+      )}).__vue__._props.videoData`
+    );
+
+    const { owner } = castPlainObject(videoData);
+    const { mid, name } = castPlainObject(owner);
+    if (typeof mid != "number" || typeof name !== "string") {
+      return;
+    }
+
+    const userID = mid.toString();
+    const isBlocked = !!blockedUsers.value[userID];
+    setHTMLElementDisplayHidden(i, isBlocked);
+    if (!isBlocked) {
+      renderHoverButton(i.querySelector(".video-card__content"), {
+        id: userID,
+        name,
       });
     }
   });
@@ -377,39 +413,40 @@ function blockedUsersURL() {
   return URL.createObjectURL(b);
 }
 
+interface Component {
+  render: () => void;
+}
+
+function createApp(): Component {
+  const rawURL = window.location.href;
+  const components: Component[] = [{ render: renderNav }];
+  const userID = parseUserURL(rawURL);
+  const url = new URL(rawURL);
+  if (userID) {
+    components.push({ render: () => renderActions(userID) });
+  } else if (parseVideoURL(rawURL)) {
+    components.push({ render: renderVideoDetail });
+  } else if (
+    url.host === "www.bilibili.com" &&
+    url.pathname.startsWith("/v/popular/")
+  ) {
+    components.push({ render: renderVideoRank });
+  } else {
+    components.push({ render: renderVideoList });
+  }
+
+  return {
+    render: () => components.forEach((i) => i.render()),
+  };
+}
+
 async function main() {
   await migrateV1();
-  const rawURL = window.location.href;
-  {
-    const userID = parseUserURL(rawURL);
-    if (userID) {
-      usePolling({
-        update: () => {
-          renderNav();
-          renderActions(userID);
-        },
-        scheduleNext: (update) => setTimeout(update, 100),
-      });
-      return;
-    }
-  }
 
-  if (parseVideoURL(rawURL)) {
-    usePolling({
-      update: () => {
-        renderNav();
-        renderVideoDetail();
-      },
-      scheduleNext: (update) => setTimeout(update, 100),
-    });
-    return;
-  }
+  const app = createApp();
 
   usePolling({
-    update: () => {
-      renderNav();
-      renderVideoList();
-    },
+    update: () => app.render(),
     scheduleNext: (update) => setTimeout(update, 100),
   });
 }

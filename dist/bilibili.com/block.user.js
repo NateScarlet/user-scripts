@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.06.16+c02e2c15
+// @version   2023.06.17+25a8524c
 // ==/UserScript==
 
 (() => {
@@ -169,31 +169,31 @@
   var ENABLE_EXTRA_SECURITY_HOOKS = true;
   var ENABLE_SHADYDOM_NOPATCH = true;
   var NODE_MODE = false;
-  var global = NODE_MODE ? globalThis : window;
+  var global2 = NODE_MODE ? globalThis : window;
   var debugLogEvent = DEV_MODE ? (event) => {
-    const shouldEmit = global.emitLitDebugLogEvents;
+    const shouldEmit = global2.emitLitDebugLogEvents;
     if (!shouldEmit) {
       return;
     }
-    global.dispatchEvent(new CustomEvent("lit-debug", {
+    global2.dispatchEvent(new CustomEvent("lit-debug", {
       detail: event
     }));
   } : void 0;
   var debugLogRenderId = 0;
   var issueWarning;
   if (DEV_MODE) {
-    (_a = global.litIssuedWarnings) !== null && _a !== void 0 ? _a : global.litIssuedWarnings = new Set();
+    (_a = global2.litIssuedWarnings) !== null && _a !== void 0 ? _a : global2.litIssuedWarnings = new Set();
     issueWarning = (code, warning) => {
       warning += code ? ` See https://lit.dev/msg/${code} for more information.` : "";
-      if (!global.litIssuedWarnings.has(warning)) {
+      if (!global2.litIssuedWarnings.has(warning)) {
         console.warn(warning);
-        global.litIssuedWarnings.add(warning);
+        global2.litIssuedWarnings.add(warning);
       }
     };
     issueWarning("dev-mode", `Lit is in dev mode. Not recommended for production!`);
   }
-  var wrap = ENABLE_SHADYDOM_NOPATCH && ((_b = global.ShadyDOM) === null || _b === void 0 ? void 0 : _b.inUse) && ((_c = global.ShadyDOM) === null || _c === void 0 ? void 0 : _c.noPatch) === true ? global.ShadyDOM.wrap : (node) => node;
-  var trustedTypes = global.trustedTypes;
+  var wrap = ENABLE_SHADYDOM_NOPATCH && ((_b = global2.ShadyDOM) === null || _b === void 0 ? void 0 : _b.inUse) && ((_c = global2.ShadyDOM) === null || _c === void 0 ? void 0 : _c.noPatch) === true ? global2.ShadyDOM.wrap : (node) => node;
+  var trustedTypes = global2.trustedTypes;
   var policy = trustedTypes ? trustedTypes.createPolicy("lit-html", {
     createHTML: (s) => s
   }) : void 0;
@@ -218,7 +218,7 @@
   var marker = `lit$${String(Math.random()).slice(9)}$`;
   var markerMatch = "?" + marker;
   var nodeMarker = `<${markerMatch}>`;
-  var d = NODE_MODE && global.document === void 0 ? {
+  var d = NODE_MODE && global2.document === void 0 ? {
     createTreeWalker() {
       return {};
     }
@@ -965,10 +965,10 @@
       resolveDirective(this, value);
     }
   };
-  var polyfillSupport = DEV_MODE ? global.litHtmlPolyfillSupportDevMode : global.litHtmlPolyfillSupport;
+  var polyfillSupport = DEV_MODE ? global2.litHtmlPolyfillSupportDevMode : global2.litHtmlPolyfillSupport;
   polyfillSupport === null || polyfillSupport === void 0 ? void 0 : polyfillSupport(Template, ChildPart);
-  ((_d = global.litHtmlVersions) !== null && _d !== void 0 ? _d : global.litHtmlVersions = []).push("2.7.3");
-  if (DEV_MODE && global.litHtmlVersions.length > 1) {
+  ((_d = global2.litHtmlVersions) !== null && _d !== void 0 ? _d : global2.litHtmlVersions = []).push("2.7.3");
+  if (DEV_MODE && global2.litHtmlVersions.length > 1) {
     issueWarning("multiple-versions", `Multiple versions of Lit loaded. Loading multiple versions is not recommended.`);
   }
   var render = (value, container, options) => {
@@ -1051,6 +1051,147 @@
         el.innerHTML = css;
       }
     });
+  }
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_freeGlobal.js
+  var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
+  var freeGlobal_default = freeGlobal;
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_root.js
+  var freeSelf = typeof self == "object" && self && self.Object === Object && self;
+  var root = freeGlobal_default || freeSelf || Function("return this")();
+  var root_default = root;
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_Symbol.js
+  var Symbol2 = root_default.Symbol;
+  var Symbol_default = Symbol2;
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_getRawTag.js
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  var nativeObjectToString = objectProto.toString;
+  var symToStringTag = Symbol_default ? Symbol_default.toStringTag : void 0;
+  function getRawTag(value) {
+    var isOwn = hasOwnProperty.call(value, symToStringTag), tag2 = value[symToStringTag];
+    try {
+      value[symToStringTag] = void 0;
+      var unmasked = true;
+    } catch (e) {
+    }
+    var result = nativeObjectToString.call(value);
+    if (unmasked) {
+      if (isOwn) {
+        value[symToStringTag] = tag2;
+      } else {
+        delete value[symToStringTag];
+      }
+    }
+    return result;
+  }
+  var getRawTag_default = getRawTag;
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_objectToString.js
+  var objectProto2 = Object.prototype;
+  var nativeObjectToString2 = objectProto2.toString;
+  function objectToString(value) {
+    return nativeObjectToString2.call(value);
+  }
+  var objectToString_default = objectToString;
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_baseGetTag.js
+  var nullTag = "[object Null]";
+  var undefinedTag = "[object Undefined]";
+  var symToStringTag2 = Symbol_default ? Symbol_default.toStringTag : void 0;
+  function baseGetTag(value) {
+    if (value == null) {
+      return value === void 0 ? undefinedTag : nullTag;
+    }
+    return symToStringTag2 && symToStringTag2 in Object(value) ? getRawTag_default(value) : objectToString_default(value);
+  }
+  var baseGetTag_default = baseGetTag;
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/isObjectLike.js
+  function isObjectLike(value) {
+    return value != null && typeof value == "object";
+  }
+  var isObjectLike_default = isObjectLike;
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_overArg.js
+  function overArg(func, transform) {
+    return function(arg) {
+      return func(transform(arg));
+    };
+  }
+  var overArg_default = overArg;
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_getPrototype.js
+  var getPrototype = overArg_default(Object.getPrototypeOf, Object);
+  var getPrototype_default = getPrototype;
+
+  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/isPlainObject.js
+  var objectTag = "[object Object]";
+  var funcProto = Function.prototype;
+  var objectProto3 = Object.prototype;
+  var funcToString = funcProto.toString;
+  var hasOwnProperty2 = objectProto3.hasOwnProperty;
+  var objectCtorString = funcToString.call(Object);
+  function isPlainObject(value) {
+    if (!isObjectLike_default(value) || baseGetTag_default(value) != objectTag) {
+      return false;
+    }
+    var proto = getPrototype_default(value);
+    if (proto === null) {
+      return true;
+    }
+    var Ctor = hasOwnProperty2.call(proto, "constructor") && proto.constructor;
+    return typeof Ctor == "function" && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
+  }
+  var isPlainObject_default = isPlainObject;
+
+  // src/utils/castPlainObject.ts
+  function castPlainObject(value) {
+    if (isPlainObject_default(value)) {
+      return value;
+    }
+    return { value };
+  }
+
+  // src/utils/randomUUID.ts
+  function fallback() {
+    const ts = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = (ts + Math.random()) * 16 % 16 | 0;
+      const v = c === "x" ? r : r & 3 | 8;
+      return v.toString(16);
+    });
+  }
+  function randomUUID() {
+    if (window.isSecureContext && typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+      return crypto.randomUUID();
+    }
+    return fallback();
+  }
+
+  // src/utils/getElementSelector.ts
+  var attributeName = `data-select-${randomUUID()}`;
+  var nextValue = 1;
+  function getElementSelector(el) {
+    let v = el.getAttribute(attributeName);
+    if (!v) {
+      v = nextValue.toString();
+      nextValue += 1;
+      el.setAttribute(attributeName, v);
+    }
+    return `[${attributeName}='${v}']`;
+  }
+
+  // src/utils/evalInContentScope.ts
+  function evalInContentScope(javascript) {
+    try {
+      return JSON.parse(window.eval(`JSON.stringify(eval(${JSON.stringify(javascript)}))`));
+    } catch (err) {
+      return err;
+    }
   }
 
   // src/bilibili.com/block.user.ts
@@ -1187,6 +1328,26 @@
         renderHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
           id: userID,
           name: ((_c2 = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _c2.getAttribute("title")) || userID
+        });
+      }
+    });
+  }
+  function renderVideoRank() {
+    document.querySelectorAll(".video-card").forEach((i) => {
+      const selector = getElementSelector(i);
+      const videoData = evalInContentScope(`document.querySelector(${JSON.stringify(selector)}).__vue__._props.videoData`);
+      const { owner } = castPlainObject(videoData);
+      const { mid, name } = castPlainObject(owner);
+      if (typeof mid != "number" || typeof name !== "string") {
+        return;
+      }
+      const userID = mid.toString();
+      const isBlocked = !!blockedUsers.value[userID];
+      setHTMLElementDisplayHidden(i, isBlocked);
+      if (!isBlocked) {
+        renderHoverButton(i.querySelector(".video-card__content"), {
+          id: userID,
+          name
         });
       }
     });
@@ -1342,38 +1503,30 @@
     });
     return URL.createObjectURL(b);
   }
+  function createApp() {
+    const rawURL = window.location.href;
+    const components = [{ render: renderNav }];
+    const userID = parseUserURL(rawURL);
+    const url = new URL(rawURL);
+    if (userID) {
+      components.push({ render: () => renderActions(userID) });
+    } else if (parseVideoURL(rawURL)) {
+      components.push({ render: renderVideoDetail });
+    } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/")) {
+      components.push({ render: renderVideoRank });
+    } else {
+      components.push({ render: renderVideoList });
+    }
+    return {
+      render: () => components.forEach((i) => i.render())
+    };
+  }
   function main() {
     return __async(this, null, function* () {
       yield migrateV1();
-      const rawURL = window.location.href;
-      {
-        const userID = parseUserURL(rawURL);
-        if (userID) {
-          usePolling({
-            update: () => {
-              renderNav();
-              renderActions(userID);
-            },
-            scheduleNext: (update) => setTimeout(update, 100)
-          });
-          return;
-        }
-      }
-      if (parseVideoURL(rawURL)) {
-        usePolling({
-          update: () => {
-            renderNav();
-            renderVideoDetail();
-          },
-          scheduleNext: (update) => setTimeout(update, 100)
-        });
-        return;
-      }
+      const app = createApp();
       usePolling({
-        update: () => {
-          renderNav();
-          renderVideoList();
-        },
+        update: () => app.render(),
         scheduleNext: (update) => setTimeout(update, 100)
       });
     });
@@ -1384,4 +1537,13 @@
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
+ */
+/**
+ * @license
+ * Lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="es" -o ./`
+ * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
