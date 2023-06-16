@@ -9,6 +9,8 @@
 
 export {};
 
+// spell-checker: word codespaces
+
 const reservedUsername = [
   "topics",
   "search",
@@ -33,6 +35,9 @@ const reservedUsername = [
   "collections",
   "events",
   "stars",
+  "codespaces",
+  "sponsors",
+  "logout",
 ];
 
 const allBadgeClasses = [
@@ -83,7 +88,7 @@ async function appendBadge(
     GM.xmlHttpRequest({
       method: "GET",
       url: url,
-      onload: resp => {
+      onload: (resp) => {
         if (resp.status === 200) {
           if (!el.classList.contains(className)) {
             const img = document.createElement("img");
@@ -92,7 +97,7 @@ async function appendBadge(
               "natescarlet-gmail-com",
               "badge-container",
             ];
-            const selector = containerClassNames.map(i => "." + i).join("");
+            const selector = containerClassNames.map((i) => "." + i).join("");
             /** @type {HTMLElement} */
             const container: HTMLElement =
               el.querySelector(selector) || document.createElement("span");
@@ -152,10 +157,10 @@ async function appendFollowersBadge(el: HTMLAnchorElement): Promise<void> {
   );
 }
 
-(async function(): Promise<void> {
+(async function (): Promise<void> {
   document.addEventListener(
     "mouseover",
-    async e => {
+    async (e) => {
       if (e.target instanceof HTMLAnchorElement) {
         const el = e.target;
 

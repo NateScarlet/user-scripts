@@ -5,7 +5,7 @@
 // @grant    GM.xmlHttpRequest
 // @run-at   document-end
 // @include	 *
-// @version   2023.05.08+75a7672f
+// @version   2023.05.08+ea89c183
 // ==/UserScript==
 
 (() => {
@@ -54,7 +54,10 @@
     "trending",
     "collections",
     "events",
-    "stars"
+    "stars",
+    "codespaces",
+    "sponsors",
+    "logout"
   ];
   var allBadgeClasses = [
     "added-stars-badge",
