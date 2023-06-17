@@ -33,6 +33,8 @@ import obtainHTMLElementByID from "@/utils/obtainHTMLElementByID";
 import randomUUID from "@/utils/randomUUID";
 import style from "./style";
 import injectStyle from "@/utils/injectStyle";
+import onReady from "@/utils/onDocumentReadyOnce";
+import onDocumentReadyOnce from "@/utils/onDocumentReadyOnce";
 
 export {};
 
@@ -658,4 +660,4 @@ async function main() {
   );
 }
 
-main();
+onDocumentReadyOnce(main);

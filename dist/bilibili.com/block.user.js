@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.06.17+032bd878
+// @version   2023.06.17+196c8668
 // ==/UserScript==
 
 (() => {
@@ -1263,6 +1263,15 @@
     }
   };
 
+  // src/utils/onDocumentReadyOnce.ts
+  function onDocumentReadyOnce(cb) {
+    if (document.readyState == "complete") {
+      cb();
+    } else {
+      window.addEventListener("load", cb, { once: true });
+    }
+  }
+
   // src/bilibili.com/block.user.ts
   var blockedUsers = useGMValue("blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4", {});
   var blockedUsersModel = new class {
@@ -1775,7 +1784,7 @@
       }));
     });
   }
-  main();
+  onDocumentReadyOnce(main);
 })();
 /**
  * @license
