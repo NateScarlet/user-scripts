@@ -8,6 +8,7 @@
 // @version   2023.05.08+19b1e262
 // ==/UserScript==
 
+"use strict";
 (() => {
   // src/remove-global-filter.user.ts
   document.body.parentElement.style.filter = "none";

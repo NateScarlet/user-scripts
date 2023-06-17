@@ -9,6 +9,7 @@
 // @version   2023.05.08+9d6c235a
 // ==/UserScript==
 
+"use strict";
 (() => {
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
@@ -75,7 +76,11 @@
   function imageToMarkdown(img, {
     background
   } = {}) {
-    return canvasToMarkdown(imageToCanvas(img, { background }), img.alt, img.title);
+    return canvasToMarkdown(
+      imageToCanvas(img, { background }),
+      img.alt,
+      img.title
+    );
   }
 
   // src/utils/loadImage.ts
@@ -91,7 +96,7 @@
 
   // src/utils/parseHeader.ts
   function parseHeader(headers) {
-    const ret = new Map();
+    const ret = /* @__PURE__ */ new Map();
     for (const line of headers.split("\r\n")) {
       if (!line) {
         continue;
@@ -116,11 +121,15 @@
         GM.xmlHttpRequest({
           method: "GET",
           url,
+          // https://github.com/greasemonkey/greasemonkey/issues/1834#issuecomment-37084558
           overrideMimeType: "text/plain; charset=x-user-defined",
           onload: (_0) => __async(this, [_0], function* ({ responseText, responseHeaders }) {
             var _a, _b;
             const headers = parseHeader(responseHeaders);
-            const data = new Blob([Uint8Array.from(responseText.split("").map((i) => i.charCodeAt(0)))], { type: (_b = (_a = headers.get("content-type")) == null ? void 0 : _a[0]) != null ? _b : "image/jpeg" });
+            const data = new Blob(
+              [Uint8Array.from(responseText.split("").map((i) => i.charCodeAt(0)))],
+              { type: (_b = (_a = headers.get("content-type")) == null ? void 0 : _a[0]) != null ? _b : "image/jpeg" }
+            );
             const src = URL.createObjectURL(data);
             const image = yield loadImage(src);
             image.alt = url;
@@ -195,8 +204,13 @@
       log(`fetch chapter: ${chapter}: ${url}`);
       const resp = yield fetch(url);
       if (resp.status !== 200) {
-        addMessage([`${resp.status} ${resp.statusText}`, url], "Fetch chapter failed");
-        throw new Error(`Fetch chapter failed: ${resp.status} ${resp.statusText} : ${url}`);
+        addMessage(
+          [`${resp.status} ${resp.statusText}`, url],
+          "Fetch chapter failed"
+        );
+        throw new Error(
+          `Fetch chapter failed: ${resp.status} ${resp.statusText} : ${url}`
+        );
       }
       return yield resp.text();
     });
@@ -211,7 +225,9 @@
       link: document.location.href
     };
     const authorContainer = document.querySelector(".novel_writername");
-    const authorAnchor = document.querySelector(".novel_writername > a:nth-child(1)");
+    const authorAnchor = document.querySelector(
+      ".novel_writername > a:nth-child(1)"
+    );
     if (authorAnchor instanceof HTMLAnchorElement) {
       data["author"] = authorAnchor.innerText;
       data["author_link"] = authorAnchor.href;
@@ -226,15 +242,21 @@
   }
   function downloadChapterChunk(ncode, chapters) {
     return __async(this, null, function* () {
-      return Promise.all(chapters.map((i) => function() {
-        return __async(this, null, function* () {
-          const ret = yield Promise.all((yield downloadChapter(ncode, i.chapter)).split("\n").map((i2) => i2.trim()).filter((i2) => i2.length > 0).map(chapterImageToMarkdown));
-          ret.splice(0, 0, `# ${i.title}`);
-          finishedCount += 1;
-          updateStatus();
-          return ret;
-        });
-      }())).then((i) => {
+      return Promise.all(
+        chapters.map(
+          (i) => function() {
+            return __async(this, null, function* () {
+              const ret = yield Promise.all(
+                (yield downloadChapter(ncode, i.chapter)).split("\n").map((i2) => i2.trim()).filter((i2) => i2.length > 0).map(chapterImageToMarkdown)
+              );
+              ret.splice(0, 0, `# ${i.title}`);
+              finishedCount += 1;
+              updateStatus();
+              return ret;
+            });
+          }()
+        )
+      ).then((i) => {
         const ret = [];
         i.map((j) => {
           ret.push(...j);
@@ -246,10 +268,16 @@
   function main(button) {
     return __async(this, null, function* () {
       clearMessage();
-      const ncode = urlLastPart(document.querySelector("#novel_footer > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)").href);
+      const ncode = urlLastPart(
+        document.querySelector(
+          "#novel_footer > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)"
+        ).href
+      );
       log(`start downloading: ${ncode}`);
       const chapters = [];
-      for (const i of document.querySelectorAll("dl.novel_sublist2 > dd:nth-child(1) > a:nth-child(1)")) {
+      for (const i of document.querySelectorAll(
+        "dl.novel_sublist2 > dd:nth-child(1) > a:nth-child(1)"
+      )) {
         chapters.push({ chapter: urlLastPart(i.href), title: i.innerText });
       }
       finishedCount = 0;
@@ -258,14 +286,18 @@
       const lines = [];
       const chunkSize = 10;
       for (let i = 0; i < chapters.length; i += chunkSize) {
-        lines.push(...yield downloadChapterChunk(ncode, chapters.slice(i, i + chunkSize)));
+        lines.push(
+          ...yield downloadChapterChunk(ncode, chapters.slice(i, i + chunkSize))
+        );
         yield sleep(5e3);
       }
       log(`got ${lines.length} lines`);
       function download() {
-        downloadFile(new Blob([getMetaData(), "\n\n", lines.join("\n\n")], {
-          type: "text/markdown"
-        }));
+        downloadFile(
+          new Blob([getMetaData(), "\n\n", lines.join("\n\n")], {
+            type: "text/markdown"
+          })
+        );
       }
       button.onclick = download;
       download();

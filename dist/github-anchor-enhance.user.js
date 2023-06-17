@@ -8,6 +8,7 @@
 // @version   2023.06.16+ce380046
 // ==/UserScript==
 
+"use strict";
 (() => {
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
@@ -31,7 +32,7 @@
   };
 
   // src/github-anchor-enhance.user.ts
-  var reservedUsername = new Set([
+  var reservedUsername = /* @__PURE__ */ new Set([
     "topics",
     "search",
     "ghost",
@@ -122,33 +123,45 @@
   }
   function appendStarsBadge(el, res) {
     return __async(this, null, function* () {
-      yield appendBadge(el, "added-stars-badge", `https://img.shields.io/github/stars/${res.owner}/${res.repo}.svg?style=social`);
+      yield appendBadge(
+        el,
+        "added-stars-badge",
+        `https://img.shields.io/github/stars/${res.owner}/${res.repo}.svg?style=social`
+      );
     });
   }
   function appendLastCommitBadge(el, res) {
     return __async(this, null, function* () {
-      yield appendBadge(el, "added-last-commit-badge", `https://img.shields.io/github/last-commit/${res.owner}/${res.repo}.svg`);
+      yield appendBadge(
+        el,
+        "added-last-commit-badge",
+        `https://img.shields.io/github/last-commit/${res.owner}/${res.repo}.svg`
+      );
     });
   }
   (function() {
     return __async(this, null, function* () {
-      document.addEventListener("mouseover", (e) => __async(this, null, function* () {
-        if (e.target instanceof HTMLAnchorElement) {
-          const el = e.target;
-          const res = parseURL(el.href);
-          if (!res) {
-            return;
+      document.addEventListener(
+        "mouseover",
+        (e) => __async(this, null, function* () {
+          if (e.target instanceof HTMLAnchorElement) {
+            const el = e.target;
+            const res = parseURL(el.href);
+            if (!res) {
+              return;
+            }
+            try {
+              yield Promise.all([
+                appendStarsBadge(el, res),
+                appendLastCommitBadge(el, res)
+              ]);
+            } catch (err) {
+              console.error(err);
+            }
           }
-          try {
-            yield Promise.all([
-              appendStarsBadge(el, res),
-              appendLastCommitBadge(el, res)
-            ]);
-          } catch (err) {
-            console.error(err);
-          }
-        }
-      }), {});
+        }),
+        {}
+      );
     });
   })();
 })();

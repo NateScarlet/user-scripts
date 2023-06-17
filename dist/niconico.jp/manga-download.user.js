@@ -8,6 +8,7 @@
 // @version   2023.05.08+7fc08902
 // ==/UserScript==
 
+"use strict";
 (() => {
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
@@ -489,9 +490,17 @@
     Scanner: void 0,
     Context: void 0,
     Writer: void 0,
+    /**
+     * Allows a user to override the default caching strategy, by providing an
+     * object with set, get and clear methods. This can also be used to disable
+     * the cache by setting it to the literal `undefined`.
+     */
     set templateCache(cache) {
       defaultWriter.templateCache = cache;
     },
+    /**
+     * Gets the default or overridden caching object from the default writer.
+     */
     get templateCache() {
       return defaultWriter.templateCache;
     }
@@ -585,7 +594,11 @@
     });
   })();
 })();
-/*!
- * mustache.js - Logic-less {{mustache}} templates with JavaScript
- * http://github.com/janl/mustache.js
- */
+/*! Bundled license information:
+
+mustache/mustache.mjs:
+  (*!
+   * mustache.js - Logic-less {{mustache}} templates with JavaScript
+   * http://github.com/janl/mustache.js
+   *)
+*/

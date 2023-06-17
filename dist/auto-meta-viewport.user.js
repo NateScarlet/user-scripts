@@ -7,6 +7,7 @@
 // @version   2023.05.08+03517e5b
 // ==/UserScript==
 
+"use strict";
 (() => {
   // src/auto-meta-viewport.user.ts
   function main() {

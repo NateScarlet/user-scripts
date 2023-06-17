@@ -12,6 +12,7 @@
 // @version   2023.06.17+196c8668
 // ==/UserScript==
 
+"use strict";
 (() => {
   var __defProp = Object.defineProperty;
   var __defProps = Object.defineProperties;
@@ -192,7 +193,7 @@
   var debugLogRenderId = 0;
   var issueWarning;
   if (DEV_MODE) {
-    (_a = global2.litIssuedWarnings) !== null && _a !== void 0 ? _a : global2.litIssuedWarnings = new Set();
+    (_a = global2.litIssuedWarnings) !== null && _a !== void 0 ? _a : global2.litIssuedWarnings = /* @__PURE__ */ new Set();
     issueWarning = (code, warning) => {
       warning += code ? ` See https://lit.dev/msg/${code} for more information.` : "";
       if (!global2.litIssuedWarnings.has(warning)) {
@@ -236,7 +237,8 @@
   var createMarker = () => d.createComment("");
   var isPrimitive = (value) => value === null || typeof value != "object" && typeof value != "function";
   var isArray = Array.isArray;
-  var isIterable = (value) => isArray(value) || typeof (value === null || value === void 0 ? void 0 : value[Symbol.iterator]) === "function";
+  var isIterable = (value) => isArray(value) || // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  typeof (value === null || value === void 0 ? void 0 : value[Symbol.iterator]) === "function";
   var SPACE_CHAR = `[ 	
 \f\r]`;
   var ATTR_VALUE_CHAR = `[^ 	
@@ -270,6 +272,7 @@
       console.warn("Some template strings are undefined.\nThis is probably caused by illegal octal escape sequences.");
     }
     return {
+      // This property needs to remain unminified.
       ["_$litType$"]: type,
       strings,
       values
@@ -279,7 +282,7 @@
   var svg = tag(SVG_RESULT);
   var noChange = Symbol.for("lit-noChange");
   var nothing = Symbol.for("lit-nothing");
-  var templateCache = new WeakMap();
+  var templateCache = /* @__PURE__ */ new WeakMap();
   var walker = d.createTreeWalker(d, 129, null, false);
   var sanitizerFactoryInternal = noopSanitizer;
   var getTemplateHtml = (strings, type) => {
@@ -367,7 +370,7 @@
       attrNames
     ];
   };
-  var Template = class {
+  var Template = class _Template {
     constructor({ strings, ["_$litType$"]: type }, options) {
       this.parts = [];
       let node;
@@ -376,7 +379,7 @@
       const partCount = strings.length - 1;
       const parts = this.parts;
       const [html2, attrNames] = getTemplateHtml(strings, type);
-      this.el = Template.createElement(html2, options);
+      this.el = _Template.createElement(html2, options);
       walker.currentNode = this.el.content;
       if (type === SVG_RESULT) {
         const content = this.el.content;
@@ -460,6 +463,8 @@
         strings
       });
     }
+    // Overridden via `litHtmlPolyfillSupport` to provide platform support.
+    /** @nocollapse */
     static createElement(html2, _options) {
       const el = d.createElement("template");
       el.innerHTML = html2;
@@ -473,7 +478,10 @@
       return value;
     }
     let currentDirective = attributeIndex !== void 0 ? (_a2 = parent.__directives) === null || _a2 === void 0 ? void 0 : _a2[attributeIndex] : parent.__directive;
-    const nextDirectiveConstructor = isPrimitive(value) ? void 0 : value["_$litDirective$"];
+    const nextDirectiveConstructor = isPrimitive(value) ? void 0 : (
+      // This property needs to remain unminified.
+      value["_$litDirective$"]
+    );
     if ((currentDirective === null || currentDirective === void 0 ? void 0 : currentDirective.constructor) !== nextDirectiveConstructor) {
       (_b2 = currentDirective === null || currentDirective === void 0 ? void 0 : currentDirective["_$notifyDirectiveConnectionChanged"]) === null || _b2 === void 0 ? void 0 : _b2.call(currentDirective, false);
       if (nextDirectiveConstructor === void 0) {
@@ -500,12 +508,16 @@
       this._$template = template;
       this._$parent = parent;
     }
+    // Called by ChildPart parentNode getter
     get parentNode() {
       return this._$parent.parentNode;
     }
+    // See comment in Disconnectable interface for why this is a getter
     get _$isConnected() {
       return this._$parent._$isConnected;
     }
+    // This method is separate from the constructor because we need to return a
+    // DocumentFragment and we don't want to hold onto it with an instance field.
     _clone(options) {
       var _a2;
       const { el: { content }, parts } = this._$template;
@@ -558,7 +570,7 @@
       }
     }
   };
-  var ChildPart = class {
+  var ChildPart = class _ChildPart {
     constructor(startNode, endNode, parent, options) {
       var _a2;
       this.type = CHILD_PART;
@@ -573,10 +585,29 @@
         this._textSanitizer = void 0;
       }
     }
+    // See comment in Disconnectable interface for why this is a getter
     get _$isConnected() {
       var _a2, _b2;
       return (_b2 = (_a2 = this._$parent) === null || _a2 === void 0 ? void 0 : _a2._$isConnected) !== null && _b2 !== void 0 ? _b2 : this.__isConnected;
     }
+    /**
+     * The parent node into which the part renders its content.
+     *
+     * A ChildPart's content consists of a range of adjacent child nodes of
+     * `.parentNode`, possibly bordered by 'marker nodes' (`.startNode` and
+     * `.endNode`).
+     *
+     * - If both `.startNode` and `.endNode` are non-null, then the part's content
+     * consists of all siblings between `.startNode` and `.endNode`, exclusively.
+     *
+     * - If `.startNode` is non-null but `.endNode` is null, then the part's
+     * content consists of all siblings following `.startNode`, up to and
+     * including the last child of `.parentNode`. If `.endNode` is non-null, then
+     * `.startNode` will always be non-null.
+     *
+     * - If both `.endNode` and `.startNode` are null, then the part's content
+     * consists of all child nodes of `.parentNode`.
+     */
     get parentNode() {
       let parentNode = wrap(this._$startNode).parentNode;
       const parent = this._$parent;
@@ -585,9 +616,17 @@
       }
       return parentNode;
     }
+    /**
+     * The part's leading marker node, if any. See `.parentNode` for more
+     * information.
+     */
     get startNode() {
       return this._$startNode;
     }
+    /**
+     * The part's trailing marker node, if any. See `.parentNode` for more
+     * information.
+     */
     get endNode() {
       return this._$endNode;
     }
@@ -742,6 +781,8 @@
         this._$committedValue = instance;
       }
     }
+    // Overridden via `litHtmlPolyfillSupport` to provide platform support.
+    /** @internal */
     _$getTemplate(result) {
       let template = templateCache.get(result.strings);
       if (template === void 0) {
@@ -759,7 +800,7 @@
       let itemPart;
       for (const item of value) {
         if (partIndex === itemParts.length) {
-          itemParts.push(itemPart = new ChildPart(this._insert(createMarker()), this._insert(createMarker()), this, this.options));
+          itemParts.push(itemPart = new _ChildPart(this._insert(createMarker()), this._insert(createMarker()), this, this.options));
         } else {
           itemPart = itemParts[partIndex];
         }
@@ -771,6 +812,17 @@
         itemParts.length = partIndex;
       }
     }
+    /**
+     * Removes the nodes contained within this Part from the DOM.
+     *
+     * @param start Start node to clear from, for clearing a subset of the part's
+     *     DOM (used when truncating iterables)
+     * @param from  When `start` is specified, the index within the iterable from
+     *     which ChildParts are being removed, used for disconnecting directives in
+     *     those Parts.
+     *
+     * @internal
+     */
     _$clear(start = wrap(this._$startNode).nextSibling, from) {
       var _a2;
       (_a2 = this._$notifyConnectionChanged) === null || _a2 === void 0 ? void 0 : _a2.call(this, false, true, from);
@@ -780,6 +832,13 @@
         start = n;
       }
     }
+    /**
+     * Implementation of RootPart's `isConnected`. Note that this metod
+     * should only be called on `RootPart`s (the `ChildPart` returned from a
+     * top-level `render()` call). It has no effect on non-root ChildParts.
+     * @param isConnected Whether to set
+     * @internal
+     */
     setConnected(isConnected) {
       var _a2;
       if (this._$parent === void 0) {
@@ -812,9 +871,32 @@
     get tagName() {
       return this.element.tagName;
     }
+    // See comment in Disconnectable interface for why this is a getter
     get _$isConnected() {
       return this._$parent._$isConnected;
     }
+    /**
+     * Sets the value of this part by resolving the value from possibly multiple
+     * values and static strings and committing it to the DOM.
+     * If this part is single-valued, `this._strings` will be undefined, and the
+     * method will be called with a single value argument. If this part is
+     * multi-value, `this._strings` will be defined, and the method is called
+     * with the value array of the part's owning TemplateInstance, and an offset
+     * into the value array from which the values should be read.
+     * This method is overloaded this way to eliminate short-lived array slices
+     * of the template instance values, and allow a fast-path for single-valued
+     * parts.
+     *
+     * @param value The part value, or an array of values for multi-valued parts
+     * @param valueIndex the index to start reading values from. `undefined` for
+     *   single-valued parts
+     * @param noCommit causes the part to not commit its value to the DOM. Used
+     *   in hydration to prime attribute parts with their first-rendered value,
+     *   but not set the attribute, and in SSR to no-op the DOM operation and
+     *   capture the value for serialization.
+     *
+     * @internal
+     */
     _$setValue(value, directiveParent = this, valueIndex, noCommit) {
       const strings = this.strings;
       let change = false;
@@ -846,6 +928,7 @@
         this._commitValue(value);
       }
     }
+    /** @internal */
     _commitValue(value) {
       if (value === nothing) {
         wrap(this.element).removeAttribute(this.name);
@@ -872,6 +955,7 @@
       super(...arguments);
       this.type = PROPERTY_PART;
     }
+    /** @internal */
     _commitValue(value) {
       if (ENABLE_EXTRA_SECURITY_HOOKS) {
         if (this._sanitizer === void 0) {
@@ -895,6 +979,7 @@
       super(...arguments);
       this.type = BOOLEAN_ATTRIBUTE_PART;
     }
+    /** @internal */
     _commitValue(value) {
       debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
         kind: "commit boolean attribute",
@@ -918,6 +1003,9 @@
         throw new Error(`A \`<${element.localName}>\` has a \`@${name}=...\` listener with invalid content. Event listeners in templates must have exactly one expression and no surrounding text.`);
       }
     }
+    // EventPart does not use the base _$setValue/_resolveValue implementation
+    // since the dirty checking is more complex
+    /** @internal */
     _$setValue(newListener, directiveParent = this) {
       var _a2;
       newListener = (_a2 = resolveDirective(this, newListener, directiveParent, 0)) !== null && _a2 !== void 0 ? _a2 : nothing;
@@ -962,6 +1050,7 @@
       this._$parent = parent;
       this.options = options;
     }
+    // See comment in Disconnectable interface for why this is a getter
     get _$isConnected() {
       return this._$parent._$isConnected;
     }
@@ -1046,7 +1135,9 @@
     parentNode = document,
     onDidCreate
   }) {
-    const match = parentNode.querySelector(`[data-${key}]`);
+    const match = parentNode.querySelector(
+      `[data-${key}]`
+    );
     if (match) {
       return match;
     }
@@ -1191,7 +1282,9 @@
   // src/utils/evalInContentScope.ts
   function evalInContentScope(javascript) {
     try {
-      return JSON.parse(window.eval(`JSON.stringify(eval(${JSON.stringify(javascript)}))`));
+      return JSON.parse(
+        window.eval(`JSON.stringify(eval(${JSON.stringify(javascript)}))`)
+      );
     } catch (err) {
       return err;
     }
@@ -1273,7 +1366,10 @@
   }
 
   // src/bilibili.com/block.user.ts
-  var blockedUsers = useGMValue("blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4", {});
+  var blockedUsers = useGMValue(
+    "blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4",
+    {}
+  );
   var blockedUsersModel = new class {
     has(id2) {
       return id2 in blockedUsers;
@@ -1342,24 +1438,27 @@
       }
     });
     const isBlocked = !!blockedUsers.value[userID];
-    render(html`
+    render(
+      html`
       <span
         class="h-f-btn"
         @click=${(e) => {
-      var _a2, _b2;
-      e.stopPropagation();
-      const isBlocked2 = !!blockedUsers.value[userID];
-      blockedUsers.value = __spreadProps(__spreadValues({}, blockedUsers.value), {
-        [userID]: !isBlocked2 ? {
-          name: (_b2 = (_a2 = document.getElementById("h-name")) == null ? void 0 : _a2.innerText) != null ? _b2 : "",
-          blockedAt: Date.now()
-        } : void 0
-      });
-    }}
+        var _a2, _b2;
+        e.stopPropagation();
+        const isBlocked2 = !!blockedUsers.value[userID];
+        blockedUsers.value = __spreadProps(__spreadValues({}, blockedUsers.value), {
+          [userID]: !isBlocked2 ? {
+            name: (_b2 = (_a2 = document.getElementById("h-name")) == null ? void 0 : _a2.innerText) != null ? _b2 : "",
+            blockedAt: Date.now()
+          } : void 0
+        });
+      }}
       >
         ${isBlocked ? "取消屏蔽" : "屏蔽"}
       </span>
-    `, container);
+    `,
+      container
+    );
   }
   function parseUserURL(rawURL) {
     if (!rawURL) {
@@ -1421,7 +1520,11 @@
   function renderVPopular() {
     document.querySelectorAll(".video-card").forEach((i) => {
       const selector = getElementSelector(i);
-      const videoData = evalInContentScope(`document.querySelector(${JSON.stringify(selector)}).__vue__._props.videoData`);
+      const videoData = evalInContentScope(
+        `document.querySelector(${JSON.stringify(
+          selector
+        )}).__vue__._props.videoData`
+      );
       const { owner } = castPlainObject(videoData);
       const { mid, name } = castPlainObject(owner);
       if (typeof mid != "number" || typeof name !== "string") {
@@ -1441,7 +1544,9 @@
   function renderVPopularRankAll() {
     document.querySelectorAll(".rank-item").forEach((i) => {
       var _a2, _b2, _c2, _d2;
-      const userID = parseUserURL((_b2 = (_a2 = i.querySelector(".up-name")) == null ? void 0 : _a2.parentElement) == null ? void 0 : _b2.getAttribute("href"));
+      const userID = parseUserURL(
+        (_b2 = (_a2 = i.querySelector(".up-name")) == null ? void 0 : _a2.parentElement) == null ? void 0 : _b2.getAttribute("href")
+      );
       if (!userID) {
         return;
       }
@@ -1461,7 +1566,9 @@
       return;
     }
     const key = "a1161956-2be7-4796-9f1b-528707156b11";
-    injectStyle(key, `[data-${key}]:hover button {
+    injectStyle(
+      key,
+      `[data-${key}]:hover button {
   opacity: 100;
   transition: opacity 0.2s linear 0.2s;
 }
@@ -1470,7 +1577,8 @@
   opacity: 0;
   transition: opacity 0.2s linear 0s;
 }
-`);
+`
+    );
     const el = obtainHTMLElementByDataKey({
       tag: "div",
       key,
@@ -1481,30 +1589,33 @@
         parentNode.append(el2);
       }
     });
-    render(html`
+    render(
+      html`
 <button
   type="button"
   title="屏蔽此用户"
   class="absolute top-2 left-2 rounded-md cursor-pointer text-white bg-[rgba(33,33,33,.8)] z-20 border-none"
   @click=${(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      blockedUsers.value = __spreadProps(__spreadValues({}, blockedUsers.value), {
-        [user.id]: {
-          name: user.name,
-          blockedAt: Date.now()
-        }
-      });
-    }}
+        e.preventDefault();
+        e.stopPropagation();
+        blockedUsers.value = __spreadProps(__spreadValues({}, blockedUsers.value), {
+          [user.id]: {
+            name: user.name,
+            blockedAt: Date.now()
+          }
+        });
+      }}
 >
   <svg viewBox="-3 -1 28 28" class="h-7 fill-current">
     <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCancelOutline}>
   </svg>
 </button>
-    `, el);
+    `,
+      el
+    );
   }
   function renderVideoDetail() {
-    const blockedTitles = new Set();
+    const blockedTitles = /* @__PURE__ */ new Set();
     document.querySelectorAll(".video-page-card-small").forEach((i) => {
       var _a2, _b2, _c2;
       const rawURL = (_a2 = i.querySelector(".upname a")) == null ? void 0 : _a2.getAttribute("href");
@@ -1532,7 +1643,9 @@
     });
     document.querySelectorAll(".bpx-player-ending-related-item").forEach((i) => {
       var _a2;
-      const title = (_a2 = i.querySelector(".bpx-player-ending-related-item-title")) == null ? void 0 : _a2.textContent;
+      const title = (_a2 = i.querySelector(
+        ".bpx-player-ending-related-item-title"
+      )) == null ? void 0 : _a2.textContent;
       if (!title) {
         return;
       }
@@ -1561,17 +1674,20 @@
       __privateSet(this, _open, false);
     }
     render() {
-      render(__privateMethod(this, _html, html_fn).call(this), obtainHTMLElementByID({
-        tag: "div",
-        id: this.id,
-        onDidCreate: (el) => {
-          el.style.position = "relative";
-          el.style.zIndex = "9999";
-          el.style.fontSize = "1rem";
-          style_default2.apply(el);
-          document.body.append(el);
-        }
-      }));
+      render(
+        __privateMethod(this, _html, html_fn).call(this),
+        obtainHTMLElementByID({
+          tag: "div",
+          id: this.id,
+          onDidCreate: (el) => {
+            el.style.position = "relative";
+            el.style.zIndex = "9999";
+            el.style.fontSize = "1rem";
+            style_default2.apply(el);
+            document.body.append(el);
+          }
+        })
+      );
     }
   };
   _open = new WeakMap();
@@ -1721,15 +1837,16 @@
         }
       });
       const count = blockedUsersModel.distinctID().length;
-      render(html`
+      render(
+        html`
 <button
   type="button"
   class="right-entry__outside" 
   @click=${(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        __privateGet(this, _settings).open();
-      }}
+          e.preventDefault();
+          e.stopPropagation();
+          __privateGet(this, _settings).open();
+        }}
 >
   <svg viewBox="2 2 20 20" class="right-entry-icon h-5 fill-current">
     <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCancelOutline}>
@@ -1739,7 +1856,9 @@
     ${count > 0 ? html`<span>(${count})</span>` : nothing}
   </span>
 </button>
-`, container);
+`,
+        container
+      );
     }
   };
   _settings = new WeakMap();
@@ -1770,33 +1889,41 @@
       const initialPath = window.location.pathname;
       const app = createApp();
       const { push, dispose } = useDisposal();
-      push(usePolling({
-        update: () => {
-          if (window.location.pathname !== initialPath) {
-            dispose();
-            main();
-            return;
-          }
-          style_default2.inject();
-          app.render();
-        },
-        scheduleNext: (update) => setTimeout(update, 100)
-      }));
+      push(
+        usePolling({
+          update: () => {
+            if (window.location.pathname !== initialPath) {
+              dispose();
+              main();
+              return;
+            }
+            style_default2.inject();
+            app.render();
+          },
+          scheduleNext: (update) => setTimeout(update, 100)
+        })
+      );
     });
   }
   onDocumentReadyOnce(main);
 })();
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-/**
- * @license
- * Lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="es" -o ./`
- * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
+/*! Bundled license information:
+
+lit-html/development/lit-html.js:
+  (**
+   * @license
+   * Copyright 2017 Google LLC
+   * SPDX-License-Identifier: BSD-3-Clause
+   *)
+
+lodash-es/lodash.js:
+  (**
+   * @license
+   * Lodash (Custom Build) <https://lodash.com/>
+   * Build: `lodash modularize exports="es" -o ./`
+   * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
+   * Released under MIT license <https://lodash.com/license>
+   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+   *)
+*/

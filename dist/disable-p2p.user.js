@@ -8,6 +8,7 @@
 // @version   2023.05.08+e4375f89
 // ==/UserScript==
 
+"use strict";
 (() => {
   // src/disable-p2p.user.ts
   delete window.RTCPeerConnection;

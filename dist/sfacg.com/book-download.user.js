@@ -11,6 +11,7 @@
 // @version   2023.05.08+87849260
 // ==/UserScript==
 
+"use strict";
 (() => {
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
@@ -88,7 +89,11 @@
   function imageToMarkdown(img, {
     background
   } = {}) {
-    return canvasToMarkdown(imageToCanvas(img, { background }), img.alt, img.title);
+    return canvasToMarkdown(
+      imageToCanvas(img, { background }),
+      img.alt,
+      img.title
+    );
   }
 
   // src/sfacg.com/book-download.user.ts

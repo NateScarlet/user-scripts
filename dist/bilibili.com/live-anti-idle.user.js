@@ -9,12 +9,15 @@
 // @version   2023.05.08+d7df015f
 // ==/UserScript==
 
+"use strict";
 (() => {
   // src/bilibili.com/live-anti-idle.user.ts
   (() => {
     setInterval(() => {
       setTimeout(() => {
-        document.body.dispatchEvent(new MouseEvent("mousemove", { bubbles: true }));
+        document.body.dispatchEvent(
+          new MouseEvent("mousemove", { bubbles: true })
+        );
       }, Math.random() * 2e3);
     }, 1e4);
   })();

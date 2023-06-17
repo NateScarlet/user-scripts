@@ -8,6 +8,7 @@
 // @version   2023.05.08+2ac88d2d
 // ==/UserScript==
 
+"use strict";
 (() => {
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
@@ -66,7 +67,11 @@
   function imageToMarkdown(img, {
     background
   } = {}) {
-    return canvasToMarkdown(imageToCanvas(img, { background }), img.alt, img.title);
+    return canvasToMarkdown(
+      imageToCanvas(img, { background }),
+      img.alt,
+      img.title
+    );
   }
 
   // src/utils/loadImage.ts
@@ -99,7 +104,9 @@
       while (lines.length === 0 && Date.now() - startTime < 6e4) {
         yield sleep(1e3);
         for (const i of document.querySelectorAll("#J_BookImage")) {
-          const url = i.style["background-image"].match(/(?:url\(")?(.+)(?:"\))?/)[1];
+          const url = i.style["background-image"].match(
+            /(?:url\(")?(.+)(?:"\))?/
+          )[1];
           const line = imageToMarkdown(yield loadImage(url));
           lines.push(line);
         }
