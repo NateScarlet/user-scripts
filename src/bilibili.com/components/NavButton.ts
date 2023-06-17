@@ -13,7 +13,7 @@ export default class NavButton {
     this.settings = settings;
   }
 
-  public render() {
+  public readonly render = () => {
     const parent = document.querySelector(".right-entry");
     if (!parent) {
       return;
@@ -50,5 +50,5 @@ export default class NavButton {
 `,
       container
     );
-  }
+  };
 }

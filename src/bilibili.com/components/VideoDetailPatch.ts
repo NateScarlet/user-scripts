@@ -7,7 +7,7 @@ import VideoHoverButton from "./VideoHoverButton";
 export default class VideoDetailPatch {
   private readonly blockedTitles = new Set<string>();
 
-  public render() {
+  public readonly render = () => {
     document
       .querySelectorAll<HTMLElement>(".video-page-card-small")
       .forEach((i) => {
@@ -47,5 +47,5 @@ export default class VideoDetailPatch {
         const isBlocked = this.blockedTitles.has(title);
         setHTMLElementDisplayHidden(i, isBlocked);
       });
-  }
+  };
 }

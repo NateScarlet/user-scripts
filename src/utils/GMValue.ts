@@ -23,7 +23,7 @@ export default class GMValue<T> {
     return this.loadingCount > 0;
   }
 
-  public async refresh() {
+  public readonly refresh = async () => {
     if (this.isLoading) {
       await this.currentAction;
       return;
@@ -45,9 +45,9 @@ export default class GMValue<T> {
       }
     })();
     await this.currentAction;
-  }
+  };
 
-  public async flush() {
+  public readonly flush = async () => {
     this.loadingCount += 1;
     this.currentAction = (async () => {
       try {
@@ -61,18 +61,18 @@ export default class GMValue<T> {
       }
     })();
     await this.currentAction;
-  }
+  };
 
-  public get() {
+  public readonly get = () => {
     return this.value ?? this.defaultValue();
-  }
+  };
 
-  public set(v: T) {
+  public readonly set = (v: T) => {
     this.value = v;
     this.flush();
-  }
+  };
 
-  public dispose() {
+  public readonly dispose = () => {
     this.polling.dispose();
-  }
+  };
 }

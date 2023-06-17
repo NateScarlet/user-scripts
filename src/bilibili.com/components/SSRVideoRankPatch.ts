@@ -4,7 +4,7 @@ import parseUserURL from "../utils/parseUserURL";
 import VideoHoverButton from "./VideoHoverButton";
 
 export default class SSRVideoRankPatch {
-  public render() {
+  public readonly render = () => {
     document.querySelectorAll<HTMLElement>(".rank-item").forEach((i) => {
       const user = parseUserURL(
         i.querySelector(".up-name")?.parentElement?.getAttribute("href")
@@ -23,5 +23,5 @@ export default class SSRVideoRankPatch {
         }).render();
       }
     });
-  }
+  };
 }

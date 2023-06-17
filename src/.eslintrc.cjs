@@ -34,6 +34,12 @@ module.exports = {
         selector: "PrivateIdentifier",
         message: "use TypeScript visibility annotations instead",
       },
+      {
+        selector:
+          "MethodDefinition[kind=method]:matches(:not([accessibility]),[accessibility=public])",
+        message:
+          "use instance function and non-public method instead\nhttps://github.com/Microsoft/TypeScript/wiki/%27this%27-in-TypeScript#use-instance-functions",
+      },
     ],
     "import/extensions": [
       "error",
@@ -56,7 +62,7 @@ module.exports = {
       {
         accessibility: "explicit",
         overrides: {
-          method: "no-public", // use instance function only
+          methods: "off",
           constructors: "off",
           accessors: "off",
         },

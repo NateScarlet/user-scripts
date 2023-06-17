@@ -39,19 +39,19 @@ export default class Polling {
     return this.workerCount > 0;
   }
 
-  public start() {
+  public readonly start = () => {
     this.didRequestedStop = false;
     if (this.isRunning) {
       return;
     }
     this.run();
-  }
+  };
 
-  public stop() {
+  public readonly stop = () => {
     this.didRequestedStop = true;
-  }
+  };
 
-  public dispose() {
+  public readonly dispose = () => {
     this.stop();
-  }
+  };
 }

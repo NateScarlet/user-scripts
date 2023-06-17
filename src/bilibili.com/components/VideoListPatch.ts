@@ -6,7 +6,7 @@ import VideoHoverButton from "./VideoHoverButton";
 // spell-checker: word bili
 
 export default class VideoListPatch {
-  public render() {
+  public readonly render = () => {
     document.querySelectorAll<HTMLElement>(".bili-video-card").forEach((i) => {
       const rawURL = i
         .querySelector("a.bili-video-card__info--owner")
@@ -36,5 +36,5 @@ export default class VideoListPatch {
         }).render();
       }
     });
-  }
+  };
 }

@@ -11,7 +11,7 @@ export default class VideoHoverButton {
     private readonly user: { id: string; name: string }
   ) {}
 
-  public render() {
+  public readonly render = () => {
     const { parentNode } = this;
     if (!parentNode) {
       return;
@@ -60,5 +60,5 @@ export default class VideoHoverButton {
     `,
       el
     );
-  }
+  };
 }

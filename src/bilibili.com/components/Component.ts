@@ -1,3 +1,3 @@
 export default interface Component {
-  render: () => void;
+  readonly render: () => void;
 }

@@ -19,18 +19,18 @@ export default class SettingsDrawer {
     this.id = `settings-${randomUUID()}`;
   }
 
-  public open() {
+  public readonly open = () => {
     this.visible = true;
     this.render();
     setTimeout(() => {
       this.isOpen = true;
       this.render();
     }, 20);
-  }
+  };
 
-  public close() {
+  public readonly close = () => {
     this.isOpen = false;
-  }
+  };
 
   private html() {
     if (!this.visible) {
@@ -164,7 +164,7 @@ export default class SettingsDrawer {
     `;
   }
 
-  public render() {
+  public readonly render = () => {
     render(
       this.html(),
       obtainHTMLElementByID({
@@ -179,5 +179,5 @@ export default class SettingsDrawer {
         },
       })
     );
-  }
+  };
 }

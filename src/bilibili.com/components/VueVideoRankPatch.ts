@@ -6,7 +6,7 @@ import blockedUsers from "../models/blockedUsers";
 import VideoHoverButton from "./VideoHoverButton";
 
 export default class VueVideoRankPatch {
-  public render() {
+  public readonly render = () => {
     document.querySelectorAll<HTMLElement>(".video-card").forEach((i) => {
       const selector = getElementSelector(i);
       const videoData = evalInContentScope(
@@ -31,5 +31,5 @@ export default class VueVideoRankPatch {
         }).render();
       }
     });
-  }
+  };
 }

@@ -6,7 +6,7 @@ import blockedUsers from "../models/blockedUsers";
 export default class UserBlockButton {
   constructor(private readonly user: { id: string }) {}
 
-  public render() {
+  public readonly render = () => {
     const parent = document.querySelector(".h-action");
     if (!parent) {
       return;
@@ -38,5 +38,5 @@ export default class UserBlockButton {
       `,
       container
     );
-  }
+  };
 }
