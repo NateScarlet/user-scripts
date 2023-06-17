@@ -56,6 +56,7 @@ module.exports = {
       {
         accessibility: "explicit",
         overrides: {
+          method: "no-public", // use instance function only
           constructors: "off",
           accessors: "off",
         },

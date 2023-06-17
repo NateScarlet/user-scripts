@@ -6,6 +6,8 @@ import compare from "@/utils/compare";
 import style from "../style";
 import blockedUsers from "../models/blockedUsers";
 
+// spell-checker: word datetime
+
 export default class SettingsDrawer {
   private isOpen = false;
 
