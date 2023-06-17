@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.06.17+196c8668
+// @version   2023.06.17+9cee57cd
 // ==/UserScript==
 
 "use strict";
@@ -75,101 +75,6 @@
       step((generator = generator.apply(__this, __arguments)).next());
     });
   };
-
-  // src/utils/compare.ts
-  function compare(a, b) {
-    if (a > b) {
-      return 1;
-    }
-    if (a < b) {
-      return -1;
-    }
-    return 0;
-  }
-
-  // src/utils/usePolling.ts
-  function usePolling({
-    update,
-    scheduleNext = requestAnimationFrame
-  }) {
-    let isCancelled = false;
-    function run() {
-      return __async(this, null, function* () {
-        if (isCancelled) {
-          return;
-        }
-        yield update();
-        scheduleNext(run);
-      });
-    }
-    function dispose() {
-      isCancelled = true;
-    }
-    run();
-    return {
-      dispose
-    };
-  }
-
-  // src/utils/useGMValue.ts
-  function useGMValue(key, defaultValue) {
-    const state = {
-      value: defaultValue,
-      loadingCount: 0
-    };
-    function read() {
-      return __async(this, null, function* () {
-        if (state.loadingCount > 0) {
-          return;
-        }
-        state.loadingCount += 1;
-        try {
-          const value = yield GM.getValue(key);
-          if (value != null) {
-            try {
-              state.value = JSON.parse(String(value));
-            } catch (e) {
-              state.value = defaultValue;
-            }
-          }
-        } finally {
-          state.loadingCount -= 1;
-        }
-      });
-    }
-    function write() {
-      return __async(this, null, function* () {
-        state.loadingCount += 1;
-        try {
-          if (state.value == null) {
-            yield GM.deleteValue(key);
-          } else {
-            yield GM.setValue(key, JSON.stringify(state.value));
-          }
-        } finally {
-          state.loadingCount -= 1;
-        }
-      });
-    }
-    read();
-    const polling = usePolling({
-      update: () => read(),
-      scheduleNext: (update) => setTimeout(update, 500)
-    });
-    return {
-      get value() {
-        return state.value;
-      },
-      set value(v) {
-        state.value = v;
-        write();
-      },
-      get isLoading() {
-        return state.loadingCount > 0;
-      },
-      dispose: polling.dispose
-    };
-  }
 
   // node_modules/lit-html/development/lit-html.js
   var _a;
@@ -1115,6 +1020,30 @@
   var mdiClose = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z";
   var mdiOpenInNew = "M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z";
 
+  // src/utils/usePolling.ts
+  function usePolling({
+    update,
+    scheduleNext = requestAnimationFrame
+  }) {
+    let isCancelled = false;
+    function run() {
+      return __async(this, null, function* () {
+        if (isCancelled) {
+          return;
+        }
+        yield update();
+        scheduleNext(run);
+      });
+    }
+    function dispose() {
+      isCancelled = true;
+    }
+    run();
+    return {
+      dispose
+    };
+  }
+
   // src/utils/setHTMLElementDisplayHidden.ts
   function setHTMLElementDisplayHidden(el, want) {
     const actual = el.style.display == "none";
@@ -1338,6 +1267,20 @@
     });
   }
 
+  // src/utils/onDocumentReadyOnce.ts
+  function onDocumentReadyOnce(cb) {
+    if (document.readyState == "complete") {
+      cb();
+    } else {
+      window.addEventListener("load", cb, { once: true });
+    }
+  }
+
+  // src/utils/isNonNull.ts
+  function isNonNull(v) {
+    return v != null;
+  }
+
   // src/bilibili.com/style.css
   var style_default = '/* \n用户脚本样式\nhttps://github.com/NateScarlet/user-scripts/blob/master/src/bilibili.com/\n*/\n\n/* \n! tailwindcss v3.3.2 | MIT License | https://tailwindcss.com\n*/\n\n/*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] *,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::before,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::before,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::after {\n  --tw-content: \'\';\n}\n\n/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user\'s configured `sans` font-family by default.\n5. Use the user\'s configured `sans` font-feature-settings by default.\n6. Use the user\'s configured `sans` font-variation-settings by default.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] html {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */\n  font-feature-settings: normal; /* 5 */\n  font-variation-settings: normal; /* 6 */\n}\n\n/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] body {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}\n\n/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] hr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}\n\n/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] abbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}\n\n/*\nRemove the default font size and weight for headings.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h1,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h2,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h3,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h4,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h5,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h6 {\n  font-size: inherit;\n  font-weight: inherit;\n}\n\n/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] a {\n  color: inherit;\n  text-decoration: inherit;\n}\n\n/*\nAdd the correct font weight in Edge and Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] b,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] strong {\n  font-weight: bolder;\n}\n\n/*\n1. Use the user\'s configured `mono` font family by default.\n2. Correct the odd `em` font sizing in all browsers.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] code,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] kbd,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] samp,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] pre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/*\nAdd the correct font size in all browsers.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] small {\n  font-size: 80%;\n}\n\n/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] sub,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] sub {\n  bottom: -0.25em;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] sup {\n  top: -0.5em;\n}\n\n/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] table {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}\n\n/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] input,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] optgroup,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] select,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea {\n  font-family: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}\n\n/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] select {\n  text-transform: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [type=\'button\'],\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [type=\'reset\'],\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [type=\'submit\'] {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}\n\n/*\nUse the modern Firefox focus style for all focusable elements.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :-moz-focusring {\n  outline: auto;\n}\n\n/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :-moz-ui-invalid {\n  box-shadow: none;\n}\n\n/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] progress {\n  vertical-align: baseline;\n}\n\n/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::-webkit-inner-spin-button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [type=\'search\'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/*\nAdd the correct display in Chrome and Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] summary {\n  display: list-item;\n}\n\n/*\nRemoves the default spacing and border for appropriate elements.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] blockquote,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] dl,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] dd,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h1,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h2,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h3,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h4,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h5,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h6,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] hr,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] figure,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] p,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] pre {\n  margin: 0;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] fieldset {\n  margin: 0;\n  padding: 0;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] legend {\n  padding: 0;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ol,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ul,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] menu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n/*\nPrevent resizing textareas horizontally by default.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea {\n  resize: vertical;\n}\n\n/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user\'s configured gray 400 color.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] input::-moz-placeholder, [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] input::placeholder,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n/*\nSet the default cursor for buttons.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [role="button"] {\n  cursor: pointer;\n}\n\n/*\nMake sure disabled buttons don\'t get the pointer cursor.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :disabled {\n  cursor: default;\n}\n\n/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] img,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] svg,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] video,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] canvas,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] audio,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] iframe,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] embed,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] object {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}\n\n/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] img,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] video {\n  max-width: 100%;\n  height: auto;\n}\n\n/* Make elements with the HTML hidden attribute stay hidden by default */\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [hidden] {\n  display: none;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] *, [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::before, [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.visible) {\n  visibility: visible;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.fixed) {\n  position: fixed;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.absolute) {\n  position: absolute;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.relative) {\n  position: relative;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.sticky) {\n  position: sticky;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.inset-0) {\n  inset: 0px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.inset-y-0) {\n  top: 0px;\n  bottom: 0px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.left-2) {\n  left: 0.5rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.right-0) {\n  right: 0px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.top-0) {\n  top: 0px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.top-2) {\n  top: 0.5rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.z-20) {\n  z-index: 20;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.inline) {\n  display: inline;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex) {\n  display: flex;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.inline-flex) {\n  display: inline-flex;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.table) {\n  display: table;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-5) {\n  height: 1.25rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-7) {\n  height: 1.75rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-\\[1\\.25em\\]) {\n  height: 1.25em;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.max-h-screen) {\n  max-height: 100vh;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.w-32) {\n  width: 8rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.w-full) {\n  width: 100%;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.w-screen) {\n  width: 100vw;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.max-w-4xl) {\n  max-width: 56rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-1) {\n  flex: 1 1 0%;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-auto) {\n  flex: 1 1 auto;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-none) {\n  flex: none;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.table-fixed) {\n  table-layout: fixed;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.border-separate) {\n  border-collapse: separate;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.border-spacing-2) {\n  --tw-border-spacing-x: 0.5rem;\n  --tw-border-spacing-y: 0.5rem;\n  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.translate-x-full) {\n  --tw-translate-x: 100%;\n  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.transform) {\n  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.cursor-pointer) {\n  cursor: pointer;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.cursor-zoom-out) {\n  cursor: zoom-out;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-col) {\n  flex-direction: column;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.items-center) {\n  align-items: center;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.space-x-2 > :not([hidden]) ~ :not([hidden])) {\n  --tw-space-x-reverse: 0;\n  margin-right: calc(0.5rem * var(--tw-space-x-reverse));\n  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.self-end) {\n  align-self: flex-end;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.overflow-auto) {\n  overflow: auto;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.overflow-hidden) {\n  overflow: hidden;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.rounded-md) {\n  border-radius: 0.375rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.border-none) {\n  border-style: none;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-\\[rgba\\(33\\2c 33\\2c 33\\2c \\.8\\)\\]) {\n  background-color: rgba(33,33,33,.8);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-gray-200) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-white) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(255 255 255 / var(--tw-bg-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-opacity-25) {\n  --tw-bg-opacity: 0.25;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.fill-current) {\n  fill: currentColor;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.p-2) {\n  padding: 0.5rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-center) {\n  text-align: center;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-right) {\n  text-align: right;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.align-top) {\n  vertical-align: top;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-sm) {\n  font-size: 0.875rem;\n  line-height: 1.25rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-blue-500) {\n  --tw-text-opacity: 1;\n  color: rgb(59 130 246 / var(--tw-text-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-gray-500) {\n  --tw-text-opacity: 1;\n  color: rgb(107 114 128 / var(--tw-text-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-white) {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.underline) {\n  text-decoration-line: underline;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.opacity-0) {\n  opacity: 0;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.opacity-100) {\n  opacity: 1;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.backdrop-blur) {\n  --tw-backdrop-blur: blur(8px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.transition) {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.transition-transform) {\n  transition-property: transform;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.duration-200) {\n  transition-duration: 200ms;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.ease-in-out) {\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.even\\:bg-gray-100:nth-child(even)) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.group:hover .group-hover\\:opacity-100) {\n  opacity: 1;\n}\n\n@media (min-width: 1024px) {\n\n  [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.lg\\:hidden) {\n    display: none;\n  }\n}\n';
 
@@ -1356,21 +1299,83 @@
     }
   };
 
-  // src/utils/onDocumentReadyOnce.ts
-  function onDocumentReadyOnce(cb) {
-    if (document.readyState == "complete") {
-      cb();
-    } else {
-      window.addEventListener("load", cb, { once: true });
+  // src/utils/compare.ts
+  function compare(a, b) {
+    if (a > b) {
+      return 1;
     }
+    if (a < b) {
+      return -1;
+    }
+    return 0;
   }
 
-  // src/bilibili.com/block.user.ts
+  // src/utils/useGMValue.ts
+  function useGMValue(key, defaultValue) {
+    const state = {
+      value: defaultValue,
+      loadingCount: 0
+    };
+    function read() {
+      return __async(this, null, function* () {
+        if (state.loadingCount > 0) {
+          return;
+        }
+        state.loadingCount += 1;
+        try {
+          const value = yield GM.getValue(key);
+          if (value != null) {
+            try {
+              state.value = JSON.parse(String(value));
+            } catch (e) {
+              state.value = defaultValue;
+            }
+          }
+        } finally {
+          state.loadingCount -= 1;
+        }
+      });
+    }
+    function write() {
+      return __async(this, null, function* () {
+        state.loadingCount += 1;
+        try {
+          if (state.value == null) {
+            yield GM.deleteValue(key);
+          } else {
+            yield GM.setValue(key, JSON.stringify(state.value));
+          }
+        } finally {
+          state.loadingCount -= 1;
+        }
+      });
+    }
+    read();
+    const polling = usePolling({
+      update: () => read(),
+      scheduleNext: (update) => setTimeout(update, 500)
+    });
+    return {
+      get value() {
+        return state.value;
+      },
+      set value(v) {
+        state.value = v;
+        write();
+      },
+      get isLoading() {
+        return state.loadingCount > 0;
+      },
+      dispose: polling.dispose
+    };
+  }
+
+  // src/bilibili.com/models/blockedUsers.ts
   var blockedUsers = useGMValue(
     "blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4",
     {}
   );
-  var blockedUsersModel = new class {
+  var blockedUsers_default = new class {
     has(id2) {
       return id2 in blockedUsers;
     }
@@ -1382,7 +1387,7 @@
         id: id2,
         blockedAt,
         name,
-        idAsNumber: Number.parseInt(id2),
+        idAsNumber: Number.parseInt(id2, 10),
         rawBlockedAt
       };
     }
@@ -1408,251 +1413,17 @@
         [id2]: void 0
       });
     }
+    toggle(user, force) {
+      const want = force != null ? force : !this.has(user.id);
+      if (want) {
+        this.add(user);
+      } else {
+        this.remove(user.id);
+      }
+    }
   }();
-  function migrateV1() {
-    return __async(this, null, function* () {
-      const key = "blockedUserIDs@7ced1613-89d7-4754-8989-2ad0d7cfa9db";
-      const oldValue = yield GM.getValue(key);
-      if (!oldValue) {
-        return;
-      }
-      const newValue = __spreadValues({}, blockedUsers.value);
-      JSON.parse(String(oldValue)).forEach((i) => {
-        newValue[i] = true;
-      });
-      blockedUsers.value = newValue;
-      yield GM.deleteValue(key);
-    });
-  }
-  function renderActions(userID) {
-    const parent = document.querySelector(".h-action");
-    if (!parent) {
-      return;
-    }
-    const container = obtainHTMLElementByID({
-      tag: "div",
-      id: "7ced1613-89d7-4754-8989-2ad0d7cfa9db",
-      onDidCreate: (el) => {
-        el.style.display = "inline";
-        parent.append(el, parent.lastChild);
-      }
-    });
-    const isBlocked = !!blockedUsers.value[userID];
-    render(
-      html`
-      <span
-        class="h-f-btn"
-        @click=${(e) => {
-        var _a2, _b2;
-        e.stopPropagation();
-        const isBlocked2 = !!blockedUsers.value[userID];
-        blockedUsers.value = __spreadProps(__spreadValues({}, blockedUsers.value), {
-          [userID]: !isBlocked2 ? {
-            name: (_b2 = (_a2 = document.getElementById("h-name")) == null ? void 0 : _a2.innerText) != null ? _b2 : "",
-            blockedAt: Date.now()
-          } : void 0
-        });
-      }}
-      >
-        ${isBlocked ? "取消屏蔽" : "屏蔽"}
-      </span>
-    `,
-      container
-    );
-  }
-  function parseUserURL(rawURL) {
-    if (!rawURL) {
-      return;
-    }
-    const url = new URL(rawURL, window.location.href);
-    switch (url.host) {
-      case "space.bilibili.com": {
-        const match = /^\/(\d+)\/?/.exec(url.pathname);
-        if (!match) {
-          return;
-        }
-        return match[1];
-      }
-      case "cm.bilibili.com": {
-        return url.searchParams.get("space_mid") || void 0;
-      }
-    }
-  }
-  function parseVideoURL(rawURL) {
-    if (!rawURL) {
-      return;
-    }
-    const url = new URL(rawURL, window.location.href);
-    if (url.host !== "www.bilibili.com") {
-      return;
-    }
-    const match = /^\/video\//.exec(url.pathname);
-    if (!match) {
-      return;
-    }
-    return {};
-  }
-  function renderVideoList() {
-    document.querySelectorAll(".bili-video-card").forEach((i) => {
-      var _a2, _b2, _c2;
-      const rawURL = (_a2 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a2.getAttribute("href");
-      if (!rawURL) {
-        return;
-      }
-      const userID = parseUserURL(rawURL);
-      if (!userID) {
-        return;
-      }
-      const isBlocked = !!blockedUsers.value[userID];
-      let container = i;
-      while (((_b2 = container.parentElement) == null ? void 0 : _b2.childElementCount) === 1) {
-        container = i.parentElement;
-      }
-      setHTMLElementDisplayHidden(container, isBlocked);
-      if (!isBlocked) {
-        renderHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
-          id: userID,
-          name: ((_c2 = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _c2.getAttribute("title")) || userID
-        });
-      }
-    });
-  }
-  function renderVPopular() {
-    document.querySelectorAll(".video-card").forEach((i) => {
-      const selector = getElementSelector(i);
-      const videoData = evalInContentScope(
-        `document.querySelector(${JSON.stringify(
-          selector
-        )}).__vue__._props.videoData`
-      );
-      const { owner } = castPlainObject(videoData);
-      const { mid, name } = castPlainObject(owner);
-      if (typeof mid != "number" || typeof name !== "string") {
-        return;
-      }
-      const userID = mid.toString();
-      const isBlocked = !!blockedUsers.value[userID];
-      setHTMLElementDisplayHidden(i, isBlocked);
-      if (!isBlocked) {
-        renderHoverButton(i.querySelector(".video-card__content"), {
-          id: userID,
-          name
-        });
-      }
-    });
-  }
-  function renderVPopularRankAll() {
-    document.querySelectorAll(".rank-item").forEach((i) => {
-      var _a2, _b2, _c2, _d2;
-      const userID = parseUserURL(
-        (_b2 = (_a2 = i.querySelector(".up-name")) == null ? void 0 : _a2.parentElement) == null ? void 0 : _b2.getAttribute("href")
-      );
-      if (!userID) {
-        return;
-      }
-      const name = (_d2 = (_c2 = i.querySelector(".up-name")) == null ? void 0 : _c2.textContent) != null ? _d2 : "";
-      const isBlocked = blockedUsersModel.has(userID);
-      setHTMLElementDisplayHidden(i, isBlocked);
-      if (!isBlocked) {
-        renderHoverButton(i.querySelector(".img"), {
-          id: userID,
-          name
-        });
-      }
-    });
-  }
-  function renderHoverButton(parentNode, user) {
-    if (!parentNode) {
-      return;
-    }
-    const key = "a1161956-2be7-4796-9f1b-528707156b11";
-    injectStyle(
-      key,
-      `[data-${key}]:hover button {
-  opacity: 100;
-  transition: opacity 0.2s linear 0.2s;
-}
 
-[data-${key}] button {
-  opacity: 0;
-  transition: opacity 0.2s linear 0s;
-}
-`
-    );
-    const el = obtainHTMLElementByDataKey({
-      tag: "div",
-      key,
-      parentNode,
-      onDidCreate: (el2) => {
-        style_default2.apply(el2);
-        parentNode.setAttribute(`data-${key}`, "");
-        parentNode.append(el2);
-      }
-    });
-    render(
-      html`
-<button
-  type="button"
-  title="屏蔽此用户"
-  class="absolute top-2 left-2 rounded-md cursor-pointer text-white bg-[rgba(33,33,33,.8)] z-20 border-none"
-  @click=${(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        blockedUsers.value = __spreadProps(__spreadValues({}, blockedUsers.value), {
-          [user.id]: {
-            name: user.name,
-            blockedAt: Date.now()
-          }
-        });
-      }}
->
-  <svg viewBox="-3 -1 28 28" class="h-7 fill-current">
-    <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCancelOutline}>
-  </svg>
-</button>
-    `,
-      el
-    );
-  }
-  function renderVideoDetail() {
-    const blockedTitles = /* @__PURE__ */ new Set();
-    document.querySelectorAll(".video-page-card-small").forEach((i) => {
-      var _a2, _b2, _c2;
-      const rawURL = (_a2 = i.querySelector(".upname a")) == null ? void 0 : _a2.getAttribute("href");
-      if (!rawURL) {
-        return;
-      }
-      const userID = parseUserURL(rawURL);
-      if (!userID) {
-        return;
-      }
-      const isBlocked = !!blockedUsers.value[userID];
-      if (isBlocked) {
-        const title = (_b2 = i.querySelector(".title[title]")) == null ? void 0 : _b2.getAttribute("title");
-        if (title) {
-          blockedTitles.add(title);
-        }
-      }
-      setHTMLElementDisplayHidden(i, isBlocked);
-      if (!isBlocked) {
-        renderHoverButton(i.querySelector(".pic-box"), {
-          id: userID,
-          name: ((_c2 = i.querySelector(".upname .name")) == null ? void 0 : _c2.textContent) || userID
-        });
-      }
-    });
-    document.querySelectorAll(".bpx-player-ending-related-item").forEach((i) => {
-      var _a2;
-      const title = (_a2 = i.querySelector(
-        ".bpx-player-ending-related-item-title"
-      )) == null ? void 0 : _a2.textContent;
-      if (!title) {
-        return;
-      }
-      const isBlocked = blockedTitles.has(title);
-      setHTMLElementDisplayHidden(i, isBlocked);
-    });
-  }
+  // src/bilibili.com/components/SettingsDrawer.ts
   var _open, _visible, _html, html_fn, _userTableHTML, userTableHTML_fn;
   var SettingsDrawer = class {
     constructor() {
@@ -1742,7 +1513,7 @@
   };
   _userTableHTML = new WeakSet();
   userTableHTML_fn = function() {
-    const userIDs = blockedUsersModel.distinctID();
+    const userIDs = blockedUsers_default.distinctID();
     return html`
       <div class="flex-auto flex flex-col overflow-hidden max-h-screen">
         <h1 class="flex-none text-sm text-gray-500">
@@ -1758,7 +1529,7 @@
               </tr>
             </thead>
             <tbody>
-              ${userIDs.map(blockedUsersModel.get).sort((a, b) => {
+              ${userIDs.map(blockedUsers_default.get).sort((a, b) => {
       const dateCompare = compare(a.blockedAt, b.blockedAt);
       if (dateCompare !== 0) {
         return -dateCompare;
@@ -1793,7 +1564,7 @@
                         </a>
                         <button
                           type="button"
-                          @click=${() => blockedUsersModel.remove(id2)}
+                          @click=${() => blockedUsers_default.remove(id2)}
                           class="inline-flex underline"
                         >
                           <svg 
@@ -1816,6 +1587,8 @@
       </div>
     `;
   };
+
+  // src/bilibili.com/components/NavButton.ts
   var _settings;
   var NavButton = class {
     constructor(settings) {
@@ -1833,10 +1606,10 @@
         onDidCreate: (el) => {
           style_default2.apply(el);
           el.classList.add("right-entry-item");
-          parent.prepend(parent.firstChild, el);
+          parent.prepend(...[parent.firstChild, el].filter(isNonNull));
         }
       });
-      const count = blockedUsersModel.distinctID().length;
+      const count = blockedUsers_default.distinctID().length;
       render(
         html`
 <button
@@ -1862,6 +1635,255 @@
     }
   };
   _settings = new WeakMap();
+
+  // src/bilibili.com/models/migrate.ts
+  function migrateV1() {
+    return __async(this, null, function* () {
+      const key = "blockedUserIDs@7ced1613-89d7-4754-8989-2ad0d7cfa9db";
+      const oldValue = yield GM.getValue(key);
+      if (!oldValue) {
+        return;
+      }
+      const newValue = {};
+      JSON.parse(String(oldValue)).forEach((i) => {
+        newValue[i] = true;
+      });
+      yield GM.setValue(
+        "blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4",
+        JSON.stringify(newValue)
+      );
+      yield GM.deleteValue(key);
+    });
+  }
+  function migrate() {
+    return __async(this, null, function* () {
+      yield migrateV1();
+    });
+  }
+
+  // src/bilibili.com/block.user.ts
+  function renderActions(userID) {
+    const parent = document.querySelector(".h-action");
+    if (!parent) {
+      return;
+    }
+    const container = obtainHTMLElementByID({
+      tag: "div",
+      id: "7ced1613-89d7-4754-8989-2ad0d7cfa9db",
+      onDidCreate: (el) => {
+        el.style.display = "inline";
+        parent.append(...[el, parent.lastChild].filter(isNonNull));
+      }
+    });
+    const isBlocked = !!blockedUsers_default.has(userID);
+    render(
+      html`
+      <span
+        class="h-f-btn"
+        @click=${(e) => {
+        var _a2, _b2;
+        e.stopPropagation();
+        blockedUsers_default.toggle({
+          id: userID,
+          name: (_b2 = (_a2 = document.getElementById("h-name")) == null ? void 0 : _a2.innerText) != null ? _b2 : ""
+        });
+      }}
+      >
+        ${isBlocked ? "取消屏蔽" : "屏蔽"}
+      </span>
+    `,
+      container
+    );
+  }
+  function parseUserURL(rawURL) {
+    if (!rawURL) {
+      return;
+    }
+    const url = new URL(rawURL, window.location.href);
+    switch (url.host) {
+      case "space.bilibili.com": {
+        const match = /^\/(\d+)\/?/.exec(url.pathname);
+        if (!match) {
+          return;
+        }
+        return match[1];
+      }
+      case "cm.bilibili.com": {
+        return url.searchParams.get("space_mid") || void 0;
+      }
+      default:
+    }
+  }
+  function parseVideoURL(rawURL) {
+    if (!rawURL) {
+      return;
+    }
+    const url = new URL(rawURL, window.location.href);
+    if (url.host !== "www.bilibili.com") {
+      return;
+    }
+    const match = /^\/video\//.exec(url.pathname);
+    if (!match) {
+      return;
+    }
+    return {};
+  }
+  function renderHoverButton(parentNode, user) {
+    if (!parentNode) {
+      return;
+    }
+    const key = "a1161956-2be7-4796-9f1b-528707156b11";
+    injectStyle(
+      key,
+      `[data-${key}]:hover button {
+  opacity: 100;
+  transition: opacity 0.2s linear 0.2s;
+}
+
+[data-${key}] button {
+  opacity: 0;
+  transition: opacity 0.2s linear 0s;
+}
+`
+    );
+    const el = obtainHTMLElementByDataKey({
+      tag: "div",
+      key,
+      parentNode,
+      onDidCreate: (el2) => {
+        style_default2.apply(el2);
+        parentNode.setAttribute(`data-${key}`, "");
+        parentNode.append(el2);
+      }
+    });
+    render(
+      html`
+<button
+  type="button"
+  title="屏蔽此用户"
+  class="absolute top-2 left-2 rounded-md cursor-pointer text-white bg-[rgba(33,33,33,.8)] z-20 border-none"
+  @click=${(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        blockedUsers_default.add(user);
+      }}
+>
+  <svg viewBox="-3 -1 28 28" class="h-7 fill-current">
+    <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCancelOutline}>
+  </svg>
+</button>
+    `,
+      el
+    );
+  }
+  function renderVideoList() {
+    document.querySelectorAll(".bili-video-card").forEach((i) => {
+      var _a2, _b2, _c2;
+      const rawURL = (_a2 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a2.getAttribute("href");
+      if (!rawURL) {
+        return;
+      }
+      const userID = parseUserURL(rawURL);
+      if (!userID) {
+        return;
+      }
+      const isBlocked = blockedUsers_default.has(userID);
+      let container = i;
+      while (((_b2 = container.parentElement) == null ? void 0 : _b2.childElementCount) === 1) {
+        container = container.parentElement;
+      }
+      setHTMLElementDisplayHidden(container, isBlocked);
+      if (!isBlocked) {
+        renderHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
+          id: userID,
+          name: ((_c2 = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _c2.getAttribute("title")) || userID
+        });
+      }
+    });
+  }
+  function renderVPopular() {
+    document.querySelectorAll(".video-card").forEach((i) => {
+      const selector = getElementSelector(i);
+      const videoData = evalInContentScope(
+        `document.querySelector(${JSON.stringify(
+          selector
+        )}).__vue__._props.videoData`
+      );
+      const { owner } = castPlainObject(videoData);
+      const { mid, name } = castPlainObject(owner);
+      if (typeof mid !== "number" || typeof name !== "string") {
+        return;
+      }
+      const userID = mid.toString();
+      const isBlocked = blockedUsers_default.has(userID);
+      setHTMLElementDisplayHidden(i, isBlocked);
+      if (!isBlocked) {
+        renderHoverButton(i.querySelector(".video-card__content"), {
+          id: userID,
+          name
+        });
+      }
+    });
+  }
+  function renderVPopularRankAll() {
+    document.querySelectorAll(".rank-item").forEach((i) => {
+      var _a2, _b2, _c2, _d2;
+      const userID = parseUserURL(
+        (_b2 = (_a2 = i.querySelector(".up-name")) == null ? void 0 : _a2.parentElement) == null ? void 0 : _b2.getAttribute("href")
+      );
+      if (!userID) {
+        return;
+      }
+      const name = (_d2 = (_c2 = i.querySelector(".up-name")) == null ? void 0 : _c2.textContent) != null ? _d2 : "";
+      const isBlocked = blockedUsers_default.has(userID);
+      setHTMLElementDisplayHidden(i, isBlocked);
+      if (!isBlocked) {
+        renderHoverButton(i.querySelector(".img"), {
+          id: userID,
+          name
+        });
+      }
+    });
+  }
+  function renderVideoDetail() {
+    const blockedTitles = /* @__PURE__ */ new Set();
+    document.querySelectorAll(".video-page-card-small").forEach((i) => {
+      var _a2, _b2, _c2;
+      const rawURL = (_a2 = i.querySelector(".upname a")) == null ? void 0 : _a2.getAttribute("href");
+      if (!rawURL) {
+        return;
+      }
+      const userID = parseUserURL(rawURL);
+      if (!userID) {
+        return;
+      }
+      const isBlocked = blockedUsers_default.has(userID);
+      if (isBlocked) {
+        const title = (_b2 = i.querySelector(".title[title]")) == null ? void 0 : _b2.getAttribute("title");
+        if (title) {
+          blockedTitles.add(title);
+        }
+      }
+      setHTMLElementDisplayHidden(i, isBlocked);
+      if (!isBlocked) {
+        renderHoverButton(i.querySelector(".pic-box"), {
+          id: userID,
+          name: ((_c2 = i.querySelector(".upname .name")) == null ? void 0 : _c2.textContent) || userID
+        });
+      }
+    });
+    document.querySelectorAll(".bpx-player-ending-related-item").forEach((i) => {
+      var _a2;
+      const title = (_a2 = i.querySelector(
+        ".bpx-player-ending-related-item-title"
+      )) == null ? void 0 : _a2.textContent;
+      if (!title) {
+        return;
+      }
+      const isBlocked = blockedTitles.has(title);
+      setHTMLElementDisplayHidden(i, isBlocked);
+    });
+  }
   function createApp() {
     const rawURL = window.location.href;
     const settings = new SettingsDrawer();
@@ -1885,7 +1907,7 @@
   }
   function main() {
     return __async(this, null, function* () {
-      yield migrateV1();
+      yield migrate();
       const initialPath = window.location.pathname;
       const app = createApp();
       const { push, dispose } = useDisposal();

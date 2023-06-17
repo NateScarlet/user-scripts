@@ -1,7 +1,7 @@
 export default function canvasToMarkdown(
   canvas: HTMLCanvasElement,
-  alt: string = "",
-  title: string = ""
+  alt = "",
+  title = ""
 ): string {
   return `![${alt}](${canvas.toDataURL()} "${title}")`;
 }
