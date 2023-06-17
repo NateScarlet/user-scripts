@@ -1,21 +1,22 @@
-import useGMValue from "@/utils/useGMValue";
+import GMValue from "@/utils/GMValue";
 
 interface BlockedUser {
   name: string;
   blockedAt: number;
 }
 
-const blockedUsers = useGMValue(
-  "blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4",
-  {} as Record<string, BlockedUser | true | undefined>
-);
 export default new (class {
+  #value = new GMValue<Record<string, BlockedUser | true | undefined>>(
+    "blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4",
+    () => ({})
+  );
+
   has(id: string) {
-    return id in blockedUsers;
+    return id in this.#value.get();
   }
 
   get(id: string) {
-    const value = blockedUsers.value[id];
+    const value = this.#value.get()[id];
     const { blockedAt: rawBlockedAt = 0, name = id } =
       typeof value === "boolean" ? {} : value ?? {};
     const blockedAt = new Date(rawBlockedAt);
@@ -29,30 +30,30 @@ export default new (class {
   }
 
   distinctID() {
-    return Object.keys(blockedUsers.value);
+    return Object.keys(this.#value.get());
   }
 
   add({ id, name }: { id: string; name: string }) {
-    if (id in blockedUsers.value) {
+    if (this.has(id)) {
       return;
     }
-    blockedUsers.value = {
-      ...blockedUsers.value,
+    this.#value.set({
+      ...this.#value.get(),
       [id]: {
         name: name.trim(),
         blockedAt: Date.now(),
       },
-    };
+    });
   }
 
   remove(id: string) {
-    if (!(id in blockedUsers.value)) {
+    if (!this.has(id)) {
       return;
     }
-    blockedUsers.value = {
-      ...blockedUsers.value,
+    this.#value.set({
+      ...this.#value.get(),
       [id]: undefined,
-    };
+    });
   }
 
   toggle(user: { id: string; name: string }, force?: boolean) {

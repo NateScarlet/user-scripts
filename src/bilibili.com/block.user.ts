@@ -15,17 +15,17 @@
 
 import { render, html } from "lit-html";
 import { mdiAccountCancelOutline } from "@mdi/js";
-import usePolling from "@/utils/usePolling";
 import setHTMLElementDisplayHidden from "@/utils/setHTMLElementDisplayHidden";
 import obtainHTMLElementByDataKey from "@/utils/obtainHTMLElementByDataKey";
 import castPlainObject from "@/utils/castPlainObject";
 import getElementSelector from "@/utils/getElementSelector";
 import evalInContentScope from "@/utils/evalInContentScope";
-import useDisposal from "@/utils/useDisposal";
 import obtainHTMLElementByID from "@/utils/obtainHTMLElementByID";
 import injectStyle from "@/utils/injectStyle";
 import onDocumentReadyOnce from "@/utils/onDocumentReadyOnce";
 import isNonNull from "@/utils/isNonNull";
+import Polling from "@/utils/Polling";
+import Disposal from "@/utils/Disposal";
 import style from "./style";
 import Component from "./components/Component";
 import SettingsDrawer from "./components/SettingsDrawer";
@@ -317,13 +317,13 @@ async function main() {
   const initialPath = window.location.pathname;
   const app = createApp();
 
-  const { push, dispose } = useDisposal();
-  push(
-    usePolling({
+  const d = new Disposal();
+  d.push(
+    new Polling({
       update: () => {
         if (window.location.pathname !== initialPath) {
           // route changed
-          dispose();
+          d.dispose();
           main();
           return;
         }
