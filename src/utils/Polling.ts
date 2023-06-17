@@ -1,57 +1,57 @@
 export default class Polling {
-  #update: () => Promise<void> | void;
+  private readonly update: () => Promise<void> | void;
 
-  #scheduleNext: (update: () => void) => void;
+  private readonly scheduleNext: (update: () => void) => void;
 
-  #didRequestedStop = false;
+  private didRequestedStop = false;
 
-  #workerCount = 0;
+  private workerCount = 0;
 
   constructor({
     update,
     scheduleNext = requestAnimationFrame,
-  }: {
+  }: Readonly<{
     update: () => Promise<void> | void;
     scheduleNext?: (update: () => void) => void;
-  }) {
-    this.#update = update;
-    this.#scheduleNext = scheduleNext;
+  }>) {
+    this.update = update;
+    this.scheduleNext = scheduleNext;
     this.start();
   }
 
-  async #run() {
-    this.#workerCount += 1;
+  private async run() {
+    this.workerCount += 1;
     try {
-      while (!this.#didRequestedStop) {
+      while (!this.didRequestedStop) {
         // eslint-disable-next-line no-await-in-loop
-        await this.#update();
+        await this.update();
         // eslint-disable-next-line no-await-in-loop
         await new Promise<void>((resolve) => {
-          this.#scheduleNext(resolve);
+          this.scheduleNext(resolve);
         });
       }
     } finally {
-      this.#workerCount -= 1;
+      this.workerCount -= 1;
     }
   }
 
   get isRunning() {
-    return this.#workerCount > 0;
+    return this.workerCount > 0;
   }
 
-  start() {
-    this.#didRequestedStop = false;
+  public start() {
+    this.didRequestedStop = false;
     if (this.isRunning) {
       return;
     }
-    this.#run();
+    this.run();
   }
 
-  stop() {
-    this.#didRequestedStop = true;
+  public stop() {
+    this.didRequestedStop = true;
   }
 
-  dispose() {
+  public dispose() {
     this.stop();
   }
 }

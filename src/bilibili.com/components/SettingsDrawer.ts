@@ -7,31 +7,31 @@ import style from "../style";
 import blockedUsers from "../models/blockedUsers";
 
 export default class SettingsDrawer {
-  #open = false;
+  private isOpen = false;
 
-  #visible = false;
+  private visible = false;
 
-  readonly id: string;
+  private readonly id: string;
 
   constructor() {
     this.id = `settings-${randomUUID()}`;
   }
 
-  open() {
-    this.#visible = true;
+  public open() {
+    this.visible = true;
     this.render();
     setTimeout(() => {
-      this.#open = true;
+      this.isOpen = true;
       this.render();
     }, 20);
   }
 
-  close() {
-    this.#open = false;
+  public close() {
+    this.isOpen = false;
   }
 
-  #html() {
-    if (!this.#visible) {
+  private html() {
+    if (!this.visible) {
       return nothing;
     }
     return html`
@@ -40,7 +40,7 @@ export default class SettingsDrawer {
         fixed inset-0 
         bg-white bg-opacity-25 backdrop-blur 
         cursor-zoom-out transition duration-200 ease-in-out
-        ${this.#open ? "opacity-100" : "opacity-0"}
+        ${this.isOpen ? "opacity-100" : "opacity-0"}
       "
       @click=${() => this.close()}
     >
@@ -50,12 +50,12 @@ export default class SettingsDrawer {
         fixed inset-y-0 right-0 w-screen max-w-4xl
         bg-white overflow-auto p-2 
         transition-transform transform
-        ${this.#open ? "" : "translate-x-full"}
+        ${this.isOpen ? "" : "translate-x-full"}
         flex flex-col
       "
       @transitionend=${() => {
-        if (!this.#open) {
-          this.#visible = false;
+        if (!this.isOpen) {
+          this.visible = false;
         }
       }}
     >
@@ -74,11 +74,11 @@ export default class SettingsDrawer {
         </svg>
         <span>关闭</span>
       </button>
-     ${this.#userTableHTML()}
+     ${this.userTableHTML()}
     </div>`;
   }
 
-  #userTableHTML() {
+  private userTableHTML() {
     const userIDs = blockedUsers.distinctID();
 
     return html`
@@ -162,9 +162,9 @@ export default class SettingsDrawer {
     `;
   }
 
-  render() {
+  public render() {
     render(
-      this.#html(),
+      this.html(),
       obtainHTMLElementByID({
         tag: "div",
         id: this.id,

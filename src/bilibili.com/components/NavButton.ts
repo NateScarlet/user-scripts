@@ -7,13 +7,13 @@ import SettingsDrawer from "./SettingsDrawer";
 import blockedUsers from "../models/blockedUsers";
 
 export default class NavButton {
-  #settings: SettingsDrawer;
+  private readonly settings: SettingsDrawer;
 
   constructor(settings: SettingsDrawer) {
-    this.#settings = settings;
+    this.settings = settings;
   }
 
-  render() {
+  public render() {
     const parent = document.querySelector(".right-entry");
     if (!parent) {
       return;
@@ -36,7 +36,7 @@ export default class NavButton {
   @click=${(e: Event) => {
     e.preventDefault();
     e.stopPropagation();
-    this.#settings.open();
+    this.settings.open();
   }}
 >
   <svg viewBox="2 2 20 20" class="right-entry-icon h-5 fill-current">
