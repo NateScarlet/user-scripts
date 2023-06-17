@@ -25,9 +25,7 @@
 
 ![chrome_2023-05-08_23-18-47.png](https://cdn.jsdelivr.net/gh/NateScarlet/user-scripts@master/src/bilibili.com/img/chrome_2023-05-08_23-18-47.png)
 
-设置屏蔽后顶端导航栏会多出 `屏蔽` 按钮，点击即可查看已屏蔽用户。
-
-打开的屏蔽列表页面是静态的，更改屏蔽设置后需要重新从顶栏打开才是最新。
+点击顶端导航栏的 `屏蔽` 按钮，点击即可查看已屏蔽用户。
 
 ## 多设备支持
 
