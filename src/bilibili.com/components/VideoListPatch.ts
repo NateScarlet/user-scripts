@@ -29,10 +29,8 @@ export default class VideoListPatch {
         new VideoHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
           id: user.id,
           name:
-            i
-              .querySelector(".bili-video-card__info--author")
-              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              ?.getAttribute("title") || user.id,
+            i.querySelector(".bili-video-card__info--author")?.textContent ||
+            user.id,
         }).render();
       }
     });

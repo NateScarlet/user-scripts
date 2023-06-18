@@ -1924,7 +1924,7 @@
           if (!isBlocked) {
             new VideoHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
               id: user.id,
-              name: ((_c2 = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _c2.getAttribute("title")) || user.id
+              name: ((_c2 = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _c2.textContent) || user.id
             }).render();
           }
         });
