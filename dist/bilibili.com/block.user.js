@@ -2617,27 +2617,24 @@
       __publicField(this, "blockedTitles", /* @__PURE__ */ new Set());
       __publicField(this, "render", () => {
         document.querySelectorAll(".video-page-card-small").forEach((i) => {
-          var _a2, _b2, _c2;
+          var _a2, _b2, _c2, _d2, _e;
           const rawURL = (_a2 = i.querySelector(".upname a")) == null ? void 0 : _a2.getAttribute("href");
           if (!rawURL) {
             return;
           }
           const user = parseUserURL(rawURL);
-          if (!user) {
-            return;
+          let hidden = false;
+          if (user) {
+            const duration = (_d2 = (_c2 = (_b2 = i.querySelector(".duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d2 : "";
+            hidden = videoListSettings_default.shouldExcludeVideo({ user, duration });
+          } else {
+            hidden = !videoListSettings_default.allowAdvertisement;
           }
-          const isBlocked = blockedUsers_default.has(user.id);
-          if (isBlocked) {
-            const title = (_b2 = i.querySelector(".title[title]")) == null ? void 0 : _b2.getAttribute("title");
-            if (title) {
-              this.blockedTitles.add(title);
-            }
-          }
-          setHTMLElementDisplayHidden(i, isBlocked);
-          if (!isBlocked) {
+          setHTMLElementDisplayHidden(i, hidden);
+          if (user && !hidden) {
             new VideoHoverButton(i.querySelector(".pic-box"), {
               id: user.id,
-              name: ((_c2 = i.querySelector(".upname .name")) == null ? void 0 : _c2.textContent) || user.id
+              name: ((_e = i.querySelector(".upname .name")) == null ? void 0 : _e.textContent) || user.id
             }).render();
           }
         });
