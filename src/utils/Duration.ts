@@ -93,23 +93,27 @@ export interface DurationOptions {
 export type DurationInput = Duration | DurationOptions | string;
 
 export default class Duration {
-  static readonly MILLISECOND = 1;
+  public static readonly MILLISECOND = 1;
 
-  static readonly SECOND = 1000;
+  public static readonly SECOND = 1000;
 
-  static readonly MINUTE = this.SECOND * 60;
+  public static readonly MINUTE = this.SECOND * 60;
 
-  static readonly HOUR = this.MINUTE * 60;
+  public static readonly HOUR = this.MINUTE * 60;
 
-  static readonly DAY = this.HOUR * 24;
+  public static readonly DAY = this.HOUR * 24;
 
-  static readonly WEEK = this.DAY * 7;
+  public static readonly WEEK = this.DAY * 7;
 
-  static readonly MONTH = (((this.DAY / 10) * 146097) / 4800) * 10;
+  public static readonly MONTH = (((this.DAY / 10) * 146097) / 4800) * 10;
 
-  static readonly YEAR = this.MONTH * 12;
+  public static readonly YEAR = this.MONTH * 12;
 
   public readonly invalid: boolean = false;
+
+  get valid() {
+    return !this.invalid;
+  }
 
   public readonly negative: boolean = false;
 
@@ -141,19 +145,31 @@ export default class Duration {
     seconds = 0,
     milliseconds = 0,
   }: DurationOptions = {}) {
-    this.invalid = invalid;
+    let invalidCount = 0;
+    if (invalid) {
+      invalidCount += 1;
+    }
+    function checkNumber(v: number) {
+      if (Number.isFinite(v)) {
+        return v;
+      }
+      invalidCount += 1;
+      return 0;
+    }
+
     this.negative = negative;
-    this.years = years;
-    this.months = months;
-    this.weeks = weeks;
-    this.days = days;
-    this.hours = hours;
-    this.minutes = minutes;
-    this.seconds = seconds;
-    this.milliseconds = milliseconds;
+    this.years = checkNumber(years);
+    this.months = checkNumber(months);
+    this.weeks = checkNumber(weeks);
+    this.days = checkNumber(days);
+    this.hours = checkNumber(hours);
+    this.minutes = checkNumber(minutes);
+    this.seconds = checkNumber(seconds);
+    this.milliseconds = checkNumber(milliseconds);
+    this.invalid = invalidCount > 0;
   }
 
-  static fromMilliseconds(milliseconds: number = 0) {
+  public static readonly fromMilliseconds = (milliseconds: number = 0) => {
     const d: DurationOptions = {};
     let ms = milliseconds;
     if (ms < 0) {
@@ -168,37 +184,43 @@ export default class Duration {
     ms %= Duration.SECOND;
     d.milliseconds = ms;
     return new Duration(d);
-  }
+  };
 
-  static fromTimeCode(value: string) {
-    let v = value;
-    let sign = 1;
-    if (v[0] === "-") {
-      v = v.slice(1);
-      sign = -1;
+  public static readonly fromTimeCode = (value: string) => {
+    if (value === "") {
+      return new Duration({ invalid: true });
     }
-    const parts = v.split(/[:：]/);
+    let s = value;
+    const d = {
+      negative: false,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
+    if (s.startsWith("-")) {
+      s = s.slice(1);
+      d.negative = true;
+    }
+    const parts = s.split(/[:：]/);
     parts.splice(0, 0, ...["0", "0"].splice(parts.length - 1));
     const [hours, minutes, seconds] = parts;
 
-    let ret = 0;
     if (hours) {
-      ret += parseFloat(hours) * Duration.HOUR;
+      d.hours = parseFloat(hours);
     }
     if (minutes) {
-      ret += parseFloat(minutes) * Duration.MINUTE;
+      d.minutes = parseFloat(minutes);
     }
     if (seconds) {
-      ret += parseFloat(seconds) * Duration.SECOND;
+      d.seconds = parseFloat(seconds);
     }
-    ret *= sign;
-    return Duration.fromMilliseconds(ret);
-  }
+    return new Duration(d);
+  };
 
   /**
    * @param value iso 8601 duration string
    */
-  static parse(value: string): Duration {
+  public static readonly parse = (value: string): Duration => {
     const d = {
       invalid: false,
       negative: false,
@@ -213,14 +235,14 @@ export default class Duration {
     };
     let s = value;
     [d.negative, s] = leadingNegative(s);
-    if (s === "" || s[0] !== "P") {
+    if (s === "" || !s.startsWith("P")) {
       d.invalid = true;
       return new Duration(d);
     }
     s = s.slice(1);
     let afterT = false;
     while (s) {
-      if (s[0] === "T") {
+      if (s.startsWith("T")) {
         s = s.slice(1);
         afterT = true;
       }
@@ -244,7 +266,7 @@ export default class Duration {
       }
 
       // Consume (\.[0-9]*)?
-      if (s && s[0] === ".") {
+      if (s.startsWith(".")) {
         s = s.slice(1);
         const pl = s.length;
         [f, scale, s] = leadingFraction(s);
@@ -311,23 +333,22 @@ export default class Duration {
       }
     }
     return new Duration(d);
-  }
+  };
 
-  static cast(v: DurationInput): Duration {
+  public static readonly cast = (v: DurationInput): Duration => {
     if (v instanceof Duration) {
       return v;
     }
     if (typeof v === "string") {
-      if (v.includes(":")) {
-        return this.fromTimeCode(v);
-      } else {
+      if (v.startsWith("P") || v.startsWith("-P")) {
         return this.parse(v);
       }
+      return this.fromTimeCode(v);
     }
     return new Duration(v);
-  }
+  };
 
-  public toISOString(): string {
+  public readonly toISOString = (): string => {
     if (this.invalid) {
       return "";
     }
@@ -383,9 +404,9 @@ export default class Duration {
       b += "0D";
     }
     return b;
-  }
+  };
 
-  public toMilliseconds(): number {
+  public readonly toMilliseconds = (): number => {
     if (this.invalid) {
       return NaN;
     }
@@ -400,23 +421,26 @@ export default class Duration {
         this.seconds * Duration.SECOND +
         this.milliseconds * Duration.MILLISECOND)
     );
-  }
+  };
 
-  public toHours(): number {
+  public readonly toHours = (): number => {
     return this.toMilliseconds() / Duration.HOUR;
-  }
+  };
 
-  public toString(): string {
+  public readonly toString = (): string => {
     if (this.invalid) {
       return "Invalid Duration";
     }
     return this.toISOString();
-  }
+  };
 
   /**
    * Format duration to `HH:MM:SS.sss` format
    */
-  toTimeCode(fixed = false): string {
+  public readonly toTimeCode = (fixed = false): string => {
+    if (this.invalid) {
+      return "";
+    }
     let v = this.toMilliseconds();
     let sign = "";
     if (v < 0) {
@@ -436,40 +460,40 @@ export default class Duration {
       2
     )}:${formatSeconds(seconds)}`;
     if (!fixed) {
-      if (ret[0] === "0" && ret[1] !== ":") {
+      if (ret.startsWith("0") && ret[1] !== ":") {
         ret = ret.slice(1);
       }
       ret = ret.replace(/\.?0+$/, "");
     }
     ret = sign + ret;
     return ret;
-  }
+  };
 
-  add(other: DurationInput): Duration {
+  public add = (other: DurationInput): Duration => {
     return Duration.fromMilliseconds(
       this.toMilliseconds() + Duration.cast(other).toMilliseconds()
     );
-  }
+  };
 
-  sub(other: DurationInput): Duration {
+  public sub = (other: DurationInput): Duration => {
     return Duration.fromMilliseconds(
       this.toMilliseconds() - Duration.cast(other).toMilliseconds()
     );
-  }
+  };
 
-  abs(): Duration {
+  public abs = (): Duration => {
     return Duration.fromMilliseconds(Math.abs(this.toMilliseconds()));
-  }
+  };
 
-  isZero(): boolean {
+  public isZero = (): boolean => {
     return this.toMilliseconds() === 0;
-  }
+  };
 
-  truncate(unitMs: number): Duration {
+  public truncate = (unitMs: number): Duration => {
     if (unitMs <= 0) {
       return this;
     }
     const ms = this.toMilliseconds();
     return Duration.fromMilliseconds(ms - (ms % unitMs));
-  }
+  };
 }

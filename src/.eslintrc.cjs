@@ -73,11 +73,13 @@ module.exports = {
     "@typescript-eslint/prefer-regexp-exec": "error",
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     // typescript handled rules
+    "no-use-before-define": "off",
     "grouped-accessor-pairs": "off",
     "no-shadow": "off",
     "no-useless-constructor": "off",
     "no-unused-vars": "off",
     "no-undef": "off",
+    "no-continue": "off",
     "no-empty-function": "off",
     "consistent-return": "off",
     "vue/return-in-computed-property": "off",

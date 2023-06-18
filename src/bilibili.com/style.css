@@ -535,6 +535,11 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   z-index: 20;
 }
 
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.my-1) {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.inline) {
   display: inline;
 }
@@ -674,6 +679,10 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.rounded-md) {
   border-radius: 0.375rem;
+}
+
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.border) {
+  border-width: 1px;
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.border-none) {

@@ -3,6 +3,7 @@ import randomUUID from "@/utils/randomUUID";
 import { mdiAccountCheckOutline, mdiClose, mdiOpenInNew } from "@mdi/js";
 import { html, nothing, render } from "lit-html";
 import compare from "@/utils/compare";
+import { debounce } from "lodash-es";
 import style from "../style";
 import blockedUsers from "../models/blockedUsers";
 import homePageSettings from "../models/homePageSettings";
@@ -114,7 +115,7 @@ export default class SettingsDrawer {
                 <label>
                   <input
                     type="checkbox"
-                    .checked="${homePageSettings.floorCard.excludeAll}"
+                    ?checked="${homePageSettings.floorCard.excludeAll}"
                     @change="${(e: Event) => {
                       const el = e.target as HTMLInputElement;
                       homePageSettings.floorCard.excludeAll = el.checked;
@@ -181,11 +182,11 @@ export default class SettingsDrawer {
     return html`
       <section class="flex-none">
         <h1 class="text-sm text-gray-500">视频列表</h1>
-        <div class="p-1">
+        <div class="px-1">
           <label>
             <input
               type="checkbox"
-              .checked="${videoListSettings.allowAdvertisement}"
+              ?checked="${videoListSettings.allowAdvertisement}"
               @change="${(e: Event) => {
                 const el = e.target as HTMLInputElement;
                 videoListSettings.allowAdvertisement = el.checked;
@@ -193,10 +194,60 @@ export default class SettingsDrawer {
             />
             <span>允许广告</span>
           </label>
+          <label class="flex items-center">
+            <span class="flex-none w-32">最短（含）</span>
+            <input
+              class="flex-auto border my-1 p-1"
+              type="text"
+              placeholder="HH:MM:SS"
+              value="${videoListSettings.durationGte.toTimeCode()}"
+              @input="${this.onVideListDurationGteChange}"
+              @blur="${() => {
+                this.onVideListDurationGteChange.flush();
+              }}"
+              @keyup="${(e: KeyboardEvent) => {
+                if (e.key === "Enter") {
+                  this.onVideListDurationGteChange(e);
+                  this.onVideListDurationGteChange.flush();
+                }
+              }}"
+            />
+          </label>
+          <label class="flex items-center">
+            <span class="flex-none w-32">最长（不含）</span>
+            <input
+              class="flex-auto border my-1 p-1"
+              type="text"
+              placeholder="HH:MM:SS"
+              value="${videoListSettings.durationLt.toTimeCode()}"
+              @input="${this.onVideListDurationLtChange}"
+              @blur="${() => {
+                this.onVideListDurationLtChange.flush();
+              }}"
+              @keyup="${(e: KeyboardEvent) => {
+                if (e.key === "Enter") {
+                  this.onVideListDurationLtChange(e);
+                  this.onVideListDurationLtChange.flush();
+                }
+              }}"
+            />
+          </label>
         </div>
       </section>
     `;
   }
+
+  private readonly onVideListDurationGteChange = debounce((e: Event) => {
+    const el = e.target as HTMLInputElement;
+    videoListSettings.durationGte = el.value;
+    el.value = videoListSettings.durationGte.toTimeCode();
+  }, 5e3);
+
+  private readonly onVideListDurationLtChange = debounce((e: Event) => {
+    const el = e.target as HTMLInputElement;
+    videoListSettings.durationLt = el.value;
+    el.value = videoListSettings.durationLt.toTimeCode();
+  }, 5e3);
 
   private userTable() {
     const userIDs = blockedUsers.distinctID();

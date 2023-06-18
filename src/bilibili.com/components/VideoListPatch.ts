@@ -1,5 +1,4 @@
 import setHTMLElementDisplayHidden from "@/utils/setHTMLElementDisplayHidden";
-import blockedUsers from "../models/blockedUsers";
 import parseUserURL from "../utils/parseUserURL";
 import VideoHoverButton from "./VideoHoverButton";
 import videoListSettings from "../models/videoListSettings";
@@ -18,11 +17,16 @@ export default class VideoListPatch {
       const user = parseUserURL(rawURL);
       let hidden = false;
       if (user) {
-        hidden = blockedUsers.has(user.id);
+        const duration =
+          i
+            .querySelector(".bili-video-card__stats__duration")
+            ?.textContent?.trim() ?? "";
+        hidden = videoListSettings.shouldExcludeVideo({ user, duration });
       } else {
         // assume advertisement
         hidden = !videoListSettings.allowAdvertisement;
       }
+
       let container = i;
       while (container.parentElement?.childElementCount === 1) {
         container = container.parentElement;
