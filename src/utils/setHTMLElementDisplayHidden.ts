@@ -2,7 +2,7 @@ export default function setHTMLElementDisplayHidden(
   el: HTMLElement,
   want: boolean
 ) {
-  const actual = el.style.display == "none";
+  const actual = el.style.display === "none";
   if (actual === want) {
     return;
   }

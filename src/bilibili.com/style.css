@@ -551,6 +551,14 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   display: table;
 }
 
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.\!hidden) {
+  display: none !important;
+}
+
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.hidden) {
+  display: none;
+}
+
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-5) {
   height: 1.25rem;
 }
@@ -630,8 +638,16 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   flex-direction: column;
 }
 
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-wrap) {
+  flex-wrap: wrap;
+}
+
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.items-center) {
   align-items: center;
+}
+
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.gap-2) {
+  gap: 0.5rem;
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.space-x-2 > :not([hidden]) ~ :not([hidden])) {
@@ -652,6 +668,10 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   overflow: hidden;
 }
 
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.rounded) {
+  border-radius: 0.25rem;
+}
+
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.rounded-md) {
   border-radius: 0.375rem;
 }
@@ -669,6 +689,11 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-gray-300) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-white) {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -682,8 +707,17 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   fill: currentColor;
 }
 
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.p-1) {
+  padding: 0.25rem;
+}
+
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.p-2) {
   padding: 0.5rem;
+}
+
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.px-1) {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-center) {

@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name     B站用户屏蔽
+// @name     B站内容屏蔽
 // @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
-// @description 避免看到指定用户上传的视频，在用户个人主页和视频左上角会多出屏蔽按钮。
+// @description 隐藏不感兴趣的内容，支持用户、首页频道推广和广告。
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @grant    GM.deleteValue
@@ -28,6 +28,8 @@ import VideoDetailPatch from "./components/VideoDetailPatch";
 import SSRVideoRankPatch from "./components/SSRVideoRankPatch";
 import VueVideoRankPatch from "./components/VueVideoRankPatch";
 import VideoListPatch from "./components/VideoListPatch";
+import AdblockTipPatch from "./components/AdblockTipPatch";
+import HomePageFloorCardPatch from "./components/HomePageFloorCardPatch";
 
 export {};
 
@@ -54,6 +56,10 @@ function createApp(): Component {
     components.push(new VueVideoRankPatch());
   } else {
     components.push(new VideoListPatch());
+  }
+
+  if (url.host === "www.bilibili.com" && url.pathname === "/") {
+    components.push(new AdblockTipPatch(), new HomePageFloorCardPatch());
   }
 
   return {

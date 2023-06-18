@@ -2,6 +2,7 @@ import setHTMLElementDisplayHidden from "@/utils/setHTMLElementDisplayHidden";
 import blockedUsers from "../models/blockedUsers";
 import parseUserURL from "../utils/parseUserURL";
 import VideoHoverButton from "./VideoHoverButton";
+import videoListSettings from "../models/videoListSettings";
 
 // spell-checker: word bili
 
@@ -15,17 +16,18 @@ export default class VideoListPatch {
         return;
       }
       const user = parseUserURL(rawURL);
+      let hidden = false;
       if (!user) {
-        return;
+        // assume advertisement
+        hidden = !videoListSettings.allowAdvertisement;
       }
-      const isBlocked = blockedUsers.has(user.id);
       let container = i;
       while (container.parentElement?.childElementCount === 1) {
         container = container.parentElement;
       }
 
-      setHTMLElementDisplayHidden(container, isBlocked);
-      if (!isBlocked) {
+      setHTMLElementDisplayHidden(container, hidden);
+      if (user && !hidden) {
         new VideoHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
           id: user.id,
           name:

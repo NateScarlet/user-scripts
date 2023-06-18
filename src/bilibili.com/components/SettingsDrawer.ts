@@ -5,6 +5,8 @@ import { html, nothing, render } from "lit-html";
 import compare from "@/utils/compare";
 import style from "../style";
 import blockedUsers from "../models/blockedUsers";
+import homePageSettings from "../models/homePageSettings";
+import videoListSettings from "../models/videoListSettings";
 
 // spell-checker: word datetime
 
@@ -53,7 +55,7 @@ export default class SettingsDrawer {
         bg-white overflow-auto p-2 
         transition-transform transform
         ${this.isOpen ? "" : "translate-x-full"}
-        flex flex-col
+        flex flex-col gap-2
       "
       @transitionend=${() => {
         if (!this.isOpen) {
@@ -76,11 +78,127 @@ export default class SettingsDrawer {
         </svg>
         <span>关闭</span>
       </button>
-     ${this.userTableHTML()}
+     ${this.homePageSettings()}
+     ${this.videoListSettings()}
+     ${this.userTable()}
     </div>`;
   }
 
-  private userTableHTML() {
+  private homePageSettings() {
+    return html`
+      <section class="flex-none">
+        <h1 class="text-sm text-gray-500">主页</h1>
+        <div class="px-1">
+          <label>
+            <input
+              type="checkbox"
+              .checked="${homePageSettings.allowAdblockTips}"
+              @change="${(e: Event) => {
+                const el = e.target as HTMLInputElement;
+                homePageSettings.allowAdblockTips = el.checked;
+              }}"
+            />
+            <span>允许</span>
+            <span class="text-sm rounded" 
+              style="
+                color: #e58900;
+                background-color: #fff0e3;
+              "
+            >检测到您的页面...</span>
+            <span>提示</span>
+          </label>
+          <section>
+            <h2 class="text-gray-500 text-sm">楼层推广卡片</h2>
+            <div class="px-1">
+              <div>
+                <label>
+                  <input
+                    type="checkbox"
+                    .checked="${homePageSettings.floorCard.excludeAll}"
+                    @change="${(e: Event) => {
+                      const el = e.target as HTMLInputElement;
+                      homePageSettings.floorCard.excludeAll = el.checked;
+                    }}"
+                  />
+                  <span>屏蔽所有</span>
+                </label>
+              </div>
+              ${(() => {
+                if (homePageSettings.floorCard.excludeAll) {
+                  return nothing;
+                }
+                if (homePageSettings.floorCard.excludeByChannel.length === 0) {
+                  return html`<div class="text-gray-500 text-sm">
+                    可通过指针悬停在卡片上时左上角显示的按钮来屏蔽单个频道的推广
+                  </div>`;
+                }
+                return html`
+                <div>
+                  <h2 class="flex-none text-sm text-gray-500">
+                    已屏蔽频道 <span class="text-sm">(${
+                      homePageSettings.floorCard.excludeByChannel.length
+                    })</span>
+                  </h1>
+                  <ol class="flex flex-wrap gap-2 items-center">
+                    ${homePageSettings.floorCard.excludeByChannel.map(
+                      (channel) => {
+                        return html`
+                      <li class="bg-gray-300 rounded px-1 flex items-center">
+                        <span>${channel}</span>
+                        <button
+                          type="button"
+                          @click=${() => {
+                            homePageSettings.floorCard.excludeByChannel =
+                              homePageSettings.floorCard.excludeByChannel.filter(
+                                (i) => i !== channel
+                              );
+                          }}
+                        >
+                          <svg 
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-[1.25em]"
+                          >
+                            <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiClose} fill="currentColor">
+                          </svg>
+                        </button>
+                      </li>`;
+                      }
+                    )}
+                  </ol>
+                </div>
+              `;
+              })()}
+            </section>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  private videoListSettings() {
+    return html`
+      <section class="flex-none">
+        <h1 class="text-sm text-gray-500">视频列表</h1>
+        <div class="p-1">
+          <label>
+            <input
+              type="checkbox"
+              .checked="${videoListSettings.allowAdvertisement}"
+              @change="${(e: Event) => {
+                const el = e.target as HTMLInputElement;
+                videoListSettings.allowAdvertisement = el.checked;
+              }}"
+            />
+            <span>允许广告</span>
+          </label>
+        </div>
+      </section>
+    `;
+  }
+
+  private userTable() {
     const userIDs = blockedUsers.distinctID();
 
     return html`

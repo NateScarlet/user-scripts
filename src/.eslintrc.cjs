@@ -54,6 +54,7 @@ module.exports = {
     ],
     camelcase: ["error", { allow: ["^\\$_"] }],
     "no-param-reassign": ["error", { props: false }],
+    "max-classes-per-file": ["error", { ignoreExpressions: true, max: 1 }],
     // not good when implementing a interface
     "class-methods-use-this": "off",
     "require-atomic-updates": "off", // https://github.com/eslint/eslint/issues/11899
