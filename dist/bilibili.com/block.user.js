@@ -2095,7 +2095,9 @@
           }
           const user = parseUserURL(rawURL);
           let hidden = false;
-          if (!user) {
+          if (user) {
+            hidden = blockedUsers_default.has(user.id);
+          } else {
             hidden = !videoListSettings_default.allowAdvertisement;
           }
           let container = i;

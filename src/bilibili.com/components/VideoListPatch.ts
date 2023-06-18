@@ -17,7 +17,9 @@ export default class VideoListPatch {
       }
       const user = parseUserURL(rawURL);
       let hidden = false;
-      if (!user) {
+      if (user) {
+        hidden = blockedUsers.has(user.id);
+      } else {
         // assume advertisement
         hidden = !videoListSettings.allowAdvertisement;
       }
