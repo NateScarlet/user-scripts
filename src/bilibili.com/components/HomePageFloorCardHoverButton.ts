@@ -46,11 +46,7 @@ export default class HomePageFloorCardHoverButton {
 <button
   type="button"
   title="屏蔽此频道的楼层卡片"
-  class="absolute rounded-md cursor-pointer text-white bg-[rgba(33,33,33,.8)] z-20 border-none"
-  style="
-    left: 80px;
-    top: 5px;
-  "
+  class="absolute top-2 left-2 rounded-md cursor-pointer text-white bg-[rgba(33,33,33,.8)] z-20 border-none"
   @click=${(e: Event) => {
     e.preventDefault();
     e.stopPropagation();
