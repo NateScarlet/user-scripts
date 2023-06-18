@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name     B站内容屏蔽
+// @name     B站用户屏蔽
 // @namespace https://github.com/NateScarlet/Scripts/tree/master/user-script
 // @description 隐藏不感兴趣的内容，支持用户、首页频道推广和广告。
 // @grant    GM.getValue
