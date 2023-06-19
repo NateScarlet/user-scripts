@@ -1,3 +1,4 @@
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
   root: true,
   extends: [
@@ -7,13 +8,14 @@ module.exports = {
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/strict",
     "plugin:prettier/recommended",
+    "plugin:internal/recommended",
   ],
   env: {
     greasemonkey: true,
     browser: true,
     es6: true,
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "internal"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: true,
@@ -28,19 +30,6 @@ module.exports = {
     },
   },
   rules: {
-    "no-restricted-syntax": [
-      "error",
-      {
-        selector: "PrivateIdentifier",
-        message: "use TypeScript visibility annotations instead",
-      },
-      {
-        selector:
-          "MethodDefinition[kind=method]:matches(:not([accessibility]),[accessibility=public])",
-        message:
-          "use instance function and non-public method instead\nhttps://github.com/Microsoft/TypeScript/wiki/%27this%27-in-TypeScript#use-instance-functions",
-      },
-    ],
     "import/extensions": [
       "error",
       "always",
