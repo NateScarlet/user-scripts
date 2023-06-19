@@ -1,11 +1,12 @@
-import { build } from 'esbuild';
+import { context } from 'esbuild';
 import { readFile, readdir, stat } from 'fs/promises';
 import { createHash } from 'crypto';
 
 import { execSync } from 'child_process';
 import * as moment from 'moment';
 import * as fs from 'fs/promises';
-import path = require('path');
+import * as pathLib from 'path';
+
 const METADATA_START = '// ==UserScript==';
 const METADATA_END = '// ==/UserScript==';
 
@@ -25,7 +26,7 @@ function autoVersion(p: string): string {
 
 async function walk(root: string, cb: (path: string) => Promise<void>) {
   for (const i of await readdir(root)) {
-    const p = path.join(root, i);
+    const p = pathLib.join(root, i);
     const s = await stat(p);
     if (s.isDirectory()) {
       await walk(p, cb);
@@ -36,7 +37,7 @@ async function walk(root: string, cb: (path: string) => Promise<void>) {
 }
 
 function workspacePath(...parts: string[]): string {
-  return path.resolve(__dirname, '..', ...parts);
+  return pathLib.resolve(__dirname, '..', ...parts);
 }
 
 (async () => {
@@ -49,7 +50,7 @@ function workspacePath(...parts: string[]): string {
     entryPoints.push(entry);
   });
   // spell-checker: word outdir
-  const res = await build({
+  const ctx = await context({
     entryPoints,
     bundle: true,
     treeShaking: true,
@@ -82,64 +83,87 @@ function workspacePath(...parts: string[]): string {
           });
         },
       },
+      {
+        name: 'save',
+        setup(build) {
+          build.onEnd(async (res) => {
+            res.warnings.forEach((i) => {
+              console.warn(i);
+            });
+            res.errors.forEach((i) => {
+              console.error(i);
+            });
+            await Promise.all(
+              res.outputFiles.map(async ({ text, path: path }, index) => {
+                const hash = createHash('sha256')
+                  .update(text)
+                  .digest('hex')
+                  .slice(0, 8);
+                const entry = entryPoints[index];
+                const entryContent = await fs.readFile(entry, {
+                  encoding: 'utf-8',
+                });
+                const data = Array.from(
+                  (function* () {
+                    for (const i of (function* () {
+                      enum CursorPosition {
+                        BEFORE_METADATA,
+                        METADATA,
+                      }
+                      let pos = CursorPosition.BEFORE_METADATA;
+                      let hasVersion = false;
+                      for (const line of entryContent.split(/\r?\n/)) {
+                        if (pos === CursorPosition.BEFORE_METADATA) {
+                          if (line === METADATA_START) {
+                            yield line;
+                            pos = CursorPosition.METADATA;
+                          }
+                        } else if (pos === CursorPosition.METADATA) {
+                          if (line === METADATA_END) {
+                            if (!hasVersion) {
+                              yield `// @version   ${autoVersion(
+                                entryPoints[index]
+                              )}+${hash}`;
+                            }
+                            yield line;
+                            return;
+                          } else if (line.startsWith('// @version')) {
+                            hasVersion = true;
+                            yield line.trim() + '+' + hash;
+                          } else {
+                            yield line;
+                          }
+                        }
+                      }
+                    })()) {
+                      yield i + '\n';
+                    }
+                    yield '\n';
+                    yield text;
+                  })()
+                );
+                console.log(pathLib.relative(process.cwd(), path));
+                await fs.writeFile(path, data, {
+                  encoding: 'utf-8',
+                  flag: 'w',
+                });
+              })
+            );
+          });
+        },
+      },
     ],
     loader: {
       '.html': 'text',
       '.css': 'text',
     },
   });
-  res.warnings.forEach((i) => {
-    console.warn(i);
-  });
-  res.errors.forEach((i) => {
-    console.error(i);
-  });
-  await Promise.all(
-    res.outputFiles.map(async ({ text, path }, index) => {
-      const hash = createHash('sha256').update(text).digest('hex').slice(0, 8);
-      const entry = entryPoints[index];
-      const entryContent = await fs.readFile(entry, { encoding: 'utf-8' });
-      await fs.writeFile(
-        path,
-        (function* () {
-          for (const i of (function* () {
-            enum CursorPosition {
-              BEFORE_METADATA,
-              METADATA,
-            }
-            let pos = CursorPosition.BEFORE_METADATA;
-            let hasVersion = false;
-            for (const line of entryContent.split(/\r?\n/)) {
-              if (pos === CursorPosition.BEFORE_METADATA) {
-                if (line === METADATA_START) {
-                  yield line;
-                  pos = CursorPosition.METADATA;
-                }
-              } else if (pos === CursorPosition.METADATA) {
-                if (line === METADATA_END) {
-                  if (!hasVersion) {
-                    yield `// @version   ${autoVersion(
-                      entryPoints[index]
-                    )}+${hash}`;
-                  }
-                  yield line;
-                  return;
-                } else if (line.startsWith('// @version')) {
-                  hasVersion = true;
-                  yield line.trim() + '+' + hash;
-                } else {
-                  yield line;
-                }
-              }
-            }
-          })()) {
-            yield i + '\n';
-          }
-          yield '\n';
-          yield text;
-        })(),
-        { encoding: 'utf-8', flag: 'w' }
-      );
-    })
-  );
+  if (process.argv.includes('--watch')) {
+    await ctx.watch();
+    // run forever
+    await new Promise(() => {});
+  } else {
+    await ctx.rebuild();
+  }
+  await ctx.dispose();
 })();

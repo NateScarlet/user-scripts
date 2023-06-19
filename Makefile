@@ -12,5 +12,5 @@ assets/style.css: *.ts
 	NODE_ENV=production pnpm exec tailwindcss --minify -o ./assets/style.css
 
 build:
-	npx ts-node-script ./scripts/build.ts
+	pnpm build
 

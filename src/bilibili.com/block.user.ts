@@ -13,23 +13,23 @@
 
 // spell-checker: word bili bilibili upname datetime
 
-import onDocumentReadyOnce from "@/utils/onDocumentReadyOnce";
-import Polling from "@/utils/Polling";
-import Disposal from "@/utils/Disposal";
-import style from "./style";
-import Component from "./components/Component";
-import SettingsDrawer from "./components/SettingsDrawer";
-import NavButton from "./components/NavButton";
-import migrate from "./models/migrate";
-import parseUserURL from "./utils/parseUserURL";
-import UserBlockButton from "./components/UserBlockButton";
-import parseVideoURL from "./utils/parseVideoURL";
-import VideoDetailPatch from "./components/VideoDetailPatch";
-import SSRVideoRankPatch from "./components/SSRVideoRankPatch";
-import VueVideoRankPatch from "./components/VueVideoRankPatch";
-import VideoListPatch from "./components/VideoListPatch";
-import AdblockTipPatch from "./components/AdblockTipPatch";
-import HomePageFloorCardPatch from "./components/HomePageFloorCardPatch";
+import onDocumentReadyOnce from '@/utils/onDocumentReadyOnce';
+import Polling from '@/utils/Polling';
+import Disposal from '@/utils/Disposal';
+import style from './style';
+import Component from './components/Component';
+import SettingsDrawer from './components/SettingsDrawer';
+import NavButton from './components/NavButton';
+import migrate from './models/migrate';
+import parseUserURL from './utils/parseUserURL';
+import UserBlockButton from './components/UserBlockButton';
+import parseVideoURL from './utils/parseVideoURL';
+import VideoDetailPatch from './components/VideoDetailPatch';
+import SSRVideoRankPatch from './components/SSRVideoRankPatch';
+import VueVideoRankPatch from './components/VueVideoRankPatch';
+import VideoListPatch from './components/VideoListPatch';
+import AdblockTipPatch from './components/AdblockTipPatch';
+import HomePageFloorCardPatch from './components/HomePageFloorCardPatch';
 
 export {};
 
@@ -45,20 +45,20 @@ function createApp(): Component {
   } else if (parseVideoURL(rawURL)) {
     components.push(new VideoDetailPatch());
   } else if (
-    url.host === "www.bilibili.com" &&
-    url.pathname.startsWith("/v/popular/rank/all")
+    url.host === 'www.bilibili.com' &&
+    url.pathname.startsWith('/v/popular/rank/all')
   ) {
     components.push(new SSRVideoRankPatch());
   } else if (
-    url.host === "www.bilibili.com" &&
-    url.pathname.startsWith("/v/popular/")
+    url.host === 'www.bilibili.com' &&
+    url.pathname.startsWith('/v/popular/')
   ) {
     components.push(new VueVideoRankPatch());
   } else {
     components.push(new VideoListPatch());
   }
 
-  if (url.host === "www.bilibili.com" && url.pathname === "/") {
+  if (url.host === 'www.bilibili.com' && url.pathname === '/') {
     components.push(new AdblockTipPatch(), new HomePageFloorCardPatch());
   }
 

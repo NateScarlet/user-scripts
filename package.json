@@ -26,7 +26,8 @@
     "typescript": "5.1.3"
   },
   "scripts": {
-    "build": "make",
+    "build": "ts-node-script ./scripts/build.ts",
+    "dev": "ts-node ./scripts/build.ts --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "NateScarlet",
