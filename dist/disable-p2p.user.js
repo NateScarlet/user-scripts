@@ -5,7 +5,7 @@
 // @grant    none
 // @run-at   document-start
 // @include	 *
-// @version   2023.05.08+e4375f89
+// @version   2023.05.08+43969c61
 // ==/UserScript==
 
 "use strict";

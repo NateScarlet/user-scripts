@@ -5,7 +5,7 @@
 // @grant    none
 // @include	 https://seiga.nicovideo.jp/watch/*
 // @run-at   document-idle
-// @version   2023.05.08+7fc08902
+// @version   2023.05.08+adfd5613
 // ==/UserScript==
 
 "use strict";

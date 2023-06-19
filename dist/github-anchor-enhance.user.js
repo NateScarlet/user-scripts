@@ -5,7 +5,7 @@
 // @grant    GM.xmlHttpRequest
 // @run-at   document-end
 // @include	 *
-// @version   2023.06.16+ce380046
+// @version   2023.06.16+d1f0a919
 // ==/UserScript==
 
 "use strict";

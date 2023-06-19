@@ -6,5 +6,5 @@
     "types": ["@types/node"],
     "noEmit": true
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "../src/utils/**/*.ts"]
 }

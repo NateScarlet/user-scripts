@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.06.19+90dfa3f4
+// @version   2023.06.19+21360bd2
 // ==/UserScript==
 
 "use strict";
