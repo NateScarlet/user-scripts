@@ -14,8 +14,10 @@ function shell(command) {
   return execSync(command).toString().trimEnd();
 }
 
-function autoVersion(p: string): string {
-  let date = new Date(parseInt(shell(`git log -1 --pretty=%at ${p}`)) * 1e3);
+function autoVersion(p: string[]): string {
+  let date = new Date(
+    parseInt(shell(`git log -1 --pretty=%at ${p.join(' ')}`)) * 1e3
+  );
   if (!Number.isFinite(date.getTime())) {
     console.warn(`can not get commit date: ${p}`);
     date = new Date();
@@ -57,6 +59,7 @@ function workspacePath(...parts: string[]): string {
     target: 'es2015',
     outdir: workspacePath('dist'),
     write: false,
+    metafile: true,
     charset: 'utf8',
     plugins: [
       {
@@ -94,12 +97,15 @@ function workspacePath(...parts: string[]): string {
               console.error(i);
             });
             await Promise.all(
-              res.outputFiles.map(async ({ text, path: path }, index) => {
+              res.outputFiles.map(async ({ text, path }, index) => {
                 const hash = createHash('sha256')
                   .update(text)
                   .digest('hex')
                   .slice(0, 8);
                 const entry = entryPoints[index];
+                const relPath = pathLib
+                  .relative(workspacePath(), path)
+                  .replace(/\\/g, '/');
                 const entryContent = await fs.readFile(entry, {
                   encoding: 'utf-8',
                 });
@@ -121,8 +127,11 @@ function workspacePath(...parts: string[]): string {
                         } else if (pos === CursorPosition.METADATA) {
                           if (line === METADATA_END) {
                             if (!hasVersion) {
+                              console.log(res.metafile.outputs[relPath]);
                               yield `// @version   ${autoVersion(
-                                entryPoints[index]
+                                Object.keys(
+                                  res.metafile.outputs[relPath].inputs
+                                ).filter((i) => !i.startsWith('node_modules/'))
                               )}+${hash}`;
                             }
                             yield line;
@@ -142,7 +151,7 @@ function workspacePath(...parts: string[]): string {
                     yield text;
                   })()
                 );
-                console.log(pathLib.relative(process.cwd(), path));
+                console.log(relPath);
                 await fs.writeFile(path, data, {
                   encoding: 'utf-8',
                   flag: 'w',
@@ -161,7 +170,7 @@ function workspacePath(...parts: string[]): string {
   if (process.argv.includes('--watch')) {
     await ctx.watch();
     // run forever
-    await new Promise(() => {});
+    await new Promise(() => undefined);
   } else {
     await ctx.rebuild();
   }

@@ -5,7 +5,7 @@
 // @grant    none
 // @include	 https://www.ciweimao.com/chapter/*
 // @run-at   document-idle
-// @version   2023.05.08+9adf4c8f
+// @version   2023.06.18+9adf4c8f
 // ==/UserScript==
 
 "use strict";

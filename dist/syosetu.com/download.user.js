@@ -6,7 +6,7 @@
 // @include	 /^https?://ncode\.syosetu\.com/\w+/$/
 // @include	 /^https?://novel18\.syosetu\.com/\w+/$/
 // @run-at   document-end
-// @version   2023.05.08+49238d00
+// @version   2023.06.18+49238d00
 // ==/UserScript==
 
 "use strict";
