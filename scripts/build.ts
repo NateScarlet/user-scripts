@@ -127,7 +127,6 @@ function workspacePath(...parts: string[]): string {
                         } else if (pos === CursorPosition.METADATA) {
                           if (line === METADATA_END) {
                             if (!hasVersion) {
-                              console.log(res.metafile.outputs[relPath]);
                               yield `// @version   ${autoVersion(
                                 Object.keys(
                                   res.metafile.outputs[relPath].inputs
