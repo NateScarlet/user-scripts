@@ -1,13 +1,13 @@
-import obtainHTMLElementByID from "@/utils/obtainHTMLElementByID";
-import randomUUID from "@/utils/randomUUID";
-import { mdiAccountCheckOutline, mdiClose, mdiOpenInNew } from "@mdi/js";
-import { html, nothing, render } from "lit-html";
-import compare from "@/utils/compare";
-import { debounce } from "lodash-es";
-import style from "../style";
-import blockedUsers from "../models/blockedUsers";
-import homePageSettings from "../models/homePageSettings";
-import videoListSettings from "../models/videoListSettings";
+import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
+import randomUUID from '@/utils/randomUUID';
+import { mdiAccountCheckOutline, mdiClose, mdiOpenInNew } from '@mdi/js';
+import { html, nothing, render } from 'lit-html';
+import compare from '@/utils/compare';
+import { debounce } from 'lodash-es';
+import style from '../style';
+import blockedUsers from '../models/blockedUsers';
+import homePageSettings from '../models/homePageSettings';
+import videoListSettings from '../models/videoListSettings';
 
 // spell-checker: word datetime
 
@@ -45,7 +45,7 @@ export default class SettingsDrawer {
         fixed inset-0 
         bg-white bg-opacity-25 backdrop-blur 
         cursor-zoom-out transition duration-200 ease-in-out
-        ${this.isOpen ? "opacity-100" : "opacity-0"}
+        ${this.isOpen ? 'opacity-100' : 'opacity-0'}
       "
       @click=${() => this.close()}
     >
@@ -55,7 +55,7 @@ export default class SettingsDrawer {
         fixed inset-y-0 right-0 w-screen max-w-4xl
         bg-white overflow-auto p-2 
         transition-transform transform
-        ${this.isOpen ? "" : "translate-x-full"}
+        ${this.isOpen ? '' : 'translate-x-full'}
         flex flex-col gap-2
       "
       @transitionend=${() => {
@@ -206,7 +206,7 @@ export default class SettingsDrawer {
                 this.onVideListDurationGteChange.flush();
               }}"
               @keyup="${(e: KeyboardEvent) => {
-                if (e.key === "Enter") {
+                if (e.key === 'Enter') {
                   this.onVideListDurationGteChange(e);
                   this.onVideListDurationGteChange.flush();
                 }
@@ -225,7 +225,7 @@ export default class SettingsDrawer {
                 this.onVideListDurationLtChange.flush();
               }}"
               @keyup="${(e: KeyboardEvent) => {
-                if (e.key === "Enter") {
+                if (e.key === 'Enter') {
                   this.onVideListDurationLtChange(e);
                   this.onVideListDurationLtChange.flush();
                 }
@@ -255,7 +255,7 @@ export default class SettingsDrawer {
     return html`
       <div class="flex-auto flex flex-col overflow-hidden max-h-screen">
         <h1 class="flex-none text-sm text-gray-500">
-          已屏蔽的用户 <span class="text-sm">(${userIDs.length})</span>
+          已屏蔽用户 <span class="text-sm">(${userIDs.length})</span>
         </h1>
         <div class="flex-1 overflow-auto relative">
           <table class="table-fixed border-separate border-spacing-2 w-full">
@@ -337,12 +337,12 @@ export default class SettingsDrawer {
     render(
       this.html(),
       obtainHTMLElementByID({
-        tag: "div",
+        tag: 'div',
         id: this.id,
         onDidCreate: (el) => {
-          el.style.position = "relative";
-          el.style.zIndex = "9999";
-          el.style.fontSize = "1rem";
+          el.style.position = 'relative';
+          el.style.zIndex = '9999';
+          el.style.fontSize = '1rem';
           style.apply(el);
           document.body.append(el);
         },

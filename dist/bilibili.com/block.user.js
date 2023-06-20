@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.06.19+21360bd2
+// @version   2023.06.20+8327b835
 // ==/UserScript==
 
 "use strict";
@@ -2296,7 +2296,7 @@
       return html`
       <div class="flex-auto flex flex-col overflow-hidden max-h-screen">
         <h1 class="flex-none text-sm text-gray-500">
-          已屏蔽的用户 <span class="text-sm">(${userIDs.length})</span>
+          已屏蔽用户 <span class="text-sm">(${userIDs.length})</span>
         </h1>
         <div class="flex-1 overflow-auto relative">
           <table class="table-fixed border-separate border-spacing-2 w-full">
