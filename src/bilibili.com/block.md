@@ -50,7 +50,7 @@
 
 ## 查看当前设置
 
-![chrome_2023-06-19_00-56-11](https://cdn.jsdelivr.net/gh/NateScarlet/user-scripts@master/src/bilibili.com/img/chrome_2023-06-19_00-56-11)
+![chrome_2023-06-19_00-56-11.png](https://cdn.jsdelivr.net/gh/NateScarlet/user-scripts@master/src/bilibili.com/img/chrome_2023-06-19_00-56-11.png)
 
 点击顶端导航栏的 `屏蔽` 按钮。
 
