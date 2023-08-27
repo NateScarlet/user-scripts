@@ -4,7 +4,7 @@
 // @description Use <meta name="viewport" content="width=device-width, initial-scale=1"> as default.
 // @run-at   document-end
 // @include	 *
-// @version   2023.05.08+66b8f8ff
+// @version   2023.08.27+66b8f8ff
 // ==/UserScript==
 
 "use strict";

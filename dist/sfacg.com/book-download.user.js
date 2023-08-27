@@ -8,7 +8,7 @@
 // @include	 https://book.sfacg.com/Novel/*/*/*/
 // @include	 https://book.sfacg.com/vip/c/*/
 // @run-at   document-idle
-// @version   2023.06.18+d866dbc3
+// @version   2023.08.27+d866dbc3
 // ==/UserScript==
 
 "use strict";

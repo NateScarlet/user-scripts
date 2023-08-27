@@ -6,7 +6,7 @@
 // @include	 https://live.bilibili.com/*
 // @include	 https://www.bilibili.com/blackboard/live/*
 // @run-at   document-idle
-// @version   2023.05.08+d75203f6
+// @version   2023.08.27+d75203f6
 // ==/UserScript==
 
 "use strict";
