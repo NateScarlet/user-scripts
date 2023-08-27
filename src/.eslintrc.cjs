@@ -82,6 +82,7 @@ module.exports = {
     '@typescript-eslint/prefer-readonly': 'error',
     '@typescript-eslint/prefer-regexp-exec': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
     // typescript handled rules
     'no-use-before-define': 'off',
     'grouped-accessor-pairs': 'off',

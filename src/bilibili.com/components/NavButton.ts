@@ -1,10 +1,9 @@
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
-import { mdiAccountCancelOutline, mdiEyeOffOutline } from '@mdi/js';
-import { render, html, nothing } from 'lit-html';
+import { mdiEyeOffOutline } from '@mdi/js';
+import { render, html } from 'lit-html';
 import isNonNull from '@/utils/isNonNull';
 import style from '../style';
 import SettingsDrawer from './SettingsDrawer';
-import blockedUsers from '../models/blockedUsers';
 
 export default class NavButton {
   private readonly settings: SettingsDrawer;
@@ -27,7 +26,6 @@ export default class NavButton {
         parent.prepend(...[parent.firstChild, el].filter(isNonNull));
       },
     });
-    const count = blockedUsers.distinctID().length;
     render(
       html`
 <button
