@@ -77,6 +77,13 @@ async function main() {
   d.push(
     new Polling({
       update: () => {
+        if (
+          (document.querySelector('.right-entry')?.childElementCount ?? 0) < 2
+        ) {
+          // not ready
+          // https://greasyfork.org/zh-CN/scripts/465675-b%E7%AB%99%E7%94%A8%E6%88%B7%E5%B1%8F%E8%94%BD/discussions/198827
+          return;
+        }
         if (window.location.pathname !== initialPath) {
           // route changed
           d.dispose();

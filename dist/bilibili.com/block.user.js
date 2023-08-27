@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.08.27+5a2541d6
+// @version   2023.08.27+43e09a99
 // ==/UserScript==
 
 "use strict";
@@ -2904,6 +2904,10 @@
       d2.push(
         new Polling({
           update: () => {
+            var _a2, _b2;
+            if (((_b2 = (_a2 = document.querySelector(".right-entry")) == null ? void 0 : _a2.childElementCount) != null ? _b2 : 0) < 2) {
+              return;
+            }
             if (window.location.pathname !== initialPath) {
               d2.dispose();
               main();
