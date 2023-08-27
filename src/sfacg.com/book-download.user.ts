@@ -10,42 +10,42 @@
 // @run-at   document-idle
 // ==/UserScript==
 
-import downloadFile from "@/utils/downloadFile";
-import elementRootText from "@/utils/elementRootText";
-import imageToMarkdown from "@/utils/imageToMarkdown";
+import downloadFile from '@/utils/downloadFile';
+import elementRootText from '@/utils/elementRootText';
+import imageToMarkdown from '@/utils/imageToMarkdown';
 
-const __name__ = "SF轻小说章节自动下载";
+const __name__ = 'SF轻小说章节自动下载';
 
 (async function (): Promise<void> {
-  const chapter = document.querySelector("#article .article-title").textContent;
+  const chapter = document.querySelector('#article .article-title').textContent;
   let lines = [
     `# ${chapter}`,
     `[原始页面](${location.href})`,
     ...document
-      .querySelector("#article .article-desc")
+      .querySelector('#article .article-desc')
       .textContent.split(/\n */)
       .filter((i) => i),
     `---`,
   ];
   const keywords = document
     .querySelector<HTMLMetaElement>("meta[name='keywords']")
-    .content.split(",")
-    .filter((i) => !["小说下载", "TXT"].includes(i))
+    .content.split(',')
+    .filter((i) => !['小说下载', 'TXT'].includes(i))
     .filter((i, index, keywords) => index === 0 || !i.startsWith(keywords[0]));
 
   // 收费章节
-  for (const i of document.querySelectorAll<HTMLImageElement>("img#vipImage")) {
+  for (const i of document.querySelectorAll<HTMLImageElement>('img#vipImage')) {
     console.log(`${__name__}: 等待图片加载`);
     await i.decode();
     console.log(`${__name__}: 图片加载完毕`);
-    const line = imageToMarkdown(i, { background: "white" });
+    const line = imageToMarkdown(i, { background: 'white' });
     lines.push(line);
   }
   // 免费章节
-  for (const i of document.querySelectorAll("#ChapterBody p")) {
+  for (const i of document.querySelectorAll('#ChapterBody p')) {
     const line = elementRootText(i);
     lines.push(line);
-    for (const img of i.querySelectorAll("img")) {
+    for (const img of i.querySelectorAll('img')) {
       lines.push(imageToMarkdown(img));
     }
   }
@@ -54,8 +54,8 @@ const __name__ = "SF轻小说章节自动下载";
   lines = lines.filter((i) => i.length > 0);
   console.log(`${__name__}: 获取到 ${lines.length} 行`);
 
-  const file = new Blob([lines.join("\n\n"), "\n"], {
-    type: "text/markdown",
+  const file = new Blob([lines.join('\n\n'), '\n'], {
+    type: 'text/markdown',
   });
-  downloadFile(file, `${keywords.join(" ")}.md`);
+  downloadFile(file, `${keywords.join(' ')}.md`);
 })();

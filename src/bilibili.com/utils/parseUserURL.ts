@@ -6,15 +6,15 @@ export default function parseUserURL(
   }
   const url = new URL(rawURL, window.location.href);
   switch (url.host) {
-    case "space.bilibili.com": {
+    case 'space.bilibili.com': {
       const match = /^\/(\d+)\/?/.exec(url.pathname);
       if (!match) {
         return;
       }
       return { id: match[1] };
     }
-    case "cm.bilibili.com": {
-      const id = url.searchParams.get("space_mid");
+    case 'cm.bilibili.com': {
+      const id = url.searchParams.get('space_mid');
       if (id) {
         return { id };
       }

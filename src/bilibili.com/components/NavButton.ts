@@ -1,10 +1,10 @@
-import obtainHTMLElementByID from "@/utils/obtainHTMLElementByID";
-import { mdiAccountCancelOutline, mdiEyeOffOutline } from "@mdi/js";
-import { render, html, nothing } from "lit-html";
-import isNonNull from "@/utils/isNonNull";
-import style from "../style";
-import SettingsDrawer from "./SettingsDrawer";
-import blockedUsers from "../models/blockedUsers";
+import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
+import { mdiAccountCancelOutline, mdiEyeOffOutline } from '@mdi/js';
+import { render, html, nothing } from 'lit-html';
+import isNonNull from '@/utils/isNonNull';
+import style from '../style';
+import SettingsDrawer from './SettingsDrawer';
+import blockedUsers from '../models/blockedUsers';
 
 export default class NavButton {
   private readonly settings: SettingsDrawer;
@@ -14,16 +14,16 @@ export default class NavButton {
   }
 
   public readonly render = () => {
-    const parent = document.querySelector(".right-entry");
+    const parent = document.querySelector('.right-entry');
     if (!parent) {
       return;
     }
     const container = obtainHTMLElementByID({
-      tag: "li",
-      id: "db7a644d-1c6c-4078-a9dc-991b15b68014",
+      tag: 'li',
+      id: 'db7a644d-1c6c-4078-a9dc-991b15b68014',
       onDidCreate: (el) => {
         style.apply(el);
-        el.classList.add("right-entry-item");
+        el.classList.add('right-entry-item');
         parent.prepend(...[parent.firstChild, el].filter(isNonNull));
       },
     });

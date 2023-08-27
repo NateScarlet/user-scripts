@@ -7,14 +7,14 @@
 // @run-at   document-idle
 // ==/UserScript==
 
-import downloadFile from "@/utils/downloadFile";
-import sleep from "@/utils/sleep";
-import mangaReaderHTML from "./manga-reader.html";
-import mustache from "mustache";
-import style from "./style.css";
-import imageToCanvas from "@/utils/imageToCanvas";
+import downloadFile from '@/utils/downloadFile';
+import sleep from '@/utils/sleep';
+import mangaReaderHTML from './manga-reader.html';
+import mustache from 'mustache';
+import style from './style.css';
+import imageToCanvas from '@/utils/imageToCanvas';
 
-const __name__ = "NicoNico manga download";
+const __name__ = 'NicoNico manga download';
 
 (async function (): Promise<void> {
   const images = [];
@@ -30,13 +30,13 @@ const __name__ = "NicoNico manga download";
     }
     throw new Error(`${__name__}: timeout`);
   };
-  const pages = document.querySelectorAll<HTMLLIElement>("li.page");
+  const pages = document.querySelectorAll<HTMLLIElement>('li.page');
   for (let index = 0; index < pages.length; index += 1) {
     const li = pages.item(index);
     while (loopNext()) {
       const pageIndex = Number.parseInt(li.dataset.pageIndex, 10) || index;
-      let canvas = li.querySelector<HTMLCanvasElement>("canvas:not(.balloon)");
-      const image = li.querySelector<HTMLImageElement>("img[data-image-id]");
+      let canvas = li.querySelector<HTMLCanvasElement>('canvas:not(.balloon)');
+      const image = li.querySelector<HTMLImageElement>('img[data-image-id]');
       if (image) {
         canvas ??= imageToCanvas(image);
       }
@@ -67,6 +67,6 @@ const __name__ = "NicoNico manga download";
 
   // download
   console.log(`${__name__}: got ${images.length} page(s)`);
-  const file = new Blob([data], { type: "text/html" });
+  const file = new Blob([data], { type: 'text/html' });
   downloadFile(file, `${title}.html`);
 })();

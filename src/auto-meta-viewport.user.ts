@@ -13,9 +13,9 @@ function main(): void {
     return;
   }
 
-  const el = document.createElement("meta");
-  el.name = "viewport";
-  el.content = "width=device-width, initial-scale=1";
+  const el = document.createElement('meta');
+  el.name = 'viewport';
+  el.content = 'width=device-width, initial-scale=1';
   document.head.append(el);
 }
 

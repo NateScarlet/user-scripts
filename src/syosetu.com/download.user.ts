@@ -8,14 +8,14 @@
 // @run-at   document-end
 // ==/UserScript==
 
-import downloadFile from "@/utils/downloadFile";
-import imageToMarkdown from "@/utils/imageToMarkdown";
-import loadImageCORS from "@/utils/loadImageCORS";
-import sleep from "@/utils/sleep";
-import urlLastPart from "@/utils/urlLastPart";
+import downloadFile from '@/utils/downloadFile';
+import imageToMarkdown from '@/utils/imageToMarkdown';
+import loadImageCORS from '@/utils/loadImageCORS';
+import sleep from '@/utils/sleep';
+import urlLastPart from '@/utils/urlLastPart';
 
-const __name__ = "小説家になろう book downloader";
-const statusIndicator = document.createElement("span");
+const __name__ = '小説家になろう book downloader';
+const statusIndicator = document.createElement('span');
 let finishedCount = 0;
 let totalCount = 0;
 
@@ -23,20 +23,20 @@ function log(...v: unknown[]): void {
   console.log(`${__name__}:`, ...v);
 }
 const messageNodes: HTMLDivElement[] = [];
-function addMessage(text: string[], title: string, color = "red"): void {
-  const div = document.createElement("div");
+function addMessage(text: string[], title: string, color = 'red'): void {
+  const div = document.createElement('div');
   div.className = `ui ${color} message`;
   statusIndicator.after(div);
   messageNodes.push(div);
   if (title) {
-    const header = document.createElement("div");
+    const header = document.createElement('div');
     header.innerText = title;
-    header.className = "header";
+    header.className = 'header';
     div.appendChild(header);
   }
-  const lines = (typeof text === "string" ? [text] : text) || [];
+  const lines = (typeof text === 'string' ? [text] : text) || [];
   for (const i of lines) {
-    const p = document.createElement("p");
+    const p = document.createElement('p');
     p.innerText = i;
     div.appendChild(p);
   }
@@ -49,7 +49,7 @@ async function chapterImageToMarkdown(line: string): Promise<string> {
     try {
       return imageToMarkdown(await loadImageCORS(url));
     } catch (err) {
-      addMessage([url, JSON.stringify(err)], "Image download failed", "orange");
+      addMessage([url, JSON.stringify(err)], 'Image download failed', 'orange');
       return `![${line}](${url})`;
     }
   }
@@ -71,7 +71,7 @@ async function downloadChapter(
   if (resp.status !== 200) {
     addMessage(
       [`${resp.status} ${resp.statusText}`, url],
-      "Fetch chapter failed"
+      'Fetch chapter failed'
     );
     throw new Error(
       `Fetch chapter failed: ${resp.status} ${resp.statusText} : ${url}`
@@ -89,22 +89,22 @@ function getMetaData(): string {
   const data: Record<string, string> = {
     link: document.location.href,
   };
-  const authorContainer = document.querySelector(".novel_writername");
+  const authorContainer = document.querySelector('.novel_writername');
   const authorAnchor = document.querySelector(
-    ".novel_writername > a:nth-child(1)"
+    '.novel_writername > a:nth-child(1)'
   );
   if (authorAnchor instanceof HTMLAnchorElement) {
-    data["author"] = authorAnchor.innerText;
-    data["author_link"] = authorAnchor.href;
+    data['author'] = authorAnchor.innerText;
+    data['author_link'] = authorAnchor.href;
   } else if (authorContainer instanceof HTMLDivElement) {
-    data["author"] = authorContainer.innerText.replace(/^作者：/, "");
+    data['author'] = authorContainer.innerText.replace(/^作者：/, '');
   }
 
   return [
-    "---",
+    '---',
     ...Object.entries(data).map(([k, v]) => `${k}: ${v}`),
-    "---",
-  ].join("\n");
+    '---',
+  ].join('\n');
 }
 
 async function downloadChapterChunk(
@@ -118,7 +118,7 @@ async function downloadChapterChunk(
           (
             await downloadChapter(ncode, i.chapter)
           )
-            .split("\n")
+            .split('\n')
             .map((i) => i.trim())
             .filter((i) => i.length > 0)
             .map(chapterImageToMarkdown)
@@ -143,13 +143,13 @@ async function main(button: HTMLButtonElement): Promise<void> {
   clearMessage();
   const ncode = urlLastPart(
     document.querySelector<HTMLAnchorElement>(
-      "#novel_footer > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)"
+      '#novel_footer > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)'
     ).href
   );
   log(`start downloading: ${ncode}`);
   const chapters = [];
   for (const i of document.querySelectorAll<HTMLAnchorElement>(
-    "dl.novel_sublist2 > dd:nth-child(1) > a:nth-child(1)"
+    'dl.novel_sublist2 > dd:nth-child(1) > a:nth-child(1)'
   )) {
     chapters.push({ chapter: urlLastPart(i.href), title: i.innerText });
   }
@@ -170,8 +170,8 @@ async function main(button: HTMLButtonElement): Promise<void> {
 
   function download(): void {
     downloadFile(
-      new Blob([getMetaData(), "\n\n", lines.join("\n\n")], {
-        type: "text/markdown",
+      new Blob([getMetaData(), '\n\n', lines.join('\n\n')], {
+        type: 'text/markdown',
       })
     );
   }
@@ -180,21 +180,21 @@ async function main(button: HTMLButtonElement): Promise<void> {
 }
 
 (async function (): Promise<void> {
-  const button = document.createElement("button");
-  button.innerText = "Download all chapters";
-  button.className = "button";
+  const button = document.createElement('button');
+  button.innerText = 'Download all chapters';
+  button.className = 'button';
   button.onclick = async (): Promise<void> => {
     try {
       button.disabled = true;
-      button.style.opacity = "50%";
+      button.style.opacity = '50%';
       await main(button);
     } catch (err) {
       console.error(err);
     } finally {
       button.disabled = false;
-      button.style.opacity = "";
+      button.style.opacity = '';
     }
   };
-  document.querySelector("#novel_ex").after(button, statusIndicator);
-  log("activated");
+  document.querySelector('#novel_ex').after(button, statusIndicator);
+  log('activated');
 })();

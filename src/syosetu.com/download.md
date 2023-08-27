@@ -1,5 +1,4 @@
-小説家になろう book downloader
-===========================
+# 小説家になろう book downloader
 
 You need login to download chapters
 

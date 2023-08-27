@@ -1,13 +1,13 @@
-import setHTMLElementDisplayHidden from "@/utils/setHTMLElementDisplayHidden";
-import homePageSettings from "../models/homePageSettings";
-import HomePageFloorCardHoverButton from "./HomePageFloorCardHoverButton";
+import setHTMLElementDisplayHidden from '@/utils/setHTMLElementDisplayHidden';
+import homePageSettings from '../models/homePageSettings';
+import HomePageFloorCardHoverButton from './HomePageFloorCardHoverButton';
 
 export default class HomePageFloorCardPatch {
   public readonly render = () => {
     document
-      .querySelectorAll<HTMLElement>(".floor-single-card")
+      .querySelectorAll<HTMLElement>('.floor-single-card')
       .forEach((el) => {
-        const channel = el.querySelector(".floor-title")?.textContent?.trim();
+        const channel = el.querySelector('.floor-title')?.textContent?.trim();
         if (!channel) {
           return;
         }
@@ -16,7 +16,7 @@ export default class HomePageFloorCardPatch {
         setHTMLElementDisplayHidden(el, hidden);
         if (!hidden) {
           new HomePageFloorCardHoverButton(
-            el.querySelector(".cover-container"),
+            el.querySelector('.cover-container'),
             i
           ).render();
         }

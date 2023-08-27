@@ -1,6 +1,6 @@
 export default function parseHeader(headers: string): Map<string, string[]> {
   const ret: Map<string, string[]> = new Map();
-  for (const line of headers.split("\r\n")) {
+  for (const line of headers.split('\r\n')) {
     if (!line) {
       continue;
     }

@@ -3,7 +3,7 @@ export default function parseVideoURL(rawURL: string | undefined) {
     return;
   }
   const url = new URL(rawURL, window.location.href);
-  if (url.host !== "www.bilibili.com") {
+  if (url.host !== 'www.bilibili.com') {
     return;
   }
   const match = /^\/video\//.exec(url.pathname);

@@ -19,7 +19,7 @@ export default function obtainHTMLElementByDataKey<
     return match;
   }
   const el = document.createElement(tag);
-  el.setAttribute(`data-${key}`, "");
+  el.setAttribute(`data-${key}`, '');
   onDidCreate?.(el);
   return el;
 }

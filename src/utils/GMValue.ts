@@ -1,4 +1,4 @@
-import Polling from "./Polling";
+import Polling from './Polling';
 
 export default class GMValue<T> {
   private value: T | undefined;

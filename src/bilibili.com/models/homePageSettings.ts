@@ -1,4 +1,4 @@
-import GMValue from "@/utils/GMValue";
+import GMValue from '@/utils/GMValue';
 
 export default new (class HomePageSettings {
   private readonly value = new GMValue<{
@@ -7,7 +7,7 @@ export default new (class HomePageSettings {
       excludeAll?: boolean;
       excludeByChannel?: string[];
     };
-  }>("homePageSettings@cb2f3e6c-a1e5-44de-b618-7715559b02ad", () => ({}));
+  }>('homePageSettings@cb2f3e6c-a1e5-44de-b618-7715559b02ad', () => ({}));
 
   get allowAdblockTips() {
     return this.value.get().allowAdblockTips ?? false;

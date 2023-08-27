@@ -1,5 +1,5 @@
-import canvasToMarkdown from "./canvasToMarkdown";
-import imageToCanvas from "./imageToCanvas";
+import canvasToMarkdown from './canvasToMarkdown';
+import imageToCanvas from './imageToCanvas';
 
 export default function imageToMarkdown(
   img: HTMLImageElement,

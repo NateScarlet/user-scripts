@@ -1,9 +1,9 @@
-import injectStyle from "@/utils/injectStyle";
-import obtainHTMLElementByDataKey from "@/utils/obtainHTMLElementByDataKey";
-import { html, render } from "lit-html";
-import { mdiAccountCancelOutline } from "@mdi/js";
-import style from "../style";
-import blockedUsers from "../models/blockedUsers";
+import injectStyle from '@/utils/injectStyle';
+import obtainHTMLElementByDataKey from '@/utils/obtainHTMLElementByDataKey';
+import { html, render } from 'lit-html';
+import { mdiAccountCancelOutline } from '@mdi/js';
+import style from '../style';
+import blockedUsers from '../models/blockedUsers';
 
 export default class VideoHoverButton {
   constructor(
@@ -16,7 +16,7 @@ export default class VideoHoverButton {
     if (!parentNode) {
       return;
     }
-    const key = "a1161956-2be7-4796-9f1b-528707156b11";
+    const key = 'a1161956-2be7-4796-9f1b-528707156b11';
     injectStyle(
       key,
       `\
@@ -32,12 +32,12 @@ export default class VideoHoverButton {
 `
     );
     const el = obtainHTMLElementByDataKey({
-      tag: "div",
+      tag: 'div',
       key,
       parentNode,
       onDidCreate: (el) => {
         style.apply(el);
-        parentNode.setAttribute(`data-${key}`, "");
+        parentNode.setAttribute(`data-${key}`, '');
         parentNode.append(el);
       },
     });

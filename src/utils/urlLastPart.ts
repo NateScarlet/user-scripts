@@ -1,6 +1,6 @@
 export default function urlLastPart(url: string): string {
   return url
-    .split("/")
+    .split('/')
     .filter((i) => i)
     .slice(-1)[0];
 }

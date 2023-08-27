@@ -1,34 +1,34 @@
 // port from https://github.com/NateScarlet/iso8601/blob/1f881e261294d70e12d815a85b2995d5d1efbc87/pkg/iso8601/duration.go
 
-import roundDecimal from "./roundDecimal";
+import roundDecimal from './roundDecimal';
 
 function leadingInt(s: string): [x: number, rem: string] {
   let i = 0;
   let x = 0;
   for (; i < s.length; i += 1) {
     const c = s[i]!;
-    if (c < "0" || c > "9") {
+    if (c < '0' || c > '9') {
       break;
     }
     if (x > Number.MAX_SAFE_INTEGER / 10) {
-      throw new Error("overflow");
+      throw new Error('overflow');
     }
 
     x = x * 10 + Number.parseInt(c, 10);
     if (x < 0) {
-      throw new Error("overflow");
+      throw new Error('overflow');
     }
   }
   return [x, s.slice(i)];
 }
 
 function leadingNegative(s: string): [boolean, string] {
-  if (s === "") {
+  if (s === '') {
     return [false, s];
   }
   const c = s[0];
-  if (c === "-" || c === "+") {
-    return [c === "-", s.slice(1)];
+  if (c === '-' || c === '+') {
+    return [c === '-', s.slice(1)];
   }
   return [false, s];
 }
@@ -40,7 +40,7 @@ function leadingFraction(s: string): [x: number, scale: number, rem: string] {
   let overflow = false;
   for (; i < s.length; i += 1) {
     const c = s[i]!;
-    if (c < "0" || c > "9") {
+    if (c < '0' || c > '9') {
       break;
     }
     if (overflow) {
@@ -72,7 +72,7 @@ function padLeft(v: string, c: string, n: number): string {
 
 function formatSeconds(v: number): string {
   let ret = v.toFixed(3);
-  if (ret.indexOf(".") < 2) {
+  if (ret.indexOf('.') < 2) {
     ret = `0${ret}`;
   }
   return ret;
@@ -187,7 +187,7 @@ export default class Duration {
   };
 
   public static readonly fromTimeCode = (value: string) => {
-    if (value === "") {
+    if (value === '') {
       return new Duration({ invalid: true });
     }
     let s = value;
@@ -197,12 +197,12 @@ export default class Duration {
       minutes: 0,
       seconds: 0,
     };
-    if (s.startsWith("-")) {
+    if (s.startsWith('-')) {
       s = s.slice(1);
       d.negative = true;
     }
     const parts = s.split(/[:：]/);
-    parts.splice(0, 0, ...["0", "0"].splice(parts.length - 1));
+    parts.splice(0, 0, ...['0', '0'].splice(parts.length - 1));
     const [hours, minutes, seconds] = parts;
 
     if (hours) {
@@ -235,14 +235,14 @@ export default class Duration {
     };
     let s = value;
     [d.negative, s] = leadingNegative(s);
-    if (s === "" || !s.startsWith("P")) {
+    if (s === '' || !s.startsWith('P')) {
       d.invalid = true;
       return new Duration(d);
     }
     s = s.slice(1);
     let afterT = false;
     while (s) {
-      if (s.startsWith("T")) {
+      if (s.startsWith('T')) {
         s = s.slice(1);
         afterT = true;
       }
@@ -266,7 +266,7 @@ export default class Duration {
       }
 
       // Consume (\.[0-9]*)?
-      if (s.startsWith(".")) {
+      if (s.startsWith('.')) {
         s = s.slice(1);
         const pl = s.length;
         [f, scale, s] = leadingFraction(s);
@@ -285,19 +285,19 @@ export default class Duration {
       s = s.slice(1);
       if (!afterT) {
         switch (u) {
-          case "Y":
+          case 'Y':
             d.years += v;
             d.months += f * (Duration.YEAR / Duration.MONTH / scale);
             break;
-          case "M":
+          case 'M':
             d.months += v;
             d.weeks += f * (Duration.MONTH / Duration.WEEK / scale);
             break;
-          case "W":
+          case 'W':
             d.weeks += v;
             d.days += f * (Duration.WEEK / Duration.DAY / scale);
             break;
-          case "D":
+          case 'D':
             d.days += v;
             d.hours += f * (Duration.DAY / Duration.HOUR / scale);
             break;
@@ -307,15 +307,15 @@ export default class Duration {
         }
       } else {
         switch (u) {
-          case "H":
+          case 'H':
             d.hours += v;
             d.minutes += f * (Duration.HOUR / Duration.MINUTE / scale);
             break;
-          case "M":
+          case 'M':
             d.minutes += v;
             d.seconds += f * (Duration.MINUTE / Duration.SECOND / scale);
             break;
-          case "S":
+          case 'S':
             d.seconds += v;
             d.milliseconds +=
               f * (Duration.SECOND / Duration.MILLISECOND / scale);
@@ -326,7 +326,7 @@ export default class Duration {
         }
       }
 
-      if (post && s !== "") {
+      if (post && s !== '') {
         // must end after fraction used.
         d.invalid = true;
         return new Duration(d);
@@ -339,8 +339,8 @@ export default class Duration {
     if (v instanceof Duration) {
       return v;
     }
-    if (typeof v === "string") {
-      if (v.startsWith("P") || v.startsWith("-P")) {
+    if (typeof v === 'string') {
+      if (v.startsWith('P') || v.startsWith('-P')) {
         return this.parse(v);
       }
       return this.fromTimeCode(v);
@@ -350,47 +350,47 @@ export default class Duration {
 
   public readonly toISOString = (): string => {
     if (this.invalid) {
-      return "";
+      return '';
     }
-    let b = "";
+    let b = '';
     if (this.negative) {
-      b += "-";
+      b += '-';
     }
-    b += "P";
+    b += 'P';
     const prefixWidth = b.length;
     // Y
     if (this.years) {
       b = this.years.toString();
-      b += "Y";
+      b += 'Y';
     }
     // M
     if (this.months) {
       b = this.months.toString();
-      b += "M";
+      b += 'M';
     }
     // W
     if (this.weeks) {
       b = this.weeks.toString();
-      b += "W";
+      b += 'W';
     }
     // D
     if (this.days) {
       b += this.days.toString();
-      b += "D";
+      b += 'D';
     }
     // T
     if (this.hours || this.minutes || this.seconds || this.milliseconds) {
-      b += "T";
+      b += 'T';
     }
     // H
     if (this.hours) {
       b += this.hours.toString();
-      b += "H";
+      b += 'H';
     }
     // M
     if (this.minutes) {
       b += this.minutes.toString();
-      b += "M";
+      b += 'M';
     }
     // S
     if (this.seconds || this.milliseconds) {
@@ -398,10 +398,10 @@ export default class Duration {
         this.seconds + this.milliseconds / Duration.SECOND,
         3
       ).toString();
-      b += "S";
+      b += 'S';
     }
     if (b.length === prefixWidth) {
-      b += "0D";
+      b += '0D';
     }
     return b;
   };
@@ -429,7 +429,7 @@ export default class Duration {
 
   public readonly toString = (): string => {
     if (this.invalid) {
-      return "Invalid Duration";
+      return 'Invalid Duration';
     }
     return this.toISOString();
   };
@@ -439,12 +439,12 @@ export default class Duration {
    */
   public readonly toTimeCode = (fixed = false): string => {
     if (this.invalid) {
-      return "";
+      return '';
     }
     let v = this.toMilliseconds();
-    let sign = "";
+    let sign = '';
     if (v < 0) {
-      sign = "-";
+      sign = '-';
       v = -v;
     }
     v /= 1e3;
@@ -454,16 +454,16 @@ export default class Duration {
     v = Math.trunc(v / 60);
     const hours = v;
 
-    let ret = `${padLeft(hours.toFixed(0), "0", 2)}:${padLeft(
+    let ret = `${padLeft(hours.toFixed(0), '0', 2)}:${padLeft(
       minutes.toFixed(0),
-      "0",
+      '0',
       2
     )}:${formatSeconds(seconds)}`;
     if (!fixed) {
-      if (ret.startsWith("0") && ret[1] !== ":") {
+      if (ret.startsWith('0') && ret[1] !== ':') {
         ret = ret.slice(1);
       }
-      ret = ret.replace(/\.?0+$/, "");
+      ret = ret.replace(/\.?0+$/, '');
     }
     ret = sign + ret;
     return ret;

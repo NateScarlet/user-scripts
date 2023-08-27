@@ -1,4 +1,4 @@
-import randomUUID from "./randomUUID";
+import randomUUID from './randomUUID';
 
 const attributeName = `data-select-${randomUUID()}`;
 let nextValue = 1;

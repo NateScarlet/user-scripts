@@ -12,7 +12,7 @@
   setInterval(() => {
     setTimeout(() => {
       document.body.dispatchEvent(
-        new MouseEvent("mousemove", { bubbles: true })
+        new MouseEvent('mousemove', { bubbles: true })
       );
     }, Math.random() * 2e3);
   }, 10e3);

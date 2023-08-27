@@ -1,9 +1,9 @@
-import injectStyle from "@/utils/injectStyle";
-import obtainHTMLElementByDataKey from "@/utils/obtainHTMLElementByDataKey";
-import { html, render } from "lit-html";
-import { mdiEyeOff } from "@mdi/js";
-import style from "../style";
-import homePageSettings from "../models/homePageSettings";
+import injectStyle from '@/utils/injectStyle';
+import obtainHTMLElementByDataKey from '@/utils/obtainHTMLElementByDataKey';
+import { html, render } from 'lit-html';
+import { mdiEyeOff } from '@mdi/js';
+import style from '../style';
+import homePageSettings from '../models/homePageSettings';
 
 export default class HomePageFloorCardHoverButton {
   constructor(
@@ -16,7 +16,7 @@ export default class HomePageFloorCardHoverButton {
     if (!parentNode) {
       return;
     }
-    const key = "85e3e435-2ad2-4a7d-839f-69318799db0f";
+    const key = '85e3e435-2ad2-4a7d-839f-69318799db0f';
     injectStyle(
       key,
       `\
@@ -32,12 +32,12 @@ export default class HomePageFloorCardHoverButton {
 `
     );
     const el = obtainHTMLElementByDataKey({
-      tag: "div",
+      tag: 'div',
       key,
       parentNode,
       onDidCreate: (el) => {
         style.apply(el);
-        parentNode.setAttribute(`data-${key}`, "");
+        parentNode.setAttribute(`data-${key}`, '');
         parentNode.append(el);
       },
     });

@@ -40,8 +40,10 @@ https://github.com/NateScarlet/user-scripts/blob/master/src/bilibili.com/
   -webkit-text-size-adjust: 100%; /* 2 */
   -moz-tab-size: 4; /* 3 */
   -o-tab-size: 4;
-     tab-size: 4; /* 3 */
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */
+  tab-size: 4; /* 3 */
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; /* 4 */
   font-feature-settings: normal; /* 5 */
   font-variation-settings: normal; /* 6 */
 }
@@ -74,7 +76,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] abbr:where([title]) {
   -webkit-text-decoration: underline dotted;
-          text-decoration: underline dotted;
+  text-decoration: underline dotted;
 }
 
 /*
@@ -118,7 +120,8 @@ Add the correct font weight in Edge and Safari.
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] kbd,
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] samp,
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace; /* 1 */
   font-size: 1em; /* 2 */
 }
 
@@ -324,7 +327,8 @@ Prevent resizing textareas horizontally by default.
 2. Set the default placeholder color to the user's configured gray 400 color.
 */
 
-[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] input::-moz-placeholder, [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea::-moz-placeholder {
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] input::-moz-placeholder,
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea::-moz-placeholder {
   opacity: 1; /* 1 */
   color: #9ca3af; /* 2 */
 }
@@ -340,7 +344,7 @@ Set the default cursor for buttons.
 */
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] button,
-[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [role="button"] {
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [role='button'] {
   cursor: pointer;
 }
 
@@ -386,7 +390,9 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   display: none;
 }
 
-[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] *, [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::before, [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::after {
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] *,
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::before,
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
   --tw-translate-x: 0;
@@ -396,19 +402,19 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   --tw-skew-y: 0;
   --tw-scale-x: 1;
   --tw-scale-y: 1;
-  --tw-pan-x:  ;
-  --tw-pan-y:  ;
-  --tw-pinch-zoom:  ;
+  --tw-pan-x: ;
+  --tw-pan-y: ;
+  --tw-pinch-zoom: ;
   --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position:  ;
-  --tw-gradient-via-position:  ;
-  --tw-gradient-to-position:  ;
-  --tw-ordinal:  ;
-  --tw-slashed-zero:  ;
-  --tw-numeric-figure:  ;
-  --tw-numeric-spacing:  ;
-  --tw-numeric-fraction:  ;
-  --tw-ring-inset:  ;
+  --tw-gradient-from-position: ;
+  --tw-gradient-via-position: ;
+  --tw-gradient-to-position: ;
+  --tw-ordinal: ;
+  --tw-slashed-zero: ;
+  --tw-numeric-figure: ;
+  --tw-numeric-spacing: ;
+  --tw-numeric-fraction: ;
+  --tw-ring-inset: ;
   --tw-ring-offset-width: 0px;
   --tw-ring-offset-color: #fff;
   --tw-ring-color: rgb(59 130 246 / 0.5);
@@ -416,24 +422,24 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   --tw-ring-shadow: 0 0 #0000;
   --tw-shadow: 0 0 #0000;
   --tw-shadow-colored: 0 0 #0000;
-  --tw-blur:  ;
-  --tw-brightness:  ;
-  --tw-contrast:  ;
-  --tw-grayscale:  ;
-  --tw-hue-rotate:  ;
-  --tw-invert:  ;
-  --tw-saturate:  ;
-  --tw-sepia:  ;
-  --tw-drop-shadow:  ;
-  --tw-backdrop-blur:  ;
-  --tw-backdrop-brightness:  ;
-  --tw-backdrop-contrast:  ;
-  --tw-backdrop-grayscale:  ;
-  --tw-backdrop-hue-rotate:  ;
-  --tw-backdrop-invert:  ;
-  --tw-backdrop-opacity:  ;
-  --tw-backdrop-saturate:  ;
-  --tw-backdrop-sepia:  ;
+  --tw-blur: ;
+  --tw-brightness: ;
+  --tw-contrast: ;
+  --tw-grayscale: ;
+  --tw-hue-rotate: ;
+  --tw-invert: ;
+  --tw-saturate: ;
+  --tw-sepia: ;
+  --tw-drop-shadow: ;
+  --tw-backdrop-blur: ;
+  --tw-backdrop-brightness: ;
+  --tw-backdrop-contrast: ;
+  --tw-backdrop-grayscale: ;
+  --tw-backdrop-hue-rotate: ;
+  --tw-backdrop-invert: ;
+  --tw-backdrop-opacity: ;
+  --tw-backdrop-saturate: ;
+  --tw-backdrop-sepia: ;
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::backdrop {
@@ -446,19 +452,19 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   --tw-skew-y: 0;
   --tw-scale-x: 1;
   --tw-scale-y: 1;
-  --tw-pan-x:  ;
-  --tw-pan-y:  ;
-  --tw-pinch-zoom:  ;
+  --tw-pan-x: ;
+  --tw-pan-y: ;
+  --tw-pinch-zoom: ;
   --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position:  ;
-  --tw-gradient-via-position:  ;
-  --tw-gradient-to-position:  ;
-  --tw-ordinal:  ;
-  --tw-slashed-zero:  ;
-  --tw-numeric-figure:  ;
-  --tw-numeric-spacing:  ;
-  --tw-numeric-fraction:  ;
-  --tw-ring-inset:  ;
+  --tw-gradient-from-position: ;
+  --tw-gradient-via-position: ;
+  --tw-gradient-to-position: ;
+  --tw-ordinal: ;
+  --tw-slashed-zero: ;
+  --tw-numeric-figure: ;
+  --tw-numeric-spacing: ;
+  --tw-numeric-fraction: ;
+  --tw-ring-inset: ;
   --tw-ring-offset-width: 0px;
   --tw-ring-offset-color: #fff;
   --tw-ring-color: rgb(59 130 246 / 0.5);
@@ -466,24 +472,24 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   --tw-ring-shadow: 0 0 #0000;
   --tw-shadow: 0 0 #0000;
   --tw-shadow-colored: 0 0 #0000;
-  --tw-blur:  ;
-  --tw-brightness:  ;
-  --tw-contrast:  ;
-  --tw-grayscale:  ;
-  --tw-hue-rotate:  ;
-  --tw-invert:  ;
-  --tw-saturate:  ;
-  --tw-sepia:  ;
-  --tw-drop-shadow:  ;
-  --tw-backdrop-blur:  ;
-  --tw-backdrop-brightness:  ;
-  --tw-backdrop-contrast:  ;
-  --tw-backdrop-grayscale:  ;
-  --tw-backdrop-hue-rotate:  ;
-  --tw-backdrop-invert:  ;
-  --tw-backdrop-opacity:  ;
-  --tw-backdrop-saturate:  ;
-  --tw-backdrop-sepia:  ;
+  --tw-blur: ;
+  --tw-brightness: ;
+  --tw-contrast: ;
+  --tw-grayscale: ;
+  --tw-hue-rotate: ;
+  --tw-invert: ;
+  --tw-saturate: ;
+  --tw-sepia: ;
+  --tw-drop-shadow: ;
+  --tw-backdrop-blur: ;
+  --tw-backdrop-brightness: ;
+  --tw-backdrop-contrast: ;
+  --tw-backdrop-grayscale: ;
+  --tw-backdrop-hue-rotate: ;
+  --tw-backdrop-invert: ;
+  --tw-backdrop-opacity: ;
+  --tw-backdrop-saturate: ;
+  --tw-backdrop-sepia: ;
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.visible) {
@@ -624,11 +630,15 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.translate-x-full) {
   --tw-translate-x: 100%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.transform) {
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.cursor-pointer) {
@@ -655,7 +665,8 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   gap: 0.5rem;
 }
 
-[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.space-x-2 > :not([hidden]) ~ :not([hidden])) {
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2]
+  :is(.space-x-2 > :not([hidden]) ~ :not([hidden])) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
   margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
@@ -689,8 +700,9 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   border-style: none;
 }
 
-[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-\[rgba\(33\2c 33\2c 33\2c \.8\)\]) {
-  background-color: rgba(33,33,33,.8);
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2]
+  :is(.bg-\[rgba\(33\2c 33\2c 33\2c \.8\)\]) {
+  background-color: rgba(33, 33, 33, 0.8);
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-gray-200) {
@@ -774,19 +786,35 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.filter) {
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
+    var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate)
+    var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.backdrop-blur) {
   --tw-backdrop-blur: blur(8px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+    var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+    var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+    var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+    var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+    var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+    var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+    var(--tw-backdrop-sepia);
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.transition) {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter, -webkit-backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -805,17 +833,18 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.even\:bg-gray-100:nth-child(even)) {
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2]
+  :is(.even\:bg-gray-100:nth-child(even)) {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
-[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.group:hover .group-hover\:opacity-100) {
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2]
+  :is(.group:hover .group-hover\:opacity-100) {
   opacity: 1;
 }
 
 @media (min-width: 1024px) {
-
   [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.lg\:hidden) {
     display: none;
   }

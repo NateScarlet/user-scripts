@@ -1,16 +1,16 @@
-import setHTMLElementDisplayHidden from "@/utils/setHTMLElementDisplayHidden";
-import parseUserURL from "../utils/parseUserURL";
-import VideoHoverButton from "./VideoHoverButton";
-import videoListSettings from "../models/videoListSettings";
+import setHTMLElementDisplayHidden from '@/utils/setHTMLElementDisplayHidden';
+import parseUserURL from '../utils/parseUserURL';
+import VideoHoverButton from './VideoHoverButton';
+import videoListSettings from '../models/videoListSettings';
 
 // spell-checker: word bili
 
 export default class VideoListPatch {
   public readonly render = () => {
-    document.querySelectorAll<HTMLElement>(".bili-video-card").forEach((i) => {
+    document.querySelectorAll<HTMLElement>('.bili-video-card').forEach((i) => {
       const rawURL = i
-        .querySelector("a.bili-video-card__info--owner")
-        ?.getAttribute("href");
+        .querySelector('a.bili-video-card__info--owner')
+        ?.getAttribute('href');
       if (!rawURL) {
         return;
       }
@@ -19,8 +19,8 @@ export default class VideoListPatch {
       if (user) {
         const duration =
           i
-            .querySelector(".bili-video-card__stats__duration")
-            ?.textContent?.trim() ?? "";
+            .querySelector('.bili-video-card__stats__duration')
+            ?.textContent?.trim() ?? '';
         hidden = videoListSettings.shouldExcludeVideo({ user, duration });
       } else {
         // assume advertisement
@@ -34,10 +34,10 @@ export default class VideoListPatch {
 
       setHTMLElementDisplayHidden(container, hidden);
       if (user && !hidden) {
-        new VideoHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
+        new VideoHoverButton(i.querySelector('.bili-video-card__image--wrap'), {
           id: user.id,
           name:
-            i.querySelector(".bili-video-card__info--author")?.textContent ||
+            i.querySelector('.bili-video-card__info--author')?.textContent ||
             user.id,
         }).render();
       }

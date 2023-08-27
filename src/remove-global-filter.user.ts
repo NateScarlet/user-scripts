@@ -9,4 +9,4 @@
 
 export {};
 
-document.body.parentElement.style.filter = "none";
+document.body.parentElement.style.filter = 'none';

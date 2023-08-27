@@ -1,8 +1,8 @@
-import obtainHTMLElement from "./obtainHTMLElementByID";
+import obtainHTMLElement from './obtainHTMLElementByID';
 
 export default function injectStyle(id: string, css: string) {
   obtainHTMLElement({
-    tag: "style",
+    tag: 'style',
     id,
     onDidCreate: (el) => {
       document.head.appendChild(el);

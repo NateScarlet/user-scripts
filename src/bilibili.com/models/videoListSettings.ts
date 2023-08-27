@@ -1,13 +1,13 @@
-import Duration, { DurationInput } from "@/utils/Duration";
-import GMValue from "@/utils/GMValue";
-import blockedUsers from "./blockedUsers";
+import Duration, { DurationInput } from '@/utils/Duration';
+import GMValue from '@/utils/GMValue';
+import blockedUsers from './blockedUsers';
 
 export default new (class VideoListSettings {
   private readonly value = new GMValue<{
     allowAdvertisement?: boolean;
     durationGte?: string;
     durationLt?: string;
-  }>("videoListSettings@4eb93ea9-8748-4647-876f-30451395e561", () => ({}));
+  }>('videoListSettings@4eb93ea9-8748-4647-876f-30451395e561', () => ({}));
 
   get allowAdvertisement() {
     return this.value.get().allowAdvertisement ?? false;
@@ -21,14 +21,14 @@ export default new (class VideoListSettings {
   }
 
   get durationGte(): Duration {
-    return Duration.parse(this.value.get().durationGte ?? "");
+    return Duration.parse(this.value.get().durationGte ?? '');
   }
 
   set durationGte(v: DurationInput) {
     const d = Duration.cast(v);
     if (d.toMilliseconds() >= Duration.HOUR) {
       // value too large may cause infinite load
-      this.durationGte = "PT1M";
+      this.durationGte = 'PT1M';
       return;
     }
     this.value.set({
@@ -38,10 +38,10 @@ export default new (class VideoListSettings {
   }
 
   get durationLt(): Duration {
-    const v = Duration.parse(this.value.get().durationLt ?? "");
+    const v = Duration.parse(this.value.get().durationLt ?? '');
     if (v.toMilliseconds() <= 10 * Duration.MINUTE) {
       // invalid
-      return Duration.parse("");
+      return Duration.parse('');
     }
     return v;
   }
@@ -50,7 +50,7 @@ export default new (class VideoListSettings {
     const d = Duration.cast(v);
     if (d.valid && d.toMilliseconds() <= 10 * Duration.MINUTE) {
       // value too small may cause infinite load
-      this.durationLt = "PT30M";
+      this.durationLt = 'PT30M';
       return;
     }
     this.value.set({
