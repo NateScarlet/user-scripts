@@ -1,11 +1,13 @@
 import setHTMLElementDisplayHidden from '@/utils/setHTMLElementDisplayHidden';
-import blockedUsers from '../models/blockedUsers';
 import parseUserURL from '../utils/parseUserURL';
 import VideoHoverButton from './VideoHoverButton';
 import videoListSettings from '../models/videoListSettings';
+import Context from '../Context';
 
 // spell-checker: word upname
 export default class VideoDetailPatch {
+  constructor(private readonly ctx: Context) {}
+
   private readonly blockedTitles = new Set<string>();
 
   public readonly render = () => {
@@ -22,7 +24,11 @@ export default class VideoDetailPatch {
         if (user) {
           const duration =
             i.querySelector('.duration')?.textContent?.trim() ?? '';
-          hidden = videoListSettings.shouldExcludeVideo({ user, duration });
+          const title =
+            (i.querySelector('.title')?.getAttribute('title') ||
+              i.querySelector('.title')?.textContent) ??
+            '';
+          hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
         } else {
           // assume advertisement
           hidden = !videoListSettings.allowAdvertisement;

@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.08.27+43e09a99
+// @version   2023.09.19+786eeb83
 // ==/UserScript==
 
 "use strict";
@@ -1993,19 +1993,6 @@
   var videoListSettings_default = new class VideoListSettings {
     constructor() {
       __publicField(this, "value", new GMValue("videoListSettings@4eb93ea9-8748-4647-876f-30451395e561", () => ({})));
-      __publicField(this, "shouldExcludeVideo", (v) => {
-        if (blockedUsers_default.has(v.user.id)) {
-          return true;
-        }
-        const durationMs = Duration.cast(v.duration).toMilliseconds();
-        if (durationMs <= 0) {
-        } else if (this.durationGte.valid && !(durationMs >= this.durationGte.toMilliseconds())) {
-          return true;
-        } else if (this.durationLt.valid && !(durationMs < this.durationLt.toMilliseconds())) {
-          return true;
-        }
-        return false;
-      });
     }
     get allowAdvertisement() {
       var _a2;
@@ -2046,6 +2033,22 @@
       }
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
         durationLt: d2.invalid ? void 0 : d2.toISOString()
+      }));
+    }
+  }();
+
+  // src/bilibili.com/models/searchSettings.ts
+  var searchSettings_default = new class SearchSettings {
+    constructor() {
+      __publicField(this, "value", new GMValue("searchSettings@aa1595c8-1664-40de-a80c-9de375c2466a", () => ({})));
+    }
+    get strictTitleMatch() {
+      var _a2;
+      return (_a2 = this.value.get().strictTitleMatch) != null ? _a2 : false;
+    }
+    set strictTitleMatch(v) {
+      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+        strictTitleMatch: v || void 0
       }));
     }
   }();
@@ -2140,6 +2143,7 @@
         <span>关闭</span>
       </button>
      ${this.homePageSettings()}
+     ${this.searchSettings()}
      ${this.videoListSettings()}
      ${this.userTable()}
     </div>`;
@@ -2287,6 +2291,29 @@
       }}"
             />
           </label>
+        </div>
+      </section>
+    `;
+    }
+    searchSettings() {
+      return html`
+      <section class="flex-none">
+        <h1 class="text-sm text-gray-500">搜索</h1>
+        <div class="px-1">
+          <label>
+            <input
+              type="checkbox"
+              ?checked="${searchSettings_default.strictTitleMatch}"
+              @change="${(e) => {
+        const el = e.target;
+        searchSettings_default.strictTitleMatch = el.checked;
+      }}"
+            />
+            <span>严格标题匹配</span>
+          </label>
+          <div class="text-gray-500 text-sm">
+            标题必须包含所有关键词，屏蔽同义词和标签匹配
+          </div>
         </div>
       </section>
     `;
@@ -2612,11 +2639,12 @@
 
   // src/bilibili.com/components/VideoDetailPatch.ts
   var VideoDetailPatch = class {
-    constructor() {
+    constructor(ctx) {
+      this.ctx = ctx;
       __publicField(this, "blockedTitles", /* @__PURE__ */ new Set());
       __publicField(this, "render", () => {
         document.querySelectorAll(".video-page-card-small").forEach((i) => {
-          var _a2, _b2, _c2, _d2, _e;
+          var _a2, _b2, _c2, _d2, _e, _f, _g, _h;
           const rawURL = (_a2 = i.querySelector(".upname a")) == null ? void 0 : _a2.getAttribute("href");
           if (!rawURL) {
             return;
@@ -2625,7 +2653,8 @@
           let hidden = false;
           if (user) {
             const duration = (_d2 = (_c2 = (_b2 = i.querySelector(".duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d2 : "";
-            hidden = videoListSettings_default.shouldExcludeVideo({ user, duration });
+            const title = (_g = ((_e = i.querySelector(".title")) == null ? void 0 : _e.getAttribute("title")) || ((_f = i.querySelector(".title")) == null ? void 0 : _f.textContent)) != null ? _g : "";
+            hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
           } else {
             hidden = !videoListSettings_default.allowAdvertisement;
           }
@@ -2633,7 +2662,7 @@
           if (user && !hidden) {
             new VideoHoverButton(i.querySelector(".pic-box"), {
               id: user.id,
-              name: ((_e = i.querySelector(".upname .name")) == null ? void 0 : _e.textContent) || user.id
+              name: ((_h = i.querySelector(".upname .name")) == null ? void 0 : _h.textContent) || user.id
             }).render();
           }
         });
@@ -2742,10 +2771,11 @@
 
   // src/bilibili.com/components/VideoListPatch.ts
   var VideoListPatch = class {
-    constructor() {
+    constructor(ctx) {
+      this.ctx = ctx;
       __publicField(this, "render", () => {
         document.querySelectorAll(".bili-video-card").forEach((i) => {
-          var _a2, _b2, _c2, _d2, _e, _f;
+          var _a2, _b2, _c2, _d2, _e, _f, _g, _h, _i;
           const rawURL = (_a2 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a2.getAttribute("href");
           if (!rawURL) {
             return;
@@ -2754,19 +2784,20 @@
           let hidden = false;
           if (user) {
             const duration = (_d2 = (_c2 = (_b2 = i.querySelector(".bili-video-card__stats__duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d2 : "";
-            hidden = videoListSettings_default.shouldExcludeVideo({ user, duration });
+            const title = (_g = ((_e = i.querySelector(".bili-video-card__info--tit")) == null ? void 0 : _e.getAttribute("title")) || ((_f = i.querySelector(".bili-video-card__info--tit")) == null ? void 0 : _f.textContent)) != null ? _g : "";
+            hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
           } else {
             hidden = !videoListSettings_default.allowAdvertisement;
           }
           let container = i;
-          while (((_e = container.parentElement) == null ? void 0 : _e.childElementCount) === 1) {
+          while (((_h = container.parentElement) == null ? void 0 : _h.childElementCount) === 1) {
             container = container.parentElement;
           }
           setHTMLElementDisplayHidden(container, hidden);
           if (user && !hidden) {
             new VideoHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
               id: user.id,
-              name: ((_f = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _f.textContent) || user.id
+              name: ((_i = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _i.textContent) || user.id
             }).render();
           }
         });
@@ -2870,23 +2901,76 @@
     }
   };
 
+  // src/utils/ExactSearchMatcher.ts
+  var ExactSearchMatcher = class {
+    constructor(q) {
+      __publicField(this, "keywords");
+      __publicField(this, "match", (...searchKey) => {
+        if (this.keywords.length === 0) {
+          return true;
+        }
+        return this.keywords.every((i) => {
+          return searchKey.some((j) => j.toLowerCase().includes(i));
+        });
+      });
+      this.keywords = q.split(" ").map((i) => i.trim().toLowerCase()).filter((i) => i);
+    }
+  };
+
+  // src/bilibili.com/Context.ts
+  var Context = class {
+    constructor({ query }) {
+      __publicField(this, "m");
+      __publicField(this, "query");
+      __publicField(this, "shouldExcludeVideo", (v) => {
+        if (blockedUsers_default.has(v.user.id)) {
+          return true;
+        }
+        if (v.duration) {
+          const durationMs = Duration.cast(v.duration).toMilliseconds();
+          if (durationMs <= 0) {
+          } else if (videoListSettings_default.durationGte.valid && !(durationMs >= videoListSettings_default.durationGte.toMilliseconds())) {
+            return true;
+          } else if (videoListSettings_default.durationLt.valid && !(durationMs < videoListSettings_default.durationLt.toMilliseconds())) {
+            return true;
+          }
+        }
+        if (this.query && v.title && searchSettings_default.strictTitleMatch) {
+          if (!this.m.match(v.title)) {
+            return true;
+          }
+        }
+        return false;
+      });
+      this.query = query;
+      this.m = new ExactSearchMatcher(query);
+    }
+  };
+
   // src/bilibili.com/block.user.ts
   function createApp() {
+    var _a2;
     const rawURL = window.location.href;
     const settings = new SettingsDrawer();
     const components = [settings, new NavButton(settings)];
     const user = parseUserURL(rawURL);
     const url = new URL(rawURL);
+    const data = {
+      query: ""
+    };
+    if (url.host === "search.bilibili.com") {
+      data.query = (_a2 = url.searchParams.get("keyword")) != null ? _a2 : "";
+    }
     if (user) {
       components.push(new UserBlockButton(user));
     } else if (parseVideoURL(rawURL)) {
-      components.push(new VideoDetailPatch());
+      components.push(new VideoDetailPatch(new Context(data)));
     } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/rank/all")) {
       components.push(new SSRVideoRankPatch());
     } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/")) {
       components.push(new VueVideoRankPatch());
     } else {
-      components.push(new VideoListPatch());
+      components.push(new VideoListPatch(new Context(data)));
     }
     if (url.host === "www.bilibili.com" && url.pathname === "/") {
       components.push(new AdblockTipPatch(), new HomePageFloorCardPatch());
@@ -2895,10 +2979,13 @@
       render: () => components.forEach((i) => i.render())
     };
   }
+  function routeKey() {
+    return window.location.pathname + window.location.search;
+  }
   function main() {
     return __async(this, null, function* () {
       yield migrate();
-      const initialPath = window.location.pathname;
+      const initialRouteKey = routeKey();
       const app = createApp();
       const d2 = new Disposal();
       d2.push(
@@ -2908,7 +2995,7 @@
             if (((_b2 = (_a2 = document.querySelector(".right-entry")) == null ? void 0 : _a2.childElementCount) != null ? _b2 : 0) < 2) {
               return;
             }
-            if (window.location.pathname !== initialPath) {
+            if (routeKey() !== initialRouteKey) {
               d2.dispose();
               main();
               return;

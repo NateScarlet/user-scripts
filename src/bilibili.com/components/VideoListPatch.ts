@@ -2,10 +2,13 @@ import setHTMLElementDisplayHidden from '@/utils/setHTMLElementDisplayHidden';
 import parseUserURL from '../utils/parseUserURL';
 import VideoHoverButton from './VideoHoverButton';
 import videoListSettings from '../models/videoListSettings';
+import Context from '../Context';
 
 // spell-checker: word bili
 
 export default class VideoListPatch {
+  constructor(private readonly ctx: Context) {}
+
   public readonly render = () => {
     document.querySelectorAll<HTMLElement>('.bili-video-card').forEach((i) => {
       const rawURL = i
@@ -21,7 +24,13 @@ export default class VideoListPatch {
           i
             .querySelector('.bili-video-card__stats__duration')
             ?.textContent?.trim() ?? '';
-        hidden = videoListSettings.shouldExcludeVideo({ user, duration });
+        const title =
+          (i
+            .querySelector('.bili-video-card__info--tit')
+            ?.getAttribute('title') ||
+            i.querySelector('.bili-video-card__info--tit')?.textContent) ??
+          '';
+        hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
       } else {
         // assume advertisement
         hidden = !videoListSettings.allowAdvertisement;

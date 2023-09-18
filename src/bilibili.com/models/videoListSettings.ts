@@ -1,6 +1,5 @@
 import Duration, { DurationInput } from '@/utils/Duration';
 import GMValue from '@/utils/GMValue';
-import blockedUsers from './blockedUsers';
 
 export default new (class VideoListSettings {
   private readonly value = new GMValue<{
@@ -58,28 +57,4 @@ export default new (class VideoListSettings {
       durationLt: d.invalid ? undefined : d.toISOString(),
     });
   }
-
-  public readonly shouldExcludeVideo = (v: {
-    user: { id: string };
-    duration: DurationInput;
-  }) => {
-    if (blockedUsers.has(v.user.id)) {
-      return true;
-    }
-    const durationMs = Duration.cast(v.duration).toMilliseconds();
-    if (durationMs <= 0) {
-      // pass
-    } else if (
-      this.durationGte.valid &&
-      !(durationMs >= this.durationGte.toMilliseconds())
-    ) {
-      return true;
-    } else if (
-      this.durationLt.valid &&
-      !(durationMs < this.durationLt.toMilliseconds())
-    ) {
-      return true;
-    }
-    return false;
-  };
 })();

@@ -30,6 +30,7 @@ import VueVideoRankPatch from './components/VueVideoRankPatch';
 import VideoListPatch from './components/VideoListPatch';
 import AdblockTipPatch from './components/AdblockTipPatch';
 import HomePageFloorCardPatch from './components/HomePageFloorCardPatch';
+import Context from './Context';
 
 export {};
 
@@ -40,10 +41,17 @@ function createApp(): Component {
   const user = parseUserURL(rawURL);
   const url = new URL(rawURL);
 
+  const data = {
+    query: '',
+  };
+  if (url.host === 'search.bilibili.com') {
+    data.query = url.searchParams.get('keyword') ?? '';
+  }
+
   if (user) {
     components.push(new UserBlockButton(user));
   } else if (parseVideoURL(rawURL)) {
-    components.push(new VideoDetailPatch());
+    components.push(new VideoDetailPatch(new Context(data)));
   } else if (
     url.host === 'www.bilibili.com' &&
     url.pathname.startsWith('/v/popular/rank/all')
@@ -55,7 +63,7 @@ function createApp(): Component {
   ) {
     components.push(new VueVideoRankPatch());
   } else {
-    components.push(new VideoListPatch());
+    components.push(new VideoListPatch(new Context(data)));
   }
 
   if (url.host === 'www.bilibili.com' && url.pathname === '/') {
@@ -67,10 +75,14 @@ function createApp(): Component {
   };
 }
 
+function routeKey() {
+  return window.location.pathname + window.location.search;
+}
+
 async function main() {
   await migrate();
 
-  const initialPath = window.location.pathname;
+  const initialRouteKey = routeKey();
   const app = createApp();
 
   const d = new Disposal();
@@ -84,7 +96,7 @@ async function main() {
           // https://greasyfork.org/zh-CN/scripts/465675-b%E7%AB%99%E7%94%A8%E6%88%B7%E5%B1%8F%E8%94%BD/discussions/198827
           return;
         }
-        if (window.location.pathname !== initialPath) {
+        if (routeKey() !== initialRouteKey) {
           // route changed
           d.dispose();
           main();

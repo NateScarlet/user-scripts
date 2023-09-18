@@ -8,6 +8,7 @@ import style from '../style';
 import blockedUsers from '../models/blockedUsers';
 import homePageSettings from '../models/homePageSettings';
 import videoListSettings from '../models/videoListSettings';
+import searchSettings from '../models/searchSettings';
 
 // spell-checker: word datetime
 
@@ -80,6 +81,7 @@ export default class SettingsDrawer {
         <span>关闭</span>
       </button>
      ${this.homePageSettings()}
+     ${this.searchSettings()}
      ${this.videoListSettings()}
      ${this.userTable()}
     </div>`;
@@ -232,6 +234,30 @@ export default class SettingsDrawer {
               }}"
             />
           </label>
+        </div>
+      </section>
+    `;
+  }
+
+  private searchSettings() {
+    return html`
+      <section class="flex-none">
+        <h1 class="text-sm text-gray-500">搜索</h1>
+        <div class="px-1">
+          <label>
+            <input
+              type="checkbox"
+              ?checked="${searchSettings.strictTitleMatch}"
+              @change="${(e: Event) => {
+                const el = e.target as HTMLInputElement;
+                searchSettings.strictTitleMatch = el.checked;
+              }}"
+            />
+            <span>严格标题匹配</span>
+          </label>
+          <div class="text-gray-500 text-sm">
+            标题必须包含所有关键词，屏蔽同义词和标签匹配
+          </div>
         </div>
       </section>
     `;
