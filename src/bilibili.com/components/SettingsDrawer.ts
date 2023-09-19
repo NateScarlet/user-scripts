@@ -256,7 +256,7 @@ export default class SettingsDrawer {
             <span>严格标题匹配</span>
           </label>
           <div class="text-gray-500 text-sm">
-            标题必须包含所有关键词，屏蔽同义词和标签匹配
+            标题必须包含所有关键词，屏蔽联想词和标签匹配
           </div>
         </div>
       </section>
