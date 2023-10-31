@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.09.19+5b07a400
+// @version   2023.11.01+f21ebe7c
 // ==/UserScript==
 
 "use strict";
@@ -2124,6 +2124,7 @@
       @transitionend=${() => {
         if (!this.isOpen) {
           this.visible = false;
+          this.render();
         }
       }}
     >

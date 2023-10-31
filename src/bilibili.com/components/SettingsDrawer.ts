@@ -62,6 +62,7 @@ export default class SettingsDrawer {
       @transitionend=${() => {
         if (!this.isOpen) {
           this.visible = false;
+          this.render();
         }
       }}
     >
