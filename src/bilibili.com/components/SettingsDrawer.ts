@@ -15,7 +15,7 @@ import searchSettings from '../models/searchSettings';
 export default class SettingsDrawer {
   private isOpen = false;
 
-  private visible = false;
+  private active = false;
 
   private readonly id: string;
 
@@ -24,7 +24,7 @@ export default class SettingsDrawer {
   }
 
   public readonly open = () => {
-    this.visible = true;
+    this.active = true;
     this.render();
     setTimeout(() => {
       this.isOpen = true;
@@ -34,10 +34,11 @@ export default class SettingsDrawer {
 
   public readonly close = () => {
     this.isOpen = false;
+    this.render();
   };
 
   private html() {
-    if (!this.visible) {
+    if (!this.active) {
       return nothing;
     }
     return html`
@@ -61,7 +62,7 @@ export default class SettingsDrawer {
       "
       @transitionend=${() => {
         if (!this.isOpen) {
-          this.visible = false;
+          this.active = false;
           this.render();
         }
       }}

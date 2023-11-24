@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.11.01+f21ebe7c
+// @version   2023.11.24+c5368de6
 // ==/UserScript==
 
 "use strict";
@@ -2057,10 +2057,10 @@
   var SettingsDrawer = class {
     constructor() {
       __publicField(this, "isOpen", false);
-      __publicField(this, "visible", false);
+      __publicField(this, "active", false);
       __publicField(this, "id");
       __publicField(this, "open", () => {
-        this.visible = true;
+        this.active = true;
         this.render();
         setTimeout(() => {
           this.isOpen = true;
@@ -2069,6 +2069,7 @@
       });
       __publicField(this, "close", () => {
         this.isOpen = false;
+        this.render();
       });
       __publicField(this, "onVideListDurationGteChange", debounce_default((e) => {
         const el = e.target;
@@ -2099,7 +2100,7 @@
       this.id = `settings-${randomUUID()}`;
     }
     html() {
-      if (!this.visible) {
+      if (!this.active) {
         return nothing;
       }
       return html`
@@ -2123,7 +2124,7 @@
       "
       @transitionend=${() => {
         if (!this.isOpen) {
-          this.visible = false;
+          this.active = false;
           this.render();
         }
       }}
