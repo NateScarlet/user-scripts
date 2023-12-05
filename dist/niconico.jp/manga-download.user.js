@@ -5,7 +5,7 @@
 // @grant    none
 // @include	 https://seiga.nicovideo.jp/watch/*
 // @run-at   document-idle
-// @version   2023.08.27+a9913dce
+// @version   2023.12.05+6fe81875
 // ==/UserScript==
 
 "use strict";
@@ -527,20 +527,39 @@
   // src/niconico.jp/style.css
   var style_default = "/*! tailwindcss v2.2.19 | MIT License | https://tailwindcss.com*/ /*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */\nhtml {\n  -moz-tab-size: 4;\n  -o-tab-size: 4;\n  tab-size: 4;\n  line-height: 1.15;\n  -webkit-text-size-adjust: 100%;\n}\nbody {\n  margin: 0;\n  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,\n    sans-serif, Apple Color Emoji, Segoe UI Emoji;\n}\nhr {\n  height: 0;\n  color: inherit;\n}\nabbr[title] {\n  -webkit-text-decoration: underline dotted;\n  text-decoration: underline dotted;\n}\nb,\nstrong {\n  font-weight: bolder;\n}\ncode,\nkbd,\npre,\nsamp {\n  font-family: ui-monospace, SFMono-Regular, Consolas, Liberation Mono, Menlo,\n    monospace;\n  font-size: 1em;\n}\nsmall {\n  font-size: 80%;\n}\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: initial;\n}\nsub {\n  bottom: -0.25em;\n}\nsup {\n  top: -0.5em;\n}\ntable {\n  text-indent: 0;\n  border-color: inherit;\n}\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  line-height: 1.15;\n  margin: 0;\n}\nbutton,\nselect {\n  text-transform: none;\n}\nbutton {\n  -webkit-appearance: button;\n}\n::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n}\nlegend {\n  padding: 0;\n}\nprogress {\n  vertical-align: initial;\n}\n::-webkit-inner-spin-button,\n::-webkit-outer-spin-button {\n  height: auto;\n}\n::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  font: inherit;\n}\nsummary {\n  display: list-item;\n}\nblockquote,\ndd,\ndl,\nfigure,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\nhr,\np,\npre {\n  margin: 0;\n}\nbutton {\n  background-color: initial;\n  background-image: none;\n}\nfieldset,\nol,\nul {\n  margin: 0;\n  padding: 0;\n}\nol,\nul {\n  list-style: none;\n}\nhtml {\n  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,\n    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,\n    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;\n  line-height: 1.5;\n}\nbody {\n  font-family: inherit;\n  line-height: inherit;\n}\n*,\n:after,\n:before {\n  box-sizing: border-box;\n  border: 0 solid;\n}\nhr {\n  border-top-width: 1px;\n}\nimg {\n  border-style: solid;\n}\ntextarea {\n  resize: vertical;\n}\ninput::-moz-placeholder,\ntextarea::-moz-placeholder {\n  opacity: 1;\n  color: #9ca3af;\n}\ninput::placeholder,\ntextarea::placeholder {\n  opacity: 1;\n  color: #9ca3af;\n}\nbutton {\n  cursor: pointer;\n}\ntable {\n  border-collapse: collapse;\n}\nh1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n  font-size: inherit;\n  font-weight: inherit;\n}\na {\n  color: inherit;\n  text-decoration: inherit;\n}\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  padding: 0;\n  line-height: inherit;\n  color: inherit;\n}\ncode,\nkbd,\npre,\nsamp {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,\n    Liberation Mono, Courier New, monospace;\n}\naudio,\ncanvas,\nembed,\niframe,\nimg,\nobject,\nsvg,\nvideo {\n  display: block;\n  vertical-align: middle;\n}\nimg,\nvideo {\n  max-width: 100%;\n  height: auto;\n}\n*,\n:after,\n:before {\n  --tw-border-opacity: 1;\n  border-color: rgba(229, 231, 235, var(--tw-border-opacity));\n}\n.container {\n  width: 100%;\n}\n@media (min-width: 640px) {\n  .container {\n    max-width: 640px;\n  }\n}\n@media (min-width: 768px) {\n  .container {\n    max-width: 768px;\n  }\n}\n@media (min-width: 1024px) {\n  .container {\n    max-width: 1024px;\n  }\n}\n@media (min-width: 1280px) {\n  .container {\n    max-width: 1280px;\n  }\n}\n@media (min-width: 1536px) {\n  .container {\n    max-width: 1536px;\n  }\n}\n.m-auto {\n  margin: auto;\n}\n.block {\n  display: block;\n}\n.table {\n  display: table;\n}\n@keyframes spin {\n  to {\n    transform: rotate(1turn);\n  }\n}\n@keyframes ping {\n  75%,\n  to {\n    transform: scale(2);\n    opacity: 0;\n  }\n}\n@keyframes pulse {\n  50% {\n    opacity: 0.5;\n  }\n}\n@keyframes bounce {\n  0%,\n  to {\n    transform: translateY(-25%);\n    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);\n  }\n  50% {\n    transform: none;\n    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);\n  }\n}\n.border {\n  border-width: 1px;\n}\n.text-center {\n  text-align: center;\n}\n.text-lg {\n  font-size: 1.125rem;\n  line-height: 1.75rem;\n}\n.font-bold {\n  font-weight: 700;\n}\n.text-blue-400 {\n  --tw-text-opacity: 1;\n  color: rgba(96, 165, 250, var(--tw-text-opacity));\n}\n.underline {\n  text-decoration: underline;\n}\n*,\n:after,\n:before {\n  --tw-shadow: 0 0 #0000;\n  --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgba(59, 130, 246, 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n}\n@media (min-width: 640px) {\n  .sm\\:space-y-2 > :not([hidden]) ~ :not([hidden]) {\n    --tw-space-y-reverse: 0;\n    margin-top: calc(0.5rem * (1 - var(--tw-space-y-reverse)));\n    margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));\n  }\n}\n@media (min-width: 768px) {\n  .md\\:space-y-4 > :not([hidden]) ~ :not([hidden]) {\n    --tw-space-y-reverse: 0;\n    margin-top: calc(1rem * (1 - var(--tw-space-y-reverse)));\n    margin-bottom: calc(1rem * var(--tw-space-y-reverse));\n  }\n}\n";
 
-  // src/utils/imageToCanvas.ts
-  function imageToCanvas(img, {
-    background
-  } = {}) {
-    const canvas = document.createElement("canvas");
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    const ctx = canvas.getContext("2d");
-    if (background) {
-      ctx.fillStyle = background;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // src/utils/isCanvasTainted.ts
+  function isCanvasTainted(canvas) {
+    try {
+      canvas.getContext("2d").getImageData(0, 0, 1, 1);
+      return false;
+    } catch (err) {
+      return err instanceof DOMException && err.name === "SecurityError";
     }
-    ctx.drawImage(img, 0, 0);
-    return canvas;
+  }
+
+  // src/utils/imageToCanvas.ts
+  function imageToCanvas(_0) {
+    return __async(this, arguments, function* (img, {
+      background
+    } = {}) {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      if (background) {
+        ctx.fillStyle = background;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      ctx.drawImage(img, 0, 0);
+      if (img.src && img.crossOrigin !== "anonymous" && isCanvasTainted(canvas)) {
+        const corsImage = new Image();
+        corsImage.crossOrigin = "anonymous";
+        corsImage.src = img.src;
+        yield corsImage.decode();
+        return imageToCanvas(corsImage, { background });
+      }
+      return canvas;
+    });
   }
 
   // src/niconico.jp/manga-download.user.ts

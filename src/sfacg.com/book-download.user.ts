@@ -38,7 +38,7 @@ const __name__ = 'SF轻小说章节自动下载';
     console.log(`${__name__}: 等待图片加载`);
     await i.decode();
     console.log(`${__name__}: 图片加载完毕`);
-    const line = imageToMarkdown(i, { background: 'white' });
+    const line = await imageToMarkdown(i, { background: 'white' });
     lines.push(line);
   }
   // 免费章节
@@ -46,7 +46,7 @@ const __name__ = 'SF轻小说章节自动下载';
     const line = elementRootText(i);
     lines.push(line);
     for (const img of i.querySelectorAll('img')) {
-      lines.push(imageToMarkdown(img));
+      lines.push(await imageToMarkdown(img));
     }
   }
 

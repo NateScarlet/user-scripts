@@ -5,7 +5,7 @@
 // @grant    none
 // @include	 https://www.ciweimao.com/chapter/*
 // @run-at   document-idle
-// @version   2023.08.27+9adf4c8f
+// @version   2023.12.05+fbf1a78c
 // ==/UserScript==
 
 "use strict";
@@ -47,31 +47,52 @@
     return `![${alt}](${canvas.toDataURL()} "${title}")`;
   }
 
-  // src/utils/imageToCanvas.ts
-  function imageToCanvas(img, {
-    background
-  } = {}) {
-    const canvas = document.createElement("canvas");
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    const ctx = canvas.getContext("2d");
-    if (background) {
-      ctx.fillStyle = background;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // src/utils/isCanvasTainted.ts
+  function isCanvasTainted(canvas) {
+    try {
+      canvas.getContext("2d").getImageData(0, 0, 1, 1);
+      return false;
+    } catch (err) {
+      return err instanceof DOMException && err.name === "SecurityError";
     }
-    ctx.drawImage(img, 0, 0);
-    return canvas;
+  }
+
+  // src/utils/imageToCanvas.ts
+  function imageToCanvas(_0) {
+    return __async(this, arguments, function* (img, {
+      background
+    } = {}) {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      if (background) {
+        ctx.fillStyle = background;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      ctx.drawImage(img, 0, 0);
+      if (img.src && img.crossOrigin !== "anonymous" && isCanvasTainted(canvas)) {
+        const corsImage = new Image();
+        corsImage.crossOrigin = "anonymous";
+        corsImage.src = img.src;
+        yield corsImage.decode();
+        return imageToCanvas(corsImage, { background });
+      }
+      return canvas;
+    });
   }
 
   // src/utils/imageToMarkdown.ts
-  function imageToMarkdown(img, {
-    background
-  } = {}) {
-    return canvasToMarkdown(
-      imageToCanvas(img, { background }),
-      img.alt,
-      img.title
-    );
+  function imageToMarkdown(_0) {
+    return __async(this, arguments, function* (img, {
+      background
+    } = {}) {
+      return canvasToMarkdown(
+        yield imageToCanvas(img, { background }),
+        img.alt,
+        img.title
+      );
+    });
   }
 
   // src/utils/loadImage.ts
@@ -107,7 +128,7 @@
           const url = i.style["background-image"].match(
             /(?:url\(")?(.+)(?:"\))?/
           )[1];
-          const line = imageToMarkdown(yield loadImage(url));
+          const line = yield imageToMarkdown(yield loadImage(url));
           lines.push(line);
         }
         for (const i of document.querySelectorAll("#J_BookRead p.chapter")) {
@@ -115,7 +136,7 @@
           lines.push(line);
           for (const img of i.querySelectorAll("img")) {
             yield img.decode();
-            lines.push(imageToMarkdown(img));
+            lines.push(yield imageToMarkdown(img));
           }
         }
         for (const i of document.querySelectorAll("p.author_say")) {
@@ -123,7 +144,7 @@
           lines.push(`    ${line}`);
           for (const img of i.querySelectorAll("img")) {
             yield img.decode();
-            lines.push(imageToMarkdown(img));
+            lines.push(yield imageToMarkdown(img));
           }
         }
         lines = lines.filter((i) => i.length > 0);

@@ -1,16 +1,16 @@
 import canvasToMarkdown from './canvasToMarkdown';
 import imageToCanvas from './imageToCanvas';
 
-export default function imageToMarkdown(
+export default async function imageToMarkdown(
   img: HTMLImageElement,
   {
     background,
   }: {
     background?: string | CanvasGradient | CanvasPattern;
   } = {}
-): string {
+): Promise<string> {
   return canvasToMarkdown(
-    imageToCanvas(img, { background }),
+    await imageToCanvas(img, { background }),
     img.alt,
     img.title
   );

@@ -8,7 +8,7 @@
 // @include	 https://book.sfacg.com/Novel/*/*/*/
 // @include	 https://book.sfacg.com/vip/c/*/
 // @run-at   document-idle
-// @version   2023.08.27+d866dbc3
+// @version   2023.12.05+8005e7f4
 // ==/UserScript==
 
 "use strict";
@@ -69,31 +69,52 @@
     return `![${alt}](${canvas.toDataURL()} "${title}")`;
   }
 
-  // src/utils/imageToCanvas.ts
-  function imageToCanvas(img, {
-    background
-  } = {}) {
-    const canvas = document.createElement("canvas");
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    const ctx = canvas.getContext("2d");
-    if (background) {
-      ctx.fillStyle = background;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // src/utils/isCanvasTainted.ts
+  function isCanvasTainted(canvas) {
+    try {
+      canvas.getContext("2d").getImageData(0, 0, 1, 1);
+      return false;
+    } catch (err) {
+      return err instanceof DOMException && err.name === "SecurityError";
     }
-    ctx.drawImage(img, 0, 0);
-    return canvas;
+  }
+
+  // src/utils/imageToCanvas.ts
+  function imageToCanvas(_0) {
+    return __async(this, arguments, function* (img, {
+      background
+    } = {}) {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      if (background) {
+        ctx.fillStyle = background;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      ctx.drawImage(img, 0, 0);
+      if (img.src && img.crossOrigin !== "anonymous" && isCanvasTainted(canvas)) {
+        const corsImage = new Image();
+        corsImage.crossOrigin = "anonymous";
+        corsImage.src = img.src;
+        yield corsImage.decode();
+        return imageToCanvas(corsImage, { background });
+      }
+      return canvas;
+    });
   }
 
   // src/utils/imageToMarkdown.ts
-  function imageToMarkdown(img, {
-    background
-  } = {}) {
-    return canvasToMarkdown(
-      imageToCanvas(img, { background }),
-      img.alt,
-      img.title
-    );
+  function imageToMarkdown(_0) {
+    return __async(this, arguments, function* (img, {
+      background
+    } = {}) {
+      return canvasToMarkdown(
+        yield imageToCanvas(img, { background }),
+        img.alt,
+        img.title
+      );
+    });
   }
 
   // src/sfacg.com/book-download.user.ts
@@ -112,14 +133,14 @@
         console.log(`${__name__}: 等待图片加载`);
         yield i.decode();
         console.log(`${__name__}: 图片加载完毕`);
-        const line = imageToMarkdown(i, { background: "white" });
+        const line = yield imageToMarkdown(i, { background: "white" });
         lines.push(line);
       }
       for (const i of document.querySelectorAll("#ChapterBody p")) {
         const line = elementRootText(i);
         lines.push(line);
         for (const img of i.querySelectorAll("img")) {
-          lines.push(imageToMarkdown(img));
+          lines.push(yield imageToMarkdown(img));
         }
       }
       lines = lines.filter((i) => i.length > 0);

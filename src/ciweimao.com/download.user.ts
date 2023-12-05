@@ -28,7 +28,7 @@ const __name__ = '刺猬猫章节自动下载';
       const url: string = i.style['background-image'].match(
         /(?:url\(")?(.+)(?:"\))?/
       )[1];
-      const line = imageToMarkdown(await loadImage(url));
+      const line = await imageToMarkdown(await loadImage(url));
       lines.push(line);
     }
     // 免费章节
@@ -37,7 +37,7 @@ const __name__ = '刺猬猫章节自动下载';
       lines.push(line);
       for (const img of i.querySelectorAll('img')) {
         await img.decode();
-        lines.push(imageToMarkdown(img));
+        lines.push(await imageToMarkdown(img));
       }
     }
     // 作者说
@@ -46,7 +46,7 @@ const __name__ = '刺猬猫章节自动下载';
       lines.push(`    ${line}`);
       for (const img of i.querySelectorAll('img')) {
         await img.decode();
-        lines.push(imageToMarkdown(img));
+        lines.push(await imageToMarkdown(img));
       }
     }
     lines = lines.filter((i) => i.length > 0);

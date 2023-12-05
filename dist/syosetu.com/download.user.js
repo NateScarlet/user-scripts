@@ -6,7 +6,7 @@
 // @include	 /^https?://ncode\.syosetu\.com/\w+/$/
 // @include	 /^https?://novel18\.syosetu\.com/\w+/$/
 // @run-at   document-end
-// @version   2023.08.27+49238d00
+// @version   2023.12.05+2c14f8f3
 // ==/UserScript==
 
 "use strict";
@@ -56,31 +56,52 @@
     return `![${alt}](${canvas.toDataURL()} "${title}")`;
   }
 
-  // src/utils/imageToCanvas.ts
-  function imageToCanvas(img, {
-    background
-  } = {}) {
-    const canvas = document.createElement("canvas");
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    const ctx = canvas.getContext("2d");
-    if (background) {
-      ctx.fillStyle = background;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // src/utils/isCanvasTainted.ts
+  function isCanvasTainted(canvas) {
+    try {
+      canvas.getContext("2d").getImageData(0, 0, 1, 1);
+      return false;
+    } catch (err) {
+      return err instanceof DOMException && err.name === "SecurityError";
     }
-    ctx.drawImage(img, 0, 0);
-    return canvas;
+  }
+
+  // src/utils/imageToCanvas.ts
+  function imageToCanvas(_0) {
+    return __async(this, arguments, function* (img, {
+      background
+    } = {}) {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      if (background) {
+        ctx.fillStyle = background;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      ctx.drawImage(img, 0, 0);
+      if (img.src && img.crossOrigin !== "anonymous" && isCanvasTainted(canvas)) {
+        const corsImage = new Image();
+        corsImage.crossOrigin = "anonymous";
+        corsImage.src = img.src;
+        yield corsImage.decode();
+        return imageToCanvas(corsImage, { background });
+      }
+      return canvas;
+    });
   }
 
   // src/utils/imageToMarkdown.ts
-  function imageToMarkdown(img, {
-    background
-  } = {}) {
-    return canvasToMarkdown(
-      imageToCanvas(img, { background }),
-      img.alt,
-      img.title
-    );
+  function imageToMarkdown(_0) {
+    return __async(this, arguments, function* (img, {
+      background
+    } = {}) {
+      return canvasToMarkdown(
+        yield imageToCanvas(img, { background }),
+        img.alt,
+        img.title
+      );
+    });
   }
 
   // src/utils/loadImage.ts
