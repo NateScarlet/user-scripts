@@ -236,10 +236,32 @@ export default class SettingsDrawer {
               }}"
             />
           </label>
+          <label class="flex items-center">
+            <div class="flex-none w-32">排除关键词</div>
+            <div class="flex-auto">
+              <textarea
+                class="w-full border my-1 p-1"
+                placeholder=""
+                .value="${videoListSettings.excludeKeywords.join('\n')}"
+                @input="${this.onExcludeKeywordInput}"
+              ></textarea>
+              <div class="text-gray-500 text-sm">
+                不显示标题含关键词的视频。每行一个，不区分大小写。
+              </div>
+            </div>
+          </label>
         </div>
       </section>
     `;
   }
+
+  private readonly onExcludeKeywordInput = (e: Event) => {
+    const el = e.target as HTMLTextAreaElement;
+    videoListSettings.excludeKeywords = el.value.split('\n');
+    if (el.scrollHeight > el.clientHeight) {
+      el.style.height = `${el.scrollHeight}px`;
+    }
+  };
 
   private searchSettings() {
     return html`

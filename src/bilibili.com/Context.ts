@@ -46,6 +46,15 @@ export default class Context {
       }
     }
 
+    if (
+      v.title &&
+      videoListSettings.excludeKeywords.some((i) =>
+        v.title.toLowerCase().includes(i.toLowerCase())
+      )
+    ) {
+      return true;
+    }
+
     return false;
   };
 }

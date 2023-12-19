@@ -1,11 +1,13 @@
 import Duration, { DurationInput } from '@/utils/Duration';
 import GMValue from '@/utils/GMValue';
+import optionalArray from '@/utils/optionalArray';
 
 export default new (class VideoListSettings {
   private readonly value = new GMValue<{
     allowAdvertisement?: boolean;
     durationGte?: string;
     durationLt?: string;
+    excludeKeywords?: string[];
   }>('videoListSettings@4eb93ea9-8748-4647-876f-30451395e561', () => ({}));
 
   get allowAdvertisement() {
@@ -16,6 +18,17 @@ export default new (class VideoListSettings {
     this.value.set({
       ...this.value.get(),
       allowAdvertisement: v || undefined,
+    });
+  }
+
+  get excludeKeywords() {
+    return this.value.get().excludeKeywords ?? [];
+  }
+
+  set excludeKeywords(v) {
+    this.value.set({
+      ...this.value.get(),
+      excludeKeywords: optionalArray(v.filter((i) => i)),
     });
   }
 

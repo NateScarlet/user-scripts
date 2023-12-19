@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.11.24+c5368de6
+// @version   2023.12.19+fbdbc54d
 // ==/UserScript==
 
 "use strict";
@@ -1989,6 +1989,14 @@
   });
   var Duration = _Duration;
 
+  // src/utils/optionalArray.ts
+  function optionalArray(arr) {
+    if (!arr || arr.length === 0) {
+      return;
+    }
+    return arr;
+  }
+
   // src/bilibili.com/models/videoListSettings.ts
   var videoListSettings_default = new class VideoListSettings {
     constructor() {
@@ -2001,6 +2009,15 @@
     set allowAdvertisement(v) {
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
         allowAdvertisement: v || void 0
+      }));
+    }
+    get excludeKeywords() {
+      var _a2;
+      return (_a2 = this.value.get().excludeKeywords) != null ? _a2 : [];
+    }
+    set excludeKeywords(v) {
+      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+        excludeKeywords: optionalArray(v.filter((i) => i))
       }));
     }
     get durationGte() {
@@ -2070,6 +2087,13 @@
       __publicField(this, "close", () => {
         this.isOpen = false;
         this.render();
+      });
+      __publicField(this, "onExcludeKeywordInput", (e) => {
+        const el = e.target;
+        videoListSettings_default.excludeKeywords = el.value.split("\n");
+        if (el.scrollHeight > el.clientHeight) {
+          el.style.height = `${el.scrollHeight}px`;
+        }
       });
       __publicField(this, "onVideListDurationGteChange", debounce_default((e) => {
         const el = e.target;
@@ -2292,6 +2316,20 @@
         }
       }}"
             />
+          </label>
+          <label class="flex items-center">
+            <div class="flex-none w-32">排除关键词</div>
+            <div class="flex-auto">
+              <textarea
+                class="w-full border my-1 p-1"
+                placeholder=""
+                .value="${videoListSettings_default.excludeKeywords.join("\n")}"
+                @input="${this.onExcludeKeywordInput}"
+              ></textarea>
+              <div class="text-gray-500 text-sm">
+                不显示标题含关键词的视频。每行一个，不区分大小写。
+              </div>
+            </div>
           </label>
         </div>
       </section>
@@ -2941,6 +2979,11 @@
           if (!this.m.match(v.title)) {
             return true;
           }
+        }
+        if (v.title && videoListSettings_default.excludeKeywords.some(
+          (i) => v.title.toLowerCase().includes(i.toLowerCase())
+        )) {
+          return true;
         }
         return false;
       });
