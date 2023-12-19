@@ -54,7 +54,7 @@ export default class SettingsDrawer {
         bg-white overflow-auto p-2 
         transition-transform transform
         ${this.isOpen ? '' : 'translate-x-full'}
-        flex flex-col gap-2
+        space-y-1
       "
       @transitionend=${() => {
         if (!this.isOpen) {
@@ -87,7 +87,7 @@ export default class SettingsDrawer {
 
   private homePageSettings() {
     return html`
-      <section class="flex-none">
+      <section>
         <h1 class="text-sm text-gray-500">主页</h1>
         <div class="px-1">
           <label>
@@ -180,7 +180,7 @@ export default class SettingsDrawer {
 
   private videoListSettings() {
     return html`
-      <section class="flex-none">
+      <section>
         <h1 class="text-sm text-gray-500">视频列表</h1>
         <div class="px-1">
           <label>
@@ -261,7 +261,7 @@ export default class SettingsDrawer {
 
   private searchSettings() {
     return html`
-      <section class="flex-none">
+      <section>
         <h1 class="text-sm text-gray-500">搜索</h1>
         <div class="px-1">
           <label>
@@ -299,7 +299,7 @@ export default class SettingsDrawer {
     const userIDs = blockedUsers.distinctID();
 
     return html`
-      <div class="flex-auto flex flex-col overflow-hidden max-h-screen">
+      <div class="flex flex-col overflow-hidden max-h-screen">
         <h1 class="flex-none text-sm text-gray-500">
           已屏蔽用户 <span class="text-sm">(${userIDs.length})</span>
         </h1>
