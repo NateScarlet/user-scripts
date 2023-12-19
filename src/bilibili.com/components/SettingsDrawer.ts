@@ -17,11 +17,7 @@ export default class SettingsDrawer {
 
   private active = false;
 
-  private readonly id: string;
-
-  constructor() {
-    this.id = `settings-${randomUUID()}`;
-  }
+  private static readonly id: string = `settings-${randomUUID()}`;
 
   public readonly open = () => {
     this.active = true;
@@ -388,7 +384,7 @@ export default class SettingsDrawer {
       this.html(),
       obtainHTMLElementByID({
         tag: 'div',
-        id: this.id,
+        id: SettingsDrawer.id,
         onDidCreate: (el) => {
           el.style.position = 'relative';
           el.style.zIndex = '9999';

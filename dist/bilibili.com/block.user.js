@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.12.19+fbdbc54d
+// @version   2023.12.19+30c66f85
 // ==/UserScript==
 
 "use strict";
@@ -2071,11 +2071,10 @@
   }();
 
   // src/bilibili.com/components/SettingsDrawer.ts
-  var SettingsDrawer = class {
+  var _SettingsDrawer = class _SettingsDrawer {
     constructor() {
       __publicField(this, "isOpen", false);
       __publicField(this, "active", false);
-      __publicField(this, "id");
       __publicField(this, "open", () => {
         this.active = true;
         this.render();
@@ -2110,7 +2109,7 @@
           this.html(),
           obtainHTMLElementByID({
             tag: "div",
-            id: this.id,
+            id: _SettingsDrawer.id,
             onDidCreate: (el) => {
               el.style.position = "relative";
               el.style.zIndex = "9999";
@@ -2121,7 +2120,6 @@
           })
         );
       });
-      this.id = `settings-${randomUUID()}`;
     }
     html() {
       if (!this.active) {
@@ -2434,6 +2432,8 @@
     `;
     }
   };
+  __publicField(_SettingsDrawer, "id", `settings-${randomUUID()}`);
+  var SettingsDrawer = _SettingsDrawer;
 
   // src/utils/isNonNull.ts
   function isNonNull(v) {
@@ -2441,7 +2441,7 @@
   }
 
   // src/bilibili.com/components/NavButton.ts
-  var NavButton = class {
+  var _NavButton = class _NavButton {
     constructor(settings) {
       __publicField(this, "settings");
       __publicField(this, "render", () => {
@@ -2451,7 +2451,7 @@
         }
         const container = obtainHTMLElementByID({
           tag: "li",
-          id: "db7a644d-1c6c-4078-a9dc-991b15b68014",
+          id: _NavButton.id,
           onDidCreate: (el) => {
             style_default2.apply(el);
             el.classList.add("right-entry-item");
@@ -2481,6 +2481,8 @@
       this.settings = settings;
     }
   };
+  __publicField(_NavButton, "id", `nav-button-${randomUUID()}`);
+  var NavButton = _NavButton;
 
   // src/bilibili.com/models/migrate.ts
   function migrateV1() {
@@ -2533,7 +2535,7 @@
   }
 
   // src/bilibili.com/components/UserBlockButton.ts
-  var UserBlockButton = class {
+  var _UserBlockButton = class _UserBlockButton {
     constructor(user) {
       this.user = user;
       __publicField(this, "render", () => {
@@ -2543,7 +2545,7 @@
         }
         const container = obtainHTMLElementByID({
           tag: "div",
-          id: "7ced1613-89d7-4754-8989-2ad0d7cfa9db",
+          id: _UserBlockButton.id,
           onDidCreate: (el) => {
             el.style.display = "inline";
             parent.append(...[el, parent.lastChild].filter(isNonNull));
@@ -2571,6 +2573,8 @@
       });
     }
   };
+  __publicField(_UserBlockButton, "id", `user-block-button-${randomUUID()}`);
+  var UserBlockButton = _UserBlockButton;
 
   // src/bilibili.com/utils/parseVideoURL.ts
   function parseVideoURL(rawURL) {

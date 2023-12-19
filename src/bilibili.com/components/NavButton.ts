@@ -2,10 +2,13 @@ import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
 import { mdiEyeOffOutline } from '@mdi/js';
 import { render, html } from 'lit-html';
 import isNonNull from '@/utils/isNonNull';
+import randomUUID from '@/utils/randomUUID';
 import style from '../style';
 import SettingsDrawer from './SettingsDrawer';
 
 export default class NavButton {
+  private static readonly id = `nav-button-${randomUUID()}`;
+
   private readonly settings: SettingsDrawer;
 
   constructor(settings: SettingsDrawer) {
@@ -19,7 +22,7 @@ export default class NavButton {
     }
     const container = obtainHTMLElementByID({
       tag: 'li',
-      id: 'db7a644d-1c6c-4078-a9dc-991b15b68014',
+      id: NavButton.id,
       onDidCreate: (el) => {
         style.apply(el);
         el.classList.add('right-entry-item');

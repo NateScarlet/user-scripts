@@ -1,9 +1,12 @@
 import isNonNull from '@/utils/isNonNull';
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
 import { render, html } from 'lit-html';
+import randomUUID from '@/utils/randomUUID';
 import blockedUsers from '../models/blockedUsers';
 
 export default class UserBlockButton {
+  private static readonly id = `user-block-button-${randomUUID()}`;
+
   constructor(private readonly user: { id: string }) {}
 
   public readonly render = () => {
@@ -14,7 +17,7 @@ export default class UserBlockButton {
 
     const container = obtainHTMLElementByID({
       tag: 'div',
-      id: '7ced1613-89d7-4754-8989-2ad0d7cfa9db',
+      id: UserBlockButton.id,
       onDidCreate: (el) => {
         el.style.display = 'inline';
         parent.append(...[el, parent.lastChild].filter(isNonNull));

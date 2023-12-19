@@ -9,9 +9,9 @@ export default function obtainHTMLElementByID<
   id: string;
   onDidCreate?: (el: HTMLElementTagNameMap[K]) => void;
 }): HTMLElementTagNameMap[K] {
-  const match = document.getElementById(id) as HTMLElementTagNameMap[K];
+  const match = document.getElementById(id);
   if (match) {
-    return match;
+    return match as HTMLElementTagNameMap[K];
   }
   const el = document.createElement(tag);
   el.id = id;
