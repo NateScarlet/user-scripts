@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.12.19+85a57667
+// @version   2023.12.19+0b041f24
 // ==/UserScript==
 
 "use strict";
@@ -3029,7 +3029,13 @@
     };
   }
   function routeKey() {
-    return window.location.pathname + window.location.search;
+    var _a2;
+    const { host, pathname, search } = window.location;
+    if (host === "search.bilibili.com") {
+      const q = new URLSearchParams(search);
+      return `search:${(_a2 = q.get("keyword")) != null ? _a2 : ""}`;
+    }
+    return pathname;
   }
   function main() {
     return __async(this, null, function* () {

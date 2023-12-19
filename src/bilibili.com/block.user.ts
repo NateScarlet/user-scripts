@@ -76,7 +76,12 @@ function createApp(): Component {
 }
 
 function routeKey() {
-  return window.location.pathname + window.location.search;
+  const { host, pathname, search } = window.location;
+  if (host === 'search.bilibili.com') {
+    const q = new URLSearchParams(search);
+    return `search:${q.get('keyword') ?? ''}`;
+  }
+  return pathname;
 }
 
 async function main() {
