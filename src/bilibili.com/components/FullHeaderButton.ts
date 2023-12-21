@@ -6,8 +6,8 @@ import randomUUID from '@/utils/randomUUID';
 import style from '../style';
 import SettingsDrawer from './SettingsDrawer';
 
-export default class NavButton {
-  private static readonly id = `nav-button-${randomUUID()}`;
+export default class FullHeaderButton {
+  private static readonly id = `full-header-button-${randomUUID()}`;
 
   private readonly settings: SettingsDrawer;
 
@@ -22,7 +22,7 @@ export default class NavButton {
     }
     const container = obtainHTMLElementByID({
       tag: 'li',
-      id: NavButton.id,
+      id: FullHeaderButton.id,
       onDidCreate: (el) => {
         style.apply(el);
         el.classList.add('right-entry-item');

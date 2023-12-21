@@ -19,7 +19,7 @@ import Disposal from '@/utils/Disposal';
 import style from './style';
 import Component from './components/Component';
 import SettingsDrawer from './components/SettingsDrawer';
-import NavButton from './components/NavButton';
+import FullHeaderButton from './components/FullHeaderButton';
 import migrate from './models/migrate';
 import parseUserURL from './utils/parseUserURL';
 import UserBlockButton from './components/UserBlockButton';
@@ -31,15 +31,22 @@ import VideoListPatch from './components/VideoListPatch';
 import AdblockTipPatch from './components/AdblockTipPatch';
 import HomePageFloorCardPatch from './components/HomePageFloorCardPatch';
 import Context from './Context';
+import MiniHeaderButton from './components/MiniHeaderButton';
 
 export {};
 
 function createApp(): Component {
   const rawURL = window.location.href;
   const settings = new SettingsDrawer();
-  const components: Component[] = [settings, new NavButton(settings)];
+  const components: Component[] = [settings];
   const user = parseUserURL(rawURL);
   const url = new URL(rawURL);
+
+  if (document.querySelector('.mini-header')) {
+    components.push(new MiniHeaderButton(settings));
+  } else {
+    components.push(new FullHeaderButton(settings));
+  }
 
   const data = {
     query: '',
@@ -95,7 +102,8 @@ async function main() {
     new Polling({
       update: () => {
         if (
-          (document.querySelector('.right-entry')?.childElementCount ?? 0) < 2
+          (document.querySelector('.right-entry,.user-con:nth-child(2)')
+            ?.childElementCount ?? 0) < 2
         ) {
           // not ready
           // https://greasyfork.org/zh-CN/scripts/465675-b%E7%AB%99%E7%94%A8%E6%88%B7%E5%B1%8F%E8%94%BD/discussions/198827

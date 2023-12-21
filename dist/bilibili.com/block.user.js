@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.12.19+0b041f24
+// @version   2023.12.22+07920563
 // ==/UserScript==
 
 "use strict";
@@ -2440,8 +2440,8 @@
     return v != null;
   }
 
-  // src/bilibili.com/components/NavButton.ts
-  var _NavButton = class _NavButton {
+  // src/bilibili.com/components/FullHeaderButton.ts
+  var _FullHeaderButton = class _FullHeaderButton {
     constructor(settings) {
       __publicField(this, "settings");
       __publicField(this, "render", () => {
@@ -2451,7 +2451,7 @@
         }
         const container = obtainHTMLElementByID({
           tag: "li",
-          id: _NavButton.id,
+          id: _FullHeaderButton.id,
           onDidCreate: (el) => {
             style_default2.apply(el);
             el.classList.add("right-entry-item");
@@ -2481,8 +2481,8 @@
       this.settings = settings;
     }
   };
-  __publicField(_NavButton, "id", `nav-button-${randomUUID()}`);
-  var NavButton = _NavButton;
+  __publicField(_FullHeaderButton, "id", `full-header-button-${randomUUID()}`);
+  var FullHeaderButton = _FullHeaderButton;
 
   // src/bilibili.com/models/migrate.ts
   function migrateV1() {
@@ -2996,14 +2996,61 @@
     }
   };
 
+  // src/bilibili.com/components/MiniHeaderButton.ts
+  var _RankNavButton = class _RankNavButton {
+    constructor(settings) {
+      __publicField(this, "settings");
+      __publicField(this, "render", () => {
+        const parent = document.querySelector(
+          ".nav-user-center .user-con:nth-child(2)"
+        );
+        if (!parent) {
+          return;
+        }
+        const container = obtainHTMLElementByID({
+          tag: "div",
+          id: _RankNavButton.id,
+          onDidCreate: (el) => {
+            style_default2.apply(el);
+            el.classList.add("item");
+            parent.prepend(...[parent.firstChild, el].filter(isNonNull));
+          }
+        });
+        render(
+          html`
+        <button
+          type="button"
+          @click=${(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.settings.open();
+          }}
+        >
+          <span class="name">屏蔽</span>
+        </button>
+      `,
+          container
+        );
+      });
+      this.settings = settings;
+    }
+  };
+  __publicField(_RankNavButton, "id", `mini-header-button-${randomUUID()}`);
+  var RankNavButton = _RankNavButton;
+
   // src/bilibili.com/block.user.ts
   function createApp() {
     var _a2;
     const rawURL = window.location.href;
     const settings = new SettingsDrawer();
-    const components = [settings, new NavButton(settings)];
+    const components = [settings];
     const user = parseUserURL(rawURL);
     const url = new URL(rawURL);
+    if (document.querySelector(".mini-header")) {
+      components.push(new RankNavButton(settings));
+    } else {
+      components.push(new FullHeaderButton(settings));
+    }
     const data = {
       query: ""
     };
@@ -3047,7 +3094,7 @@
         new Polling({
           update: () => {
             var _a2, _b2;
-            if (((_b2 = (_a2 = document.querySelector(".right-entry")) == null ? void 0 : _a2.childElementCount) != null ? _b2 : 0) < 2) {
+            if (((_b2 = (_a2 = document.querySelector(".right-entry,.user-con:nth-child(2)")) == null ? void 0 : _a2.childElementCount) != null ? _b2 : 0) < 2) {
               return;
             }
             if (routeKey() !== initialRouteKey) {
