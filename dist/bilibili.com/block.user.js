@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.12.22+07920563
+// @version   2023.12.22+0f41a6da
 // ==/UserScript==
 
 "use strict";
@@ -2997,7 +2997,7 @@
   };
 
   // src/bilibili.com/components/MiniHeaderButton.ts
-  var _RankNavButton = class _RankNavButton {
+  var _MiniHeaderButton = class _MiniHeaderButton {
     constructor(settings) {
       __publicField(this, "settings");
       __publicField(this, "render", () => {
@@ -3009,7 +3009,7 @@
         }
         const container = obtainHTMLElementByID({
           tag: "div",
-          id: _RankNavButton.id,
+          id: _MiniHeaderButton.id,
           onDidCreate: (el) => {
             style_default2.apply(el);
             el.classList.add("item");
@@ -3035,8 +3035,8 @@
       this.settings = settings;
     }
   };
-  __publicField(_RankNavButton, "id", `mini-header-button-${randomUUID()}`);
-  var RankNavButton = _RankNavButton;
+  __publicField(_MiniHeaderButton, "id", `mini-header-button-${randomUUID()}`);
+  var MiniHeaderButton = _MiniHeaderButton;
 
   // src/bilibili.com/block.user.ts
   function createApp() {
@@ -3047,7 +3047,7 @@
     const user = parseUserURL(rawURL);
     const url = new URL(rawURL);
     if (document.querySelector(".mini-header")) {
-      components.push(new RankNavButton(settings));
+      components.push(new MiniHeaderButton(settings));
     } else {
       components.push(new FullHeaderButton(settings));
     }

@@ -5,7 +5,7 @@ import randomUUID from '@/utils/randomUUID';
 import style from '../style';
 import SettingsDrawer from './SettingsDrawer';
 
-export default class RankNavButton {
+export default class MiniHeaderButton {
   private static readonly id = `mini-header-button-${randomUUID()}`;
 
   private readonly settings: SettingsDrawer;
@@ -23,7 +23,7 @@ export default class RankNavButton {
     }
     const container = obtainHTMLElementByID({
       tag: 'div',
-      id: RankNavButton.id,
+      id: MiniHeaderButton.id,
       onDidCreate: (el) => {
         style.apply(el);
         el.classList.add('item');
