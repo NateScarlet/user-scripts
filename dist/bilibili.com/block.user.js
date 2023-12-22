@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.12.22+0f41a6da
+// @version   2023.12.22+7cc237b8
 // ==/UserScript==
 
 "use strict";
@@ -3046,10 +3046,10 @@
     const components = [settings];
     const user = parseUserURL(rawURL);
     const url = new URL(rawURL);
-    if (document.querySelector(".mini-header")) {
-      components.push(new MiniHeaderButton(settings));
-    } else {
+    if (document.querySelector(".right-entry")) {
       components.push(new FullHeaderButton(settings));
+    } else {
+      components.push(new MiniHeaderButton(settings));
     }
     const data = {
       query: ""

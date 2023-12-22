@@ -42,10 +42,10 @@ function createApp(): Component {
   const user = parseUserURL(rawURL);
   const url = new URL(rawURL);
 
-  if (document.querySelector('.mini-header')) {
-    components.push(new MiniHeaderButton(settings));
-  } else {
+  if (document.querySelector('.right-entry')) {
     components.push(new FullHeaderButton(settings));
+  } else {
+    components.push(new MiniHeaderButton(settings));
   }
 
   const data = {
