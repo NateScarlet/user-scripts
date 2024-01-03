@@ -15,11 +15,11 @@ export default class Context {
   }
 
   public readonly shouldExcludeVideo = (v: {
-    user: { id: string };
+    user?: { id: string };
     title: string;
-    duration: DurationInput;
+    duration?: DurationInput;
   }): boolean => {
-    if (blockedUsers.has(v.user.id)) {
+    if (v.user && blockedUsers.has(v.user.id)) {
       return true;
     }
 

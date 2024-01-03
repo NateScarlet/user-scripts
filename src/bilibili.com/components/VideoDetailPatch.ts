@@ -29,6 +29,9 @@ export default class VideoDetailPatch {
               i.querySelector('.title')?.textContent) ??
             '';
           hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
+          if (hidden) {
+            this.blockedTitles.add(title);
+          }
         } else {
           // assume advertisement
           hidden = !videoListSettings.allowAdvertisement;
@@ -52,8 +55,10 @@ export default class VideoDetailPatch {
         if (!title) {
           return;
         }
-        const isBlocked = this.blockedTitles.has(title);
-        setHTMLElementDisplayHidden(i, isBlocked);
+        const hidden =
+          this.blockedTitles.has(title) ||
+          this.ctx.shouldExcludeVideo({ title });
+        setHTMLElementDisplayHidden(i, hidden);
       });
   };
 }

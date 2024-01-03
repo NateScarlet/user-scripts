@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2024.01.03+581fd51b
+// @version   2024.01.03+125f1c71
 // ==/UserScript==
 
 "use strict";
@@ -2699,6 +2699,9 @@
             const duration = (_d2 = (_c2 = (_b2 = i.querySelector(".duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d2 : "";
             const title = (_g = ((_e = i.querySelector(".title")) == null ? void 0 : _e.getAttribute("title")) || ((_f = i.querySelector(".title")) == null ? void 0 : _f.textContent)) != null ? _g : "";
             hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
+            if (hidden) {
+              this.blockedTitles.add(title);
+            }
           } else {
             hidden = !videoListSettings_default.allowAdvertisement;
           }
@@ -2718,8 +2721,8 @@
           if (!title) {
             return;
           }
-          const isBlocked = this.blockedTitles.has(title);
-          setHTMLElementDisplayHidden(i, isBlocked);
+          const hidden = this.blockedTitles.has(title) || this.ctx.shouldExcludeVideo({ title });
+          setHTMLElementDisplayHidden(i, hidden);
         });
       });
     }
@@ -2967,7 +2970,7 @@
       __publicField(this, "m");
       __publicField(this, "query");
       __publicField(this, "shouldExcludeVideo", (v) => {
-        if (blockedUsers_default.has(v.user.id)) {
+        if (v.user && blockedUsers_default.has(v.user.id)) {
           return true;
         }
         if (v.duration) {
