@@ -32,6 +32,7 @@ import AdblockTipPatch from './components/AdblockTipPatch';
 import HomePageFloorCardPatch from './components/HomePageFloorCardPatch';
 import Context from './Context';
 import MiniHeaderButton from './components/MiniHeaderButton';
+import PlaylistPatch from './components/PlaylistPatch';
 
 export {};
 
@@ -54,11 +55,12 @@ function createApp(): Component {
   if (url.host === 'search.bilibili.com') {
     data.query = url.searchParams.get('keyword') ?? '';
   }
+  const ctx = new Context(data);
 
   if (user) {
     components.push(new UserBlockButton(user));
   } else if (parseVideoURL(rawURL)) {
-    components.push(new VideoDetailPatch(new Context(data)));
+    components.push(new VideoDetailPatch(ctx));
   } else if (
     url.host === 'www.bilibili.com' &&
     url.pathname.startsWith('/v/popular/rank/all')
@@ -69,8 +71,13 @@ function createApp(): Component {
     url.pathname.startsWith('/v/popular/')
   ) {
     components.push(new VueVideoRankPatch());
+  } else if (
+    url.host === 'www.bilibili.com' &&
+    url.pathname.startsWith('/list/')
+  ) {
+    components.push(new PlaylistPatch(ctx));
   } else {
-    components.push(new VideoListPatch(new Context(data)));
+    components.push(new VideoListPatch(ctx));
   }
 
   if (url.host === 'www.bilibili.com' && url.pathname === '/') {

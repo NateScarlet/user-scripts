@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2023.12.22+7cc237b8
+// @version   2024.01.03+581fd51b
 // ==/UserScript==
 
 "use strict";
@@ -3038,6 +3038,38 @@
   __publicField(_MiniHeaderButton, "id", `mini-header-button-${randomUUID()}`);
   var MiniHeaderButton = _MiniHeaderButton;
 
+  // src/bilibili.com/components/PlaylistPatch.ts
+  var PlaylistPatch = class {
+    constructor(ctx) {
+      this.ctx = ctx;
+      __publicField(this, "render", () => {
+        document.querySelectorAll(".video-card").forEach((i) => {
+          var _a2, _b2, _c2, _d2, _e, _f, _g, _h;
+          const rawURL = (_a2 = i.querySelector("a.upname")) == null ? void 0 : _a2.getAttribute("href");
+          if (!rawURL) {
+            return;
+          }
+          const user = parseUserURL(rawURL);
+          let hidden = false;
+          if (user) {
+            const duration = (_d2 = (_c2 = (_b2 = i.querySelector(".duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d2 : "";
+            const title = (_g = ((_e = i.querySelector(".title")) == null ? void 0 : _e.getAttribute("title")) || ((_f = i.querySelector(".title")) == null ? void 0 : _f.textContent)) != null ? _g : "";
+            hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
+          } else {
+            hidden = !videoListSettings_default.allowAdvertisement;
+          }
+          setHTMLElementDisplayHidden(i, hidden);
+          if (user && !hidden) {
+            new VideoHoverButton(i.querySelector(".pic-box"), {
+              id: user.id,
+              name: ((_h = i.querySelector(".upname .name")) == null ? void 0 : _h.textContent) || user.id
+            }).render();
+          }
+        });
+      });
+    }
+  };
+
   // src/bilibili.com/block.user.ts
   function createApp() {
     var _a2;
@@ -3057,16 +3089,19 @@
     if (url.host === "search.bilibili.com") {
       data.query = (_a2 = url.searchParams.get("keyword")) != null ? _a2 : "";
     }
+    const ctx = new Context(data);
     if (user) {
       components.push(new UserBlockButton(user));
     } else if (parseVideoURL(rawURL)) {
-      components.push(new VideoDetailPatch(new Context(data)));
+      components.push(new VideoDetailPatch(ctx));
     } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/rank/all")) {
       components.push(new SSRVideoRankPatch());
     } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/")) {
       components.push(new VueVideoRankPatch());
+    } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/list/")) {
+      components.push(new PlaylistPatch(ctx));
     } else {
-      components.push(new VideoListPatch(new Context(data)));
+      components.push(new VideoListPatch(ctx));
     }
     if (url.host === "www.bilibili.com" && url.pathname === "/") {
       components.push(new AdblockTipPatch(), new HomePageFloorCardPatch());
