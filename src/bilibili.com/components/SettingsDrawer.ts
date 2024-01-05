@@ -4,6 +4,7 @@ import { mdiAccountCheckOutline, mdiClose, mdiOpenInNew } from '@mdi/js';
 import { html, nothing, render } from 'lit-html';
 import compare from '@/utils/compare';
 import { debounce } from 'lodash-es';
+import growTextAreaHeight from '@/utils/growTextAreaHeight';
 import style from '../style';
 import blockedUsers from '../models/blockedUsers';
 import homePageSettings from '../models/homePageSettings';
@@ -240,6 +241,8 @@ export default class SettingsDrawer {
                 placeholder=""
                 .value="${videoListSettings.excludeKeywords.join('\n')}"
                 @input="${this.onExcludeKeywordInput}"
+                @focus="${(e: Event) =>
+                  growTextAreaHeight(e.target as HTMLTextAreaElement)}"
               ></textarea>
               <div class="text-gray-500 text-sm">
                 不显示标题含关键词的视频。每行一个，不区分大小写。
@@ -254,9 +257,7 @@ export default class SettingsDrawer {
   private readonly onExcludeKeywordInput = (e: Event) => {
     const el = e.target as HTMLTextAreaElement;
     videoListSettings.excludeKeywords = el.value.split('\n');
-    if (el.scrollHeight > el.clientHeight) {
-      el.style.height = `${el.scrollHeight}px`;
-    }
+    growTextAreaHeight(el);
   };
 
   private searchSettings() {

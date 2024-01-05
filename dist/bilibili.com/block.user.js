@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2024.01.03+125f1c71
+// @version   2024.01.05+a8a1411d
 // ==/UserScript==
 
 "use strict";
@@ -1397,6 +1397,13 @@
   }
   var debounce_default = debounce;
 
+  // src/utils/growTextAreaHeight.ts
+  function growTextAreaHeight(el) {
+    if (el.scrollHeight > el.clientHeight) {
+      el.style.height = `${el.scrollHeight}px`;
+    }
+  }
+
   // src/utils/GMValue.ts
   var GMValue = class {
     constructor(key, defaultValue) {
@@ -2090,9 +2097,7 @@
       __publicField(this, "onExcludeKeywordInput", (e) => {
         const el = e.target;
         videoListSettings_default.excludeKeywords = el.value.split("\n");
-        if (el.scrollHeight > el.clientHeight) {
-          el.style.height = `${el.scrollHeight}px`;
-        }
+        growTextAreaHeight(el);
       });
       __publicField(this, "onVideListDurationGteChange", debounce_default((e) => {
         const el = e.target;
@@ -2323,6 +2328,7 @@
                 placeholder=""
                 .value="${videoListSettings_default.excludeKeywords.join("\n")}"
                 @input="${this.onExcludeKeywordInput}"
+                @focus="${(e) => growTextAreaHeight(e.target)}"
               ></textarea>
               <div class="text-gray-500 text-sm">
                 不显示标题含关键词的视频。每行一个，不区分大小写。
