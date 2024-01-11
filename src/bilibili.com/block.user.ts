@@ -16,6 +16,7 @@
 import onDocumentReadyOnce from '@/utils/onDocumentReadyOnce';
 import Polling from '@/utils/Polling';
 import Disposal from '@/utils/Disposal';
+import waitUntil from '@/utils/waitUntil';
 import style from './style';
 import Component from './components/Component';
 import SettingsDrawer from './components/SettingsDrawer';
@@ -36,14 +37,28 @@ import PlaylistPatch from './components/PlaylistPatch';
 
 export {};
 
-function createApp(): Component {
+async function createApp(): Promise<Component> {
   const rawURL = window.location.href;
   const settings = new SettingsDrawer();
   const components: Component[] = [settings];
   const user = parseUserURL(rawURL);
   const url = new URL(rawURL);
 
-  if (document.querySelector('.right-entry')) {
+  let isFullHeader = false as boolean;
+  await waitUntil({
+    ready: () => {
+      if (document.querySelector('.right-entry')) {
+        isFullHeader = true;
+        return true;
+      }
+      if (document.querySelector('.nav-user-center .user-con:nth-child(2)')) {
+        isFullHeader = false;
+        return true;
+      }
+      return false;
+    },
+  });
+  if (isFullHeader) {
     components.push(new FullHeaderButton(settings));
   } else {
     components.push(new MiniHeaderButton(settings));
@@ -102,7 +117,7 @@ async function main() {
   await migrate();
 
   const initialRouteKey = routeKey();
-  const app = createApp();
+  const app = await createApp();
 
   const d = new Disposal();
   d.push(

@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2024.01.05+a8a1411d
+// @version   2024.01.12+a8a72b97
 // ==/UserScript==
 
 "use strict";
@@ -132,6 +132,37 @@
       });
     }
   };
+
+  // src/utils/waitUntil.ts
+  function waitUntil(_0) {
+    return __async(this, arguments, function* ({
+      ready,
+      timeoutMs = 6e4,
+      debounceMs = 500,
+      onTimeout = () => {
+        throw new Error("wait timeout");
+      },
+      scheduleNext = (next) => setTimeout(next, 100)
+    }) {
+      const startAt = performance.now();
+      let readyAt = 0;
+      do {
+        if (yield ready()) {
+          if (!readyAt) {
+            readyAt = performance.now();
+          }
+        } else {
+          readyAt = 0;
+        }
+        yield new Promise((resolve) => {
+          scheduleNext(resolve);
+        });
+        if (performance.now() - startAt > timeoutMs) {
+          return onTimeout();
+        }
+      } while (readyAt === 0 || performance.now() - readyAt <= debounceMs);
+    });
+  }
 
   // src/utils/obtainHTMLElementByID.ts
   function obtainHTMLElementByID({
@@ -3081,43 +3112,59 @@
 
   // src/bilibili.com/block.user.ts
   function createApp() {
-    var _a2;
-    const rawURL = window.location.href;
-    const settings = new SettingsDrawer();
-    const components = [settings];
-    const user = parseUserURL(rawURL);
-    const url = new URL(rawURL);
-    if (document.querySelector(".right-entry")) {
-      components.push(new FullHeaderButton(settings));
-    } else {
-      components.push(new MiniHeaderButton(settings));
-    }
-    const data = {
-      query: ""
-    };
-    if (url.host === "search.bilibili.com") {
-      data.query = (_a2 = url.searchParams.get("keyword")) != null ? _a2 : "";
-    }
-    const ctx = new Context(data);
-    if (user) {
-      components.push(new UserBlockButton(user));
-    } else if (parseVideoURL(rawURL)) {
-      components.push(new VideoDetailPatch(ctx));
-    } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/rank/all")) {
-      components.push(new SSRVideoRankPatch());
-    } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/")) {
-      components.push(new VueVideoRankPatch());
-    } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/list/")) {
-      components.push(new PlaylistPatch(ctx));
-    } else {
-      components.push(new VideoListPatch(ctx));
-    }
-    if (url.host === "www.bilibili.com" && url.pathname === "/") {
-      components.push(new AdblockTipPatch(), new HomePageFloorCardPatch());
-    }
-    return {
-      render: () => components.forEach((i) => i.render())
-    };
+    return __async(this, null, function* () {
+      var _a2;
+      const rawURL = window.location.href;
+      const settings = new SettingsDrawer();
+      const components = [settings];
+      const user = parseUserURL(rawURL);
+      const url = new URL(rawURL);
+      let isFullHeader = false;
+      yield waitUntil({
+        ready: () => {
+          if (document.querySelector(".right-entry")) {
+            isFullHeader = true;
+            return true;
+          }
+          if (document.querySelector(".nav-user-center .user-con:nth-child(2)")) {
+            isFullHeader = false;
+            return true;
+          }
+          return false;
+        }
+      });
+      if (isFullHeader) {
+        components.push(new FullHeaderButton(settings));
+      } else {
+        components.push(new MiniHeaderButton(settings));
+      }
+      const data = {
+        query: ""
+      };
+      if (url.host === "search.bilibili.com") {
+        data.query = (_a2 = url.searchParams.get("keyword")) != null ? _a2 : "";
+      }
+      const ctx = new Context(data);
+      if (user) {
+        components.push(new UserBlockButton(user));
+      } else if (parseVideoURL(rawURL)) {
+        components.push(new VideoDetailPatch(ctx));
+      } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/rank/all")) {
+        components.push(new SSRVideoRankPatch());
+      } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/v/popular/")) {
+        components.push(new VueVideoRankPatch());
+      } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/list/")) {
+        components.push(new PlaylistPatch(ctx));
+      } else {
+        components.push(new VideoListPatch(ctx));
+      }
+      if (url.host === "www.bilibili.com" && url.pathname === "/") {
+        components.push(new AdblockTipPatch(), new HomePageFloorCardPatch());
+      }
+      return {
+        render: () => components.forEach((i) => i.render())
+      };
+    });
   }
   function routeKey() {
     var _a2;
@@ -3132,7 +3179,7 @@
     return __async(this, null, function* () {
       yield migrate();
       const initialRouteKey = routeKey();
-      const app = createApp();
+      const app = yield createApp();
       const d2 = new Disposal();
       d2.push(
         new Polling({
