@@ -3,7 +3,7 @@ import { readFile, readdir, stat } from 'fs/promises';
 import { createHash } from 'crypto';
 
 import { execSync } from 'child_process';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as fs from 'fs/promises';
 import * as pathLib from 'path';
 
@@ -42,7 +42,7 @@ function workspacePath(...parts: string[]): string {
   return pathLib.resolve(__dirname, '..', ...parts);
 }
 
-(async () => {
+export async function build(watch = false) {
   const root = workspacePath('src');
   const entryPoints: string[] = [];
   await walk(root, async (entry) => {
@@ -166,7 +166,7 @@ function workspacePath(...parts: string[]): string {
       '.css': 'text',
     },
   });
-  if (process.argv.includes('--watch')) {
+  if (watch) {
     await ctx.watch();
     // run forever
     await new Promise(() => undefined);
@@ -174,4 +174,10 @@ function workspacePath(...parts: string[]): string {
     await ctx.rebuild();
   }
   await ctx.dispose();
-})();
+}
+
+if (require.main === module) {
+  (async () => {
+    await build(process.argv.includes('--watch'));
+  })();
+}

@@ -1,8 +1,10 @@
 {
   "cSpell.words": [
     "bilibili",
-    "greasemonkey"
-],
+    "greasemonkey",
+    "niconico",
+    "tailwindcss"
+  ],
   "cSpell.ignorePaths": [
     "package-lock.json",
     "node_modules",

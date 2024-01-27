@@ -5,7 +5,7 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": ["@types/node"],
     "allowJs": true,
     "resolveJsonModule": true,
     "noEmit": true
