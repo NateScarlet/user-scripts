@@ -1,7 +1,7 @@
 import injectStyle from '@/utils/injectStyle';
 import obtainHTMLElementByDataKey from '@/utils/obtainHTMLElementByDataKey';
 import { html, render } from 'lit-html';
-import { mdiAccountCancelOutline } from '@mdi/js';
+import { mdiAccountCancelOutline, mdiAccountCheckOutline } from '@mdi/js';
 import style from '../style';
 import blockedUsers from '../models/blockedUsers';
 
@@ -41,20 +41,29 @@ export default class VideoHoverButton {
         parentNode.append(el);
       },
     });
+    const isBlocked = blockedUsers.has(this.user.id);
     render(
       html`
 <button
   type="button"
-  title="屏蔽此用户"
-  class="absolute top-2 left-2 rounded-md cursor-pointer text-white bg-[rgba(33,33,33,.8)] z-20 border-none"
+  title="${isBlocked ? '取消屏蔽此用户' : '屏蔽此用户'}"
+  class="absolute top-2 left-2 rounded-md cursor-pointer  z-20 border-none ${
+    isBlocked ? 'bg-white text-black' : 'text-white bg-[rgba(33,33,33,.8)]'
+  }"
   @click=${(e: Event) => {
     e.preventDefault();
     e.stopPropagation();
-    blockedUsers.add(this.user);
+    if (isBlocked) {
+      blockedUsers.remove(this.user.id);
+    } else {
+      blockedUsers.add(this.user);
+    }
   }}
 >
   <svg viewBox="-3 -1 28 28" class="h-7 fill-current">
-    <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCancelOutline}>
+    <path fill-rule="evenodd" clip-rule="evenodd" d=${
+      isBlocked ? mdiAccountCheckOutline : mdiAccountCancelOutline
+    }>
   </svg>
 </button>
     `,

@@ -18,7 +18,7 @@ export default class VideoListPatch {
   constructor(private readonly ctx: Context) {}
 
   public readonly render = () => {
-    let hiddenCount = 0;
+    let matchCount = 0;
 
     let listEl: HTMLElement | undefined;
     document.querySelectorAll<HTMLElement>('.bili-video-card').forEach((i) => {
@@ -29,7 +29,7 @@ export default class VideoListPatch {
         return;
       }
       const user = parseUserURL(rawURL);
-      let hidden = false;
+      let match = false;
       if (user) {
         const duration =
           i
@@ -41,14 +41,14 @@ export default class VideoListPatch {
             ?.getAttribute('title') ||
             i.querySelector('.bili-video-card__info--tit')?.textContent) ??
           '';
-        hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
+        match = this.ctx.shouldExcludeVideo({ user, duration, title });
       } else {
         // assume advertisement
-        hidden = !videoListSettings.allowAdvertisement;
+        match = !videoListSettings.allowAdvertisement;
       }
 
-      if (hidden) {
-        hiddenCount += 1;
+      if (match) {
+        matchCount += 1;
       }
 
       let container = i;
@@ -56,8 +56,8 @@ export default class VideoListPatch {
         container = container.parentElement;
       }
       listEl = container.parentElement || undefined;
-
-      setHTMLElementDisplayHidden(container, !this.disabled && hidden);
+      const hidden = !this.disabled && match;
+      setHTMLElementDisplayHidden(container, hidden);
       if (user && !hidden) {
         new VideoHoverButton(i.querySelector('.bili-video-card__image--wrap'), {
           id: user.id,
@@ -69,13 +69,13 @@ export default class VideoListPatch {
     });
 
     render(
-      hiddenCount === 0
+      matchCount === 0
         ? nothing
         : html`
             <div class="w-full text-gray-500 text-center m-1">
               ${this.disabled
-                ? html`${hiddenCount} 条视频符合屏蔽规则`
-                : html`已屏蔽 ${hiddenCount} 条视频`}
+                ? html`${matchCount} 条视频符合屏蔽规则`
+                : html`已屏蔽 ${matchCount} 条视频`}
               <button
                 type="button"
                 class="border rounded py-1 px-2 text-black hover:bg-gray-200 transition ease-in-out duration-200"

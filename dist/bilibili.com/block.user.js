@@ -9,7 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @run-at   document-start
-// @version   2024.01.28+febe4fff
+// @version   2024.01.28+37e0bf85
 // ==/UserScript==
 
 "use strict";
@@ -2695,20 +2695,25 @@
             parentNode.append(el2);
           }
         });
+        const isBlocked = blockedUsers_default.has(this.user.id);
         render(
           html`
 <button
   type="button"
-  title="屏蔽此用户"
-  class="absolute top-2 left-2 rounded-md cursor-pointer text-white bg-[rgba(33,33,33,.8)] z-20 border-none"
+  title="${isBlocked ? "取消屏蔽此用户" : "屏蔽此用户"}"
+  class="absolute top-2 left-2 rounded-md cursor-pointer  z-20 border-none ${isBlocked ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}"
   @click=${(e) => {
             e.preventDefault();
             e.stopPropagation();
-            blockedUsers_default.add(this.user);
+            if (isBlocked) {
+              blockedUsers_default.remove(this.user.id);
+            } else {
+              blockedUsers_default.add(this.user);
+            }
           }}
 >
   <svg viewBox="-3 -1 28 28" class="h-7 fill-current">
-    <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCancelOutline}>
+    <path fill-rule="evenodd" clip-rule="evenodd" d=${isBlocked ? mdiAccountCheckOutline : mdiAccountCancelOutline}>
   </svg>
 </button>
     `,
@@ -2859,7 +2864,7 @@
       this.ctx = ctx;
       __publicField(this, "disabled", false);
       __publicField(this, "render", () => {
-        let hiddenCount = 0;
+        let matchCount = 0;
         let listEl;
         document.querySelectorAll(".bili-video-card").forEach((i) => {
           var _a2, _b2, _c2, _d2, _e, _f, _g, _h, _i;
@@ -2868,23 +2873,24 @@
             return;
           }
           const user = parseUserURL(rawURL);
-          let hidden = false;
+          let match = false;
           if (user) {
             const duration = (_d2 = (_c2 = (_b2 = i.querySelector(".bili-video-card__stats__duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d2 : "";
             const title = (_g = ((_e = i.querySelector(".bili-video-card__info--tit")) == null ? void 0 : _e.getAttribute("title")) || ((_f = i.querySelector(".bili-video-card__info--tit")) == null ? void 0 : _f.textContent)) != null ? _g : "";
-            hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
+            match = this.ctx.shouldExcludeVideo({ user, duration, title });
           } else {
-            hidden = !videoListSettings_default.allowAdvertisement;
+            match = !videoListSettings_default.allowAdvertisement;
           }
-          if (hidden) {
-            hiddenCount += 1;
+          if (match) {
+            matchCount += 1;
           }
           let container = i;
           while (((_h = container.parentElement) == null ? void 0 : _h.childElementCount) === 1) {
             container = container.parentElement;
           }
           listEl = container.parentElement || void 0;
-          setHTMLElementDisplayHidden(container, !this.disabled && hidden);
+          const hidden = !this.disabled && match;
+          setHTMLElementDisplayHidden(container, hidden);
           if (user && !hidden) {
             new VideoHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
               id: user.id,
@@ -2893,9 +2899,9 @@
           }
         });
         render(
-          hiddenCount === 0 ? nothing : html`
+          matchCount === 0 ? nothing : html`
             <div class="w-full text-gray-500 text-center m-1">
-              ${this.disabled ? html`${hiddenCount} 条视频符合屏蔽规则` : html`已屏蔽 ${hiddenCount} 条视频`}
+              ${this.disabled ? html`${matchCount} 条视频符合屏蔽规则` : html`已屏蔽 ${matchCount} 条视频`}
               <button
                 type="button"
                 class="border rounded py-1 px-2 text-black hover:bg-gray-200 transition ease-in-out duration-200"
