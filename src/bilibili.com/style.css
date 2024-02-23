@@ -531,6 +531,10 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   top: 0.5rem;
 }
 
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.isolate) {
+  isolation: isolate;
+}
+
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.z-20) {
   z-index: 20;
 }
@@ -576,12 +580,20 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
   height: 1.75rem;
 }
 
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-8) {
+  height: 2rem;
+}
+
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-\[1\.25em\]) {
   height: 1.25em;
 }
 
-[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.max-h-screen) {
-  max-height: 100vh;
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-full) {
+  height: 100%;
+}
+
+[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.max-h-\[50vh\]) {
+  max-height: 50vh;
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.w-32) {
@@ -762,8 +774,8 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-sm) {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-black) {

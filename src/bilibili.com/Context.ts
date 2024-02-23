@@ -3,6 +3,7 @@ import ExactSearchMatcher from '@/utils/ExactSearchMatcher';
 import videoListSettings from './models/videoListSettings';
 import searchSettings from './models/searchSettings';
 import blockedUsers from './models/blockedUsers';
+import blockedLiveRooms from './models/blockedLiveRooms';
 
 export default class Context {
   private readonly m: ExactSearchMatcher;
@@ -55,6 +56,19 @@ export default class Context {
       return true;
     }
 
+    return false;
+  };
+
+  public readonly shouldExcludeLiveRoom = (v: {
+    room?: { id: string };
+    owner?: { id: string };
+  }): boolean => {
+    if (v.owner && blockedUsers.has(v.owner.id)) {
+      return true;
+    }
+    if (v.room && blockedLiveRooms.has(v.room.id)) {
+      return true;
+    }
     return false;
   };
 }

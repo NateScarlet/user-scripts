@@ -49,10 +49,11 @@ export default new (class {
     if (!this.has(id)) {
       return;
     }
-    this.value.set({
-      ...this.value.get(),
-      [id]: undefined,
-    });
+    this.value.set(
+      Object.fromEntries(
+        Object.entries(this.value.get()).filter(([k]) => k !== id)
+      )
+    );
   };
 
   public toggle = (user: { id: string; name: string }, force?: boolean) => {

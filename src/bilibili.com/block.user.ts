@@ -8,6 +8,7 @@
 // @include	 https://search.bilibili.com/*
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
+// @include	 https://live.bilibili.com/*
 // @run-at   document-start
 // ==/UserScript==
 
@@ -34,6 +35,8 @@ import HomePageFloorCardPatch from './components/HomePageFloorCardPatch';
 import Context from './Context';
 import MiniHeaderButton from './components/MiniHeaderButton';
 import PlaylistPatch from './components/PlaylistPatch';
+import LiveRoomPatch from './components/LiveRoomListPatch';
+import LiveHeaderButton from './components/LiveHeaderButton';
 
 export {};
 
@@ -44,24 +47,26 @@ async function createApp(): Promise<Component> {
   const user = parseUserURL(rawURL);
   const url = new URL(rawURL);
 
-  let isFullHeader = false as boolean;
+  let headerButton: Component | undefined;
   await waitUntil({
     ready: () => {
       if (document.querySelector('.right-entry')) {
-        isFullHeader = true;
+        headerButton = new FullHeaderButton(settings);
         return true;
       }
       if (document.querySelector('.nav-user-center .user-con:nth-child(2)')) {
-        isFullHeader = false;
+        headerButton = new MiniHeaderButton(settings);
+        return true;
+      }
+      if (document.querySelector('.link-navbar .right-part')) {
+        headerButton = new LiveHeaderButton(settings);
         return true;
       }
       return false;
     },
   });
-  if (isFullHeader) {
-    components.push(new FullHeaderButton(settings));
-  } else {
-    components.push(new MiniHeaderButton(settings));
+  if (headerButton) {
+    components.push(headerButton);
   }
 
   const data = {
@@ -91,6 +96,11 @@ async function createApp(): Promise<Component> {
     url.pathname.startsWith('/list/')
   ) {
     components.push(new PlaylistPatch(ctx));
+  } else if (
+    url.host === 'live.bilibili.com' &&
+    url.pathname.startsWith('/p/')
+  ) {
+    components.push(new LiveRoomPatch(ctx));
   } else {
     components.push(new VideoListPatch(ctx));
   }
@@ -123,14 +133,6 @@ async function main() {
   d.push(
     new Polling({
       update: () => {
-        if (
-          (document.querySelector('.right-entry,.user-con:nth-child(2)')
-            ?.childElementCount ?? 0) < 2
-        ) {
-          // not ready
-          // https://greasyfork.org/zh-CN/scripts/465675-b%E7%AB%99%E7%94%A8%E6%88%B7%E5%B1%8F%E8%94%BD/discussions/198827
-          return;
-        }
         if (routeKey() !== initialRouteKey) {
           // route changed
           d.dispose();

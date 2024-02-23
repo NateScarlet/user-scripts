@@ -3,7 +3,7 @@
     "module": "ESNext",
     "target": "ESNext",
     "strict": true,
-    "lib": ["es2017", "dom", "dom.iterable"],
+    "lib": ["ESNext", "dom", "dom.iterable"],
     "types": ["@types/greasemonkey"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",

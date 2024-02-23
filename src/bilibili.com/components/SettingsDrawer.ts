@@ -1,6 +1,11 @@
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
 import randomUUID from '@/utils/randomUUID';
-import { mdiAccountCheckOutline, mdiClose, mdiOpenInNew } from '@mdi/js';
+import {
+  mdiAccountCheckOutline,
+  mdiCheck,
+  mdiClose,
+  mdiOpenInNew,
+} from '@mdi/js';
 import { html, nothing, render } from 'lit-html';
 import compare from '@/utils/compare';
 import { debounce } from 'lodash-es';
@@ -10,6 +15,7 @@ import blockedUsers from '../models/blockedUsers';
 import homePageSettings from '../models/homePageSettings';
 import videoListSettings from '../models/videoListSettings';
 import searchSettings from '../models/searchSettings';
+import blockedLiveRooms from '../models/blockedLiveRooms';
 
 // spell-checker: word datetime
 
@@ -83,6 +89,7 @@ export default class SettingsDrawer {
      ${this.searchSettings()}
      ${this.videoListSettings()}
      ${this.userTable()}
+     ${this.liveRoomTable()}
     </div>`;
   }
 
@@ -300,7 +307,7 @@ export default class SettingsDrawer {
     const userIDs = blockedUsers.distinctID();
 
     return html`
-      <div class="flex flex-col overflow-hidden max-h-screen">
+      <div class="flex flex-col overflow-hidden max-h-[50vh]">
         <h1 class="flex-none text-sm text-gray-500">
           已屏蔽用户 <span class="text-sm">(${userIDs.length})</span>
         </h1>
@@ -380,6 +387,86 @@ export default class SettingsDrawer {
     `;
   }
 
+  private liveRoomTable() {
+    const liveRoomIDs = blockedLiveRooms.distinctID();
+
+    return html`
+      <div class="flex flex-col overflow-hidden max-h-[50vh]">
+        <h1 class="flex-none text-sm text-gray-500">
+          已屏蔽直播间 <span class="text-sm">(${liveRoomIDs.length})</span>
+        </h1>
+        <div class="flex-1 overflow-auto relative">
+          <table class="table-fixed border-separate border-spacing-2 w-full">
+            <thead class="sticky top-0">
+              <tr class="bg-gray-200 text-center">
+                <td>屏蔽时间</td>
+                <td>所有者</td>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody>
+              ${liveRoomIDs
+                .map(blockedLiveRooms.get)
+                .sort((a, b) => {
+                  const dateCompare = compare(a.blockedAt, b.blockedAt);
+                  if (dateCompare !== 0) {
+                    return -dateCompare;
+                  }
+                  return compare(a.id, b.id);
+                })
+                .map(({ id, owner, blockedAt }) => {
+                  return html`
+                    <tr class="group even:bg-gray-100">
+                      <td class="text-right w-32">
+                       <time datetime="${blockedAt.toISOString()}">
+                          ${blockedAt.toLocaleString()}
+                        </time>
+                      </td>
+                      <td class="text-center">${owner}</td>
+                      <td
+                        class="transition opacity-0 group-hover:opacity-100 space-x-2 text-center"
+                      >
+                        <a
+                          href="https://live.bilibili.com/${id}"
+                          target="_blank"
+                          class="inline-flex underline text-blue-500"
+                        >
+                          <svg 
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-[1.25em]"
+                          >
+                            <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiOpenInNew} fill="currentColor">
+                          </svg>
+                          <span>前往</span>
+                        </a>
+                        <button
+                          type="button"
+                          @click=${() => blockedLiveRooms.remove(id)}
+                          class="inline-flex underline"
+                        >
+                          <svg 
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-[1.25em]"
+                          >
+                            <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiCheck} fill="currentColor">
+                          </svg>
+                          <span>取消屏蔽</span>
+                        </button>
+                      </td>
+                    </tr>
+                  `;
+                })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+
   public readonly render = () => {
     render(
       this.html(),
@@ -389,7 +476,7 @@ export default class SettingsDrawer {
         onDidCreate: (el) => {
           el.style.position = 'relative';
           el.style.zIndex = '9999';
-          el.style.fontSize = '1rem';
+          el.style.fontSize = '16px';
           style.apply(el);
           document.body.append(el);
         },
