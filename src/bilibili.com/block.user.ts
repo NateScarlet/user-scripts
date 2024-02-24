@@ -50,11 +50,16 @@ async function createApp(): Promise<Component> {
   let headerButton: Component | undefined;
   await waitUntil({
     ready: () => {
-      if (document.querySelector('.right-entry')) {
+      if (
+        (document.querySelector('.right-entry')?.childElementCount ?? 0) >= 2
+      ) {
         headerButton = new FullHeaderButton(settings);
         return true;
       }
-      if (document.querySelector('.nav-user-center .user-con:nth-child(2)')) {
+      if (
+        (document.querySelector('.nav-user-center .user-con:nth-child(2)')
+          ?.childElementCount ?? 0) >= 2
+      ) {
         headerButton = new MiniHeaderButton(settings);
         return true;
       }

@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2024.02.23+d8365169
+// @version   2024.02.24+a017a7c8
 // ==/UserScript==
 
 "use strict";
@@ -3491,11 +3491,12 @@
       let headerButton;
       yield waitUntil({
         ready: () => {
-          if (document.querySelector(".right-entry")) {
+          var _a3, _b2, _c2, _d2;
+          if (((_b2 = (_a3 = document.querySelector(".right-entry")) == null ? void 0 : _a3.childElementCount) != null ? _b2 : 0) >= 2) {
             headerButton = new FullHeaderButton(settings);
             return true;
           }
-          if (document.querySelector(".nav-user-center .user-con:nth-child(2)")) {
+          if (((_d2 = (_c2 = document.querySelector(".nav-user-center .user-con:nth-child(2)")) == null ? void 0 : _c2.childElementCount) != null ? _d2 : 0) >= 2) {
             headerButton = new MiniHeaderButton(settings);
             return true;
           }
