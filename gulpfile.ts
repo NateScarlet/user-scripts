@@ -30,9 +30,9 @@ export const build = series(
 );
 
 export async function dev() {
-  watch('src/*/*.ts', scripts);
+  watch('src/**/*.ts', scripts);
   watch(
-    'src/bilibili.com/components/*.ts',
+    ['src/bilibili.com/components/*.ts', 'src/bilibili.com/*.scss'],
     series(tasks['bilibili.com:style'], scripts)
   );
 }

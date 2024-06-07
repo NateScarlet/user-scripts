@@ -6,7 +6,7 @@ import parseUserURL from '../utils/parseUserURL';
 import VideoHoverButton from './VideoHoverButton';
 import videoListSettings from '../models/videoListSettings';
 import Context from '../Context';
-import style from '../style';
+import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 
 // spell-checker: word bili
 
@@ -87,14 +87,15 @@ export default class VideoListPatch {
               </button>
             </div>
           `,
-      obtainHTMLElementByID({
-        id: `video-list-patch-status-${VideoListPatch.id}`,
-        tag: 'div',
-        onDidCreate: (el) => {
-          listEl?.parentElement?.insertBefore(el, listEl);
-          style.apply(el);
-        },
-      })
+      obtainStyledShadowRoot(
+        obtainHTMLElementByID({
+          id: `video-list-patch-status-${VideoListPatch.id}`,
+          tag: 'div',
+          onDidCreate: (el) => {
+            listEl?.parentElement?.insertBefore(el, listEl);
+          },
+        })
+      )
     );
   };
 }

@@ -10,12 +10,12 @@ import { html, nothing, render } from 'lit-html';
 import compare from '@/utils/compare';
 import { debounce } from 'lodash-es';
 import growTextAreaHeight from '@/utils/growTextAreaHeight';
-import style from '../style';
 import blockedUsers from '../models/blockedUsers';
 import homePageSettings from '../models/homePageSettings';
 import videoListSettings from '../models/videoListSettings';
 import searchSettings from '../models/searchSettings';
 import blockedLiveRooms from '../models/blockedLiveRooms';
+import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 
 // spell-checker: word datetime
 
@@ -38,6 +38,13 @@ export default class SettingsDrawer {
   public readonly close = () => {
     this.isOpen = false;
     this.render();
+    // // force close in case transition not work
+    // setTimeout(() => {
+    //   if (!this.isOpen) {
+    //     this.active = false;
+    //     this.render();
+    //   }
+    // }, 1e3);
   };
 
   private html() {
@@ -48,7 +55,7 @@ export default class SettingsDrawer {
     <div 
       class="
         fixed inset-0 
-        bg-white bg-opacity-25 backdrop-blur 
+        bg-white bg-opacity-25 backdrop-blur
         cursor-zoom-out transition duration-200 ease-in-out
         ${this.isOpen ? 'opacity-100' : 'opacity-0'}
       "
@@ -58,10 +65,9 @@ export default class SettingsDrawer {
     <div
       class="
         fixed inset-y-0 right-0 w-screen max-w-4xl
-        bg-white overflow-auto p-2 
-        transition-transform transform
+        bg-white overflow-auto p-2 space-y-1
+        transition-transform
         ${this.isOpen ? '' : 'translate-x-full'}
-        space-y-1
       "
       @transitionend=${() => {
         if (!this.isOpen) {
@@ -470,17 +476,17 @@ export default class SettingsDrawer {
   public readonly render = () => {
     render(
       this.html(),
-      obtainHTMLElementByID({
-        tag: 'div',
-        id: SettingsDrawer.id,
-        onDidCreate: (el) => {
-          el.style.position = 'relative';
-          el.style.zIndex = '9999';
-          el.style.fontSize = '16px';
-          style.apply(el);
-          document.body.append(el);
-        },
-      })
+      obtainStyledShadowRoot(
+        obtainHTMLElementByID({
+          tag: 'div',
+          id: SettingsDrawer.id,
+          onDidCreate: (el) => {
+            el.style.position = 'fixed';
+            el.style.zIndex = '9999';
+            document.body.append(el);
+          },
+        })
+      )
     );
   };
 }

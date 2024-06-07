@@ -18,7 +18,6 @@ import onDocumentReadyOnce from '@/utils/onDocumentReadyOnce';
 import Polling from '@/utils/Polling';
 import Disposal from '@/utils/Disposal';
 import waitUntil from '@/utils/waitUntil';
-import style from './style';
 import Component from './components/Component';
 import SettingsDrawer from './components/SettingsDrawer';
 import FullHeaderButton from './components/FullHeaderButton';
@@ -144,7 +143,6 @@ async function main() {
           main();
           return;
         }
-        style.inject();
         app.render();
       },
       scheduleNext: (update) => setTimeout(update, 100),

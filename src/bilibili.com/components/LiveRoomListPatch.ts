@@ -3,9 +3,9 @@ import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
 import randomUUID from '@/utils/randomUUID';
 import { html, nothing, render } from 'lit-html';
 import Context from '../Context';
-import style from '../style';
 import parseLiveRoomURL from '../utils/parseLiveRoomURL';
 import LiveRoomHoverButton from './LiveRoomHoverButton';
+import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 
 // spell-checker: word bili
 
@@ -69,14 +69,15 @@ export default class LiveRoomPatch {
               </button>
             </div>
           `,
-      obtainHTMLElementByID({
-        id: `live-room-list-patch-status-${LiveRoomPatch.id}`,
-        tag: 'div',
-        onDidCreate: (el) => {
-          listEl?.parentElement?.insertBefore(el, listEl);
-          style.apply(el);
-        },
-      })
+      obtainStyledShadowRoot(
+        obtainHTMLElementByID({
+          id: `live-room-list-patch-status-${LiveRoomPatch.id}`,
+          tag: 'div',
+          onDidCreate: (el) => {
+            listEl?.parentElement?.insertBefore(el, listEl);
+          },
+        })
+      )
     );
   };
 }

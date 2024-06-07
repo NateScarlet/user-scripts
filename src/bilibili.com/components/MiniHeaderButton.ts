@@ -2,7 +2,6 @@ import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
 import { render, html } from 'lit-html';
 import isNonNull from '@/utils/isNonNull';
 import randomUUID from '@/utils/randomUUID';
-import style from '../style';
 import SettingsDrawer from './SettingsDrawer';
 
 export default class MiniHeaderButton {
@@ -25,15 +24,13 @@ export default class MiniHeaderButton {
       tag: 'div',
       id: MiniHeaderButton.id,
       onDidCreate: (el) => {
-        style.apply(el);
         el.classList.add('item');
         parent.prepend(...[parent.firstChild, el].filter(isNonNull));
       },
     });
     render(
       html`
-        <button
-          type="button"
+        <div
           @click=${(e: Event) => {
             e.preventDefault();
             e.stopPropagation();
@@ -41,7 +38,7 @@ export default class MiniHeaderButton {
           }}
         >
           <span class="name">屏蔽</span>
-        </button>
+        </div>
       `,
       container
     );

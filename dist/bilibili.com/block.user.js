@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2024.02.24+a017a7c8
+// @version   2024.06.07+f60203e3
 // ==/UserScript==
 
 "use strict";
@@ -22,7 +22,7 @@
   var __hasOwnProp = Object.prototype.hasOwnProperty;
   var __propIsEnum = Object.prototype.propertyIsEnumerable;
   var __pow = Math.pow;
-  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __defNormalProp = (obj, key2, value) => key2 in obj ? __defProp(obj, key2, { enumerable: true, configurable: true, writable: true, value }) : obj[key2] = value;
   var __spreadValues = (a, b) => {
     for (var prop in b || (b = {}))
       if (__hasOwnProp.call(b, prop))
@@ -35,8 +35,8 @@
     return a;
   };
   var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-  var __publicField = (obj, key, value) => {
-    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+  var __publicField = (obj, key2, value) => {
+    __defNormalProp(obj, typeof key2 !== "symbol" ? key2 + "" : key2, value);
     return value;
   };
   var __async = (__this, __arguments, generator) => {
@@ -168,48 +168,18 @@
   // src/utils/obtainHTMLElementByID.ts
   function obtainHTMLElementByID({
     tag: tag2,
-    id: id2,
+    id,
     onDidCreate
   }) {
-    const match = document.getElementById(id2);
+    const match = document.getElementById(id);
     if (match) {
       return match;
     }
     const el = document.createElement(tag2);
-    el.id = id2;
+    el.id = id;
     onDidCreate == null ? void 0 : onDidCreate(el);
     return el;
   }
-
-  // src/utils/injectStyle.ts
-  function injectStyle(id2, css) {
-    obtainHTMLElementByID({
-      tag: "style",
-      id: id2,
-      onDidCreate: (el) => {
-        document.head.appendChild(el);
-        el.innerHTML = css;
-      }
-    });
-  }
-
-  // src/bilibili.com/style.css
-  var style_default = '/* \n用户脚本样式\nhttps://github.com/NateScarlet/user-scripts/blob/master/src/bilibili.com/\n*/\n\n/* \n! tailwindcss v3.3.2 | MIT License | https://tailwindcss.com\n*/\n\n/*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] *,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::before,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::before,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::after {\n  --tw-content: \'\';\n}\n\n/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user\'s configured `sans` font-family by default.\n5. Use the user\'s configured `sans` font-feature-settings by default.\n6. Use the user\'s configured `sans` font-variation-settings by default.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] html {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */\n  font-feature-settings: normal; /* 5 */\n  font-variation-settings: normal; /* 6 */\n}\n\n/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] body {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}\n\n/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] hr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}\n\n/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] abbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}\n\n/*\nRemove the default font size and weight for headings.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h1,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h2,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h3,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h4,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h5,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h6 {\n  font-size: inherit;\n  font-weight: inherit;\n}\n\n/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] a {\n  color: inherit;\n  text-decoration: inherit;\n}\n\n/*\nAdd the correct font weight in Edge and Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] b,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] strong {\n  font-weight: bolder;\n}\n\n/*\n1. Use the user\'s configured `mono` font family by default.\n2. Correct the odd `em` font sizing in all browsers.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] code,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] kbd,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] samp,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] pre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/*\nAdd the correct font size in all browsers.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] small {\n  font-size: 80%;\n}\n\n/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] sub,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] sub {\n  bottom: -0.25em;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] sup {\n  top: -0.5em;\n}\n\n/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] table {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}\n\n/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] input,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] optgroup,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] select,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea {\n  font-family: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}\n\n/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] select {\n  text-transform: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [type=\'button\'],\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [type=\'reset\'],\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [type=\'submit\'] {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}\n\n/*\nUse the modern Firefox focus style for all focusable elements.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :-moz-focusring {\n  outline: auto;\n}\n\n/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :-moz-ui-invalid {\n  box-shadow: none;\n}\n\n/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] progress {\n  vertical-align: baseline;\n}\n\n/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::-webkit-inner-spin-button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [type=\'search\'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/*\nAdd the correct display in Chrome and Safari.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] summary {\n  display: list-item;\n}\n\n/*\nRemoves the default spacing and border for appropriate elements.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] blockquote,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] dl,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] dd,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h1,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h2,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h3,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h4,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h5,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] h6,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] hr,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] figure,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] p,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] pre {\n  margin: 0;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] fieldset {\n  margin: 0;\n  padding: 0;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] legend {\n  padding: 0;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ol,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ul,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] menu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n/*\nPrevent resizing textareas horizontally by default.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea {\n  resize: vertical;\n}\n\n/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user\'s configured gray 400 color.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] input::-moz-placeholder, [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] input::placeholder,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] textarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n/*\nSet the default cursor for buttons.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] button,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [role="button"] {\n  cursor: pointer;\n}\n\n/*\nMake sure disabled buttons don\'t get the pointer cursor.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :disabled {\n  cursor: default;\n}\n\n/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] img,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] svg,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] video,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] canvas,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] audio,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] iframe,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] embed,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] object {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}\n\n/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] img,\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] video {\n  max-width: 100%;\n  height: auto;\n}\n\n/* Make elements with the HTML hidden attribute stay hidden by default */\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] [hidden] {\n  display: none;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] *, [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::before, [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] ::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.static) {\n  position: static;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.fixed) {\n  position: fixed;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.absolute) {\n  position: absolute;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.relative) {\n  position: relative;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.sticky) {\n  position: sticky;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.inset-0) {\n  inset: 0px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.inset-y-0) {\n  top: 0px;\n  bottom: 0px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.left-2) {\n  left: 0.5rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.right-0) {\n  right: 0px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.top-0) {\n  top: 0px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.top-2) {\n  top: 0.5rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.isolate) {\n  isolation: isolate;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.z-20) {\n  z-index: 20;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.m-1) {\n  margin: 0.25rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.my-1) {\n  margin-top: 0.25rem;\n  margin-bottom: 0.25rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.inline) {\n  display: inline;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex) {\n  display: flex;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.inline-flex) {\n  display: inline-flex;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.table) {\n  display: table;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.\\!hidden) {\n  display: none !important;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.hidden) {\n  display: none;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-5) {\n  height: 1.25rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-7) {\n  height: 1.75rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-8) {\n  height: 2rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-\\[1\\.25em\\]) {\n  height: 1.25em;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.h-full) {\n  height: 100%;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.max-h-\\[50vh\\]) {\n  max-height: 50vh;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.w-32) {\n  width: 8rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.w-full) {\n  width: 100%;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.w-screen) {\n  width: 100vw;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.max-w-4xl) {\n  max-width: 56rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-1) {\n  flex: 1 1 0%;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-auto) {\n  flex: 1 1 auto;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-none) {\n  flex: none;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.table-fixed) {\n  table-layout: fixed;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.border-separate) {\n  border-collapse: separate;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.border-spacing-2) {\n  --tw-border-spacing-x: 0.5rem;\n  --tw-border-spacing-y: 0.5rem;\n  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.translate-x-full) {\n  --tw-translate-x: 100%;\n  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.transform) {\n  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.cursor-pointer) {\n  cursor: pointer;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.cursor-zoom-out) {\n  cursor: zoom-out;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-col) {\n  flex-direction: column;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.flex-wrap) {\n  flex-wrap: wrap;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.items-center) {\n  align-items: center;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.gap-2) {\n  gap: 0.5rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.space-x-2 > :not([hidden]) ~ :not([hidden])) {\n  --tw-space-x-reverse: 0;\n  margin-right: calc(0.5rem * var(--tw-space-x-reverse));\n  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.space-y-1 > :not([hidden]) ~ :not([hidden])) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.self-end) {\n  align-self: flex-end;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.overflow-auto) {\n  overflow: auto;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.overflow-hidden) {\n  overflow: hidden;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.rounded) {\n  border-radius: 0.25rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.rounded-md) {\n  border-radius: 0.375rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.border) {\n  border-width: 1px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.border-none) {\n  border-style: none;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-\\[rgba\\(33\\2c 33\\2c 33\\2c \\.8\\)\\]) {\n  background-color: rgba(33,33,33,.8);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-gray-200) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-gray-300) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(209 213 219 / var(--tw-bg-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-white) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(255 255 255 / var(--tw-bg-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.bg-opacity-25) {\n  --tw-bg-opacity: 0.25;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.fill-current) {\n  fill: currentColor;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.p-1) {\n  padding: 0.25rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.p-2) {\n  padding: 0.5rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.px-1) {\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.px-2) {\n  padding-left: 0.5rem;\n  padding-right: 0.5rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.py-1) {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-center) {\n  text-align: center;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-right) {\n  text-align: right;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.align-top) {\n  vertical-align: top;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-sm) {\n  font-size: 14px;\n  line-height: 20px;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-black) {\n  --tw-text-opacity: 1;\n  color: rgb(0 0 0 / var(--tw-text-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-blue-500) {\n  --tw-text-opacity: 1;\n  color: rgb(59 130 246 / var(--tw-text-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-gray-500) {\n  --tw-text-opacity: 1;\n  color: rgb(107 114 128 / var(--tw-text-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.text-white) {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.underline) {\n  text-decoration-line: underline;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.opacity-0) {\n  opacity: 0;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.opacity-100) {\n  opacity: 1;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.blur) {\n  --tw-blur: blur(8px);\n  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.filter) {\n  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.backdrop-blur) {\n  --tw-backdrop-blur: blur(8px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.transition) {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.transition-transform) {\n  transition-property: transform;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.duration-200) {\n  transition-duration: 200ms;\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.ease-in-out) {\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.even\\:bg-gray-100:nth-child(even)) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.hover\\:bg-gray-200:hover) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity));\n}\n\n[data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.group:hover .group-hover\\:opacity-100) {\n  opacity: 1;\n}\n\n@media (min-width: 1024px) {\n\n  [data-a5b54b00-df07-432b-88ee-b0e6ac1062f2] :is(.lg\\:hidden) {\n    display: none;\n  }\n}\n';
-
-  // src/bilibili.com/style.ts
-  var id = "a5b54b00-df07-432b-88ee-b0e6ac1062f2";
-  var attributeName = `data-${id}`;
-  var style_default2 = {
-    id,
-    css: style_default,
-    attributeName,
-    inject() {
-      injectStyle(id, style_default);
-    },
-    apply(el) {
-      el.setAttribute(attributeName, "");
-    }
-  };
 
   // src/utils/randomUUID.ts
   function fallback() {
@@ -1441,8 +1411,8 @@
 
   // src/utils/GMValue.ts
   var GMValue = class {
-    constructor(key, defaultValue) {
-      this.key = key;
+    constructor(key2, defaultValue) {
+      this.key = key2;
       this.defaultValue = defaultValue;
       __publicField(this, "value");
       __publicField(this, "loadingCount", 0);
@@ -1510,42 +1480,42 @@
   var blockedUsers_default = new class {
     constructor() {
       __publicField(this, "value", new GMValue("blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4", () => ({})));
-      __publicField(this, "has", (id2) => {
-        return id2 in this.value.get();
+      __publicField(this, "has", (id) => {
+        return id in this.value.get();
       });
-      __publicField(this, "get", (id2) => {
-        const value = this.value.get()[id2];
-        const { blockedAt: rawBlockedAt = 0, name = id2 } = typeof value === "boolean" ? {} : value != null ? value : {};
+      __publicField(this, "get", (id) => {
+        const value = this.value.get()[id];
+        const { blockedAt: rawBlockedAt = 0, name = id } = typeof value === "boolean" ? {} : value != null ? value : {};
         const blockedAt = new Date(rawBlockedAt);
         return {
-          id: id2,
+          id,
           blockedAt,
           name,
-          idAsNumber: Number.parseInt(id2, 10),
+          idAsNumber: Number.parseInt(id, 10),
           rawBlockedAt
         };
       });
       __publicField(this, "distinctID", () => {
         return Object.keys(this.value.get());
       });
-      __publicField(this, "add", ({ id: id2, name }) => {
-        if (this.has(id2)) {
+      __publicField(this, "add", ({ id, name }) => {
+        if (this.has(id)) {
           return;
         }
         this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-          [id2]: {
+          [id]: {
             name: name.trim(),
             blockedAt: Date.now()
           }
         }));
       });
-      __publicField(this, "remove", (id2) => {
-        if (!this.has(id2)) {
+      __publicField(this, "remove", (id) => {
+        if (!this.has(id)) {
           return;
         }
         this.value.set(
           Object.fromEntries(
-            Object.entries(this.value.get()).filter(([k]) => k !== id2)
+            Object.entries(this.value.get()).filter(([k]) => k !== id)
           )
         );
       });
@@ -2112,6 +2082,24 @@
         strictTitleMatch: v || void 0
       }));
     }
+    get navSuggestion() {
+      var _a2;
+      return (_a2 = this.value.get().navSuggestion) != null ? _a2 : "on";
+    }
+    set navSuggestion(v) {
+      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+        navSuggestion: v === "on" ? void 0 : v
+      }));
+    }
+    get trending() {
+      var _a2;
+      return (_a2 = this.value.get().trending) != null ? _a2 : "on";
+    }
+    set trending(v) {
+      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+        trending: v === "on" ? void 0 : v
+      }));
+    }
   }();
 
   // src/bilibili.com/models/blockedLiveRooms.ts
@@ -2121,13 +2109,13 @@
         "blockedLiveRooms@031f022e-51b9-4361-8cfb-80263a0d7595",
         () => ({})
       ));
-      __publicField(this, "has", (id2) => {
-        return !!this.value.get()[id2];
+      __publicField(this, "has", (id) => {
+        return !!this.value.get()[id];
       });
-      __publicField(this, "get", (id2) => {
-        const value = this.value.get()[id2];
+      __publicField(this, "get", (id) => {
+        const value = this.value.get()[id];
         return {
-          id: id2,
+          id,
           blockedAt: new Date(value.blockedAt),
           owner: value.owner
         };
@@ -2135,24 +2123,24 @@
       __publicField(this, "distinctID", () => {
         return Object.keys(this.value.get());
       });
-      __publicField(this, "add", ({ id: id2, owner }) => {
-        if (this.has(id2)) {
+      __publicField(this, "add", ({ id, owner }) => {
+        if (this.has(id)) {
           return;
         }
         this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-          [id2]: {
+          [id]: {
             owner: owner.trim(),
             blockedAt: Date.now()
           }
         }));
       });
-      __publicField(this, "remove", (id2) => {
-        if (!this.has(id2)) {
+      __publicField(this, "remove", (id) => {
+        if (!this.has(id)) {
           return;
         }
         this.value.set(
           Object.fromEntries(
-            Object.entries(this.value.get()).filter(([k]) => k !== id2)
+            Object.entries(this.value.get()).filter(([k]) => k !== id)
           )
         );
       });
@@ -2166,6 +2154,47 @@
       });
     }
   }();
+
+  // src/utils/obtainHTMLElementByDataKey.ts
+  function obtainHTMLElementByDataKey({
+    tag: tag2,
+    key: key2,
+    parentNode = document,
+    onDidCreate
+  }) {
+    const match = parentNode.querySelector(
+      `[data-${key2}]`
+    );
+    if (match) {
+      return match;
+    }
+    const el = document.createElement(tag2);
+    el.setAttribute(`data-${key2}`, "");
+    onDidCreate == null ? void 0 : onDidCreate(el);
+    return el;
+  }
+
+  // src/bilibili.com/style.css
+  var style_default = '/* \n用户脚本样式\nhttps://github.com/NateScarlet/user-scripts/blob/master/src/bilibili.com/\n*/\n\n/* \n! tailwindcss v3.3.2 | MIT License | https://tailwindcss.com\n*/\n\n/*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/\n\n*,\n::before,\n::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}\n\n::before,\n::after {\n  --tw-content: \'\';\n}\n\n/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user\'s configured `sans` font-family by default.\n5. Use the user\'s configured `sans` font-feature-settings by default.\n6. Use the user\'s configured `sans` font-variation-settings by default.\n*/\n\nhtml {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */\n  font-feature-settings: normal; /* 5 */\n  font-variation-settings: normal; /* 6 */\n}\n\n/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/\n\nbody {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}\n\n/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/\n\nhr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}\n\n/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/\n\nabbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}\n\n/*\nRemove the default font size and weight for headings.\n*/\n\nh1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n  font-size: inherit;\n  font-weight: inherit;\n}\n\n/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/\n\na {\n  color: inherit;\n  text-decoration: inherit;\n}\n\n/*\nAdd the correct font weight in Edge and Safari.\n*/\n\nb,\nstrong {\n  font-weight: bolder;\n}\n\n/*\n1. Use the user\'s configured `mono` font family by default.\n2. Correct the odd `em` font sizing in all browsers.\n*/\n\ncode,\nkbd,\nsamp,\npre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}\n\n/*\nAdd the correct font size in all browsers.\n*/\n\nsmall {\n  font-size: 80%;\n}\n\n/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\nsup {\n  top: -0.5em;\n}\n\n/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/\n\ntable {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}\n\n/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}\n\n/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/\n\nbutton,\nselect {\n  text-transform: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/\n\nbutton,\n[type=\'button\'],\n[type=\'reset\'],\n[type=\'submit\'] {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}\n\n/*\nUse the modern Firefox focus style for all focusable elements.\n*/\n\n:-moz-focusring {\n  outline: auto;\n}\n\n/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/\n\n:-moz-ui-invalid {\n  box-shadow: none;\n}\n\n/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/\n\nprogress {\n  vertical-align: baseline;\n}\n\n/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/\n\n::-webkit-inner-spin-button,\n::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/\n\n[type=\'search\'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/\n\n::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/*\nAdd the correct display in Chrome and Safari.\n*/\n\nsummary {\n  display: list-item;\n}\n\n/*\nRemoves the default spacing and border for appropriate elements.\n*/\n\nblockquote,\ndl,\ndd,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\nhr,\nfigure,\np,\npre {\n  margin: 0;\n}\n\nfieldset {\n  margin: 0;\n  padding: 0;\n}\n\nlegend {\n  padding: 0;\n}\n\nol,\nul,\nmenu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n/*\nPrevent resizing textareas horizontally by default.\n*/\n\ntextarea {\n  resize: vertical;\n}\n\n/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user\'s configured gray 400 color.\n*/\n\ninput::-moz-placeholder, textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\ninput::placeholder,\ntextarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n/*\nSet the default cursor for buttons.\n*/\n\nbutton,\n[role="button"] {\n  cursor: pointer;\n}\n\n/*\nMake sure disabled buttons don\'t get the pointer cursor.\n*/\n\n:disabled {\n  cursor: default;\n}\n\n/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/\n\nimg,\nsvg,\nvideo,\ncanvas,\naudio,\niframe,\nembed,\nobject {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}\n\n/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/\n\nimg,\nvideo {\n  max-width: 100%;\n  height: auto;\n}\n\n/* Make elements with the HTML hidden attribute stay hidden by default */\n\n[hidden] {\n  display: none;\n}\n\n*, ::before, ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}\n\n::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}\n\n* {\n  font-size: 16px;\n  line-height: 24px;\n}\n\n.static {\n  position: static;\n}\n\n.fixed {\n  position: fixed;\n}\n\n.absolute {\n  position: absolute;\n}\n\n.relative {\n  position: relative;\n}\n\n.sticky {\n  position: sticky;\n}\n\n.inset-0 {\n  inset: 0px;\n}\n\n.inset-y-0 {\n  top: 0px;\n  bottom: 0px;\n}\n\n.left-2 {\n  left: 0.5rem;\n}\n\n.right-0 {\n  right: 0px;\n}\n\n.top-0 {\n  top: 0px;\n}\n\n.top-2 {\n  top: 0.5rem;\n}\n\n.isolate {\n  isolation: isolate;\n}\n\n.z-20 {\n  z-index: 20;\n}\n\n.m-1 {\n  margin: 0.25rem;\n}\n\n.my-1 {\n  margin-top: 0.25rem;\n  margin-bottom: 0.25rem;\n}\n\n.inline {\n  display: inline;\n}\n\n.flex {\n  display: flex;\n}\n\n.inline-flex {\n  display: inline-flex;\n}\n\n.table {\n  display: table;\n}\n\n.\\!hidden {\n  display: none !important;\n}\n\n.hidden {\n  display: none;\n}\n\n.h-7 {\n  height: 1.75rem;\n}\n\n.h-8 {\n  height: 2rem;\n}\n\n.h-\\[1\\.25em\\] {\n  height: 1.25em;\n}\n\n.max-h-\\[50vh\\] {\n  max-height: 50vh;\n}\n\n.w-32 {\n  width: 8rem;\n}\n\n.w-full {\n  width: 100%;\n}\n\n.w-screen {\n  width: 100vw;\n}\n\n.max-w-4xl {\n  max-width: 56rem;\n}\n\n.flex-1 {\n  flex: 1 1 0%;\n}\n\n.flex-auto {\n  flex: 1 1 auto;\n}\n\n.flex-none {\n  flex: none;\n}\n\n.table-fixed {\n  table-layout: fixed;\n}\n\n.border-separate {\n  border-collapse: separate;\n}\n\n.border-spacing-2 {\n  --tw-border-spacing-x: 0.5rem;\n  --tw-border-spacing-y: 0.5rem;\n  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);\n}\n\n.translate-x-full {\n  --tw-translate-x: 100%;\n  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));\n}\n\n.cursor-pointer {\n  cursor: pointer;\n}\n\n.cursor-zoom-out {\n  cursor: zoom-out;\n}\n\n.flex-col {\n  flex-direction: column;\n}\n\n.flex-wrap {\n  flex-wrap: wrap;\n}\n\n.items-center {\n  align-items: center;\n}\n\n.gap-2 {\n  gap: 0.5rem;\n}\n\n.space-x-2 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-x-reverse: 0;\n  margin-right: calc(0.5rem * var(--tw-space-x-reverse));\n  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));\n}\n\n.space-y-1 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));\n}\n\n.self-end {\n  align-self: flex-end;\n}\n\n.overflow-auto {\n  overflow: auto;\n}\n\n.overflow-hidden {\n  overflow: hidden;\n}\n\n.rounded {\n  border-radius: 0.25rem;\n}\n\n.rounded-md {\n  border-radius: 0.375rem;\n}\n\n.border {\n  border-width: 1px;\n}\n\n.border-none {\n  border-style: none;\n}\n\n.bg-\\[rgba\\(33\\2c 33\\2c 33\\2c \\.8\\)\\] {\n  background-color: rgba(33,33,33,.8);\n}\n\n.bg-gray-200 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity));\n}\n\n.bg-gray-300 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(209 213 219 / var(--tw-bg-opacity));\n}\n\n.bg-white {\n  --tw-bg-opacity: 1;\n  background-color: rgb(255 255 255 / var(--tw-bg-opacity));\n}\n\n.bg-opacity-25 {\n  --tw-bg-opacity: 0.25;\n}\n\n.fill-current {\n  fill: currentColor;\n}\n\n.p-1 {\n  padding: 0.25rem;\n}\n\n.p-2 {\n  padding: 0.5rem;\n}\n\n.px-1 {\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n\n.px-2 {\n  padding-left: 0.5rem;\n  padding-right: 0.5rem;\n}\n\n.py-1 {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n}\n\n.text-center {\n  text-align: center;\n}\n\n.text-right {\n  text-align: right;\n}\n\n.align-top {\n  vertical-align: top;\n}\n\n.text-sm {\n  font-size: 14px;\n  line-height: 20px;\n}\n\n.text-black {\n  --tw-text-opacity: 1;\n  color: rgb(0 0 0 / var(--tw-text-opacity));\n}\n\n.text-blue-500 {\n  --tw-text-opacity: 1;\n  color: rgb(59 130 246 / var(--tw-text-opacity));\n}\n\n.text-gray-500 {\n  --tw-text-opacity: 1;\n  color: rgb(107 114 128 / var(--tw-text-opacity));\n}\n\n.text-white {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity));\n}\n\n.underline {\n  text-decoration-line: underline;\n}\n\n.opacity-0 {\n  opacity: 0;\n}\n\n.opacity-100 {\n  opacity: 1;\n}\n\n.blur {\n  --tw-blur: blur(8px);\n  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);\n}\n\n.filter {\n  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);\n}\n\n.backdrop-blur {\n  --tw-backdrop-blur: blur(8px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n          backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n.transition {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.transition-transform {\n  transition-property: transform;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.duration-200 {\n  transition-duration: 200ms;\n}\n\n.ease-in-out {\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n.even\\:bg-gray-100:nth-child(even) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity));\n}\n\n.hover\\:bg-gray-200:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity));\n}\n\n.group:hover .group-hover\\:opacity-100 {\n  opacity: 1;\n}\n\n@media (min-width: 1024px) {\n\n  .lg\\:hidden {\n    display: none;\n  }\n}\n';
+
+  // src/bilibili.com/utils/obtainStyledShadowRoot.ts
+  var key = "36fff111-0148-4cc1-869b-06dfdfc36861";
+  var map = /* @__PURE__ */ new WeakMap();
+  function obtainStyledShadowRoot(el) {
+    var _a2, _b2;
+    const root2 = (_b2 = (_a2 = map.get(el)) != null ? _a2 : el.shadowRoot) != null ? _b2 : el.attachShadow({ mode: "closed" });
+    map.set(el, root2);
+    obtainHTMLElementByDataKey({
+      tag: "style",
+      key,
+      parentNode: root2,
+      onDidCreate: (el2) => {
+        el2.innerHTML = style_default;
+        root2.prepend(el2);
+      }
+    });
+    return root2;
+  }
 
   // src/bilibili.com/components/SettingsDrawer.ts
   var _SettingsDrawer = class _SettingsDrawer {
@@ -2202,17 +2231,17 @@
       __publicField(this, "render", () => {
         render(
           this.html(),
-          obtainHTMLElementByID({
-            tag: "div",
-            id: _SettingsDrawer.id,
-            onDidCreate: (el) => {
-              el.style.position = "relative";
-              el.style.zIndex = "9999";
-              el.style.fontSize = "16px";
-              style_default2.apply(el);
-              document.body.append(el);
-            }
-          })
+          obtainStyledShadowRoot(
+            obtainHTMLElementByID({
+              tag: "div",
+              id: _SettingsDrawer.id,
+              onDidCreate: (el) => {
+                el.style.position = "fixed";
+                el.style.zIndex = "9999";
+                document.body.append(el);
+              }
+            })
+          )
         );
       });
     }
@@ -2224,7 +2253,7 @@
     <div 
       class="
         fixed inset-0 
-        bg-white bg-opacity-25 backdrop-blur 
+        bg-white bg-opacity-25 backdrop-blur
         cursor-zoom-out transition duration-200 ease-in-out
         ${this.isOpen ? "opacity-100" : "opacity-0"}
       "
@@ -2234,10 +2263,9 @@
     <div
       class="
         fixed inset-y-0 right-0 w-screen max-w-4xl
-        bg-white overflow-auto p-2 
-        transition-transform transform
+        bg-white overflow-auto p-2 space-y-1
+        transition-transform
         ${this.isOpen ? "" : "translate-x-full"}
-        space-y-1
       "
       @transitionend=${() => {
         if (!this.isOpen) {
@@ -2476,7 +2504,7 @@
           return -dateCompare;
         }
         return compare(a.idAsNumber, b.idAsNumber);
-      }).map(({ id: id2, name, blockedAt, rawBlockedAt }) => {
+      }).map(({ id, name, blockedAt, rawBlockedAt }) => {
         return html`
                     <tr class="group even:bg-gray-100">
                       <td class="text-right w-32">
@@ -2489,7 +2517,7 @@
                         class="transition opacity-0 group-hover:opacity-100 space-x-2 text-center"
                       >
                         <a
-                          href="https://space.bilibili.com/${id2}"
+                          href="https://space.bilibili.com/${id}"
                           target="_blank"
                           class="inline-flex underline text-blue-500"
                         >
@@ -2505,7 +2533,7 @@
                         </a>
                         <button
                           type="button"
-                          @click=${() => blockedUsers_default.remove(id2)}
+                          @click=${() => blockedUsers_default.remove(id)}
                           class="inline-flex underline"
                         >
                           <svg 
@@ -2551,7 +2579,7 @@
           return -dateCompare;
         }
         return compare(a.id, b.id);
-      }).map(({ id: id2, owner, blockedAt }) => {
+      }).map(({ id, owner, blockedAt }) => {
         return html`
                     <tr class="group even:bg-gray-100">
                       <td class="text-right w-32">
@@ -2564,7 +2592,7 @@
                         class="transition opacity-0 group-hover:opacity-100 space-x-2 text-center"
                       >
                         <a
-                          href="https://live.bilibili.com/${id2}"
+                          href="https://live.bilibili.com/${id}"
                           target="_blank"
                           class="inline-flex underline text-blue-500"
                         >
@@ -2580,7 +2608,7 @@
                         </a>
                         <button
                           type="button"
-                          @click=${() => blockedLiveRooms_default.remove(id2)}
+                          @click=${() => blockedLiveRooms_default.remove(id)}
                           class="inline-flex underline"
                         >
                           <svg 
@@ -2625,27 +2653,26 @@
           tag: "li",
           id: _FullHeaderButton.id,
           onDidCreate: (el) => {
-            style_default2.apply(el);
             el.classList.add("right-entry-item");
             parent.prepend(...[parent.firstChild, el].filter(isNonNull));
           }
         });
         render(
           html`
-<button
-  type="button"
-  class="right-entry__outside" 
-  @click=${(e) => {
+  <button
+    type="button"
+    class="right-entry__outside" 
+    @click=${(e) => {
             e.preventDefault();
             e.stopPropagation();
             this.settings.open();
           }}
->
-  <svg viewBox="2 2 20 20" class="right-entry-icon h-5 fill-current">
-    <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiEyeOffOutline}>
-  </svg>
-  <span class="right-entry-text">屏蔽</span>
-</button>
+  >
+    <svg viewBox="2 2 20 20" class="right-entry-icon" style="height: 20px; fill: currentColor;">
+      <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiEyeOffOutline}>
+    </svg>
+    <span class="right-entry-text">屏蔽</span>
+  </button>
 `,
           container
         );
@@ -2659,8 +2686,8 @@
   // src/bilibili.com/models/migrate.ts
   function migrateV1() {
     return __async(this, null, function* () {
-      const key = "blockedUserIDs@7ced1613-89d7-4754-8989-2ad0d7cfa9db";
-      const oldValue = yield GM.getValue(key);
+      const key2 = "blockedUserIDs@7ced1613-89d7-4754-8989-2ad0d7cfa9db";
+      const oldValue = yield GM.getValue(key2);
       if (!oldValue) {
         return;
       }
@@ -2672,7 +2699,7 @@
         "blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4",
         JSON.stringify(newValue)
       );
-      yield GM.deleteValue(key);
+      yield GM.deleteValue(key2);
     });
   }
   function migrate() {
@@ -2696,9 +2723,9 @@
         return { id: match[1] };
       }
       case "cm.bilibili.com": {
-        const id2 = url.searchParams.get("space_mid");
-        if (id2) {
-          return { id: id2 };
+        const id = url.searchParams.get("space_mid");
+        if (id) {
+          return { id };
         }
         break;
       }
@@ -2777,23 +2804,16 @@
     }
   }
 
-  // src/utils/obtainHTMLElementByDataKey.ts
-  function obtainHTMLElementByDataKey({
-    tag: tag2,
-    key,
-    parentNode = document,
-    onDidCreate
-  }) {
-    const match = parentNode.querySelector(
-      `[data-${key}]`
-    );
-    if (match) {
-      return match;
-    }
-    const el = document.createElement(tag2);
-    el.setAttribute(`data-${key}`, "");
-    onDidCreate == null ? void 0 : onDidCreate(el);
-    return el;
+  // src/utils/injectStyle.ts
+  function injectStyle(id, css) {
+    obtainHTMLElementByID({
+      tag: "style",
+      id,
+      onDidCreate: (el) => {
+        document.head.appendChild(el);
+        el.innerHTML = css;
+      }
+    });
   }
 
   // src/bilibili.com/components/VideoHoverButton.ts
@@ -2806,27 +2826,31 @@
         if (!parentNode) {
           return;
         }
-        const key = "a1161956-2be7-4796-9f1b-528707156b11";
+        const parentKey = "dde57f95-0cb5-4443-bbeb-2466d63db0f1";
+        const key2 = "a1161956-2be7-4796-9f1b-528707156b11";
         injectStyle(
-          key,
-          `[data-${key}]:hover button {
-  opacity: 100;
-  transition: opacity 0.2s linear 0.2s;
+          parentKey,
+          `[data-${parentKey}]:hover [data-${key2}] {
+  filter: opacity(1);
+  transition: filter 0.2s linear 0.2s;
 }
 
-[data-${key}] button {
-  opacity: 0;
-  transition: opacity 0.2s linear 0s;
+[data-${parentKey}] [data-${key2}] {
+  filter: opacity(0);
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transition: filter 0.2s linear 0s;
 }
 `
         );
         const el = obtainHTMLElementByDataKey({
           tag: "div",
-          key,
+          key: key2,
           parentNode,
           onDidCreate: (el2) => {
-            style_default2.apply(el2);
-            parentNode.setAttribute(`data-${key}`, "");
+            parentNode.setAttribute(`data-${parentKey}`, "");
             parentNode.append(el2);
           }
         });
@@ -2836,7 +2860,7 @@
 <button
   type="button"
   title="${isBlocked ? "取消屏蔽此用户" : "屏蔽此用户"}"
-  class="absolute top-2 left-2 rounded-md cursor-pointer  z-20 border-none ${isBlocked ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}"
+  class="rounded-md cursor-pointer  z-20 border-none ${isBlocked ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}"
   @click=${(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -2852,7 +2876,7 @@
   </svg>
 </button>
     `,
-          el
+          obtainStyledShadowRoot(el)
         );
       });
     }
@@ -2951,16 +2975,16 @@
   }
 
   // src/utils/getElementSelector.ts
-  var attributeName2 = `data-select-${randomUUID()}`;
+  var attributeName = `data-select-${randomUUID()}`;
   var nextValue = 1;
   function getElementSelector(el) {
-    let v = el.getAttribute(attributeName2);
+    let v = el.getAttribute(attributeName);
     if (!v) {
       v = nextValue.toString();
       nextValue += 1;
-      el.setAttribute(attributeName2, v);
+      el.setAttribute(attributeName, v);
     }
-    return `[${attributeName2}='${v}']`;
+    return `[${attributeName}='${v}']`;
   }
 
   // src/bilibili.com/components/VueVideoRankPatch.ts
@@ -3048,15 +3072,16 @@
               </button>
             </div>
           `,
-          obtainHTMLElementByID({
-            id: `video-list-patch-status-${_VideoListPatch.id}`,
-            tag: "div",
-            onDidCreate: (el) => {
-              var _a2;
-              (_a2 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a2.insertBefore(el, listEl);
-              style_default2.apply(el);
-            }
-          })
+          obtainStyledShadowRoot(
+            obtainHTMLElementByID({
+              id: `video-list-patch-status-${_VideoListPatch.id}`,
+              tag: "div",
+              onDidCreate: (el) => {
+                var _a2;
+                (_a2 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a2.insertBefore(el, listEl);
+              }
+            })
+          )
         );
       });
     }
@@ -3086,27 +3111,31 @@
         if (!parentNode) {
           return;
         }
-        const key = "85e3e435-2ad2-4a7d-839f-69318799db0f";
+        const parentKey = "51d5da07-ab2d-4342-8496-c3c53980bb74";
+        const key2 = "85e3e435-2ad2-4a7d-839f-69318799db0f";
         injectStyle(
-          key,
-          `[data-${key}]:hover button {
-  opacity: 100;
-  transition: opacity 0.2s linear 0.2s;
+          parentKey,
+          `[data-${parentKey}]:hover [data-${key2}] {
+  filter: opacity(1);
+  transition: filter 0.2s linear 0.2s;
 }
 
-[data-${key}] button {
-  opacity: 0;
-  transition: opacity 0.2s linear 0s;
+[data-${parentKey}] [data-${key2}] {
+  filter: opacity(0);
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transition: filter 0.2s linear 0s;
 }
 `
         );
         const el = obtainHTMLElementByDataKey({
           tag: "div",
-          key,
+          key: key2,
           parentNode,
           onDidCreate: (el2) => {
-            style_default2.apply(el2);
-            parentNode.setAttribute(`data-${key}`, "");
+            parentNode.setAttribute(`data-${parentKey}`, "");
             parentNode.append(el2);
           }
         });
@@ -3130,7 +3159,7 @@
   </svg>
 </button>
     `,
-          el
+          obtainStyledShadowRoot(el)
         );
       });
     }
@@ -3235,15 +3264,13 @@
           tag: "div",
           id: _MiniHeaderButton.id,
           onDidCreate: (el) => {
-            style_default2.apply(el);
             el.classList.add("item");
             parent.prepend(...[parent.firstChild, el].filter(isNonNull));
           }
         });
         render(
           html`
-        <button
-          type="button"
+        <div
           @click=${(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -3251,7 +3278,7 @@
           }}
         >
           <span class="name">屏蔽</span>
-        </button>
+        </div>
       `,
           container
         );
@@ -3322,50 +3349,54 @@
         if (!parentNode) {
           return;
         }
-        const key = "c2ad7200-7141-46cd-a0ce-ba71ca52e396";
+        const parentKey = "321c1408-3ba8-4f8e-8ec8-4c491cf648c6";
+        const key2 = "c2ad7200-7141-46cd-a0ce-ba71ca52e396";
         injectStyle(
-          key,
-          `[data-${key}]:hover button {
-  opacity: 100;
-  transition: opacity 0.2s linear 0.2s;
+          parentKey,
+          `[data-${parentKey}]:hover [data-${key2}] {
+  filter: opacity(1);
+  transition: filter 0.2s linear 0.2s;
 }
 
-[data-${key}] button {
-  opacity: 0;
-  transition: opacity 0.2s linear 0s;
+[data-${parentKey}] [data-${key2}] {
+  filter: opacity(0);
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transition: filter 0.2s linear 0s;
 }
 `
         );
         const el = obtainHTMLElementByDataKey({
           tag: "div",
-          key,
+          key: key2,
           parentNode,
           onDidCreate: (el2) => {
-            style_default2.apply(el2);
-            parentNode.setAttribute(`data-${key}`, "");
+            parentNode.setAttribute(`data-${parentKey}`, "");
             parentNode.append(el2);
           }
         });
         const isBlocked = blockedLiveRooms_default.has(this.room.id);
         render(
           html`
-<button
-  type="button"
-  title="${isBlocked ? "取消屏蔽此直播间" : "屏蔽此直播间"}"
-  class="absolute top-2 left-2 p-1 rounded-md cursor-pointer isolate border-none ${isBlocked ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}"
-  style="z-index: 200;"
-  @click=${(e) => {
+  <button
+    type="button"
+    title="${isBlocked ? "取消屏蔽此直播间" : "屏蔽此直播间"}"
+    class="absolute top-2 left-2 p-1 rounded-md cursor-pointer isolate border-none ${isBlocked ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}"
+    style="z-index: 200;"
+    @click=${(e) => {
             e.preventDefault();
             e.stopPropagation();
             blockedLiveRooms_default.toggle(this.room, !isBlocked);
           }}
->
-  <svg viewBox="0 0 24 24" class="h-8 fill-current">
-    <path fill-rule="evenodd" clip-rule="evenodd" d=${isBlocked ? mdiCheckCircleOutline : mdiCancel}>
-  </svg>
-</button>
+  >
+    <svg viewBox="0 0 24 24" class="h-8 fill-current">
+      <path fill-rule="evenodd" clip-rule="evenodd" d=${isBlocked ? mdiCheckCircleOutline : mdiCancel}>
+    </svg>
+  </button>
     `,
-          el
+          obtainStyledShadowRoot(el)
         );
       });
     }
@@ -3422,15 +3453,16 @@
               </button>
             </div>
           `,
-          obtainHTMLElementByID({
-            id: `live-room-list-patch-status-${_LiveRoomPatch.id}`,
-            tag: "div",
-            onDidCreate: (el) => {
-              var _a2;
-              (_a2 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a2.insertBefore(el, listEl);
-              style_default2.apply(el);
-            }
-          })
+          obtainStyledShadowRoot(
+            obtainHTMLElementByID({
+              id: `live-room-list-patch-status-${_LiveRoomPatch.id}`,
+              tag: "div",
+              onDidCreate: (el) => {
+                var _a2;
+                (_a2 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a2.insertBefore(el, listEl);
+              }
+            })
+          )
         );
       });
     }
@@ -3451,24 +3483,25 @@
           tag: "div",
           id: _LiveHeaderButton.id,
           onDidCreate: (el) => {
-            style_default2.apply(el);
             el.style.fontSize = "14px";
             parent.append(...[el, parent.lastChild].filter(isNonNull));
           }
         });
         render(
           html`
-        <button
-          type="button"
-          class="h-full p-2"
-          @click=${(e) => {
+      <div
+        style="display: flex; align-items: center; margin: 0 20px;flex-direction: column;gap: 4px;padding: 12px;font-size: 14px; cursor: pointer;"
+        @click=${(e) => {
             e.preventDefault();
             e.stopPropagation();
             this.settings.open();
           }}
-        >
-          <span class="name">屏蔽</span>
-        </button>
+      >
+        <svg viewBox="2 2 20 20" style="height: 20px; fill: currentColor;">
+          <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiEyeOffOutline}>
+        </svg>
+        <span>屏蔽</span>
+      </div>
       `,
           container
         );
@@ -3563,7 +3596,6 @@
               main();
               return;
             }
-            style_default2.inject();
             app.render();
           },
           scheduleNext: (update) => setTimeout(update, 100)

@@ -1,9 +1,9 @@
-import injectStyle from '@/utils/injectStyle';
 import obtainHTMLElementByDataKey from '@/utils/obtainHTMLElementByDataKey';
 import { html, render } from 'lit-html';
 import { mdiEyeOff } from '@mdi/js';
-import style from '../style';
+import injectStyle from '@/utils/injectStyle';
 import homePageSettings from '../models/homePageSettings';
+import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 
 export default class HomePageFloorCardHoverButton {
   constructor(
@@ -16,18 +16,23 @@ export default class HomePageFloorCardHoverButton {
     if (!parentNode) {
       return;
     }
+    const parentKey = '51d5da07-ab2d-4342-8496-c3c53980bb74';
     const key = '85e3e435-2ad2-4a7d-839f-69318799db0f';
     injectStyle(
-      key,
+      parentKey,
       `\
-[data-${key}]:hover button {
-  opacity: 100;
-  transition: opacity 0.2s linear 0.2s;
+[data-${parentKey}]:hover [data-${key}] {
+  filter: opacity(1);
+  transition: filter 0.2s linear 0.2s;
 }
 
-[data-${key}] button {
-  opacity: 0;
-  transition: opacity 0.2s linear 0s;
+[data-${parentKey}] [data-${key}] {
+  filter: opacity(0);
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transition: filter 0.2s linear 0s;
 }
 `
     );
@@ -36,8 +41,7 @@ export default class HomePageFloorCardHoverButton {
       key,
       parentNode,
       onDidCreate: (el) => {
-        style.apply(el);
-        parentNode.setAttribute(`data-${key}`, '');
+        parentNode.setAttribute(`data-${parentKey}`, '');
         parentNode.append(el);
       },
     });
@@ -61,7 +65,7 @@ export default class HomePageFloorCardHoverButton {
   </svg>
 </button>
     `,
-      el
+      obtainStyledShadowRoot(el)
     );
   };
 }

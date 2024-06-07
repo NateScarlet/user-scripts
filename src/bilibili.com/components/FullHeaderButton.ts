@@ -3,7 +3,6 @@ import { mdiEyeOffOutline } from '@mdi/js';
 import { render, html } from 'lit-html';
 import isNonNull from '@/utils/isNonNull';
 import randomUUID from '@/utils/randomUUID';
-import style from '../style';
 import SettingsDrawer from './SettingsDrawer';
 
 export default class FullHeaderButton {
@@ -24,27 +23,26 @@ export default class FullHeaderButton {
       tag: 'li',
       id: FullHeaderButton.id,
       onDidCreate: (el) => {
-        style.apply(el);
         el.classList.add('right-entry-item');
         parent.prepend(...[parent.firstChild, el].filter(isNonNull));
       },
     });
     render(
       html`
-<button
-  type="button"
-  class="right-entry__outside" 
-  @click=${(e: Event) => {
-    e.preventDefault();
-    e.stopPropagation();
-    this.settings.open();
-  }}
->
-  <svg viewBox="2 2 20 20" class="right-entry-icon h-5 fill-current">
-    <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiEyeOffOutline}>
-  </svg>
-  <span class="right-entry-text">屏蔽</span>
-</button>
+  <button
+    type="button"
+    class="right-entry__outside" 
+    @click=${(e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.settings.open();
+    }}
+  >
+    <svg viewBox="2 2 20 20" class="right-entry-icon" style="height: 20px; fill: currentColor;">
+      <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiEyeOffOutline}>
+    </svg>
+    <span class="right-entry-text">屏蔽</span>
+  </button>
 `,
       container
     );
