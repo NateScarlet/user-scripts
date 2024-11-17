@@ -42,10 +42,11 @@ export default class LiveRoomPatch {
       const hidden = !this.disabled && match;
       setHTMLElementDisplayHidden(container, hidden);
       if (!hidden) {
-        // spell-checker: word Item_QAOnosoB Item_3ysKErMC
-        new LiveRoomHoverButton(i.querySelector('.Item_3ysKErMC'), {
+        // spell-checker: word Item_nickName_KO2QE Item_cover-wrap_BmU4h
+        new LiveRoomHoverButton(i.querySelector('.Item_cover-wrap_BmU4h'), {
           id: room.id,
-          owner: i.querySelector('.Item_QAOnosoB')?.textContent || room.id,
+          owner:
+            i.querySelector('.Item_nickName_KO2QE')?.textContent || room.id,
         }).render();
       }
     });

@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2024.06.07+f60203e3
+// @version   2024.11.17+8f531c79
 // ==/UserScript==
 
 "use strict";
@@ -3432,9 +3432,9 @@
           const hidden = !this.disabled && match;
           setHTMLElementDisplayHidden(container, hidden);
           if (!hidden) {
-            new LiveRoomHoverButton(i.querySelector(".Item_3ysKErMC"), {
+            new LiveRoomHoverButton(i.querySelector(".Item_cover-wrap_BmU4h"), {
               id: room.id,
-              owner: ((_b2 = i.querySelector(".Item_QAOnosoB")) == null ? void 0 : _b2.textContent) || room.id
+              owner: ((_b2 = i.querySelector(".Item_nickName_KO2QE")) == null ? void 0 : _b2.textContent) || room.id
             }).render();
           }
         });
