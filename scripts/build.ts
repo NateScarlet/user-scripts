@@ -15,9 +15,9 @@ function shell(command) {
 }
 
 function autoVersion(p: string[]): string {
-  let date = new Date(
-    parseInt(shell(`git log -1 --pretty=%at ${p.join(' ')}`)) * 1e3
-  );
+  let date = shell(`git diff --name-only HEAD ${p.join(' ')}`)
+    ? new Date()
+    : new Date(parseInt(shell(`git log -1 --pretty=%at ${p.join(' ')}`)) * 1e3);
   if (!Number.isFinite(date.getTime())) {
     console.warn(`can not get commit date: ${p}`);
     date = new Date();
@@ -61,20 +61,11 @@ export async function build(watch = false) {
     write: false,
     metafile: true,
     charset: 'utf8',
+    conditions: ['development'],
     plugins: [
       {
         name: 'lit-html',
         setup(build) {
-          build.onResolve({ filter: /^lit-html$/ }, async () => {
-            return {
-              path: workspacePath(
-                'node_modules',
-                'lit-html',
-                'development',
-                'lit-html.js'
-              ),
-            };
-          });
           build.onLoad({ filter: /[\/\\]lit-html.js$/ }, async ({ path }) => {
             const source = await readFile(path, 'utf-8');
             return {
@@ -151,6 +142,7 @@ export async function build(watch = false) {
                   })()
                 );
                 console.log(relPath);
+                await fs.mkdir(pathLib.dirname(path), { recursive: true });
                 await fs.writeFile(path, data, {
                   encoding: 'utf-8',
                   flag: 'w',
@@ -168,6 +160,7 @@ export async function build(watch = false) {
   });
   if (watch) {
     await ctx.watch();
+    console.log('watching', entryPoints);
     // run forever
     await new Promise(() => undefined);
   } else {

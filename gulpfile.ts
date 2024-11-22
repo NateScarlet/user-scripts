@@ -1,40 +1,56 @@
 import { build as esbuild } from './scripts/build';
-import { series, watch, parallel } from 'gulp';
+import { series, parallel } from 'gulp';
 import { spawn } from 'child_process';
 
-const tasks = {
-  'bilibili.com:style': () =>
-    spawn('npx', ['postcss', 'style.scss', '-o', 'style.css'], {
-      cwd: 'src/bilibili.com',
-      shell: true,
-    }),
-  'niconico.jp:style': () => {
-    if (1) {
-      // TODO: upgrade to tailwind v3
-      return Promise.resolve();
-    }
-    return spawn('npx', ['tailwindcss', '-o', 'style.css'], {
-      cwd: 'src/niconico.jp',
-      shell: true,
-    });
-  },
-};
-
-export function scripts() {
-  return esbuild();
+function buildScript(watch: boolean) {
+  return function buildScript() {
+    return esbuild(watch);
+  };
 }
 
-export const build = series(
-  parallel(tasks['bilibili.com:style'], tasks['niconico.jp:style']),
-  scripts
+function buildStyle__bilibili(watch: boolean) {
+  return function buildStyle__bilibili() {
+    return spawn(
+      'npx',
+      [
+        'postcss',
+        'style.scss',
+        '-o',
+        'style.css',
+        ...(watch ? ['--watch'] : []),
+      ],
+      {
+        cwd: 'src/bilibili.com',
+        shell: true,
+      }
+    );
+  };
+}
+
+function buildStyle__niconico() {
+  if (1) {
+    // TODO: upgrade to tailwind v3
+    return Promise.resolve();
+  }
+  return spawn('npx', ['tailwindcss', '-o', 'style.css'], {
+    cwd: 'src/niconico.jp',
+    shell: true,
+  });
+}
+
+export function clean() {
+  return spawn('rm', ['-rf', 'dist']);
+}
+
+export const dev = series(
+  clean,
+  parallel(buildScript(true), buildStyle__bilibili(true))
 );
 
-export async function dev() {
-  watch('src/**/*.ts', scripts);
-  watch(
-    ['src/bilibili.com/components/*.ts', 'src/bilibili.com/*.scss'],
-    series(tasks['bilibili.com:style'], scripts)
-  );
-}
+export const build = series(
+  clean,
+  parallel(buildStyle__bilibili(false), buildStyle__niconico),
+  buildScript(false)
+);
 
 export default build;
