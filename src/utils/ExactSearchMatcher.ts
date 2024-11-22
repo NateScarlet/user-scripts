@@ -3,7 +3,7 @@ export default class ExactSearchMatcher {
 
   constructor(q: string) {
     this.keywords = q
-      .split(' ')
+      .split(/\s/)
       .map((i) => i.trim().toLowerCase())
       .filter((i) => i);
   }

@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2024.11.23+2a7e0971
+// @version   2024.11.23+945b9922
 // ==/UserScript==
 
 "use strict";
@@ -3217,7 +3217,7 @@
           return searchKey.some((j) => j.toLowerCase().includes(i));
         });
       });
-      this.keywords = q.split(" ").map((i) => i.trim().toLowerCase()).filter((i) => i);
+      this.keywords = q.split(/\s/).map((i) => i.trim().toLowerCase()).filter((i) => i);
     }
   };
 
