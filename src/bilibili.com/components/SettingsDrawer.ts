@@ -192,6 +192,20 @@ export default class SettingsDrawer {
     `;
   }
 
+  private excludedKeywordsBuffer: string | undefined;
+
+  private get excludedKeywords() {
+    return (
+      this.excludedKeywordsBuffer ??
+      videoListSettings.excludeKeywords.join('\n')
+    );
+  }
+
+  private set excludedKeywords(v: string) {
+    this.excludedKeywordsBuffer = v;
+    videoListSettings.excludeKeywords = v.split('\n');
+  }
+
   private videoListSettings() {
     return html`
       <section>
@@ -252,10 +266,13 @@ export default class SettingsDrawer {
               <textarea
                 class="w-full border my-1 p-1"
                 placeholder=""
-                .value="${videoListSettings.excludeKeywords.join('\n')}"
+                .value="${this.excludedKeywords}"
                 @input="${this.onExcludeKeywordInput}"
                 @focus="${(e: Event) =>
                   growTextAreaHeight(e.target as HTMLTextAreaElement)}"
+                @blur=${() => {
+                  this.excludedKeywordsBuffer = undefined;
+                }}
               ></textarea>
               <div class="text-gray-500 text-sm">
                 不显示标题含关键词的视频。每行一个，不区分大小写。
@@ -269,7 +286,7 @@ export default class SettingsDrawer {
 
   private readonly onExcludeKeywordInput = (e: Event) => {
     const el = e.target as HTMLTextAreaElement;
-    videoListSettings.excludeKeywords = el.value.split('\n');
+    this.excludedKeywords = el.value;
     growTextAreaHeight(el);
   };
 

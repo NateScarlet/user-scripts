@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2024.11.17+8e960065
+// @version   2024.11.23+e92efc7a
 // ==/UserScript==
 
 "use strict";
@@ -2213,9 +2213,10 @@
         this.isOpen = false;
         this.render();
       });
+      __publicField(this, "excludedKeywordsBuffer");
       __publicField(this, "onExcludeKeywordInput", (e) => {
         const el = e.target;
-        videoListSettings_default.excludeKeywords = el.value.split("\n");
+        this.excludedKeywords = el.value;
         growTextAreaHeight(el);
       });
       __publicField(this, "onVideListDurationGteChange", debounce_default((e) => {
@@ -2385,6 +2386,14 @@
       </section>
     `;
     }
+    get excludedKeywords() {
+      var _a2;
+      return (_a2 = this.excludedKeywordsBuffer) != null ? _a2 : videoListSettings_default.excludeKeywords.join("\n");
+    }
+    set excludedKeywords(v) {
+      this.excludedKeywordsBuffer = v;
+      videoListSettings_default.excludeKeywords = v.split("\n");
+    }
     videoListSettings() {
       return html`
       <section>
@@ -2445,9 +2454,12 @@
               <textarea
                 class="w-full border my-1 p-1"
                 placeholder=""
-                .value="${videoListSettings_default.excludeKeywords.join("\n")}"
+                .value="${this.excludedKeywords}"
                 @input="${this.onExcludeKeywordInput}"
                 @focus="${(e) => growTextAreaHeight(e.target)}"
+                @blur=${() => {
+        this.excludedKeywordsBuffer = void 0;
+      }}
               ></textarea>
               <div class="text-gray-500 text-sm">
                 不显示标题含关键词的视频。每行一个，不区分大小写。
