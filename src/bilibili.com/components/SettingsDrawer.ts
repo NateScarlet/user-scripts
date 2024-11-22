@@ -230,6 +230,7 @@ export default class SettingsDrawer {
               placeholder="HH:MM:SS"
               value="${videoListSettings.durationGte.toTimeCode()}"
               @input="${this.onVideListDurationGteChange}"
+              @keydown="${(e: Event) => e.stopPropagation()}"
               @blur="${() => {
                 this.onVideListDurationGteChange.flush();
               }}"
@@ -249,6 +250,7 @@ export default class SettingsDrawer {
               placeholder="HH:MM:SS"
               value="${videoListSettings.durationLt.toTimeCode()}"
               @input="${this.onVideListDurationLtChange}"
+              @keydown="${(e: Event) => e.stopPropagation()}"
               @blur="${() => {
                 this.onVideListDurationLtChange.flush();
               }}"
@@ -268,6 +270,7 @@ export default class SettingsDrawer {
                 placeholder=""
                 .value="${this.excludedKeywords}"
                 @input="${this.onExcludeKeywordInput}"
+                @keydown="${(e: Event) => e.stopPropagation()}"
                 @focus="${(e: Event) =>
                   growTextAreaHeight(e.target as HTMLTextAreaElement)}"
                 @blur=${() => {

@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2024.11.23+e92efc7a
+// @version   2024.11.23+a0d45156
 // ==/UserScript==
 
 "use strict";
@@ -2418,6 +2418,7 @@
               placeholder="HH:MM:SS"
               value="${videoListSettings_default.durationGte.toTimeCode()}"
               @input="${this.onVideListDurationGteChange}"
+              @keydown="${(e) => e.stopPropagation()}"
               @blur="${() => {
         this.onVideListDurationGteChange.flush();
       }}"
@@ -2437,6 +2438,7 @@
               placeholder="HH:MM:SS"
               value="${videoListSettings_default.durationLt.toTimeCode()}"
               @input="${this.onVideListDurationLtChange}"
+              @keydown="${(e) => e.stopPropagation()}"
               @blur="${() => {
         this.onVideListDurationLtChange.flush();
       }}"
@@ -2456,6 +2458,7 @@
                 placeholder=""
                 .value="${this.excludedKeywords}"
                 @input="${this.onExcludeKeywordInput}"
+                @keydown="${(e) => e.stopPropagation()}"
                 @focus="${(e) => growTextAreaHeight(e.target)}"
                 @blur=${() => {
         this.excludedKeywordsBuffer = void 0;
