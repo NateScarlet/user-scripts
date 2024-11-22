@@ -1,5 +1,6 @@
 export default function growTextAreaHeight(el: HTMLTextAreaElement) {
-  if (el.scrollHeight > el.clientHeight) {
-    el.style.height = `${el.scrollHeight}px`;
+  const maxHeight = Math.min(window.innerHeight, el.scrollHeight);
+  if (el.scrollHeight > el.clientHeight && el.clientHeight < maxHeight) {
+    el.style.height = `${maxHeight}px`;
   }
 }

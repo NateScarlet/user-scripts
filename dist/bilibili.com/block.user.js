@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2024.11.23+a0d45156
+// @version   2024.11.23+2a7e0971
 // ==/UserScript==
 
 "use strict";
@@ -1404,8 +1404,9 @@
 
   // src/utils/growTextAreaHeight.ts
   function growTextAreaHeight(el) {
-    if (el.scrollHeight > el.clientHeight) {
-      el.style.height = `${el.scrollHeight}px`;
+    const maxHeight = Math.min(window.innerHeight, el.scrollHeight);
+    if (el.scrollHeight > el.clientHeight && el.clientHeight < maxHeight) {
+      el.style.height = `${maxHeight}px`;
     }
   }
 
