@@ -100,11 +100,8 @@ async function createApp(): Promise<Component> {
     url.pathname.startsWith('/list/')
   ) {
     components.push(new PlaylistPatch(ctx));
-  } else if (
-    url.host === 'live.bilibili.com' &&
-    url.pathname.startsWith('/p/')
-  ) {
-    components.push(new LiveRoomPatch(ctx));
+  } else if (url.host === 'live.bilibili.com') {
+    components.push(new LiveRoomPatch(ctx), new VideoListPatch(ctx));
   } else {
     components.push(new VideoListPatch(ctx));
   }

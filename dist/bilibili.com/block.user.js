@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2024.11.23+945b9922
+// @version   2024.12.09+107e7a46
 // ==/UserScript==
 
 "use strict";
@@ -3576,8 +3576,8 @@
         components.push(new VueVideoRankPatch());
       } else if (url.host === "www.bilibili.com" && url.pathname.startsWith("/list/")) {
         components.push(new PlaylistPatch(ctx));
-      } else if (url.host === "live.bilibili.com" && url.pathname.startsWith("/p/")) {
-        components.push(new LiveRoomPatch(ctx));
+      } else if (url.host === "live.bilibili.com") {
+        components.push(new LiveRoomPatch(ctx), new VideoListPatch(ctx));
       } else {
         components.push(new VideoListPatch(ctx));
       }
