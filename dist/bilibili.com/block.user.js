@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2024.12.09+107e7a46
+// @version   2025.02.25+561d9481
 // ==/UserScript==
 
 "use strict";
@@ -2754,37 +2754,74 @@
     constructor(user) {
       this.user = user;
       __publicField(this, "render", () => {
-        const parent = document.querySelector(".h-action");
-        if (!parent) {
+        const parentV1 = document.querySelector(".h-action");
+        if (parentV1) {
+          const container = obtainHTMLElementByID({
+            tag: "div",
+            id: _UserBlockButton.id,
+            onDidCreate: (el) => {
+              el.style.display = "inline";
+              parentV1.append(...[el, parentV1.lastChild].filter(isNonNull));
+            }
+          });
+          const isBlocked = blockedUsers_default.has(this.user.id);
+          render(
+            html`
+          <span class="h-f-btn" @click=${this.onClick}>
+            ${isBlocked ? "取消屏蔽" : "屏蔽"}
+          </span>
+        `,
+            container
+          );
           return;
         }
-        const container = obtainHTMLElementByID({
-          tag: "div",
-          id: _UserBlockButton.id,
-          onDidCreate: (el) => {
-            el.style.display = "inline";
-            parent.append(...[el, parent.lastChild].filter(isNonNull));
-          }
+        const parentV2 = document.querySelector(".operations .interactions");
+        if (parentV2) {
+          const container = obtainHTMLElementByID({
+            tag: "div",
+            id: _UserBlockButton.id,
+            onDidCreate: (el) => {
+              el.style.cssText = `cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 150px;
+height: 34px;
+border-radius: 6px;
+font-size: 14px;
+font-weight: 700;
+color: var(--text_white);
+border: 1px solid rgba(255,255,255,.2);
+background-color: rgba(255,255,255,.14);
+transition: all .3s;
+margin-right: 24px;
+`;
+              el.addEventListener("mouseenter", () => {
+                el.style.backgroundColor = "rgba(255,255,255,.4)";
+              });
+              el.addEventListener("mouseleave", () => {
+                el.style.backgroundColor = "rgba(255,255,255,.14)";
+              });
+              el.addEventListener("click", (e) => {
+                this.onClick(e);
+              });
+              parentV2.append(...[el, parentV2.lastChild].filter(isNonNull));
+            }
+          });
+          const isBlocked = blockedUsers_default.has(this.user.id);
+          render(
+            html`<span> ${isBlocked ? "取消屏蔽" : "屏蔽"} </span>`,
+            container
+          );
+        }
+      });
+      __publicField(this, "onClick", (e) => {
+        var _a2, _b2;
+        e.stopPropagation();
+        blockedUsers_default.toggle({
+          id: this.user.id,
+          name: (_b2 = (_a2 = document.querySelector("#h-name, .nickname")) == null ? void 0 : _a2.innerText) != null ? _b2 : ""
         });
-        const isBlocked = blockedUsers_default.has(this.user.id);
-        render(
-          html`
-        <span
-          class="h-f-btn"
-          @click=${(e) => {
-            var _a2, _b2;
-            e.stopPropagation();
-            blockedUsers_default.toggle({
-              id: this.user.id,
-              name: (_b2 = (_a2 = document.getElementById("h-name")) == null ? void 0 : _a2.innerText) != null ? _b2 : ""
-            });
-          }}
-        >
-          ${isBlocked ? "取消屏蔽" : "屏蔽"}
-        </span>
-      `,
-          container
-        );
       });
     }
   };
