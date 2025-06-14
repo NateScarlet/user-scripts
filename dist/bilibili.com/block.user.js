@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2025.02.25+561d9481
+// @version   2025.06.14+d7e25315
 // ==/UserScript==
 
 "use strict";
@@ -3079,7 +3079,7 @@ margin-right: 24px;
         let matchCount = 0;
         let listEl;
         document.querySelectorAll(".bili-video-card").forEach((i) => {
-          var _a2, _b2, _c2, _d2, _e, _f, _g, _h, _i;
+          var _a2, _b2, _c2, _d2, _e, _f, _g, _h, _i, _j;
           const rawURL = (_a2 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a2.getAttribute("href");
           if (!rawURL) {
             return;
@@ -3097,7 +3097,7 @@ margin-right: 24px;
             matchCount += 1;
           }
           let container = i;
-          while (((_h = container.parentElement) == null ? void 0 : _h.childElementCount) === 1) {
+          while (((_h = container.parentElement) == null ? void 0 : _h.childElementCount) === 1 || ((_i = container.parentElement) == null ? void 0 : _i.classList.values().some((cls) => _VideoListPatch.knownParentContainerClass.has(cls)))) {
             container = container.parentElement;
           }
           listEl = container.parentElement || void 0;
@@ -3106,7 +3106,7 @@ margin-right: 24px;
           if (user && !hidden) {
             new VideoHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
               id: user.id,
-              name: ((_i = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _i.textContent) || user.id
+              name: ((_j = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _j.textContent) || user.id
             }).render();
           }
         });
@@ -3140,6 +3140,10 @@ margin-right: 24px;
     }
   };
   __publicField(_VideoListPatch, "id", randomUUID());
+  __publicField(_VideoListPatch, "knownParentContainerClass", /* @__PURE__ */ new Set([
+    "bili-feed-card",
+    "feed-card"
+  ]));
   var VideoListPatch = _VideoListPatch;
 
   // src/bilibili.com/components/AdblockTipPatch.ts

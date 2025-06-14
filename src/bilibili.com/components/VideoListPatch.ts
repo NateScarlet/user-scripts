@@ -15,6 +15,11 @@ export default class VideoListPatch {
 
   private static readonly id = randomUUID();
 
+  private static readonly knownParentContainerClass = new Set([
+    'bili-feed-card',
+    'feed-card',
+  ]);
+
   constructor(private readonly ctx: Context) {}
 
   public readonly render = () => {
@@ -52,7 +57,12 @@ export default class VideoListPatch {
       }
 
       let container = i;
-      while (container.parentElement?.childElementCount === 1) {
+      while (
+        container.parentElement?.childElementCount === 1 ||
+        container.parentElement?.classList
+          .values()
+          .some((cls) => VideoListPatch.knownParentContainerClass.has(cls))
+      ) {
         container = container.parentElement;
       }
       listEl = container.parentElement || undefined;
