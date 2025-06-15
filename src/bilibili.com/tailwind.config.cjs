@@ -6,6 +6,7 @@ module.exports = {
   plugins: ['tailwindcss/nesting'],
   theme: {
     fontSize: {
+      xs: ['12px', '14px'],
       sm: ['14px', '20px'],
       base: ['16px', '24px'],
       lg: ['20px', '28px'],

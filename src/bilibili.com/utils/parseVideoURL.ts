@@ -1,4 +1,4 @@
-export default function parseVideoURL(rawURL: string | undefined) {
+export default function parseVideoURL(rawURL: string | null | undefined) {
   if (!rawURL) {
     return;
   }
@@ -6,9 +6,11 @@ export default function parseVideoURL(rawURL: string | undefined) {
   if (url.host !== 'www.bilibili.com') {
     return;
   }
-  const match = /^\/video\//.exec(url.pathname);
+  const match = /^\/video\/(BV[0-9a-zA-Z]+)\/?/.exec(url.pathname);
   if (!match) {
     return;
   }
-  return {};
+  return {
+    id: match[1],
+  };
 }

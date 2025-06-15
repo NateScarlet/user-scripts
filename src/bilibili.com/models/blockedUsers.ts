@@ -3,6 +3,7 @@ import GMValue from '@/utils/GMValue';
 interface BlockedUser {
   name: string;
   blockedAt: number;
+  note?: string;
 }
 
 export default new (class {
@@ -16,8 +17,14 @@ export default new (class {
 
   public readonly get = (id: string) => {
     const value = this.value.get()[id];
-    const { blockedAt: rawBlockedAt = 0, name = id } =
-      typeof value === 'boolean' ? {} : value ?? {};
+    if (!value) {
+      return;
+    }
+    const {
+      blockedAt: rawBlockedAt = 0,
+      name = id,
+      note = '',
+    } = typeof value === 'boolean' ? {} : value ?? {};
     const blockedAt = new Date(rawBlockedAt);
     return {
       id,
@@ -25,6 +32,7 @@ export default new (class {
       name,
       idAsNumber: Number.parseInt(id, 10),
       rawBlockedAt,
+      note,
     };
   };
 
@@ -32,7 +40,15 @@ export default new (class {
     return Object.keys(this.value.get());
   };
 
-  public readonly add = ({ id, name }: { id: string; name: string }) => {
+  public readonly add = ({
+    id,
+    name,
+    note,
+  }: {
+    id: string;
+    name: string;
+    note?: string;
+  }) => {
     if (this.has(id)) {
       return;
     }
@@ -41,8 +57,26 @@ export default new (class {
       [id]: {
         name: name.trim(),
         blockedAt: Date.now(),
+        note: note || undefined,
       },
     });
+  };
+
+  public readonly update = (
+    id: string,
+    update: Partial<Omit<BlockedUser, 'id'>>
+  ) => {
+    const existing = this.get(id);
+    if (existing) {
+      this.value.set({
+        ...this.value.get(),
+        [id]: {
+          name: update.name || existing.name,
+          blockedAt: update.blockedAt || existing.blockedAt.getTime(),
+          note: (update.note ?? existing.note) || undefined,
+        },
+      });
+    }
   };
 
   public readonly remove = (id: string) => {

@@ -7,6 +7,7 @@ import VideoHoverButton from './VideoHoverButton';
 import videoListSettings from '../models/videoListSettings';
 import Context from '../Context';
 import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
+import parseVideoURL from '../utils/parseVideoURL';
 
 // spell-checker: word bili
 
@@ -35,17 +36,25 @@ export default class VideoListPatch {
       }
       const user = parseUserURL(rawURL);
       let match = false;
+      let note = '';
       if (user) {
         const duration =
           i
             .querySelector('.bili-video-card__stats__duration')
             ?.textContent?.trim() ?? '';
+        const titleEl = i.querySelector('.bili-video-card__info--tit');
         const title =
-          (i
-            .querySelector('.bili-video-card__info--tit')
-            ?.getAttribute('title') ||
-            i.querySelector('.bili-video-card__info--tit')?.textContent) ??
-          '';
+          (titleEl?.getAttribute('title') || titleEl?.textContent) ?? '';
+        if (title) {
+          note = `${title}`;
+        }
+        const video = parseVideoURL(
+          titleEl?.parentElement?.getAttribute('href') ??
+            titleEl?.querySelector('a')?.getAttribute('href')
+        );
+        if (video?.id) {
+          note += `(${video.id})`;
+        }
         match = this.ctx.shouldExcludeVideo({ user, duration, title });
       } else {
         // assume advertisement
@@ -74,6 +83,7 @@ export default class VideoListPatch {
           name:
             i.querySelector('.bili-video-card__info--author')?.textContent ||
             user.id,
+          note,
         }).render();
       }
     });

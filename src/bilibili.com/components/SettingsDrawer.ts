@@ -10,6 +10,7 @@ import { html, nothing, render } from 'lit-html';
 import compare from '@/utils/compare';
 import { debounce } from 'lodash-es';
 import growTextAreaHeight from '@/utils/growTextAreaHeight';
+import isNonNull from '@/utils/isNonNull';
 import blockedUsers from '../models/blockedUsers';
 import homePageSettings from '../models/homePageSettings';
 import videoListSettings from '../models/videoListSettings';
@@ -341,14 +342,15 @@ export default class SettingsDrawer {
           <table class="table-fixed border-separate border-spacing-2 w-full">
             <thead class="sticky top-0">
               <tr class="bg-gray-200 text-center">
-                <td>屏蔽时间</td>
+                <td class="w-48">屏蔽时间</td>
                 <td>名称</td>
-                <td></td>
+                <td class="w-64"></td>
               </tr>
             </thead>
             <tbody>
               ${userIDs
                 .map(blockedUsers.get)
+                .filter(isNonNull)
                 .sort((a, b) => {
                   const dateCompare = compare(a.blockedAt, b.blockedAt);
                   if (dateCompare !== 0) {
@@ -356,7 +358,7 @@ export default class SettingsDrawer {
                   }
                   return compare(a.idAsNumber, b.idAsNumber);
                 })
-                .map(({ id, name, blockedAt, rawBlockedAt }) => {
+                .map(({ id, name, note, blockedAt, rawBlockedAt }) => {
                   return html`
                     <tr class="group even:bg-gray-100">
                       <td class="text-right w-32">
@@ -368,40 +370,47 @@ export default class SettingsDrawer {
                             : nothing
                         }
                       </td>
-                      <td class="text-center">${name}</td>
+                      <td class="text-center">
+                        ${name}
+                        <div class="whitespace-nowrap truncate text-xs font-serif" title="${note}">
+                          ${note}
+                        </div>
+                      </td>
                       <td
-                        class="transition opacity-0 group-hover:opacity-100 space-x-2 text-center"
                       >
-                        <a
-                          href="https://space.bilibili.com/${id}"
-                          target="_blank"
-                          class="inline-flex underline text-blue-500"
-                        >
-                          <svg 
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-[1.25em]"
+                 
+                        <div class="transition opacity-0 group-hover:opacity-100 space-x-2 text-center">
+                          <a
+                            href="https://space.bilibili.com/${id}"
+                            target="_blank"
+                            class="inline-flex underline text-blue-500"
                           >
-                            <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiOpenInNew} fill="currentColor">
-                          </svg>
-                          <span>个人空间</span>
-                        </a>
-                        <button
-                          type="button"
-                          @click=${() => blockedUsers.remove(id)}
-                          class="inline-flex underline"
-                        >
-                          <svg 
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-[1.25em]"
+                            <svg 
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="h-[1.25em]"
+                            >
+                              <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiOpenInNew} fill="currentColor">
+                            </svg>
+                            <span>个人空间</span>
+                          </a>
+                          <button
+                            type="button"
+                            @click=${() => blockedUsers.remove(id)}
+                            class="inline-flex underline"
                           >
-                            <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCheckOutline} fill="currentColor">
-                          </svg>
-                          <span>取消屏蔽</span>
-                        </button>
+                            <svg 
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="h-[1.25em]"
+                            >
+                              <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCheckOutline} fill="currentColor">
+                            </svg>
+                            <span>取消屏蔽</span>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   `;

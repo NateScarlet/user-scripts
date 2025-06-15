@@ -597,6 +597,14 @@ video {
   width: 8rem;
 }
 
+.w-48 {
+  width: 12rem;
+}
+
+.w-64 {
+  width: 16rem;
+}
+
 .w-full {
   width: 100%;
 }
@@ -688,6 +696,16 @@ video {
   overflow: hidden;
 }
 
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
 .rounded {
   border-radius: 0.25rem;
 }
@@ -766,9 +784,18 @@ video {
   vertical-align: top;
 }
 
+.font-serif {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
 .text-sm {
   font-size: 14px;
   line-height: 20px;
+}
+
+.text-xs {
+  font-size: 12px;
+  line-height: 14px;
 }
 
 .text-black {

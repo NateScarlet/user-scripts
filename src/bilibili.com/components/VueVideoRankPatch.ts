@@ -14,8 +14,8 @@ export default class VueVideoRankPatch {
           selector
         )}).__vue__._props.videoData`
       );
-
-      const { owner } = castPlainObject(videoData);
+      // spell-checker: words bvid
+      const { owner, title, bvid } = castPlainObject(videoData);
       const { mid, name } = castPlainObject(owner);
       if (typeof mid !== 'number' || typeof name !== 'string') {
         return;
@@ -28,6 +28,9 @@ export default class VueVideoRankPatch {
         new VideoHoverButton(i.querySelector('.video-card__content'), {
           id: userID,
           name,
+          note:
+            (typeof title === 'string' ? title : '') +
+            (typeof bvid === 'string' ? `(${bvid})` : ''),
         }).render();
       }
     });

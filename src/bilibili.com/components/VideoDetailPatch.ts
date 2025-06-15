@@ -3,6 +3,7 @@ import parseUserURL from '../utils/parseUserURL';
 import VideoHoverButton from './VideoHoverButton';
 import videoListSettings from '../models/videoListSettings';
 import Context from '../Context';
+import parseVideoURL from '../utils/parseVideoURL';
 
 // spell-checker: word upname
 export default class VideoDetailPatch {
@@ -19,15 +20,23 @@ export default class VideoDetailPatch {
           return;
         }
         const user = parseUserURL(rawURL);
-
         let hidden = false;
+        let note = '';
         if (user) {
           const duration =
             i.querySelector('.duration')?.textContent?.trim() ?? '';
+          const titleEl = i.querySelector('.title');
           const title =
-            (i.querySelector('.title')?.getAttribute('title') ||
-              i.querySelector('.title')?.textContent) ??
-            '';
+            (titleEl?.getAttribute('title') || titleEl?.textContent) ?? '';
+          if (title) {
+            note = `${title}`;
+          }
+          const video = parseVideoURL(
+            titleEl?.parentElement?.getAttribute('href')
+          );
+          if (video?.id) {
+            note += `(${video.id})`;
+          }
           hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
           if (hidden) {
             this.blockedTitles.add(title);
@@ -42,6 +51,7 @@ export default class VideoDetailPatch {
           new VideoHoverButton(i.querySelector('.pic-box'), {
             id: user.id,
             name: i.querySelector('.upname .name')?.textContent || user.id,
+            note,
           }).render();
         }
       });

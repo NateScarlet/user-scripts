@@ -8,7 +8,7 @@ import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 export default class VideoHoverButton {
   constructor(
     private readonly parentNode: Element | null | undefined,
-    private readonly user: { id: string; name: string }
+    private readonly user: { id: string; name: string; note: string }
   ) {}
 
   public readonly render = () => {
