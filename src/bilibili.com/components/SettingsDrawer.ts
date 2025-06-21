@@ -370,7 +370,15 @@ export default class SettingsDrawer {
                             : nothing
                         }
                       </td>
-                      <td class="text-center">
+                      <td class="text-center hover:underline cursor-text" @click=${() => {
+                        // eslint-disable-next-line no-alert
+                        const v = prompt(`编辑备注 (${name})`, note);
+                        if (v != null) {
+                          blockedUsers.update(id, {
+                            note: v,
+                          });
+                        }
+                      }}>
                         ${name}
                         <div class="whitespace-nowrap truncate text-xs font-serif" title="${note}">
                           ${note}

@@ -656,6 +656,10 @@ video {
   cursor: zoom-out;
 }
 
+.cursor-text {
+  cursor: text;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -875,6 +879,10 @@ video {
 .hover\:bg-gray-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.hover\:underline:hover {
+  text-decoration-line: underline;
 }
 
 .group:hover .group-hover\:opacity-100 {
