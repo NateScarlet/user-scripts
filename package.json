@@ -40,6 +40,7 @@
     "@mdi/js": "^7.2.96",
     "@types/lodash-es": "^4.17.5",
     "@types/mustache": "^4.1.2",
+    "core-js": "^3.43.0",
     "lit-html": "^2.7.3",
     "lodash-es": "^4.17.21",
     "mustache": "^4.2.0"

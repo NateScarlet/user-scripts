@@ -17,6 +17,7 @@ import videoListSettings from '../models/videoListSettings';
 import searchSettings from '../models/searchSettings';
 import blockedLiveRooms from '../models/blockedLiveRooms';
 import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
+import showPromptDialog from '../utils/showPromptDialog';
 
 // spell-checker: word datetime
 
@@ -370,9 +371,14 @@ export default class SettingsDrawer {
                             : nothing
                         }
                       </td>
-                      <td class="text-center hover:underline cursor-text" @click=${() => {
-                        // eslint-disable-next-line no-alert
-                        const v = prompt(`编辑备注 (${name})`, note);
+                      <td class="text-center hover:underline cursor-text" @click=${async () => {
+                        const v = await showPromptDialog({
+                          title: `编辑备注`,
+                          label: `为 ${name} 添加备注:`,
+                          value: note,
+                          placeholder: '输入备注...',
+                          actionText: '保存备注',
+                        });
                         if (v != null) {
                           blockedUsers.update(id, {
                             note: v,
