@@ -222,7 +222,18 @@ export default class SettingsDrawer {
                 videoListSettings.allowAdvertisement = el.checked;
               }}"
             />
-            <span>允许广告</span>
+            <span>允许广告（非视频）</span>
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              ?checked="${videoListSettings.allowPromoted}"
+              @change="${(e: Event) => {
+                const el = e.target as HTMLInputElement;
+                videoListSettings.allowPromoted = el.checked;
+              }}"
+            />
+            <span>允许推广</span>
           </label>
           <label class="flex items-center">
             <span class="flex-none w-32">最短（含）</span>

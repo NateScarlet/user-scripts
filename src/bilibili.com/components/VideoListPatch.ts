@@ -55,7 +55,16 @@ export default class VideoListPatch {
         if (video?.id) {
           note += `(${video.id})`;
         }
-        match = this.ctx.shouldExcludeVideo({ user, duration, title });
+        // spell-checker: words rcmd
+        const isPromoted =
+          i.classList.contains('is-rcmd') &&
+          !i.classList.contains('enable-no-interest');
+        match = this.ctx.shouldExcludeVideo({
+          user,
+          duration,
+          title,
+          isPromoted,
+        });
       } else {
         // assume advertisement
         match = !videoListSettings.allowAdvertisement;

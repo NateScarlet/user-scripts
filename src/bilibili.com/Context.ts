@@ -19,7 +19,11 @@ export default class Context {
     user?: { id: string };
     title: string;
     duration?: DurationInput;
+    isPromoted?: boolean;
   }): boolean => {
+    if (v.isPromoted && !videoListSettings.allowPromoted) {
+      return true;
+    }
     if (v.user && blockedUsers.has(v.user.id)) {
       return true;
     }

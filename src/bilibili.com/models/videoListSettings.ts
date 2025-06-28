@@ -5,6 +5,7 @@ import optionalArray from '@/utils/optionalArray';
 export default new (class VideoListSettings {
   private readonly value = new GMValue<{
     allowAdvertisement?: boolean;
+    allowPromoted?: boolean;
     durationGte?: string;
     durationLt?: string;
     excludeKeywords?: string[];
@@ -18,6 +19,17 @@ export default new (class VideoListSettings {
     this.value.set({
       ...this.value.get(),
       allowAdvertisement: v || undefined,
+    });
+  }
+
+  get allowPromoted() {
+    return this.value.get().allowPromoted ?? false;
+  }
+
+  set allowPromoted(v) {
+    this.value.set({
+      ...this.value.get(),
+      allowPromoted: v || undefined,
     });
   }
 
