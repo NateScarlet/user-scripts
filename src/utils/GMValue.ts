@@ -39,12 +39,14 @@ export default class GMValue<T> {
     this.currentAction = (async () => {
       try {
         const value = await GM.getValue(this.key);
-        if (value != null) {
-          try {
-            this.value = JSON.parse(String(value));
-          } catch {
-            this.value = undefined;
-          }
+        if (value == null) {
+          this.value = undefined;
+        } else if (typeof value === 'string') {
+          this.value = JSON.parse(value);
+        } else {
+          throw new Error(
+            `GMValue(${this.key}): unrecognizable value '${value}'`
+          );
         }
       } finally {
         this.loadingCount -= 1;

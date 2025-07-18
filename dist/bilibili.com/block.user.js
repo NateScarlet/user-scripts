@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2025.07.19+ee90ab51
+// @version   2025.07.19+f0d96075
 // ==/UserScript==
 
 "use strict";
@@ -5334,12 +5334,14 @@
         this.currentAction = (() => __async(this, null, function* () {
           try {
             const value = yield GM.getValue(this.key);
-            if (value != null) {
-              try {
-                this.value = JSON.parse(String(value));
-              } catch (e) {
-                this.value = void 0;
-              }
+            if (value == null) {
+              this.value = void 0;
+            } else if (typeof value === "string") {
+              this.value = JSON.parse(value);
+            } else {
+              throw new Error(
+                `GMValue(${this.key}): unrecognizable value '${value}'`
+              );
             }
           } finally {
             this.loadingCount -= 1;
