@@ -1,5 +1,6 @@
 // port from https://github.com/NateScarlet/iso8601/blob/1f881e261294d70e12d815a85b2995d5d1efbc87/pkg/iso8601/duration.go
 
+import createDate from './createDate';
 import roundDecimal from './roundDecimal';
 
 function leadingInt(s: string): [x: number, rem: string] {
@@ -111,10 +112,6 @@ export default class Duration {
 
   public readonly invalid: boolean = false;
 
-  get valid() {
-    return !this.invalid;
-  }
-
   public readonly negative: boolean = false;
 
   public readonly years: number = 0;
@@ -167,6 +164,10 @@ export default class Duration {
     this.seconds = checkNumber(seconds);
     this.milliseconds = checkNumber(milliseconds);
     this.invalid = invalidCount > 0;
+  }
+
+  get valid() {
+    return !this.invalid;
   }
 
   public static readonly fromMilliseconds = (milliseconds: number = 0) => {
@@ -302,7 +303,7 @@ export default class Duration {
             d.hours += f * (Duration.DAY / Duration.HOUR / scale);
             break;
           default:
-            d.invalid = false;
+            d.invalid = true;
             return new Duration(d);
         }
       } else {
@@ -423,15 +424,16 @@ export default class Duration {
     );
   };
 
+  public readonly toSeconds = (): number => {
+    return this.toMilliseconds() / Duration.SECOND;
+  };
+
   public readonly toHours = (): number => {
     return this.toMilliseconds() / Duration.HOUR;
   };
 
-  public readonly toString = (): string => {
-    if (this.invalid) {
-      return 'Invalid Duration';
-    }
-    return this.toISOString();
+  public readonly toMinutes = (): number => {
+    return this.toMilliseconds() / Duration.MINUTE;
   };
 
   /**
@@ -489,11 +491,106 @@ export default class Duration {
     return this.toMilliseconds() === 0;
   };
 
+  public validOrUndefined = () => {
+    if (this.valid) {
+      return this;
+    }
+  };
+
   public truncate = (unitMs: number): Duration => {
     if (unitMs <= 0) {
       return this;
     }
     const ms = this.toMilliseconds();
     return Duration.fromMilliseconds(ms - (ms % unitMs));
+  };
+
+  public ceil = (unitMs: number): Duration => {
+    if (unitMs <= 0) {
+      return this;
+    }
+    const ms0 = this.toMilliseconds();
+    const ms1 = ms0 - (ms0 % unitMs);
+    if (ms1 < ms0) {
+      return Duration.fromMilliseconds(ms1 + unitMs);
+    }
+    return Duration.fromMilliseconds(ms1);
+  };
+
+  public floor = (unitMs: number): Duration => {
+    if (unitMs <= 0) {
+      return this;
+    }
+    const ms0 = this.toMilliseconds();
+    const ms1 = ms0 - (ms0 % unitMs);
+    if (ms1 > ms0) {
+      return Duration.fromMilliseconds(ms1 - unitMs);
+    }
+    return Duration.fromMilliseconds(ms1);
+  };
+
+  public readonly valueOf = () => {
+    return this.toMilliseconds();
+  };
+
+  public readonly toString = (): string => {
+    if (this.invalid) {
+      return 'Invalid Duration';
+    }
+    return this.toISOString();
+  };
+
+  public readonly [Symbol.toPrimitive] = (hint: string) => {
+    switch (hint) {
+      case 'number':
+        return this.toMilliseconds();
+      case 'string':
+        return this.toISOString();
+      default:
+        return this.toISOString();
+    }
+  };
+
+  public readonly multiply = (v: number): Duration => {
+    if (v === -1) {
+      return new Duration({
+        invalid: this.invalid,
+        negative: !this.negative,
+        years: this.years,
+        months: this.months,
+        weeks: this.weeks,
+        days: this.days,
+        hours: this.hours,
+        minutes: this.minutes,
+        seconds: this.seconds,
+        milliseconds: this.milliseconds,
+      });
+    }
+    return new Duration({
+      invalid: this.invalid,
+      negative: this.negative,
+      years: this.years * v,
+      months: this.months * v,
+      weeks: this.weeks * v,
+      days: this.days * v,
+      hours: this.hours * v,
+      minutes: this.minutes * v,
+      seconds: this.seconds * v,
+      milliseconds: this.milliseconds * v,
+    });
+  };
+
+  public readonly createDate = (base?: Date): Date => {
+    const direction = this.negative ? -1 : 1;
+    return createDate({
+      base,
+      yearOffset: this.years * direction,
+      monthOffset: this.months * direction,
+      dateOffset: this.days * direction + 7 * this.weeks * direction,
+      hoursOffset: this.hours * direction,
+      minutesOffset: this.minutes * direction,
+      secondsOffset: this.seconds * direction,
+      millisecondsOffset: this.milliseconds * direction,
+    });
   };
 }

@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2025.07.19+f0d96075
+// @version   2025.07.19+c517e531
 // ==/UserScript==
 
 "use strict";
@@ -3964,8 +3964,8 @@
         this.run();
       });
       __publicField(this, "stop", () => {
-        var _a4;
-        (_a4 = this.active) == null ? void 0 : _a4.stack.dispose();
+        var _a5;
+        (_a5 = this.active) == null ? void 0 : _a5.stack.dispose();
       });
       __publicField(this, _a, () => {
         this.stop();
@@ -3975,7 +3975,7 @@
     }
     run() {
       return __async(this, null, function* () {
-        var _a4, _b2, _c2, _d2, _e, _f;
+        var _a5, _b2, _c2, _d2, _e, _f;
         var _stack = [];
         try {
           if (this.active != null) {
@@ -3983,11 +3983,11 @@
           }
           const stack = __using(_stack, new DisposableStack());
           stack.defer(() => {
-            var _a5;
-            (_a5 = this.active) == null ? void 0 : _a5.stack.dispose();
+            var _a6;
+            (_a6 = this.active) == null ? void 0 : _a6.stack.dispose();
             this.active = void 0;
           });
-          while (!((_a4 = this.active) == null ? void 0 : _a4.stack.disposed)) {
+          while (!((_a5 = this.active) == null ? void 0 : _a5.stack.disposed)) {
             const ctx = new PollingContext();
             (_b2 = this.active) == null ? void 0 : _b2.stack.dispose();
             this.active = ctx;
@@ -4027,8 +4027,8 @@
       });
     }
     get isRunning() {
-      var _a4;
-      return ((_a4 = this.active) == null ? void 0 : _a4.stack.disposed) === false;
+      var _a5;
+      return ((_a5 = this.active) == null ? void 0 : _a5.stack.disposed) === false;
     }
   };
   _a = Symbol.dispose;
@@ -4407,12 +4407,12 @@
     }
   };
   function resolveDirective(part, value, parent = part, attributeIndex) {
-    var _a4, _b2, _c2;
+    var _a5, _b2, _c2;
     var _d2;
     if (value === noChange) {
       return value;
     }
-    let currentDirective = attributeIndex !== void 0 ? (_a4 = parent.__directives) === null || _a4 === void 0 ? void 0 : _a4[attributeIndex] : parent.__directive;
+    let currentDirective = attributeIndex !== void 0 ? (_a5 = parent.__directives) === null || _a5 === void 0 ? void 0 : _a5[attributeIndex] : parent.__directive;
     const nextDirectiveConstructor = isPrimitive(value) ? void 0 : (
       // This property needs to remain unminified.
       value["_$litDirective$"]
@@ -4454,9 +4454,9 @@
     // This method is separate from the constructor because we need to return a
     // DocumentFragment and we don't want to hold onto it with an instance field.
     _clone(options) {
-      var _a4;
+      var _a5;
       const { el: { content }, parts } = this._$template;
-      const fragment = ((_a4 = options === null || options === void 0 ? void 0 : options.creationScope) !== null && _a4 !== void 0 ? _a4 : d).importNode(content, true);
+      const fragment = ((_a5 = options === null || options === void 0 ? void 0 : options.creationScope) !== null && _a5 !== void 0 ? _a5 : d).importNode(content, true);
       walker.currentNode = fragment;
       let node = walker.nextNode();
       let nodeIndex = 0;
@@ -4508,7 +4508,7 @@
   };
   var ChildPart = class _ChildPart {
     constructor(startNode, endNode, parent, options) {
-      var _a4;
+      var _a5;
       this.type = CHILD_PART;
       this._$committedValue = nothing;
       this._$disconnectableChildren = void 0;
@@ -4516,15 +4516,15 @@
       this._$endNode = endNode;
       this._$parent = parent;
       this.options = options;
-      this.__isConnected = (_a4 = options === null || options === void 0 ? void 0 : options.isConnected) !== null && _a4 !== void 0 ? _a4 : true;
+      this.__isConnected = (_a5 = options === null || options === void 0 ? void 0 : options.isConnected) !== null && _a5 !== void 0 ? _a5 : true;
       if (ENABLE_EXTRA_SECURITY_HOOKS) {
         this._textSanitizer = void 0;
       }
     }
     // See comment in Disconnectable interface for why this is a getter
     get _$isConnected() {
-      var _a4, _b2;
-      return (_b2 = (_a4 = this._$parent) === null || _a4 === void 0 ? void 0 : _a4._$isConnected) !== null && _b2 !== void 0 ? _b2 : this.__isConnected;
+      var _a5, _b2;
+      return (_b2 = (_a5 = this._$parent) === null || _a5 === void 0 ? void 0 : _a5._$isConnected) !== null && _b2 !== void 0 ? _b2 : this.__isConnected;
     }
     /**
      * The parent node into which the part renders its content.
@@ -4567,7 +4567,7 @@
       return this._$endNode;
     }
     _$setValue(value, directiveParent = this) {
-      var _a4;
+      var _a5;
       if (DEV_MODE && this.parentNode === null) {
         throw new Error(`This \`ChildPart\` has no \`parentNode\` and therefore cannot accept a value. This likely means the element containing the part was manipulated in an unsupported way outside of Lit's control such that the part's marker nodes were ejected from DOM. For example, setting the element's \`innerHTML\` or \`textContent\` can do this.`);
       }
@@ -4591,7 +4591,7 @@
       } else if (value["_$litType$"] !== void 0) {
         this._commitTemplateResult(value);
       } else if (value.nodeType !== void 0) {
-        if (DEV_MODE && ((_a4 = this.options) === null || _a4 === void 0 ? void 0 : _a4.host) === value) {
+        if (DEV_MODE && ((_a5 = this.options) === null || _a5 === void 0 ? void 0 : _a5.host) === value) {
           this._commitText(`[probable mistake: rendered a template's host in itself (commonly caused by writing \${this} in a template]`);
           console.warn(`Attempted to render the template host`, value, `inside itself. This is almost always a mistake, and in dev mode `, `we render some warning text. In production however, we'll `, `render it, which will usually result in an error, and sometimes `, `in the element disappearing from the DOM.`);
           return;
@@ -4607,11 +4607,11 @@
       return wrap(wrap(this._$startNode).parentNode).insertBefore(node, this._$endNode);
     }
     _commitNode(value) {
-      var _a4;
+      var _a5;
       if (this._$committedValue !== value) {
         this._$clear();
         if (ENABLE_EXTRA_SECURITY_HOOKS && sanitizerFactoryInternal !== noopSanitizer) {
-          const parentNodeName = (_a4 = this._$startNode.parentNode) === null || _a4 === void 0 ? void 0 : _a4.nodeName;
+          const parentNodeName = (_a5 = this._$startNode.parentNode) === null || _a5 === void 0 ? void 0 : _a5.nodeName;
           if (parentNodeName === "STYLE" || parentNodeName === "SCRIPT") {
             let message = "Forbidden";
             if (DEV_MODE) {
@@ -4678,10 +4678,10 @@
       this._$committedValue = value;
     }
     _commitTemplateResult(result) {
-      var _a4;
+      var _a5;
       const { values, ["_$litType$"]: type } = result;
       const template = typeof type === "number" ? this._$getTemplate(result) : (type.el === void 0 && (type.el = Template.createElement(trustFromTemplateString(type.h, type.h[0]), this.options)), type);
-      if (((_a4 = this._$committedValue) === null || _a4 === void 0 ? void 0 : _a4._$template) === template) {
+      if (((_a5 = this._$committedValue) === null || _a5 === void 0 ? void 0 : _a5._$template) === template) {
         debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
           kind: "template updating",
           template,
@@ -4760,8 +4760,8 @@
      * @internal
      */
     _$clear(start = wrap(this._$startNode).nextSibling, from) {
-      var _a4;
-      (_a4 = this._$notifyConnectionChanged) === null || _a4 === void 0 ? void 0 : _a4.call(this, false, true, from);
+      var _a5;
+      (_a5 = this._$notifyConnectionChanged) === null || _a5 === void 0 ? void 0 : _a5.call(this, false, true, from);
       while (start && start !== this._$endNode) {
         const n = wrap(start).nextSibling;
         wrap(start).remove();
@@ -4776,10 +4776,10 @@
      * @internal
      */
     setConnected(isConnected) {
-      var _a4;
+      var _a5;
       if (this._$parent === void 0) {
         this.__isConnected = isConnected;
-        (_a4 = this._$notifyConnectionChanged) === null || _a4 === void 0 ? void 0 : _a4.call(this, isConnected);
+        (_a5 = this._$notifyConnectionChanged) === null || _a5 === void 0 ? void 0 : _a5.call(this, isConnected);
       } else if (DEV_MODE) {
         throw new Error("part.setConnected() may only be called on a RootPart returned from render().");
       }
@@ -4943,8 +4943,8 @@
     // since the dirty checking is more complex
     /** @internal */
     _$setValue(newListener, directiveParent = this) {
-      var _a4;
-      newListener = (_a4 = resolveDirective(this, newListener, directiveParent, 0)) !== null && _a4 !== void 0 ? _a4 : nothing;
+      var _a5;
+      newListener = (_a5 = resolveDirective(this, newListener, directiveParent, 0)) !== null && _a5 !== void 0 ? _a5 : nothing;
       if (newListener === noChange) {
         return;
       }
@@ -4970,9 +4970,9 @@
       this._$committedValue = newListener;
     }
     handleEvent(event) {
-      var _a4, _b2;
+      var _a5, _b2;
       if (typeof this._$committedValue === "function") {
-        this._$committedValue.call((_b2 = (_a4 = this.options) === null || _a4 === void 0 ? void 0 : _a4.host) !== null && _b2 !== void 0 ? _b2 : this.element, event);
+        this._$committedValue.call((_b2 = (_a5 = this.options) === null || _a5 === void 0 ? void 0 : _a5.host) !== null && _b2 !== void 0 ? _b2 : this.element, event);
       } else {
         this._$committedValue.handleEvent(event);
       }
@@ -5007,12 +5007,12 @@
     issueWarning("multiple-versions", `Multiple versions of Lit loaded. Loading multiple versions is not recommended.`);
   }
   var render = (value, container, options) => {
-    var _a4, _b2;
+    var _a5, _b2;
     if (DEV_MODE && container == null) {
       throw new TypeError(`The container to render into may not be ${container}`);
     }
     const renderId = DEV_MODE ? debugLogRenderId++ : 0;
-    const partOwnerNode = (_a4 = options === null || options === void 0 ? void 0 : options.renderBefore) !== null && _a4 !== void 0 ? _a4 : container;
+    const partOwnerNode = (_a5 = options === null || options === void 0 ? void 0 : options.renderBefore) !== null && _a5 !== void 0 ? _a5 : container;
     let part = partOwnerNode["_$litPart$"];
     debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
       kind: "begin render",
@@ -5365,8 +5365,8 @@
         yield this.currentAction;
       }));
       __publicField(this, "get", () => {
-        var _a4;
-        return (_a4 = this.value) != null ? _a4 : this.defaultValue();
+        var _a5;
+        return (_a5 = this.value) != null ? _a5 : this.defaultValue();
       });
       __publicField(this, "set", (v) => {
         this.value = v;
@@ -5437,14 +5437,14 @@
         }));
       });
       __publicField(this, "update", (id, update) => {
-        var _a4;
+        var _a5;
         const existing = this.get(id);
         if (existing) {
           this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
             [id]: {
               name: update.name || existing.name,
               blockedAt: update.blockedAt || existing.blockedAt.getTime(),
-              note: ((_a4 = update.note) != null ? _a4 : existing.note) || void 0
+              note: ((_a5 = update.note) != null ? _a5 : existing.note) || void 0
             }
           }));
         }
@@ -5496,8 +5496,8 @@
           }));
         }
         get excludeAll() {
-          var _a4;
-          return (_a4 = this.value) == null ? void 0 : _a4.excludeAll;
+          var _a5;
+          return (_a5 = this.value) == null ? void 0 : _a5.excludeAll;
         }
         set excludeAll(v) {
           this.value = __spreadProps(__spreadValues({}, this.value), {
@@ -5505,8 +5505,8 @@
           });
         }
         get excludeByChannel() {
-          var _a4, _b2;
-          return (_b2 = (_a4 = this.value) == null ? void 0 : _a4.excludeByChannel) != null ? _b2 : [];
+          var _a5, _b2;
+          return (_b2 = (_a5 = this.value) == null ? void 0 : _a5.excludeByChannel) != null ? _b2 : [];
         }
         set excludeByChannel(v) {
           this.value = __spreadProps(__spreadValues({}, this.value), {
@@ -5516,8 +5516,8 @@
       }(this));
     }
     get allowAdblockTips() {
-      var _a4;
-      return (_a4 = this.value.get().allowAdblockTips) != null ? _a4 : false;
+      var _a5;
+      return (_a5 = this.value.get().allowAdblockTips) != null ? _a5 : false;
     }
     set allowAdblockTips(v) {
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
@@ -5525,6 +5525,78 @@
       }));
     }
   }();
+
+  // src/utils/castDate.ts
+  function castDate(v) {
+    if (v instanceof Date) {
+      return v;
+    }
+    return new Date(v);
+  }
+
+  // src/utils/createDate.ts
+  function createDate({
+    base = /* @__PURE__ */ new Date(),
+    year,
+    yearOffset,
+    month,
+    monthOffset,
+    date,
+    dateOffset,
+    hours,
+    hoursOffset,
+    minutes,
+    minutesOffset,
+    seconds,
+    secondsOffset,
+    milliseconds,
+    millisecondsOffset
+  } = {}) {
+    const ret = new Date(castDate(base));
+    if (year != null) {
+      ret.setFullYear(year);
+    }
+    if (yearOffset) {
+      ret.setFullYear(ret.getFullYear() + yearOffset);
+    }
+    if (month != null) {
+      ret.setMonth(month);
+    }
+    if (monthOffset) {
+      ret.setMonth(ret.getMonth() + monthOffset);
+    }
+    if (date != null) {
+      ret.setDate(date);
+    }
+    if (dateOffset) {
+      ret.setDate(ret.getDate() + dateOffset);
+    }
+    if (hours != null) {
+      ret.setHours(hours);
+    }
+    if (hoursOffset) {
+      ret.setHours(ret.getHours() + hoursOffset);
+    }
+    if (minutes != null) {
+      ret.setMinutes(minutes);
+    }
+    if (minutesOffset) {
+      ret.setMinutes(ret.getMinutes() + minutesOffset);
+    }
+    if (seconds != null) {
+      ret.setSeconds(seconds);
+    }
+    if (secondsOffset) {
+      ret.setSeconds(ret.getSeconds() + secondsOffset);
+    }
+    if (milliseconds != null) {
+      ret.setMilliseconds(milliseconds);
+    }
+    if (millisecondsOffset) {
+      ret.setMilliseconds(ret.getMilliseconds() + millisecondsOffset);
+    }
+    return ret;
+  }
 
   // src/utils/roundDecimal.ts
   function roundDecimal(v, decimalPlaces) {
@@ -5602,6 +5674,7 @@
     }
     return ret;
   }
+  var _a4;
   var _Duration = class _Duration {
     constructor({
       invalid = false,
@@ -5680,14 +5753,14 @@
         }
         return (this.negative ? -1 : 1) * (this.years * _Duration.YEAR + this.months * _Duration.MONTH + this.weeks * _Duration.WEEK + this.days * _Duration.DAY + this.hours * _Duration.HOUR + this.minutes * _Duration.MINUTE + this.seconds * _Duration.SECOND + this.milliseconds * _Duration.MILLISECOND);
       });
+      __publicField(this, "toSeconds", () => {
+        return this.toMilliseconds() / _Duration.SECOND;
+      });
       __publicField(this, "toHours", () => {
         return this.toMilliseconds() / _Duration.HOUR;
       });
-      __publicField(this, "toString", () => {
-        if (this.invalid) {
-          return "Invalid Duration";
-        }
-        return this.toISOString();
+      __publicField(this, "toMinutes", () => {
+        return this.toMilliseconds() / _Duration.MINUTE;
       });
       /**
        * Format duration to `HH:MM:SS.sss` format
@@ -5738,12 +5811,99 @@
       __publicField(this, "isZero", () => {
         return this.toMilliseconds() === 0;
       });
+      __publicField(this, "validOrUndefined", () => {
+        if (this.valid) {
+          return this;
+        }
+      });
       __publicField(this, "truncate", (unitMs) => {
         if (unitMs <= 0) {
           return this;
         }
         const ms = this.toMilliseconds();
         return _Duration.fromMilliseconds(ms - ms % unitMs);
+      });
+      __publicField(this, "ceil", (unitMs) => {
+        if (unitMs <= 0) {
+          return this;
+        }
+        const ms0 = this.toMilliseconds();
+        const ms1 = ms0 - ms0 % unitMs;
+        if (ms1 < ms0) {
+          return _Duration.fromMilliseconds(ms1 + unitMs);
+        }
+        return _Duration.fromMilliseconds(ms1);
+      });
+      __publicField(this, "floor", (unitMs) => {
+        if (unitMs <= 0) {
+          return this;
+        }
+        const ms0 = this.toMilliseconds();
+        const ms1 = ms0 - ms0 % unitMs;
+        if (ms1 > ms0) {
+          return _Duration.fromMilliseconds(ms1 - unitMs);
+        }
+        return _Duration.fromMilliseconds(ms1);
+      });
+      __publicField(this, "valueOf", () => {
+        return this.toMilliseconds();
+      });
+      __publicField(this, "toString", () => {
+        if (this.invalid) {
+          return "Invalid Duration";
+        }
+        return this.toISOString();
+      });
+      __publicField(this, _a4, (hint) => {
+        switch (hint) {
+          case "number":
+            return this.toMilliseconds();
+          case "string":
+            return this.toISOString();
+          default:
+            return this.toISOString();
+        }
+      });
+      __publicField(this, "multiply", (v) => {
+        if (v === -1) {
+          return new _Duration({
+            invalid: this.invalid,
+            negative: !this.negative,
+            years: this.years,
+            months: this.months,
+            weeks: this.weeks,
+            days: this.days,
+            hours: this.hours,
+            minutes: this.minutes,
+            seconds: this.seconds,
+            milliseconds: this.milliseconds
+          });
+        }
+        return new _Duration({
+          invalid: this.invalid,
+          negative: this.negative,
+          years: this.years * v,
+          months: this.months * v,
+          weeks: this.weeks * v,
+          days: this.days * v,
+          hours: this.hours * v,
+          minutes: this.minutes * v,
+          seconds: this.seconds * v,
+          milliseconds: this.milliseconds * v
+        });
+      });
+      __publicField(this, "createDate", (base) => {
+        const direction = this.negative ? -1 : 1;
+        return createDate({
+          base,
+          yearOffset: this.years * direction,
+          monthOffset: this.months * direction,
+          dateOffset: this.days * direction + 7 * this.weeks * direction,
+          hoursOffset: this.hours * direction,
+          minutesOffset: this.minutes * direction,
+          secondsOffset: this.seconds * direction,
+          millisecondsOffset: this.milliseconds * direction
+        });
       });
       let invalidCount = 0;
       if (invalid) {
@@ -5771,6 +5931,7 @@
       return !this.invalid;
     }
   };
+  _a4 = Symbol.toPrimitive;
   __publicField(_Duration, "MILLISECOND", 1);
   __publicField(_Duration, "SECOND", 1e3);
   __publicField(_Duration, "MINUTE", _Duration.SECOND * 60);
@@ -5900,7 +6061,7 @@
             d2.hours += f * (_Duration.DAY / _Duration.HOUR / scale);
             break;
           default:
-            d2.invalid = false;
+            d2.invalid = true;
             return new _Duration(d2);
         }
       } else {
@@ -5957,8 +6118,8 @@
       __publicField(this, "value", new GMValue("videoListSettings@4eb93ea9-8748-4647-876f-30451395e561", () => ({})));
     }
     get allowAdvertisement() {
-      var _a4;
-      return (_a4 = this.value.get().allowAdvertisement) != null ? _a4 : false;
+      var _a5;
+      return (_a5 = this.value.get().allowAdvertisement) != null ? _a5 : false;
     }
     set allowAdvertisement(v) {
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
@@ -5966,8 +6127,8 @@
       }));
     }
     get allowPromoted() {
-      var _a4;
-      return (_a4 = this.value.get().allowPromoted) != null ? _a4 : false;
+      var _a5;
+      return (_a5 = this.value.get().allowPromoted) != null ? _a5 : false;
     }
     set allowPromoted(v) {
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
@@ -5975,8 +6136,8 @@
       }));
     }
     get excludeKeywords() {
-      var _a4;
-      return (_a4 = this.value.get().excludeKeywords) != null ? _a4 : [];
+      var _a5;
+      return (_a5 = this.value.get().excludeKeywords) != null ? _a5 : [];
     }
     set excludeKeywords(v) {
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
@@ -5984,8 +6145,8 @@
       }));
     }
     get durationGte() {
-      var _a4;
-      return Duration.parse((_a4 = this.value.get().durationGte) != null ? _a4 : "");
+      var _a5;
+      return Duration.parse((_a5 = this.value.get().durationGte) != null ? _a5 : "");
     }
     set durationGte(v) {
       const d2 = Duration.cast(v);
@@ -5998,8 +6159,8 @@
       }));
     }
     get durationLt() {
-      var _a4;
-      const v = Duration.parse((_a4 = this.value.get().durationLt) != null ? _a4 : "");
+      var _a5;
+      const v = Duration.parse((_a5 = this.value.get().durationLt) != null ? _a5 : "");
       if (v.toMilliseconds() <= 10 * Duration.MINUTE) {
         return Duration.parse("");
       }
@@ -6023,8 +6184,8 @@
       __publicField(this, "value", new GMValue("searchSettings@aa1595c8-1664-40de-a80c-9de375c2466a", () => ({})));
     }
     get strictTitleMatch() {
-      var _a4;
-      return (_a4 = this.value.get().strictTitleMatch) != null ? _a4 : false;
+      var _a5;
+      return (_a5 = this.value.get().strictTitleMatch) != null ? _a5 : false;
     }
     set strictTitleMatch(v) {
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
@@ -6032,8 +6193,8 @@
       }));
     }
     get navSuggestion() {
-      var _a4;
-      return (_a4 = this.value.get().navSuggestion) != null ? _a4 : "on";
+      var _a5;
+      return (_a5 = this.value.get().navSuggestion) != null ? _a5 : "on";
     }
     set navSuggestion(v) {
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
@@ -6041,8 +6202,8 @@
       }));
     }
     get trending() {
-      var _a4;
-      return (_a4 = this.value.get().trending) != null ? _a4 : "on";
+      var _a5;
+      return (_a5 = this.value.get().trending) != null ? _a5 : "on";
     }
     set trending(v) {
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
@@ -6130,8 +6291,8 @@
   var key = "36fff111-0148-4cc1-869b-06dfdfc36861";
   var map = /* @__PURE__ */ new WeakMap();
   function obtainStyledShadowRoot(el) {
-    var _a4, _b2;
-    const root2 = (_b2 = (_a4 = map.get(el)) != null ? _a4 : el.shadowRoot) != null ? _b2 : el.attachShadow({ mode: "closed" });
+    var _a5, _b2;
+    const root2 = (_b2 = (_a5 = map.get(el)) != null ? _a5 : el.shadowRoot) != null ? _b2 : el.attachShadow({ mode: "closed" });
     map.set(el, root2);
     obtainHTMLElementByDataKey({
       tag: "style",
@@ -6159,8 +6320,8 @@
       this.value = options.value || "";
     }
     dispose() {
-      var _a4;
-      (_a4 = this.container) == null ? void 0 : _a4.remove();
+      var _a5;
+      (_a5 = this.container) == null ? void 0 : _a5.remove();
     }
     open() {
       if (this.isOpen) {
@@ -6525,8 +6686,8 @@
     `;
     }
     get excludedKeywords() {
-      var _a4;
-      return (_a4 = this.excludedKeywordsBuffer) != null ? _a4 : videoListSettings_default.excludeKeywords.join("\n");
+      var _a5;
+      return (_a5 = this.excludedKeywordsBuffer) != null ? _a5 : videoListSettings_default.excludeKeywords.join("\n");
     }
     set excludedKeywords(v) {
       this.excludedKeywordsBuffer = v;
@@ -6979,11 +7140,11 @@ margin-right: 24px;
         }
       });
       __publicField(this, "onClick", (e) => {
-        var _a4, _b2;
+        var _a5, _b2;
         e.stopPropagation();
         blockedUsers_default.toggle({
           id: this.user.id,
-          name: (_b2 = (_a4 = document.querySelector("#h-name, .nickname")) == null ? void 0 : _a4.innerText) != null ? _b2 : ""
+          name: (_b2 = (_a5 = document.querySelector("#h-name, .nickname")) == null ? void 0 : _a5.innerText) != null ? _b2 : ""
         });
       });
     }
@@ -7107,8 +7268,8 @@ margin-right: 24px;
       __publicField(this, "blockedTitles", /* @__PURE__ */ new Set());
       __publicField(this, "render", () => {
         document.querySelectorAll(".video-page-card-small").forEach((i) => {
-          var _a4, _b2, _c2, _d2, _e, _f, _g;
-          const rawURL = (_a4 = i.querySelector(".upname a")) == null ? void 0 : _a4.getAttribute("href");
+          var _a5, _b2, _c2, _d2, _e, _f, _g;
+          const rawURL = (_a5 = i.querySelector(".upname a")) == null ? void 0 : _a5.getAttribute("href");
           if (!rawURL) {
             return;
           }
@@ -7145,10 +7306,10 @@ margin-right: 24px;
           }
         });
         document.querySelectorAll(".bpx-player-ending-related-item").forEach((i) => {
-          var _a4;
-          const title = (_a4 = i.querySelector(
+          var _a5;
+          const title = (_a5 = i.querySelector(
             ".bpx-player-ending-related-item-title"
-          )) == null ? void 0 : _a4.textContent;
+          )) == null ? void 0 : _a5.textContent;
           if (!title) {
             return;
           }
@@ -7164,9 +7325,9 @@ margin-right: 24px;
     constructor() {
       __publicField(this, "render", () => {
         document.querySelectorAll(".rank-item").forEach((i) => {
-          var _a4, _b2, _c2, _d2;
+          var _a5, _b2, _c2, _d2;
           const user = parseUserURL(
-            (_b2 = (_a4 = i.querySelector(".up-name")) == null ? void 0 : _a4.parentElement) == null ? void 0 : _b2.getAttribute("href")
+            (_b2 = (_a5 = i.querySelector(".up-name")) == null ? void 0 : _a5.parentElement) == null ? void 0 : _b2.getAttribute("href")
           );
           if (!user) {
             return;
@@ -7257,8 +7418,8 @@ margin-right: 24px;
         let matchCount = 0;
         let listEl;
         document.querySelectorAll(".bili-video-card").forEach((i) => {
-          var _a4, _b2, _c2, _d2, _e, _f, _g, _h, _i, _j, _k;
-          const rawURL = (_a4 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a4.getAttribute("href");
+          var _a5, _b2, _c2, _d2, _e, _f, _g, _h, _i, _j, _k;
+          const rawURL = (_a5 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a5.getAttribute("href");
           if (!rawURL) {
             return;
           }
@@ -7326,8 +7487,8 @@ margin-right: 24px;
               id: `video-list-patch-status-${_VideoListPatch.id}`,
               tag: "div",
               onDidCreate: (el) => {
-                var _a4;
-                (_a4 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a4.insertBefore(el, listEl);
+                var _a5;
+                (_a5 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a5.insertBefore(el, listEl);
               }
             })
           )
@@ -7423,8 +7584,8 @@ margin-right: 24px;
     constructor() {
       __publicField(this, "render", () => {
         document.querySelectorAll(".floor-single-card").forEach((el) => {
-          var _a4, _b2;
-          const channel = (_b2 = (_a4 = el.querySelector(".floor-title")) == null ? void 0 : _a4.textContent) == null ? void 0 : _b2.trim();
+          var _a5, _b2;
+          const channel = (_b2 = (_a5 = el.querySelector(".floor-title")) == null ? void 0 : _a5.textContent) == null ? void 0 : _b2.trim();
           if (!channel) {
             return;
           }
@@ -7551,8 +7712,8 @@ margin-right: 24px;
       this.ctx = ctx;
       __publicField(this, "render", () => {
         document.querySelectorAll(".video-card").forEach((i) => {
-          var _a4, _b2, _c2, _d2, _e, _f, _g, _h;
-          const rawURL = (_a4 = i.querySelector("a.upname")) == null ? void 0 : _a4.getAttribute("href");
+          var _a5, _b2, _c2, _d2, _e, _f, _g, _h;
+          const rawURL = (_a5 = i.querySelector("a.upname")) == null ? void 0 : _a5.getAttribute("href");
           if (!rawURL) {
             return;
           }
@@ -7667,7 +7828,7 @@ margin-right: 24px;
         let matchCount = 0;
         let listEl;
         document.querySelectorAll("a#card").forEach((i) => {
-          var _a4, _b2;
+          var _a5, _b2;
           const rawURL = i.getAttribute("href");
           if (!rawURL) {
             return;
@@ -7681,7 +7842,7 @@ margin-right: 24px;
             matchCount += 1;
           }
           let container = i;
-          while (((_a4 = container.parentElement) == null ? void 0 : _a4.childElementCount) === 1) {
+          while (((_a5 = container.parentElement) == null ? void 0 : _a5.childElementCount) === 1) {
             container = container.parentElement;
           }
           listEl = container.parentElement || void 0;
@@ -7714,8 +7875,8 @@ margin-right: 24px;
               id: `live-room-list-patch-status-${_LiveRoomPatch.id}`,
               tag: "div",
               onDidCreate: (el) => {
-                var _a4;
-                (_a4 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a4.insertBefore(el, listEl);
+                var _a5;
+                (_a5 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a5.insertBefore(el, listEl);
               }
             })
           )
@@ -7771,7 +7932,7 @@ margin-right: 24px;
   // src/bilibili.com/block.user.ts
   function createApp() {
     return __async(this, null, function* () {
-      var _a4;
+      var _a5;
       const rawURL = window.location.href;
       const settings = new SettingsDrawer();
       const components = [settings];
@@ -7780,8 +7941,8 @@ margin-right: 24px;
       let headerButton;
       yield waitUntil({
         ready: () => {
-          var _a5, _b2, _c2, _d2;
-          if (((_b2 = (_a5 = document.querySelector(".right-entry")) == null ? void 0 : _a5.childElementCount) != null ? _b2 : 0) >= 2) {
+          var _a6, _b2, _c2, _d2;
+          if (((_b2 = (_a6 = document.querySelector(".right-entry")) == null ? void 0 : _a6.childElementCount) != null ? _b2 : 0) >= 2) {
             headerButton = new FullHeaderButton(settings);
             return true;
           }
@@ -7803,7 +7964,7 @@ margin-right: 24px;
         query: ""
       };
       if (url.host === "search.bilibili.com") {
-        data.query = (_a4 = url.searchParams.get("keyword")) != null ? _a4 : "";
+        data.query = (_a5 = url.searchParams.get("keyword")) != null ? _a5 : "";
       }
       const ctx = new Context(data);
       if (user) {
@@ -7830,11 +7991,11 @@ margin-right: 24px;
     });
   }
   function routeKey() {
-    var _a4;
+    var _a5;
     const { host, pathname, search } = window.location;
     if (host === "search.bilibili.com") {
       const q = new URLSearchParams(search);
-      return `search:${(_a4 = q.get("keyword")) != null ? _a4 : ""}`;
+      return `search:${(_a5 = q.get("keyword")) != null ? _a5 : ""}`;
     }
     return pathname;
   }
