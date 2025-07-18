@@ -1,3 +1,5 @@
+import 'core-js/actual/symbol';
+
 import Polling from './Polling';
 
 export default class GMValue<T> {
@@ -15,7 +17,11 @@ export default class GMValue<T> {
   ) {
     this.polling = new Polling({
       update: () => this.refresh(),
-      scheduleNext: (update) => setTimeout(update, 500),
+      scheduleNext: (next) => {
+        const stack = new DisposableStack();
+        stack.adopt(setTimeout(next, 500), clearTimeout);
+        return stack;
+      },
     });
   }
 
@@ -72,7 +78,7 @@ export default class GMValue<T> {
     this.flush();
   };
 
-  public readonly dispose = () => {
-    this.polling.dispose();
+  public readonly [Symbol.dispose] = () => {
+    this.polling.stop();
   };
 }

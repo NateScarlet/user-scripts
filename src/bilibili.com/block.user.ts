@@ -16,7 +16,6 @@
 
 import onDocumentReadyOnce from '@/utils/onDocumentReadyOnce';
 import Polling from '@/utils/Polling';
-import Disposal from '@/utils/Disposal';
 import waitUntil from '@/utils/waitUntil';
 import Component from './components/Component';
 import SettingsDrawer from './components/SettingsDrawer';
@@ -130,19 +129,23 @@ async function main() {
   const initialRouteKey = routeKey();
   const app = await createApp();
 
-  const d = new Disposal();
-  d.push(
+  const stack = new DisposableStack();
+  stack.use(
     new Polling({
       update: () => {
         if (routeKey() !== initialRouteKey) {
           // route changed
-          d.dispose();
+          stack.dispose();
           main();
           return;
         }
         app.render();
       },
-      scheduleNext: (update) => setTimeout(update, 100),
+      scheduleNext: (next) => {
+        const stack = new DisposableStack();
+        stack.adopt(setTimeout(next, 100), clearTimeout);
+        return stack;
+      },
     })
   );
 }
