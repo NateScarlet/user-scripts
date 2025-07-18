@@ -1,4 +1,5 @@
-import loadImage from './loadImage';
+import 'core-js/actual/disposable-stack';
+import 'core-js/actual/iterator';
 import parseHeader from './parseHeader';
 
 export default async function loadImageCORS(
@@ -11,19 +12,32 @@ export default async function loadImageCORS(
       // https://github.com/greasemonkey/greasemonkey/issues/1834#issuecomment-37084558
       overrideMimeType: 'text/plain; charset=x-user-defined',
       onload: async ({ responseText, responseHeaders }) => {
-        const headers = parseHeader(responseHeaders);
-        const data = new Blob(
-          [Uint8Array.from(responseText.split('').map((i) => i.charCodeAt(0)))],
-          { type: headers.get('content-type')?.[0] ?? 'image/jpeg' }
-        );
-        const src = URL.createObjectURL(data);
-        const image = await loadImage(src);
-        image.alt = url;
-        resolve(image);
-        URL.revokeObjectURL(src);
+        using stack = new DisposableStack();
+        try {
+          const headers = parseHeader(responseHeaders);
+          const data = new Blob(
+            [
+              Uint8Array.from(
+                Iterator.from(responseText).map((i) => i.charCodeAt(0))
+              ),
+            ],
+            { type: headers.get('content-type')?.[0] ?? 'image/jpeg' }
+          );
+          const src = stack.adopt(
+            URL.createObjectURL(data),
+            URL.revokeObjectURL
+          );
+          const img = new Image();
+          img.src = src;
+          img.alt = url;
+          await img.decode(); // 解码完成后就不再需要 blob URL 了
+          resolve(img);
+        } catch (err) {
+          reject(err);
+        }
       },
-      onerror: ({ context }) => {
-        reject({ context });
+      onerror: (response) => {
+        reject(response);
       },
     });
   });
