@@ -8,6 +8,7 @@ import videoListSettings from '../models/videoListSettings';
 import Context from '../Context';
 import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 import parseVideoURL from '../utils/parseVideoURL';
+import getCurrentTheme from '../utils/getCurrentTheme';
 
 // spell-checker: word bili
 
@@ -101,13 +102,16 @@ export default class VideoListPatch {
       matchCount === 0
         ? nothing
         : html`
-            <div class="w-full text-gray-500 text-center m-1">
+            <div
+              data-theme="${getCurrentTheme()}"
+              class="w-full text-gray-500 dark:text-gray-400 text-center m-1"
+            >
               ${this.disabled
                 ? html`${matchCount} 条视频符合屏蔽规则`
                 : html`已屏蔽 ${matchCount} 条视频`}
               <button
                 type="button"
-                class="border rounded py-1 px-2 text-black hover:bg-gray-200 transition ease-in-out duration-200"
+                class="border rounded py-1 px-2 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition ease-in-out duration-200"
                 @click=${() => {
                   this.disabled = !this.disabled;
                 }}

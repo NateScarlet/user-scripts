@@ -4,6 +4,7 @@ const { log } = require('console');
 module.exports = {
   content: ['components/*.ts'],
   plugins: ['tailwindcss/nesting'],
+  darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     fontSize: {
       xs: ['12px', '14px'],

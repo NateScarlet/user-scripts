@@ -18,6 +18,7 @@ import searchSettings from '../models/searchSettings';
 import blockedLiveRooms from '../models/blockedLiveRooms';
 import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 import showPromptDialog from '../utils/showPromptDialog';
+import getCurrentTheme from '../utils/getCurrentTheme';
 
 // spell-checker: word datetime
 
@@ -54,10 +55,11 @@ export default class SettingsDrawer {
       return nothing;
     }
     return html`
-    <div 
+    <div
+      data-theme="${getCurrentTheme()}"
       class="
         fixed inset-0 
-        bg-white bg-opacity-25 backdrop-blur
+        bg-white/25 dark:bg-black/25  backdrop-blur
         cursor-zoom-out transition duration-200 ease-in-out
         ${this.isOpen ? 'opacity-100' : 'opacity-0'}
       "
@@ -65,9 +67,10 @@ export default class SettingsDrawer {
     >
     </div>
     <div
+      data-theme="${getCurrentTheme()}"
       class="
         fixed inset-y-0 right-0 w-screen max-w-4xl
-        bg-white overflow-auto p-2 space-y-1
+        bg-white dark:bg-black overflow-auto p-2 space-y-1
         transition-transform
         ${this.isOpen ? '' : 'translate-x-full'}
       "
@@ -104,7 +107,7 @@ export default class SettingsDrawer {
   private homePageSettings() {
     return html`
       <section>
-        <h1 class="text-sm text-gray-500">主页</h1>
+        <h1 class="text-sm text-gray-500 dark:text-gray-200">主页</h1>
         <div class="px-1">
           <label>
             <input
@@ -125,7 +128,7 @@ export default class SettingsDrawer {
             <span>提示</span>
           </label>
           <section>
-            <h2 class="text-gray-500 text-sm">楼层推广卡片</h2>
+            <h2 class="text-gray-500 dark:text-gray-200 text-sm">楼层推广卡片</h2>
             <div class="px-1">
               <div>
                 <label>
@@ -145,13 +148,15 @@ export default class SettingsDrawer {
                   return nothing;
                 }
                 if (homePageSettings.floorCard.excludeByChannel.length === 0) {
-                  return html`<div class="text-gray-500 text-sm">
+                  return html`<div
+                    class="text-gray-500 dark:text-gray-200 text-sm"
+                  >
                     可通过指针悬停在卡片上时左上角显示的按钮来屏蔽单个频道的推广
                   </div>`;
                 }
                 return html`
                 <div>
-                  <h2 class="flex-none text-sm text-gray-500">
+                  <h2 class="flex-none text-sm text-gray-500 dark:text-gray-200">
                     已屏蔽频道 <span class="text-sm">(${
                       homePageSettings.floorCard.excludeByChannel.length
                     })</span>
@@ -160,7 +165,7 @@ export default class SettingsDrawer {
                     ${homePageSettings.floorCard.excludeByChannel.map(
                       (channel) => {
                         return html`
-                      <li class="bg-gray-300 rounded px-1 flex items-center">
+                      <li class="bg-gray-300 dark:bg-gray-700 rounded px-1 flex items-center">
                         <span>${channel}</span>
                         <button
                           type="button"
@@ -211,7 +216,7 @@ export default class SettingsDrawer {
   private videoListSettings() {
     return html`
       <section>
-        <h1 class="text-sm text-gray-500">视频列表</h1>
+        <h1 class="text-sm text-gray-500 dark:text-gray-200">视频列表</h1>
         <div class="px-1">
           <label>
             <input
@@ -238,7 +243,7 @@ export default class SettingsDrawer {
           <label class="flex items-center">
             <span class="flex-none w-32">最短（含）</span>
             <input
-              class="flex-auto border my-1 p-1"
+              class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
               type="text"
               placeholder="HH:MM:SS"
               value="${videoListSettings.durationGte.toTimeCode()}"
@@ -258,7 +263,7 @@ export default class SettingsDrawer {
           <label class="flex items-center">
             <span class="flex-none w-32">最长（不含）</span>
             <input
-              class="flex-auto border my-1 p-1"
+              class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
               type="text"
               placeholder="HH:MM:SS"
               value="${videoListSettings.durationLt.toTimeCode()}"
@@ -279,7 +284,7 @@ export default class SettingsDrawer {
             <div class="flex-none w-32">排除关键词</div>
             <div class="flex-auto">
               <textarea
-                class="w-full border my-1 p-1"
+                class="w-full border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
                 placeholder=""
                 .value="${this.excludedKeywords}"
                 @input="${this.onExcludeKeywordInput}"
@@ -290,7 +295,7 @@ export default class SettingsDrawer {
                   this.excludedKeywordsBuffer = undefined;
                 }}
               ></textarea>
-              <div class="text-gray-500 text-sm">
+              <div class="text-gray-500 dark:text-gray-200 text-sm">
                 不显示标题含关键词的视频。每行一个，不区分大小写。
               </div>
             </div>
@@ -309,7 +314,7 @@ export default class SettingsDrawer {
   private searchSettings() {
     return html`
       <section>
-        <h1 class="text-sm text-gray-500">搜索</h1>
+        <h1 class="text-sm text-gray-500 dark:text-gray-200">搜索</h1>
         <div class="px-1">
           <label>
             <input
@@ -322,7 +327,7 @@ export default class SettingsDrawer {
             />
             <span>严格标题匹配</span>
           </label>
-          <div class="text-gray-500 text-sm">
+          <div class="text-gray-500 dark:text-gray-200 text-sm">
             标题必须包含所有关键词，屏蔽联想词和标签匹配
           </div>
         </div>
@@ -347,13 +352,13 @@ export default class SettingsDrawer {
 
     return html`
       <div class="flex flex-col overflow-hidden max-h-[50vh]">
-        <h1 class="flex-none text-sm text-gray-500">
+        <h1 class="flex-none text-sm text-gray-500 dark:text-gray-200">
           已屏蔽用户 <span class="text-sm">(${userIDs.length})</span>
         </h1>
         <div class="flex-1 overflow-auto relative">
           <table class="table-fixed border-separate border-spacing-2 w-full">
             <thead class="sticky top-0">
-              <tr class="bg-gray-200 text-center">
+              <tr class="bg-gray-200 dark:bg-gray-800 text-center">
                 <td class="w-48">屏蔽时间</td>
                 <td>名称</td>
                 <td class="w-64"></td>
@@ -372,7 +377,7 @@ export default class SettingsDrawer {
                 })
                 .map(({ id, name, note, blockedAt, rawBlockedAt }) => {
                   return html`
-                    <tr class="group even:bg-gray-100">
+                    <tr class="group even:bg-gray-100 dark:even:bg-gray-900">
                       <td class="text-right w-32">
                         ${
                           rawBlockedAt
@@ -452,13 +457,13 @@ export default class SettingsDrawer {
 
     return html`
       <div class="flex flex-col overflow-hidden max-h-[50vh]">
-        <h1 class="flex-none text-sm text-gray-500">
+        <h1 class="flex-none text-sm text-gray-500 dark:text-gray-200">
           已屏蔽直播间 <span class="text-sm">(${liveRoomIDs.length})</span>
         </h1>
         <div class="flex-1 overflow-auto relative">
           <table class="table-fixed border-separate border-spacing-2 w-full">
             <thead class="sticky top-0">
-              <tr class="bg-gray-200 text-center">
+              <tr class="bg-gray-200 dark:bg-gray-800 text-center">
                 <td>屏蔽时间</td>
                 <td>所有者</td>
                 <td></td>
@@ -476,7 +481,7 @@ export default class SettingsDrawer {
                 })
                 .map(({ id, owner, blockedAt }) => {
                   return html`
-                    <tr class="group even:bg-gray-100">
+                    <tr class="group even:bg-gray-100 dark:even:bg-gray-900">
                       <td class="text-right w-32">
                        <time datetime="${blockedAt.toISOString()}">
                           ${blockedAt.toLocaleString()}
