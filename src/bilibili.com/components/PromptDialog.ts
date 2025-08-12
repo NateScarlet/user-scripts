@@ -4,6 +4,7 @@ import type { PromptDialogOptions } from '../utils/showPromptDialog';
 import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 import randomUUID from '@/utils/randomUUID';
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
+import getCurrentTheme from '../utils/getCurrentTheme';
 
 export default class PromptDialog {
   private isOpen = false;
@@ -92,9 +93,10 @@ export default class PromptDialog {
 
     return html`
       <div
+        data-theme="${getCurrentTheme()}"
         class="
           fixed inset-0 
-          bg-black bg-opacity-30 backdrop-blur-sm
+          bg-black/25 dark:bg-white/25 backdrop-blur-sm
           flex items-center justify-center p-4
           transition-opacity duration-300 ease-in-out
           ${this.isOpen ? 'opacity-100' : 'opacity-0'}
@@ -113,8 +115,9 @@ export default class PromptDialog {
         }}
       >
       <div 
+        data-theme="${getCurrentTheme()}"
         class="
-          bg-white rounded-lg shadow-xl w-full max-w-lg
+          bg-white text-black dark:bg-black dark:text-white rounded-lg shadow-xl w-full max-w-lg
           transform transition-transform duration-300 ease-in-out
           ${this.isOpen ? '' : 'translate-y-10'}
         "
@@ -136,7 +139,7 @@ export default class PromptDialog {
             <h3 class="text-lg font-medium">${title}</h3>
             <button 
               type="button"
-              class="p-1 rounded-full hover:bg-gray-100 transition-colors"
+              class="p-1 rounded-full hover:bg-gray-100 dark:hover:gray-900 transition-colors"
               @click=${() => this.close(null)}
             >
               <svg 
@@ -163,7 +166,7 @@ export default class PromptDialog {
             <input
               id="dialog-input"
               class="
-                w-full p-2 border border-gray-300 rounded-md
+                w-full p-2 border border-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-500 rounded-md
                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                 focus:outline-none shadow-sm
               "
@@ -181,7 +184,7 @@ export default class PromptDialog {
               type="button"
               class="
                 px-4 py-2 rounded-md text-sm font-medium
-                bg-gray-100 hover:bg-gray-200 transition-colors
+                bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors
               "
               @click=${() => this.close(null)}
             >
@@ -190,7 +193,7 @@ export default class PromptDialog {
             <button
               type="submit"
               class="
-                px-4 py-2 rounded-md text-sm font-medium text-white
+                px-4 py-2 rounded-md text-sm font-medium text-white 
                 bg-blue-600 hover:bg-blue-700 transition-colors
               "
             >

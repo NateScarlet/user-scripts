@@ -70,7 +70,7 @@ export default class SettingsDrawer {
       data-theme="${getCurrentTheme()}"
       class="
         fixed inset-y-0 right-0 w-screen max-w-4xl
-        bg-white dark:bg-black overflow-auto p-2 space-y-1
+        bg-white text-black dark:bg-black dark:text-white overflow-auto p-2 space-y-1
         transition-transform
         ${this.isOpen ? '' : 'translate-x-full'}
       "
