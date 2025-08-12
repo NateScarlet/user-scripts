@@ -1,4 +1,4 @@
-import { isPlainObject } from 'lodash-es';
+import { isPlainObject } from 'es-toolkit';
 
 export default function castPlainObject(
   value: unknown

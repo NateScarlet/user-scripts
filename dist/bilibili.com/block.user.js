@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2025.08.12+6aa001d8
+// @version   2025.08.12+f13f9738
 // ==/UserScript==
 
 "use strict";
@@ -483,15 +483,15 @@
       "use strict";
       var call = require_function_call();
       var isCallable = require_is_callable();
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var $TypeError = TypeError;
       module.exports = function(input, pref) {
         var fn, val;
-        if (pref === "string" && isCallable(fn = input.toString) && !isObject2(val = call(fn, input)))
+        if (pref === "string" && isCallable(fn = input.toString) && !isObject(val = call(fn, input)))
           return val;
-        if (isCallable(fn = input.valueOf) && !isObject2(val = call(fn, input)))
+        if (isCallable(fn = input.valueOf) && !isObject(val = call(fn, input)))
           return val;
-        if (pref !== "string" && isCallable(fn = input.toString) && !isObject2(val = call(fn, input)))
+        if (pref !== "string" && isCallable(fn = input.toString) && !isObject(val = call(fn, input)))
           return val;
         throw new $TypeError("Can't convert object to primitive value");
       };
@@ -571,9 +571,9 @@
       "use strict";
       var uncurryThis = require_function_uncurry_this();
       var toObject = require_to_object();
-      var hasOwnProperty3 = uncurryThis({}.hasOwnProperty);
+      var hasOwnProperty = uncurryThis({}.hasOwnProperty);
       module.exports = Object.hasOwn || function hasOwn(it, key2) {
-        return hasOwnProperty3(toObject(it), key2);
+        return hasOwnProperty(toObject(it), key2);
       };
     }
   });
@@ -602,12 +602,12 @@
       var uid = require_uid();
       var NATIVE_SYMBOL = require_symbol_constructor_detection();
       var USE_SYMBOL_AS_UID = require_use_symbol_as_uid();
-      var Symbol3 = globalThis2.Symbol;
+      var Symbol2 = globalThis2.Symbol;
       var WellKnownSymbolsStore = shared("wks");
-      var createWellKnownSymbol = USE_SYMBOL_AS_UID ? Symbol3["for"] || Symbol3 : Symbol3 && Symbol3.withoutSetter || uid;
+      var createWellKnownSymbol = USE_SYMBOL_AS_UID ? Symbol2["for"] || Symbol2 : Symbol2 && Symbol2.withoutSetter || uid;
       module.exports = function(name) {
         if (!hasOwn(WellKnownSymbolsStore, name)) {
-          WellKnownSymbolsStore[name] = NATIVE_SYMBOL && hasOwn(Symbol3, name) ? Symbol3[name] : createWellKnownSymbol("Symbol." + name);
+          WellKnownSymbolsStore[name] = NATIVE_SYMBOL && hasOwn(Symbol2, name) ? Symbol2[name] : createWellKnownSymbol("Symbol." + name);
         }
         return WellKnownSymbolsStore[name];
       };
@@ -619,15 +619,15 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/to-primitive.js"(exports, module) {
       "use strict";
       var call = require_function_call();
-      var isObject2 = require_is_object();
-      var isSymbol2 = require_is_symbol();
+      var isObject = require_is_object();
+      var isSymbol = require_is_symbol();
       var getMethod = require_get_method();
       var ordinaryToPrimitive = require_ordinary_to_primitive();
       var wellKnownSymbol = require_well_known_symbol();
       var $TypeError = TypeError;
       var TO_PRIMITIVE = wellKnownSymbol("toPrimitive");
       module.exports = function(input, pref) {
-        if (!isObject2(input) || isSymbol2(input))
+        if (!isObject(input) || isSymbol(input))
           return input;
         var exoticToPrim = getMethod(input, TO_PRIMITIVE);
         var result;
@@ -635,7 +635,7 @@
           if (pref === void 0)
             pref = "default";
           result = call(exoticToPrim, input, pref);
-          if (!isObject2(result) || isSymbol2(result))
+          if (!isObject(result) || isSymbol(result))
             return result;
           throw new $TypeError("Can't convert object to primitive value");
         }
@@ -651,10 +651,10 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/to-property-key.js"(exports, module) {
       "use strict";
       var toPrimitive = require_to_primitive();
-      var isSymbol2 = require_is_symbol();
+      var isSymbol = require_is_symbol();
       module.exports = function(argument) {
         var key2 = toPrimitive(argument, "string");
-        return isSymbol2(key2) ? key2 : key2 + "";
+        return isSymbol(key2) ? key2 : key2 + "";
       };
     }
   });
@@ -664,9 +664,9 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/document-create-element.js"(exports, module) {
       "use strict";
       var globalThis2 = require_global_this();
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var document2 = globalThis2.document;
-      var EXISTS = isObject2(document2) && isObject2(document2.createElement);
+      var EXISTS = isObject(document2) && isObject(document2.createElement);
       module.exports = function(it) {
         return EXISTS ? document2.createElement(it) : {};
       };
@@ -737,11 +737,11 @@
   var require_an_object = __commonJS({
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/an-object.js"(exports, module) {
       "use strict";
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var $String = String;
       var $TypeError = TypeError;
       module.exports = function(argument) {
-        if (isObject2(argument))
+        if (isObject(argument))
           return argument;
         throw new $TypeError($String(argument) + " is not an object");
       };
@@ -888,7 +888,7 @@
       "use strict";
       var NATIVE_WEAK_MAP = require_weak_map_basic_detection();
       var globalThis2 = require_global_this();
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var createNonEnumerableProperty = require_create_non_enumerable_property();
       var hasOwn = require_has_own_property();
       var shared = require_shared_store();
@@ -906,7 +906,7 @@
       var getterFor = function(TYPE) {
         return function(it) {
           var state;
-          if (!isObject2(it) || (state = get(it)).type !== TYPE) {
+          if (!isObject(it) || (state = get(it)).type !== TYPE) {
             throw new TypeError2("Incompatible receiver, " + TYPE + " required");
           }
           return state;
@@ -1369,9 +1369,9 @@
   var require_is_possible_prototype = __commonJS({
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/is-possible-prototype.js"(exports, module) {
       "use strict";
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       module.exports = function(argument) {
-        return isObject2(argument) || argument === null;
+        return isObject(argument) || argument === null;
       };
     }
   });
@@ -1396,7 +1396,7 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/object-set-prototype-of.js"(exports, module) {
       "use strict";
       var uncurryThisAccessor = require_function_uncurry_this_accessor();
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var requireObjectCoercible = require_require_object_coercible();
       var aPossiblePrototype = require_a_possible_prototype();
       module.exports = Object.setPrototypeOf || ("__proto__" in {} ? function() {
@@ -1412,7 +1412,7 @@
         return function setPrototypeOf(O, proto) {
           requireObjectCoercible(O);
           aPossiblePrototype(proto);
-          if (!isObject2(O))
+          if (!isObject(O))
             return O;
           if (CORRECT_SETTER)
             setter(O, proto);
@@ -1448,14 +1448,14 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/inherit-if-required.js"(exports, module) {
       "use strict";
       var isCallable = require_is_callable();
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var setPrototypeOf = require_object_set_prototype_of();
       module.exports = function($this, dummy, Wrapper) {
         var NewTarget, NewTargetPrototype;
         if (
           // it can work only with native `setPrototypeOf`
           setPrototypeOf && // we haven't completely correct pre-ES6 way for getting `new.target`, so use this
-          isCallable(NewTarget = dummy.constructor) && NewTarget !== Wrapper && isObject2(NewTargetPrototype = NewTarget.prototype) && NewTargetPrototype !== Wrapper.prototype
+          isCallable(NewTarget = dummy.constructor) && NewTarget !== Wrapper && isObject(NewTargetPrototype = NewTarget.prototype) && NewTargetPrototype !== Wrapper.prototype
         )
           setPrototypeOf($this, NewTargetPrototype);
         return $this;
@@ -1530,10 +1530,10 @@
   var require_install_error_cause = __commonJS({
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/install-error-cause.js"(exports, module) {
       "use strict";
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var createNonEnumerableProperty = require_create_non_enumerable_property();
       module.exports = function(O, options) {
-        if (isObject2(options) && "cause" in options) {
+        if (isObject(options) && "cause" in options) {
           createNonEnumerableProperty(O, "cause", options.cause);
         }
       };
@@ -2267,7 +2267,7 @@
       "use strict";
       var fails = require_fails();
       var isCallable = require_is_callable();
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var create = require_object_create();
       var getPrototypeOf = require_object_get_prototype_of();
       var defineBuiltIn = require_define_built_in();
@@ -2288,7 +2288,7 @@
             IteratorPrototype = PrototypeOfArrayIteratorPrototype;
         }
       }
-      var NEW_ITERATOR_PROTOTYPE = !isObject2(IteratorPrototype) || fails(function() {
+      var NEW_ITERATOR_PROTOTYPE = !isObject(IteratorPrototype) || fails(function() {
         var test = {};
         return IteratorPrototype[ITERATOR].call(test) !== test;
       });
@@ -2496,7 +2496,7 @@
       "use strict";
       var isArray2 = require_is_array();
       var isConstructor = require_is_constructor();
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var wellKnownSymbol = require_well_known_symbol();
       var SPECIES = wellKnownSymbol("species");
       var $Array = Array;
@@ -2506,7 +2506,7 @@
           C = originalArray.constructor;
           if (isConstructor(C) && (C === $Array || isArray2(C.prototype)))
             C = void 0;
-          else if (isObject2(C)) {
+          else if (isObject(C)) {
             C = C[SPECIES];
             if (C === null)
               C = void 0;
@@ -2556,7 +2556,7 @@
       var $ = require_export();
       var fails = require_fails();
       var isArray2 = require_is_array();
-      var isObject2 = require_is_object();
+      var isObject = require_is_object();
       var toObject = require_to_object();
       var lengthOfArrayLike = require_length_of_array_like();
       var doesNotExceedSafeInteger = require_does_not_exceed_safe_integer();
@@ -2572,7 +2572,7 @@
         return array.concat()[0] !== array;
       });
       var isConcatSpreadable = function(O) {
-        if (!isObject2(O))
+        if (!isObject(O))
           return false;
         var spreadable = O[IS_CONCAT_SPREADABLE];
         return spreadable !== void 0 ? !!spreadable : isArray2(O);
@@ -2654,9 +2654,9 @@
       var wrappedWellKnownSymbolModule = require_well_known_symbol_wrapped();
       var defineProperty = require_object_define_property().f;
       module.exports = function(NAME) {
-        var Symbol3 = path.Symbol || (path.Symbol = {});
-        if (!hasOwn(Symbol3, NAME))
-          defineProperty(Symbol3, NAME, {
+        var Symbol2 = path.Symbol || (path.Symbol = {});
+        if (!hasOwn(Symbol2, NAME))
+          defineProperty(Symbol2, NAME, {
             value: wrappedWellKnownSymbolModule.f(NAME)
           });
       };
@@ -2672,8 +2672,8 @@
       var wellKnownSymbol = require_well_known_symbol();
       var defineBuiltIn = require_define_built_in();
       module.exports = function() {
-        var Symbol3 = getBuiltIn("Symbol");
-        var SymbolPrototype = Symbol3 && Symbol3.prototype;
+        var Symbol2 = getBuiltIn("Symbol");
+        var SymbolPrototype = Symbol2 && Symbol2.prototype;
         var valueOf = SymbolPrototype && SymbolPrototype.valueOf;
         var TO_PRIMITIVE = wellKnownSymbol("toPrimitive");
         if (SymbolPrototype && !SymbolPrototype[TO_PRIMITIVE]) {
@@ -2950,7 +2950,7 @@
         return result;
       };
       if (!NATIVE_SYMBOL) {
-        $Symbol = function Symbol3() {
+        $Symbol = function Symbol2() {
           if (isPrototypeOf(SymbolPrototype, this))
             throw new TypeError2("Symbol is not a constructor");
           var description = !arguments.length || arguments[0] === void 0 ? void 0 : $toString(arguments[0]);
@@ -3082,14 +3082,14 @@
       "use strict";
       var $ = require_export();
       var hasOwn = require_has_own_property();
-      var isSymbol2 = require_is_symbol();
+      var isSymbol = require_is_symbol();
       var tryToString = require_try_to_string();
       var shared = require_shared();
       var NATIVE_SYMBOL_REGISTRY = require_symbol_registry_detection();
       var SymbolToStringRegistry = shared("symbol-to-string-registry");
       $({ target: "Symbol", stat: true, forced: !NATIVE_SYMBOL_REGISTRY }, {
         keyFor: function keyFor(sym) {
-          if (!isSymbol2(sym))
+          if (!isSymbol(sym))
             throw new TypeError(tryToString(sym) + " is not a symbol");
           if (hasOwn(SymbolToStringRegistry, sym))
             return SymbolToStringRegistry[sym];
@@ -3123,10 +3123,10 @@
             push(keys, toString(element));
         }
         var keysLength = keys.length;
-        var root2 = true;
+        var root = true;
         return function(key2, value) {
-          if (root2) {
-            root2 = false;
+          if (root) {
+            root = false;
             return value;
           }
           if (isArray2(this))
@@ -3150,7 +3150,7 @@
       var uncurryThis = require_function_uncurry_this();
       var fails = require_fails();
       var isCallable = require_is_callable();
-      var isSymbol2 = require_is_symbol();
+      var isSymbol = require_is_symbol();
       var arraySlice = require_array_slice();
       var getReplacerFunction = require_get_json_replacer_function();
       var NATIVE_SYMBOL = require_symbol_constructor_detection();
@@ -3174,12 +3174,12 @@
       var stringifyWithSymbolsFix = function(it, replacer) {
         var args = arraySlice(arguments);
         var $replacer = getReplacerFunction(replacer);
-        if (!isCallable($replacer) && (it === void 0 || isSymbol2(it)))
+        if (!isCallable($replacer) && (it === void 0 || isSymbol(it)))
           return;
         args[1] = function(key2, value) {
           if (isCallable($replacer))
             value = call($replacer, this, $String(key2), value);
-          if (!isSymbol2(value))
+          if (!isSymbol(value))
             return value;
         };
         return apply($stringify, null, args);
@@ -3246,12 +3246,12 @@
       var defineWellKnownSymbol = require_well_known_symbol_define();
       var defineProperty = require_object_define_property().f;
       var getOwnPropertyDescriptor = require_object_get_own_property_descriptor().f;
-      var Symbol3 = globalThis2.Symbol;
+      var Symbol2 = globalThis2.Symbol;
       defineWellKnownSymbol("asyncDispose");
-      if (Symbol3) {
-        descriptor = getOwnPropertyDescriptor(Symbol3, "asyncDispose");
+      if (Symbol2) {
+        descriptor = getOwnPropertyDescriptor(Symbol2, "asyncDispose");
         if (descriptor.enumerable && descriptor.configurable && descriptor.writable) {
-          defineProperty(Symbol3, "asyncDispose", { value: descriptor.value, enumerable: false, configurable: false, writable: false });
+          defineProperty(Symbol2, "asyncDispose", { value: descriptor.value, enumerable: false, configurable: false, writable: false });
         }
       }
       var descriptor;
@@ -3286,7 +3286,7 @@
       if (DESCRIPTORS && isCallable(NativeSymbol) && (!("description" in SymbolPrototype) || // Safari 12 bug
       NativeSymbol().description !== void 0)) {
         EmptyStringDescriptionStore = {};
-        SymbolWrapper = function Symbol3() {
+        SymbolWrapper = function Symbol2() {
           var description = arguments.length < 1 || arguments[0] === void 0 ? void 0 : toString(arguments[0]);
           var result = isPrototypeOf(SymbolPrototype, this) ? new NativeSymbol(description) : description === void 0 ? NativeSymbol() : NativeSymbol(description);
           if (description === "")
@@ -3336,12 +3336,12 @@
       var defineWellKnownSymbol = require_well_known_symbol_define();
       var defineProperty = require_object_define_property().f;
       var getOwnPropertyDescriptor = require_object_get_own_property_descriptor().f;
-      var Symbol3 = globalThis2.Symbol;
+      var Symbol2 = globalThis2.Symbol;
       defineWellKnownSymbol("dispose");
-      if (Symbol3) {
-        descriptor = getOwnPropertyDescriptor(Symbol3, "dispose");
+      if (Symbol2) {
+        descriptor = getOwnPropertyDescriptor(Symbol2, "dispose");
         if (descriptor.enumerable && descriptor.configurable && descriptor.writable) {
-          defineProperty(Symbol3, "dispose", { value: descriptor.value, enumerable: false, configurable: false, writable: false });
+          defineProperty(Symbol2, "dispose", { value: descriptor.value, enumerable: false, configurable: false, writable: false });
         }
       }
       var descriptor;
@@ -5056,250 +5056,80 @@
     return 0;
   }
 
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_freeGlobal.js
-  var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
-  var freeGlobal_default = freeGlobal;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_root.js
-  var freeSelf = typeof self == "object" && self && self.Object === Object && self;
-  var root = freeGlobal_default || freeSelf || Function("return this")();
-  var root_default = root;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_Symbol.js
-  var Symbol2 = root_default.Symbol;
-  var Symbol_default = Symbol2;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_getRawTag.js
-  var objectProto = Object.prototype;
-  var hasOwnProperty = objectProto.hasOwnProperty;
-  var nativeObjectToString = objectProto.toString;
-  var symToStringTag = Symbol_default ? Symbol_default.toStringTag : void 0;
-  function getRawTag(value) {
-    var isOwn = hasOwnProperty.call(value, symToStringTag), tag2 = value[symToStringTag];
-    try {
-      value[symToStringTag] = void 0;
-      var unmasked = true;
-    } catch (e) {
-    }
-    var result = nativeObjectToString.call(value);
-    if (unmasked) {
-      if (isOwn) {
-        value[symToStringTag] = tag2;
-      } else {
-        delete value[symToStringTag];
+  // node_modules/.pnpm/es-toolkit@1.39.9/node_modules/es-toolkit/dist/function/debounce.mjs
+  function debounce(func, debounceMs, { signal, edges } = {}) {
+    let pendingThis = void 0;
+    let pendingArgs = null;
+    const leading = edges != null && edges.includes("leading");
+    const trailing = edges == null || edges.includes("trailing");
+    const invoke = () => {
+      if (pendingArgs !== null) {
+        func.apply(pendingThis, pendingArgs);
+        pendingThis = void 0;
+        pendingArgs = null;
       }
-    }
-    return result;
-  }
-  var getRawTag_default = getRawTag;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_objectToString.js
-  var objectProto2 = Object.prototype;
-  var nativeObjectToString2 = objectProto2.toString;
-  function objectToString(value) {
-    return nativeObjectToString2.call(value);
-  }
-  var objectToString_default = objectToString;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_baseGetTag.js
-  var nullTag = "[object Null]";
-  var undefinedTag = "[object Undefined]";
-  var symToStringTag2 = Symbol_default ? Symbol_default.toStringTag : void 0;
-  function baseGetTag(value) {
-    if (value == null) {
-      return value === void 0 ? undefinedTag : nullTag;
-    }
-    return symToStringTag2 && symToStringTag2 in Object(value) ? getRawTag_default(value) : objectToString_default(value);
-  }
-  var baseGetTag_default = baseGetTag;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/isObjectLike.js
-  function isObjectLike(value) {
-    return value != null && typeof value == "object";
-  }
-  var isObjectLike_default = isObjectLike;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/isSymbol.js
-  var symbolTag = "[object Symbol]";
-  function isSymbol(value) {
-    return typeof value == "symbol" || isObjectLike_default(value) && baseGetTag_default(value) == symbolTag;
-  }
-  var isSymbol_default = isSymbol;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_trimmedEndIndex.js
-  var reWhitespace = /\s/;
-  function trimmedEndIndex(string) {
-    var index = string.length;
-    while (index-- && reWhitespace.test(string.charAt(index))) {
-    }
-    return index;
-  }
-  var trimmedEndIndex_default = trimmedEndIndex;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_baseTrim.js
-  var reTrimStart = /^\s+/;
-  function baseTrim(string) {
-    return string ? string.slice(0, trimmedEndIndex_default(string) + 1).replace(reTrimStart, "") : string;
-  }
-  var baseTrim_default = baseTrim;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/isObject.js
-  function isObject(value) {
-    var type = typeof value;
-    return value != null && (type == "object" || type == "function");
-  }
-  var isObject_default = isObject;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/toNumber.js
-  var NAN = 0 / 0;
-  var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-  var reIsBinary = /^0b[01]+$/i;
-  var reIsOctal = /^0o[0-7]+$/i;
-  var freeParseInt = parseInt;
-  function toNumber(value) {
-    if (typeof value == "number") {
-      return value;
-    }
-    if (isSymbol_default(value)) {
-      return NAN;
-    }
-    if (isObject_default(value)) {
-      var other = typeof value.valueOf == "function" ? value.valueOf() : value;
-      value = isObject_default(other) ? other + "" : other;
-    }
-    if (typeof value != "string") {
-      return value === 0 ? value : +value;
-    }
-    value = baseTrim_default(value);
-    var isBinary = reIsBinary.test(value);
-    return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
-  }
-  var toNumber_default = toNumber;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_overArg.js
-  function overArg(func, transform) {
-    return function(arg) {
-      return func(transform(arg));
     };
-  }
-  var overArg_default = overArg;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/_getPrototype.js
-  var getPrototype = overArg_default(Object.getPrototypeOf, Object);
-  var getPrototype_default = getPrototype;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/isPlainObject.js
-  var objectTag = "[object Object]";
-  var funcProto = Function.prototype;
-  var objectProto3 = Object.prototype;
-  var funcToString = funcProto.toString;
-  var hasOwnProperty2 = objectProto3.hasOwnProperty;
-  var objectCtorString = funcToString.call(Object);
-  function isPlainObject(value) {
-    if (!isObjectLike_default(value) || baseGetTag_default(value) != objectTag) {
-      return false;
-    }
-    var proto = getPrototype_default(value);
-    if (proto === null) {
-      return true;
-    }
-    var Ctor = hasOwnProperty2.call(proto, "constructor") && proto.constructor;
-    return typeof Ctor == "function" && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
-  }
-  var isPlainObject_default = isPlainObject;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/now.js
-  var now = function() {
-    return root_default.Date.now();
-  };
-  var now_default = now;
-
-  // node_modules/.pnpm/lodash-es@4.17.21/node_modules/lodash-es/debounce.js
-  var FUNC_ERROR_TEXT = "Expected a function";
-  var nativeMax = Math.max;
-  var nativeMin = Math.min;
-  function debounce(func, wait, options) {
-    var lastArgs, lastThis, maxWait, result, timerId, lastCallTime, lastInvokeTime = 0, leading = false, maxing = false, trailing = true;
-    if (typeof func != "function") {
-      throw new TypeError(FUNC_ERROR_TEXT);
-    }
-    wait = toNumber_default(wait) || 0;
-    if (isObject_default(options)) {
-      leading = !!options.leading;
-      maxing = "maxWait" in options;
-      maxWait = maxing ? nativeMax(toNumber_default(options.maxWait) || 0, wait) : maxWait;
-      trailing = "trailing" in options ? !!options.trailing : trailing;
-    }
-    function invokeFunc(time) {
-      var args = lastArgs, thisArg = lastThis;
-      lastArgs = lastThis = void 0;
-      lastInvokeTime = time;
-      result = func.apply(thisArg, args);
-      return result;
-    }
-    function leadingEdge(time) {
-      lastInvokeTime = time;
-      timerId = setTimeout(timerExpired, wait);
-      return leading ? invokeFunc(time) : result;
-    }
-    function remainingWait(time) {
-      var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime, timeWaiting = wait - timeSinceLastCall;
-      return maxing ? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
-    }
-    function shouldInvoke(time) {
-      var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime;
-      return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
-    }
-    function timerExpired() {
-      var time = now_default();
-      if (shouldInvoke(time)) {
-        return trailingEdge(time);
+    const onTimerEnd = () => {
+      if (trailing) {
+        invoke();
       }
-      timerId = setTimeout(timerExpired, remainingWait(time));
-    }
-    function trailingEdge(time) {
-      timerId = void 0;
-      if (trailing && lastArgs) {
-        return invokeFunc(time);
+      cancel();
+    };
+    let timeoutId = null;
+    const schedule = () => {
+      if (timeoutId != null) {
+        clearTimeout(timeoutId);
       }
-      lastArgs = lastThis = void 0;
-      return result;
-    }
-    function cancel() {
-      if (timerId !== void 0) {
-        clearTimeout(timerId);
+      timeoutId = setTimeout(() => {
+        timeoutId = null;
+        onTimerEnd();
+      }, debounceMs);
+    };
+    const cancelTimer = () => {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
       }
-      lastInvokeTime = 0;
-      lastArgs = lastCallTime = lastThis = timerId = void 0;
-    }
-    function flush() {
-      return timerId === void 0 ? result : trailingEdge(now_default());
-    }
-    function debounced() {
-      var time = now_default(), isInvoking = shouldInvoke(time);
-      lastArgs = arguments;
-      lastThis = this;
-      lastCallTime = time;
-      if (isInvoking) {
-        if (timerId === void 0) {
-          return leadingEdge(lastCallTime);
-        }
-        if (maxing) {
-          clearTimeout(timerId);
-          timerId = setTimeout(timerExpired, wait);
-          return invokeFunc(lastCallTime);
-        }
+    };
+    const cancel = () => {
+      cancelTimer();
+      pendingThis = void 0;
+      pendingArgs = null;
+    };
+    const flush = () => {
+      invoke();
+    };
+    const debounced = function(...args) {
+      if (signal == null ? void 0 : signal.aborted) {
+        return;
       }
-      if (timerId === void 0) {
-        timerId = setTimeout(timerExpired, wait);
+      pendingThis = this;
+      pendingArgs = args;
+      const isFirstCall = timeoutId == null;
+      schedule();
+      if (leading && isFirstCall) {
+        invoke();
       }
-      return result;
-    }
+    };
+    debounced.schedule = schedule;
     debounced.cancel = cancel;
     debounced.flush = flush;
+    signal == null ? void 0 : signal.addEventListener("abort", cancel, { once: true });
     return debounced;
   }
-  var debounce_default = debounce;
+
+  // node_modules/.pnpm/es-toolkit@1.39.9/node_modules/es-toolkit/dist/predicate/isPlainObject.mjs
+  function isPlainObject(value) {
+    if (!value || typeof value !== "object") {
+      return false;
+    }
+    const proto = Object.getPrototypeOf(value);
+    const hasObjectPrototype = proto === null || proto === Object.prototype || Object.getPrototypeOf(proto) === null;
+    if (!hasObjectPrototype) {
+      return false;
+    }
+    return Object.prototype.toString.call(value) === "[object Object]";
+  }
 
   // src/utils/growTextAreaHeight.ts
   function growTextAreaHeight(el) {
@@ -6292,18 +6122,18 @@
   var map = /* @__PURE__ */ new WeakMap();
   function obtainStyledShadowRoot(el) {
     var _a5, _b2;
-    const root2 = (_b2 = (_a5 = map.get(el)) != null ? _a5 : el.shadowRoot) != null ? _b2 : el.attachShadow({ mode: "closed" });
-    map.set(el, root2);
+    const root = (_b2 = (_a5 = map.get(el)) != null ? _a5 : el.shadowRoot) != null ? _b2 : el.attachShadow({ mode: "closed" });
+    map.set(el, root);
     obtainHTMLElementByDataKey({
       tag: "style",
       key,
-      parentNode: root2,
+      parentNode: root,
       onDidCreate: (el2) => {
         el2.innerHTML = style_default;
-        root2.prepend(el2);
+        root.prepend(el2);
       }
     });
-    return root2;
+    return root;
   }
 
   // src/bilibili.com/utils/getCurrentTheme.ts
@@ -6317,9 +6147,9 @@
   }
   function getCurrentTheme() {
     var _a5;
-    const now2 = (_a5 = performance == null ? void 0 : performance.now()) != null ? _a5 : Date.now();
-    if (!cache || now2 >= cache.notAfter) {
-      cache = { value: compute(), notAfter: now2 + 1e3 };
+    const now = (_a5 = performance == null ? void 0 : performance.now()) != null ? _a5 : Date.now();
+    if (!cache || now >= cache.notAfter) {
+      cache = { value: compute(), notAfter: now + 1e3 };
     }
     return cache.value;
   }
@@ -6538,12 +6368,12 @@
         this.excludedKeywords = el.value;
         growTextAreaHeight(el);
       });
-      __publicField(this, "onVideListDurationGteChange", debounce_default((e) => {
+      __publicField(this, "onVideListDurationGteChange", debounce((e) => {
         const el = e.target;
         videoListSettings_default.durationGte = el.value;
         el.value = videoListSettings_default.durationGte.toTimeCode();
       }, 5e3));
-      __publicField(this, "onVideListDurationLtChange", debounce_default((e) => {
+      __publicField(this, "onVideListDurationLtChange", debounce((e) => {
         const el = e.target;
         videoListSettings_default.durationLt = el.value;
         el.value = videoListSettings_default.durationLt.toTimeCode();
@@ -7372,7 +7202,7 @@ margin-right: 24px;
 
   // src/utils/castPlainObject.ts
   function castPlainObject(value) {
-    if (isPlainObject_default(value)) {
+    if (isPlainObject(value)) {
       return value;
     }
     return { value };
@@ -8060,16 +7890,5 @@ lit-html/development/lit-html.js:
    * @license
    * Copyright 2017 Google LLC
    * SPDX-License-Identifier: BSD-3-Clause
-   *)
-
-lodash-es/lodash.js:
-  (**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
    *)
 */

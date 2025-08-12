@@ -8,7 +8,7 @@ import {
 } from '@mdi/js';
 import { html, nothing, render } from 'lit-html';
 import compare from '@/utils/compare';
-import { debounce } from 'lodash-es';
+import { debounce } from 'es-toolkit';
 import growTextAreaHeight from '@/utils/growTextAreaHeight';
 import isNonNull from '@/utils/isNonNull';
 import blockedUsers from '../models/blockedUsers';
