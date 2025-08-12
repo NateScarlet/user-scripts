@@ -126,28 +126,25 @@ function routeKey() {
 async function main() {
   await migrate();
 
-  const initialRouteKey = routeKey();
-  const app = await createApp();
+  let initialRouteKey = routeKey();
+  let app = await createApp();
 
-  const stack = new DisposableStack();
-  stack.use(
-    new Polling({
-      update: () => {
-        if (routeKey() !== initialRouteKey) {
-          // route changed
-          stack.dispose();
-          main();
-          return;
-        }
-        app.render();
-      },
-      scheduleNext: (next) => {
-        const stack = new DisposableStack();
-        stack.adopt(setTimeout(next, 100), clearTimeout);
-        return stack;
-      },
-    })
-  );
+  new Polling({
+    update: async () => {
+      const currentRouteKey = routeKey();
+      if (currentRouteKey !== initialRouteKey) {
+        // route changed
+        app = await createApp();
+        initialRouteKey = currentRouteKey;
+      }
+      app.render();
+    },
+    scheduleNext: (next) => {
+      const stack = new DisposableStack();
+      stack.adopt(setTimeout(next, 100), clearTimeout);
+      return stack;
+    },
+  });
 }
 
 onDocumentReadyOnce(main);

@@ -10,7 +10,7 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @run-at   document-start
-// @version   2025.08.12+f13f9738
+// @version   2025.08.12+7dd4a752
 // ==/UserScript==
 
 "use strict";
@@ -7859,26 +7859,23 @@ margin-right: 24px;
   function main() {
     return __async(this, null, function* () {
       yield migrate();
-      const initialRouteKey = routeKey();
-      const app = yield createApp();
-      const stack = new DisposableStack();
-      stack.use(
-        new Polling({
-          update: () => {
-            if (routeKey() !== initialRouteKey) {
-              stack.dispose();
-              main();
-              return;
-            }
-            app.render();
-          },
-          scheduleNext: (next) => {
-            const stack2 = new DisposableStack();
-            stack2.adopt(setTimeout(next, 100), clearTimeout);
-            return stack2;
+      let initialRouteKey = routeKey();
+      let app = yield createApp();
+      new Polling({
+        update: () => __async(this, null, function* () {
+          const currentRouteKey = routeKey();
+          if (currentRouteKey !== initialRouteKey) {
+            app = yield createApp();
+            initialRouteKey = currentRouteKey;
           }
-        })
-      );
+          app.render();
+        }),
+        scheduleNext: (next) => {
+          const stack = new DisposableStack();
+          stack.adopt(setTimeout(next, 100), clearTimeout);
+          return stack;
+        }
+      });
     });
   }
   onDocumentReadyOnce(main);
