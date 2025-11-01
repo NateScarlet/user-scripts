@@ -331,6 +331,22 @@ export default class SettingsDrawer {
             标题必须包含所有关键词，屏蔽联想词和标签匹配
           </div>
         </div>
+        <div class="px-1">
+          <label>
+            <input
+              type="checkbox"
+              ?checked="${searchSettings.disableNavSuggestion}"
+              @change="${(e: Event) => {
+                const el = e.target as HTMLInputElement;
+                searchSettings.disableNavSuggestion = el.checked;
+              }}"
+            />
+            <span>禁用导航栏搜索建议</span>
+          </label>
+          <div class="text-gray-500 dark:text-gray-200 text-sm">
+            仅隐藏文本，不影响默认搜索行为
+          </div>
+        </div>
       </section>
     `;
   }

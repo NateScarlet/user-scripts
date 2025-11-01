@@ -9,6 +9,7 @@
 // @include	 https://space.bilibili.com/*
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
+// @include	 https://t.bilibili.com/*
 // @run-at   document-start
 // ==/UserScript==
 
@@ -35,13 +36,14 @@ import MiniHeaderButton from './components/MiniHeaderButton';
 import PlaylistPatch from './components/PlaylistPatch';
 import LiveRoomPatch from './components/LiveRoomListPatch';
 import LiveHeaderButton from './components/LiveHeaderButton';
+import NavSearchSuggestionPatch from './components/NavSearchSuggestionPatch';
 
 export {};
 
 async function createApp(): Promise<Component> {
   const rawURL = window.location.href;
   const settings = new SettingsDrawer();
-  const components: Component[] = [settings];
+  const components: Component[] = [settings, new NavSearchSuggestionPatch()];
   const user = parseUserURL(rawURL);
   const url = new URL(rawURL);
 
@@ -69,6 +71,7 @@ async function createApp(): Promise<Component> {
     },
   });
   if (headerButton) {
+    console.log(headerButton);
     components.push(headerButton);
   }
 
@@ -110,7 +113,14 @@ async function createApp(): Promise<Component> {
   }
 
   return {
-    render: () => components.forEach((i) => i.render()),
+    render: () =>
+      components.forEach((i) => {
+        try {
+          i.render();
+        } catch (err) {
+          console.error('failed to render', i.constructor.name, err);
+        }
+      }),
   };
 }
 

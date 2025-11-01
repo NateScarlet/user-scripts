@@ -3,7 +3,7 @@ import GMValue from '@/utils/GMValue';
 export default new (class SearchSettings {
   private readonly value = new GMValue<{
     strictTitleMatch?: boolean;
-    navSuggestion?: 'mask' | 'off';
+    disableNavSuggestion?: boolean;
     trending?: 'off';
   }>('searchSettings@aa1595c8-1664-40de-a80c-9de375c2466a', () => ({}));
 
@@ -18,14 +18,14 @@ export default new (class SearchSettings {
     });
   }
 
-  get navSuggestion() {
-    return this.value.get().navSuggestion ?? 'on';
+  get disableNavSuggestion() {
+    return this.value.get().disableNavSuggestion;
   }
 
-  set navSuggestion(v) {
+  set disableNavSuggestion(v) {
     this.value.set({
       ...this.value.get(),
-      navSuggestion: v === 'on' ? undefined : v,
+      disableNavSuggestion: v,
     });
   }
 
