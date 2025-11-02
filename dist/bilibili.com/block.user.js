@@ -10,8 +10,9 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @include	 https://t.bilibili.com/*
+// @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2025.11.01+91cd2623
+// @version   2025.11.02+f88a9846
 // ==/UserScript==
 
 "use strict";
@@ -3904,15 +3905,6 @@
       module.exports = parent;
     }
   });
-
-  // src/utils/onDocumentReadyOnce.ts
-  function onDocumentReadyOnce(cb) {
-    if (document.readyState == "complete") {
-      cb();
-    } else {
-      window.addEventListener("load", cb, { once: true });
-    }
-  }
 
   // src/utils/Polling.ts
   var import_disposable_stack = __toESM(require_disposable_stack3());
@@ -7818,6 +7810,16 @@ margin-right: 24px;
           if (match.placeholder != this.placeholder) {
             this.originalPlaceholder = match.placeholder;
             match.placeholder = this.placeholder;
+            const ob = new MutationObserver(() => {
+              if (!searchSettings_default.disableNavSuggestion) {
+                ob.disconnect();
+                return;
+              }
+              if (match.placeholder != this.placeholder) {
+                match.placeholder = this.placeholder;
+              }
+            });
+            ob.observe(match, { attributeFilter: ["placeholder"] });
           }
         } else {
           match.placeholder = this.originalPlaceholder;
@@ -7833,7 +7835,8 @@ margin-right: 24px;
       var _a5;
       const rawURL = window.location.href;
       const settings = new SettingsDrawer();
-      const components = [settings, new NavSearchSuggestionPatch()];
+      const navSuggestion = new NavSearchSuggestionPatch();
+      const components = [settings, navSuggestion];
       const user = parseUserURL(rawURL);
       const url = new URL(rawURL);
       let headerButton;
@@ -7852,6 +7855,7 @@ margin-right: 24px;
             headerButton = new LiveHeaderButton(settings);
             return true;
           }
+          navSuggestion.render();
           return false;
         }
       });
@@ -7926,7 +7930,7 @@ margin-right: 24px;
       });
     });
   }
-  onDocumentReadyOnce(main);
+  main();
 })();
 /*! Bundled license information:
 

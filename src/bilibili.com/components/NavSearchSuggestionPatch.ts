@@ -17,6 +17,16 @@ export default class NavSearchSuggestionPatch {
         if (match.placeholder != this.placeholder) {
           this.originalPlaceholder = match.placeholder;
           match.placeholder = this.placeholder;
+          const ob = new MutationObserver(() => {
+            if (!searchSettings.disableNavSuggestion) {
+              ob.disconnect();
+              return;
+            }
+            if (match.placeholder != this.placeholder) {
+              match.placeholder = this.placeholder;
+            }
+          });
+          ob.observe(match, { attributeFilter: ['placeholder'] });
         }
       } else {
         match.placeholder = this.originalPlaceholder;

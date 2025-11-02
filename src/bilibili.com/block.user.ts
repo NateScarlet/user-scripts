@@ -10,12 +10,12 @@
 // @include	 https://www.bilibili.com/*
 // @include	 https://live.bilibili.com/*
 // @include	 https://t.bilibili.com/*
+// @include	 https://message.bilibili.com/*
 // @run-at   document-start
 // ==/UserScript==
 
 // spell-checker: word bili bilibili upname datetime
 
-import onDocumentReadyOnce from '@/utils/onDocumentReadyOnce';
 import Polling from '@/utils/Polling';
 import waitUntil from '@/utils/waitUntil';
 import Component from './components/Component';
@@ -43,7 +43,8 @@ export {};
 async function createApp(): Promise<Component> {
   const rawURL = window.location.href;
   const settings = new SettingsDrawer();
-  const components: Component[] = [settings, new NavSearchSuggestionPatch()];
+  const navSuggestion = new NavSearchSuggestionPatch();
+  const components: Component[] = [settings, navSuggestion];
   const user = parseUserURL(rawURL);
   const url = new URL(rawURL);
 
@@ -67,6 +68,7 @@ async function createApp(): Promise<Component> {
         headerButton = new LiveHeaderButton(settings);
         return true;
       }
+      navSuggestion.render(); // 尽量早应用
       return false;
     },
   });
@@ -157,4 +159,4 @@ async function main() {
   });
 }
 
-onDocumentReadyOnce(main);
+main();
