@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2025.11.02+f88a9846
+// @version   2025.11.20+9d410331
 // ==/UserScript==
 
 "use strict";
@@ -6131,9 +6131,12 @@
   // src/bilibili.com/utils/getCurrentTheme.ts
   var cache;
   function compute() {
-    const el = document.getElementById("__css-map__");
-    if (el instanceof HTMLLinkElement && el.href.endsWith("/dark.css")) {
-      return "dark";
+    const match = getComputedStyle(document.body).backgroundColor.match(
+      /^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*[\d.]+)?\s*\)$/
+    );
+    if (match) {
+      const luminance = (0.299 * Number.parseInt(match[1], 10) + 0.587 * Number.parseInt(match[2], 10) + 0.114 * Number.parseInt(match[3], 10)) / 255;
+      return luminance > 0.5 ? "light" : "dark";
     }
     return "light";
   }

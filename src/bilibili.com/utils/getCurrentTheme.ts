@@ -6,9 +6,16 @@ let cache:
   | undefined;
 
 function compute(): 'dark' | 'light' {
-  const el = document.getElementById('__css-map__');
-  if (el instanceof HTMLLinkElement && el.href.endsWith('/dark.css')) {
-    return 'dark';
+  const match = getComputedStyle(document.body).backgroundColor.match(
+    /^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*[\d.]+)?\s*\)$/
+  );
+  if (match) {
+    const luminance =
+      (0.299 * Number.parseInt(match[1], 10) +
+        0.587 * Number.parseInt(match[2], 10) +
+        0.114 * Number.parseInt(match[3], 10)) /
+      255;
+    return luminance > 0.5 ? 'light' : 'dark';
   }
   return 'light';
 }
