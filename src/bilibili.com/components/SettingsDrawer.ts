@@ -29,8 +29,29 @@ export default class SettingsDrawer {
 
   private static readonly id: string = `settings-${randomUUID()}`;
 
+  private userTableScrollTop = 0;
+
+  private liveRoomTableScrollTop = 0;
+
+  private dataVersion = 0;
+
+  private userListCache:
+    | {
+        version: number;
+        data: NonNullable<ReturnType<typeof blockedUsers.get>>[];
+      }
+    | undefined;
+
+  private liveRoomListCache:
+    | {
+        version: number;
+        data: NonNullable<ReturnType<typeof blockedLiveRooms.get>>[];
+      }
+    | undefined;
+
   public readonly open = () => {
     this.active = true;
+    this.dataVersion += 1;
     this.render();
     setTimeout(() => {
       this.isOpen = true;
@@ -363,38 +384,79 @@ export default class SettingsDrawer {
     el.value = videoListSettings.durationLt.toTimeCode();
   }, 5e3);
 
+  private getSortedBlockedUsers() {
+    if (this.userListCache && this.userListCache.version === this.dataVersion) {
+      return this.userListCache.data;
+    }
+    const data = blockedUsers
+      .distinctID()
+      .map(blockedUsers.get)
+      .filter(isNonNull)
+      .sort((a, b) => {
+        const dateCompare = compare(a.blockedAt, b.blockedAt);
+        if (dateCompare !== 0) {
+          return -dateCompare;
+        }
+        return compare(a.idAsNumber, b.idAsNumber);
+      });
+    this.userListCache = { version: this.dataVersion, data };
+    return data;
+  }
+
+  private readonly onUserTableScroll = (e: Event) => {
+    const el = e.target as HTMLElement;
+    this.userTableScrollTop = el.scrollTop;
+    this.render();
+  };
+
   private userTable() {
-    const userIDs = blockedUsers.distinctID();
+    const items = this.getSortedBlockedUsers();
+    const rowHeight = 48; // h-12
+    const gap = 8; // gap-2
+    const itemTotalHeight = rowHeight + gap;
+    const totalHeight =
+      items.length * itemTotalHeight - (items.length > 0 ? gap : 0);
+
+    // Virtualize
+    const containerHeight = 500; // Approx max height
+    const scrollTop = this.userTableScrollTop;
+    const startIndex = Math.max(0, Math.floor(scrollTop / itemTotalHeight));
+    const endIndex = Math.min(
+      items.length,
+      Math.ceil((scrollTop + containerHeight) / itemTotalHeight) + 1
+    );
+    const visibleItems = items.slice(startIndex, endIndex);
 
     return html`
       <div class="flex flex-col overflow-hidden max-h-[50vh]">
-        <h1 class="flex-none text-sm text-gray-500 dark:text-gray-200">
-          已屏蔽用户 <span class="text-sm">(${userIDs.length})</span>
+        <h1 class="flex-none text-sm text-gray-500 dark:text-gray-200 mb-1">
+          已屏蔽用户 <span class="text-sm">(${items.length})</span>
         </h1>
-        <div class="flex-1 overflow-auto relative">
-          <table class="table-fixed border-separate border-spacing-2 w-full">
-            <thead class="sticky top-0">
-              <tr class="bg-gray-200 dark:bg-gray-800 text-center">
-                <td class="w-48">屏蔽时间</td>
-                <td>名称</td>
-                <td class="w-64"></td>
-              </tr>
-            </thead>
-            <tbody>
-              ${userIDs
-                .map(blockedUsers.get)
-                .filter(isNonNull)
-                .sort((a, b) => {
-                  const dateCompare = compare(a.blockedAt, b.blockedAt);
-                  if (dateCompare !== 0) {
-                    return -dateCompare;
-                  }
-                  return compare(a.idAsNumber, b.idAsNumber);
-                })
-                .map(({ id, name, note, blockedAt, rawBlockedAt }) => {
-                  return html`
-                    <tr class="group even:bg-gray-100 dark:even:bg-gray-900">
-                      <td class="text-right w-32">
+
+        <!-- Header -->
+        <div
+          class="flex-none flex items-center bg-gray-200 dark:bg-gray-800 text-center font-bold h-10 pr-2"
+        >
+          <div class="w-48 flex-none">屏蔽时间</div>
+          <div class="flex-auto">名称</div>
+          <div class="w-64 flex-none"></div>
+        </div>
+
+        <div
+          class="flex-1 overflow-auto relative"
+          @scroll=${this.onUserTableScroll}
+        >
+          <div style="height: ${totalHeight}px; width: 100%;">
+            ${visibleItems.map((item, index) => {
+              const actualIndex = startIndex + index;
+              const top = actualIndex * itemTotalHeight;
+              const { id, name, note, blockedAt, rawBlockedAt } = item;
+              return html`
+                <div 
+                  class="absolute left-0 right-0 h-12 flex items-center bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition group"
+                  style="top: ${top}px;"
+                >
+                   <div class="w-48 flex-none text-right px-2 text-sm">
                         ${
                           rawBlockedAt
                             ? html` <time datetime="${blockedAt.toISOString()}">
@@ -402,8 +464,10 @@ export default class SettingsDrawer {
                               </time>`
                             : nothing
                         }
-                      </td>
-                      <td class="text-center hover:underline cursor-text" @click=${async () => {
+                   </div>
+                   <div 
+                      class="flex-auto text-center hover:underline cursor-pointer px-2 truncate"
+                      @click=${async () => {
                         const v = await showPromptDialog({
                           title: `编辑备注`,
                           label: `为 ${name} 添加备注:`,
@@ -415,27 +479,25 @@ export default class SettingsDrawer {
                           blockedUsers.update(id, {
                             note: v,
                           });
+                          this.dataVersion += 1;
+                          this.render();
                         }
-                      }}>
+                      }}
+                   >
                         ${name}
-                        <div class="whitespace-nowrap truncate text-xs font-serif" title="${note}">
-                          ${note}
-                        </div>
-                      </td>
-                      <td
-                      >
-                 
-                        <div class="transition opacity-0 group-hover:opacity-100 space-x-2 text-center">
+                        <div class="text-xs text-gray-500 truncate" title="${note}">${note}</div>
+                   </div>
+                   <div class="w-64 flex-none flex justify-center items-center space-x-2 opacity-0 group-hover:opacity-100 transition">
                           <a
                             href="https://space.bilibili.com/${id}"
                             target="_blank"
-                            class="inline-flex underline text-blue-500"
+                            class="inline-flex items-center underline text-blue-500 text-sm"
                           >
                             <svg 
                               viewBox="0 0 24 24"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
-                              class="h-[1.25em]"
+                              class="h-[1.25em] mr-1"
                             >
                               <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiOpenInNew} fill="currentColor">
                             </svg>
@@ -443,106 +505,156 @@ export default class SettingsDrawer {
                           </a>
                           <button
                             type="button"
-                            @click=${() => blockedUsers.remove(id)}
-                            class="inline-flex underline"
+                            @click=${() => {
+                              blockedUsers.remove(id);
+                              this.dataVersion += 1;
+                              this.render();
+                            }}
+                            class="inline-flex items-center underline text-sm"
                           >
                             <svg 
                               viewBox="0 0 24 24"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
-                              class="h-[1.25em]"
+                              class="h-[1.25em] mr-1"
                             >
                               <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCheckOutline} fill="currentColor">
                             </svg>
                             <span>取消屏蔽</span>
                           </button>
-                        </div>
-                      </td>
-                    </tr>
-                  `;
-                })}
-            </tbody>
-          </table>
+                   </div>
+                </div>
+              `;
+            })}
+          </div>
         </div>
       </div>
     `;
   }
 
+  private getSortedBlockedLiveRooms() {
+    if (
+      this.liveRoomListCache &&
+      this.liveRoomListCache.version === this.dataVersion
+    ) {
+      return this.liveRoomListCache.data;
+    }
+    const data = blockedLiveRooms
+      .distinctID()
+      .map(blockedLiveRooms.get)
+      .sort((a, b) => {
+        const dateCompare = compare(a.blockedAt, b.blockedAt);
+        if (dateCompare !== 0) {
+          return -dateCompare;
+        }
+        return compare(a.id, b.id);
+      });
+    this.liveRoomListCache = { version: this.dataVersion, data };
+    return data;
+  }
+
+  private readonly onLiveRoomTableScroll = (e: Event) => {
+    const el = e.target as HTMLElement;
+    this.liveRoomTableScrollTop = el.scrollTop;
+    this.render();
+  };
+
   private liveRoomTable() {
-    const liveRoomIDs = blockedLiveRooms.distinctID();
+    const items = this.getSortedBlockedLiveRooms();
+
+    const rowHeight = 48; // h-12
+    const gap = 8; // gap-2
+    const itemTotalHeight = rowHeight + gap;
+    const totalHeight =
+      items.length * itemTotalHeight - (items.length > 0 ? gap : 0);
+
+    // Virtualize
+    const containerHeight = 500; // Approx max height
+    const scrollTop = this.liveRoomTableScrollTop;
+    const startIndex = Math.max(0, Math.floor(scrollTop / itemTotalHeight));
+    const endIndex = Math.min(
+      items.length,
+      Math.ceil((scrollTop + containerHeight) / itemTotalHeight) + 1
+    );
+    const visibleItems = items.slice(startIndex, endIndex);
 
     return html`
       <div class="flex flex-col overflow-hidden max-h-[50vh]">
-        <h1 class="flex-none text-sm text-gray-500 dark:text-gray-200">
-          已屏蔽直播间 <span class="text-sm">(${liveRoomIDs.length})</span>
+        <h1 class="flex-none text-sm text-gray-500 dark:text-gray-200 mb-1">
+          已屏蔽直播间 <span class="text-sm">(${items.length})</span>
         </h1>
-        <div class="flex-1 overflow-auto relative">
-          <table class="table-fixed border-separate border-spacing-2 w-full">
-            <thead class="sticky top-0">
-              <tr class="bg-gray-200 dark:bg-gray-800 text-center">
-                <td>屏蔽时间</td>
-                <td>所有者</td>
-                <td></td>
-              </tr>
-            </thead>
-            <tbody>
-              ${liveRoomIDs
-                .map(blockedLiveRooms.get)
-                .sort((a, b) => {
-                  const dateCompare = compare(a.blockedAt, b.blockedAt);
-                  if (dateCompare !== 0) {
-                    return -dateCompare;
-                  }
-                  return compare(a.id, b.id);
-                })
-                .map(({ id, owner, blockedAt }) => {
-                  return html`
-                    <tr class="group even:bg-gray-100 dark:even:bg-gray-900">
-                      <td class="text-right w-32">
-                       <time datetime="${blockedAt.toISOString()}">
-                          ${blockedAt.toLocaleString()}
+
+        <!-- Header -->
+        <div
+          class="flex-none flex items-center bg-gray-200 dark:bg-gray-800 text-center font-bold h-10 pr-2"
+        >
+          <div class="w-48 flex-none">屏蔽时间</div>
+          <div class="flex-auto">所有者</div>
+          <div class="w-32 flex-none"></div>
+        </div>
+
+        <div
+          class="flex-1 overflow-auto relative"
+          @scroll=${this.onLiveRoomTableScroll}
+        >
+          <div style="height: ${totalHeight}px; width: 100%;">
+            ${visibleItems.map((item, index) => {
+              const actualIndex = startIndex + index;
+              const top = actualIndex * itemTotalHeight;
+              const { id, owner, blockedAt } = item;
+              return html`
+                    <div 
+                      class="absolute left-0 right-0 h-12 flex items-center bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition group"
+                      style="top: ${top}px;"
+                    >
+                      <div class="w-48 flex-none text-right px-2 text-sm">
+                        <time datetime="${blockedAt.toISOString()}">
+                           ${blockedAt.toLocaleString()}
                         </time>
-                      </td>
-                      <td class="text-center">${owner}</td>
-                      <td
-                        class="transition opacity-0 group-hover:opacity-100 space-x-2 text-center"
-                      >
-                        <a
-                          href="https://live.bilibili.com/${id}"
-                          target="_blank"
-                          class="inline-flex underline text-blue-500"
-                        >
-                          <svg 
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-[1.25em]"
-                          >
-                            <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiOpenInNew} fill="currentColor">
-                          </svg>
-                          <span>前往</span>
-                        </a>
-                        <button
-                          type="button"
-                          @click=${() => blockedLiveRooms.remove(id)}
-                          class="inline-flex underline"
-                        >
-                          <svg 
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-[1.25em]"
-                          >
-                            <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiCheck} fill="currentColor">
-                          </svg>
-                          <span>取消屏蔽</span>
-                        </button>
-                      </td>
-                    </tr>
-                  `;
-                })}
-            </tbody>
-          </table>
+                      </div>
+                      <div class="flex-auto text-center truncate px-2">
+                        ${owner}
+                      </div>
+                      <div class="w-32 flex-none flex justify-center items-center space-x-2 opacity-0 group-hover:opacity-100 transition">
+                         <a
+                           href="https://live.bilibili.com/${id}"
+                           target="_blank"
+                           class="inline-flex items-center underline text-blue-500 text-sm"
+                         >
+                           <svg 
+                             viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="h-[1.25em] mr-1"
+                           >
+                              <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiOpenInNew} fill="currentColor">
+                           </svg>
+                           <span>前往</span>
+                         </a>
+                         <button
+                           type="button"
+                           @click=${() => {
+                             blockedLiveRooms.remove(id);
+                             this.dataVersion += 1;
+                             this.render();
+                           }}
+                           class="inline-flex items-center underline text-sm"
+                         >
+                           <svg 
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="h-[1.25em] mr-1"
+                           >
+                             <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiCheck} fill="currentColor">
+                           </svg>
+                           <span>取消屏蔽</span>
+                         </button>
+                      </div>
+                    </div>
+                `;
+            })}
+          </div>
         </div>
       </div>
     `;
