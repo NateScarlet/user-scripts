@@ -1,20 +1,17 @@
 <script lang="ts">
-  import { debounce } from 'es-toolkit';
   import videoListSettings from '../../models/videoListSettings';
   import growTextAreaHeight from '../../../utils/growTextAreaHeight';
 
   // Duration Handlers
-  const onVideListDurationGteChange = debounce((e: Event) => {
-    const el = e.target as HTMLInputElement;
-    videoListSettings.durationGte = el.value;
-    el.value = videoListSettings.durationGte.toTimeCode();
-  }, 5e3);
+  let durationGte = $state(videoListSettings.durationGte.toTimeCode());
+  let durationLt = $state(videoListSettings.durationLt.toTimeCode());
 
-  const onVideListDurationLtChange = debounce((e: Event) => {
-    const el = e.target as HTMLInputElement;
-    videoListSettings.durationLt = el.value;
-    el.value = videoListSettings.durationLt.toTimeCode();
-  }, 5e3);
+  $effect(() => {
+    videoListSettings.durationGte = durationGte;
+  });
+  $effect(() => {
+    videoListSettings.durationLt = durationLt;
+  });
 
   // Excluded Keywords Logic
   // svelte 5 state
@@ -23,10 +20,11 @@
   // derived state is better handled by a simple expression in template or $derived if complex.
   // Here we want to sync store to buffer ONLY if buffer is undefined.
   // But $store is a reactive value.
-  
+
   // We can use $derived for the display value
   let excludedKeywords = $derived(
-    excludedKeywordsBuffer ?? ($videoListSettings?.excludeKeywords ?? []).join('\n')
+    excludedKeywordsBuffer ??
+      ($videoListSettings?.excludeKeywords ?? []).join('\n')
   );
 
   function updateExcludedKeywords(v: string) {
@@ -64,16 +62,8 @@
         class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
         type="text"
         placeholder="HH:MM:SS"
-        defaultValue={videoListSettings.durationGte.toTimeCode()}
-        oninput={onVideListDurationGteChange}
+        bind:value={durationGte}
         onkeydown={(e) => e.stopPropagation()}
-        onblur={() => onVideListDurationGteChange.flush()}
-        onkeyup={(e) => {
-          if (e.key === 'Enter') {
-            onVideListDurationGteChange(e);
-            onVideListDurationGteChange.flush();
-          }
-        }}
       />
     </label>
     <label class="flex items-center">
@@ -82,16 +72,8 @@
         class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
         type="text"
         placeholder="HH:MM:SS"
-        defaultValue={videoListSettings.durationLt.toTimeCode()}
-        oninput={onVideListDurationLtChange}
+        bind:value={durationLt}
         onkeydown={(e) => e.stopPropagation()}
-        onblur={() => onVideListDurationLtChange.flush()}
-        onkeyup={(e) => {
-          if (e.key === 'Enter') {
-            onVideListDurationLtChange(e);
-            onVideListDurationLtChange.flush();
-          }
-        }}
       />
     </label>
     <label class="flex items-center">
