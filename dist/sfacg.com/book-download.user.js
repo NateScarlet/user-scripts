@@ -8,7 +8,7 @@
 // @include	 https://book.sfacg.com/Novel/*/*/*/
 // @include	 https://book.sfacg.com/vip/c/*/
 // @run-at   document-idle
-// @version   2023.12.05+8005e7f4
+// @version   2026.02.04+1e1cf7bd
 // ==/UserScript==
 
 "use strict";
@@ -121,14 +121,15 @@
   var __name__ = "SF轻小说章节自动下载";
   (function() {
     return __async(this, null, function* () {
-      const chapter = document.querySelector("#article .article-title").textContent;
+      var _a, _b, _c, _d, _e, _f;
+      const chapter = (_b = (_a = document.querySelector("#article .article-title")) == null ? void 0 : _a.textContent) != null ? _b : "";
       let lines = [
         `# ${chapter}`,
         `[原始页面](${location.href})`,
-        ...document.querySelector("#article .article-desc").textContent.split(/\n */).filter((i) => i),
+        ...((_d = (_c = document.querySelector("#article .article-desc")) == null ? void 0 : _c.textContent) != null ? _d : "").split(/\n */).filter((i) => i),
         `---`
       ];
-      const keywords = document.querySelector("meta[name='keywords']").content.split(",").filter((i) => !["小说下载", "TXT"].includes(i)).filter((i, index, keywords2) => index === 0 || !i.startsWith(keywords2[0]));
+      const keywords = ((_f = (_e = document.querySelector("meta[name='keywords']")) == null ? void 0 : _e.content) != null ? _f : "").split(",").filter((i) => !["小说下载", "TXT"].includes(i)).filter((i, index, keywords2) => index === 0 || !i.startsWith(keywords2[0]));
       for (const i of document.querySelectorAll("img#vipImage")) {
         console.log(`${__name__}: 等待图片加载`);
         yield i.decode();

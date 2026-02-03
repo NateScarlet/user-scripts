@@ -5,11 +5,12 @@
 // @grant    none
 // @run-at   document-idle
 // @include	 *
-// @version   2023.08.27+888c9ae5
+// @version   2026.02.04+9ac38a21
 // ==/UserScript==
 
 "use strict";
 (() => {
   // src/remove-global-filter.user.ts
-  document.body.parentElement.style.filter = "none";
+  var _a;
+  (_a = document.body.parentElement) == null ? void 0 : _a.style.setProperty("filter", "none");
 })();

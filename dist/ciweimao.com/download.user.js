@@ -5,7 +5,7 @@
 // @grant    none
 // @include	 https://www.ciweimao.com/chapter/*
 // @run-at   document-idle
-// @version   2023.12.05+fbf1a78c
+// @version   2026.02.04+736fd1bd
 // ==/UserScript==
 
 "use strict";
@@ -119,15 +119,18 @@
   var __name__ = "刺猬猫章节自动下载";
   (function() {
     return __async(this, null, function* () {
-      const chapter = document.querySelector("#J_BookCnt .chapter").firstChild.textContent;
+      var _a, _b, _c;
+      const chapter = (_c = (_b = (_a = document.querySelector("#J_BookCnt .chapter")) == null ? void 0 : _a.firstChild) == null ? void 0 : _b.textContent) != null ? _c : "";
       let lines = [];
       let startTime = Date.now();
       while (lines.length === 0 && Date.now() - startTime < 6e4) {
         yield sleep(1e3);
         for (const i of document.querySelectorAll("#J_BookImage")) {
-          const url = i.style["background-image"].match(
-            /(?:url\(")?(.+)(?:"\))?/
-          )[1];
+          const match = i.style.backgroundImage.match(/(?:url\(")?(.+)(?:"\))?/);
+          if (!match) {
+            continue;
+          }
+          const url = match[1];
           const line = yield imageToMarkdown(yield loadImage(url));
           lines.push(line);
         }

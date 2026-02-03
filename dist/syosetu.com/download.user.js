@@ -6,7 +6,7 @@
 // @include	 /^https?://ncode\.syosetu\.com/\w+/$/
 // @include	 /^https?://novel18\.syosetu\.com/\w+/$/
 // @run-at   document-end
-// @version   2025.07.19+4b2dfe06
+// @version   2026.02.04+dc404eae
 // ==/UserScript==
 
 "use strict";
@@ -5260,8 +5260,8 @@
   }
 
   // src/utils/loadImageCORS.ts
-  var import_disposable_stack = __toESM(require_disposable_stack3());
-  var import_iterator = __toESM(require_iterator3());
+  var import_disposable_stack = __toESM(require_disposable_stack3(), 1);
+  var import_iterator = __toESM(require_iterator3(), 1);
 
   // src/utils/parseHeader.ts
   function parseHeader(headers) {
@@ -5405,8 +5405,9 @@
     });
   }
   function clearMessage() {
+    var _a;
     while (messageNodes.length) {
-      messageNodes.pop().remove();
+      (_a = messageNodes.pop()) == null ? void 0 : _a.remove();
     }
   }
   function getMetaData() {
@@ -5457,11 +5458,13 @@
   function main(button) {
     return __async(this, null, function* () {
       clearMessage();
-      const ncode = urlLastPart(
-        document.querySelector(
-          "#novel_footer > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)"
-        ).href
+      const link = document.querySelector(
+        "#novel_footer > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)"
       );
+      if (!link) {
+        throw new Error("Link not found");
+      }
+      const ncode = urlLastPart(link.href);
       log(`start downloading: ${ncode}`);
       const chapters = [];
       for (const i of document.querySelectorAll(
@@ -5509,8 +5512,11 @@
           button.style.opacity = "";
         }
       });
-      document.querySelector("#novel_ex").after(button, statusIndicator);
-      log("activated");
+      const target = document.querySelector("#novel_ex");
+      if (target) {
+        target.after(button, statusIndicator);
+        log("activated");
+      }
     });
   })();
 })();

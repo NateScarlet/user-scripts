@@ -5,7 +5,7 @@
 // @grant    none
 // @include	 https://seiga.nicovideo.jp/watch/*
 // @run-at   document-idle
-// @version   2023.12.05+6fe81875
+// @version   2026.02.04+a85e759f
 // ==/UserScript==
 
 "use strict";
@@ -566,7 +566,7 @@
   var __name__ = "NicoNico manga download";
   (function() {
     return __async(this, null, function* () {
-      var _a, _b, _c;
+      var _a, _b, _c, _d;
       const images = [];
       const title = (_b = (_a = document.querySelector("meta[property='og:title']")) == null ? void 0 : _a.content) != null ? _b : document.title;
       const startTime = Date.now();
@@ -580,11 +580,11 @@
       for (let index = 0; index < pages.length; index += 1) {
         const li = pages.item(index);
         while (loopNext()) {
-          const pageIndex = Number.parseInt(li.dataset.pageIndex, 10) || index;
+          const pageIndex = Number.parseInt((_c = li.dataset.pageIndex) != null ? _c : "", 10) || index;
           let canvas = li.querySelector("canvas:not(.balloon)");
           const image = li.querySelector("img[data-image-id]");
           if (image) {
-            canvas != null ? canvas : canvas = imageToCanvas(image);
+            canvas = canvas != null ? canvas : yield imageToCanvas(image);
           }
           if (!canvas || canvas.width === 1) {
             li.scrollIntoView();
@@ -600,7 +600,7 @@
           break;
         }
       }
-      (_c = pages.item(0)) == null ? void 0 : _c.scrollIntoView();
+      (_d = pages.item(0)) == null ? void 0 : _d.scrollIntoView();
       const data = mustache_default.render(manga_reader_default, {
         title,
         window,
