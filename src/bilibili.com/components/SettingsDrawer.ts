@@ -12,6 +12,7 @@ import { debounce } from 'es-toolkit';
 import growTextAreaHeight from '@/utils/growTextAreaHeight';
 import isNonNull from '@/utils/isNonNull';
 import blockedUsers from '../models/blockedUsers';
+import blockedUserPatterns from '../models/blockedUserPatterns';
 import homePageSettings from '../models/homePageSettings';
 import videoListSettings from '../models/videoListSettings';
 import searchSettings from '../models/searchSettings';
@@ -120,6 +121,7 @@ export default class SettingsDrawer {
      ${this.homePageSettings()}
      ${this.searchSettings()}
      ${this.videoListSettings()}
+     ${this.blockedUserPatternsSettings()}
      ${this.userTable()}
      ${this.liveRoomTable()}
     </div>`;
@@ -371,6 +373,61 @@ export default class SettingsDrawer {
       </section>
     `;
   }
+
+  private blockedUserPatternsBuffer: string | undefined;
+
+  private get blockedUserPatterns() {
+    return (
+      this.blockedUserPatternsBuffer ??
+      blockedUserPatterns
+        .get()
+        .map((i) => i.pattern)
+        .join('\n')
+    );
+  }
+
+  private set blockedUserPatterns(v: string) {
+    this.blockedUserPatternsBuffer = v;
+    blockedUserPatterns.set(
+      v
+        .split('\n')
+        .map((i) => i.trim())
+        .filter((i) => i)
+    );
+  }
+
+  private blockedUserPatternsSettings() {
+    return html`
+      <section>
+        <h1 class="text-sm text-gray-500 dark:text-gray-200">
+          屏蔽名称匹配的用户
+        </h1>
+        <div class="px-1">
+          <textarea
+            class="w-full border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
+            placeholder=""
+            .value="${this.blockedUserPatterns}"
+            @input="${this.onBlockedUserPatternInput}"
+            @keydown="${(e: Event) => e.stopPropagation()}"
+            @focus="${(e: Event) =>
+              growTextAreaHeight(e.target as HTMLTextAreaElement)}"
+            @blur=${() => {
+              this.blockedUserPatternsBuffer = undefined;
+            }}
+          ></textarea>
+          <div class="text-gray-500 dark:text-gray-200 text-sm">
+            每行一个，支持正则。
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  private readonly onBlockedUserPatternInput = (e: Event) => {
+    const el = e.target as HTMLTextAreaElement;
+    this.blockedUserPatterns = el.value;
+    growTextAreaHeight(el);
+  };
 
   private readonly onVideListDurationGteChange = debounce((e: Event) => {
     const el = e.target as HTMLInputElement;

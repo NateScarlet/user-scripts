@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2026.02.03+2aeb6346
+// @version   2026.02.03+1ef6493d
 // ==/UserScript==
 
 "use strict";
@@ -5293,6 +5293,44 @@
     }
   }();
 
+  // src/bilibili.com/models/blockedUserPatterns.ts
+  var blockedUserPatterns_default = new class {
+    constructor() {
+      __publicField(this, "value", new GMValue(
+        "blockedUserPatterns@206ceed9-b514-4902-ad70-aa621fed5cd4",
+        () => []
+      ));
+      __publicField(this, "get", () => {
+        return this.value.get();
+      });
+      __publicField(this, "set", (patterns) => {
+        this.value.set(
+          patterns.map((pattern) => {
+            let finalPattern = pattern;
+            try {
+              new RegExp(pattern);
+            } catch (e) {
+              finalPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            }
+            return {
+              pattern: finalPattern,
+              blockedAt: Date.now()
+            };
+          })
+        );
+      });
+      __publicField(this, "shouldBlock", (name) => {
+        return this.value.get().some((p) => {
+          try {
+            return new RegExp(p.pattern).test(name);
+          } catch (e) {
+            return false;
+          }
+        });
+      });
+    }
+  }();
+
   // src/bilibili.com/models/homePageSettings.ts
   var homePageSettings_default = new class HomePageSettings {
     constructor() {
@@ -6369,6 +6407,12 @@
         this.excludedKeywords = el.value;
         growTextAreaHeight(el);
       });
+      __publicField(this, "blockedUserPatternsBuffer");
+      __publicField(this, "onBlockedUserPatternInput", (e) => {
+        const el = e.target;
+        this.blockedUserPatterns = el.value;
+        growTextAreaHeight(el);
+      });
       __publicField(this, "onVideListDurationGteChange", debounce((e) => {
         const el = e.target;
         videoListSettings_default.durationGte = el.value;
@@ -6455,6 +6499,7 @@
      ${this.homePageSettings()}
      ${this.searchSettings()}
      ${this.videoListSettings()}
+     ${this.blockedUserPatternsSettings()}
      ${this.userTable()}
      ${this.liveRoomTable()}
     </div>`;
@@ -6682,6 +6727,41 @@
           </label>
           <div class="text-gray-500 dark:text-gray-200 text-sm">
             仅隐藏文本，不影响默认搜索行为
+          </div>
+        </div>
+      </section>
+    `;
+    }
+    get blockedUserPatterns() {
+      var _a5;
+      return (_a5 = this.blockedUserPatternsBuffer) != null ? _a5 : blockedUserPatterns_default.get().map((i) => i.pattern).join("\n");
+    }
+    set blockedUserPatterns(v) {
+      this.blockedUserPatternsBuffer = v;
+      blockedUserPatterns_default.set(
+        v.split("\n").map((i) => i.trim()).filter((i) => i)
+      );
+    }
+    blockedUserPatternsSettings() {
+      return html`
+      <section>
+        <h1 class="text-sm text-gray-500 dark:text-gray-200">
+          屏蔽名称匹配的用户
+        </h1>
+        <div class="px-1">
+          <textarea
+            class="w-full border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
+            placeholder=""
+            .value="${this.blockedUserPatterns}"
+            @input="${this.onBlockedUserPatternInput}"
+            @keydown="${(e) => e.stopPropagation()}"
+            @focus="${(e) => growTextAreaHeight(e.target)}"
+            @blur=${() => {
+        this.blockedUserPatternsBuffer = void 0;
+      }}
+          ></textarea>
+          <div class="text-gray-500 dark:text-gray-200 text-sm">
+            每行一个，支持正则。
           </div>
         </div>
       </section>
@@ -7366,7 +7446,7 @@ margin-right: 24px;
         let matchCount = 0;
         let listEl;
         document.querySelectorAll(".bili-video-card").forEach((i) => {
-          var _a5, _b2, _c2, _d2, _e, _f, _g, _h, _i, _j, _k;
+          var _a5, _b2, _c2, _d2, _e, _f, _g, _h, _i, _j, _k, _l;
           const rawURL = (_a5 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a5.getAttribute("href");
           if (!rawURL) {
             return;
@@ -7375,21 +7455,23 @@ margin-right: 24px;
           let match = false;
           let note = "";
           if (user) {
-            const duration = (_d2 = (_c2 = (_b2 = i.querySelector(".bili-video-card__stats__duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d2 : "";
+            const authorEl = i.querySelector(".bili-video-card__info--author");
+            const authorName = (_b2 = (authorEl == null ? void 0 : authorEl.getAttribute("title")) || (authorEl == null ? void 0 : authorEl.textContent)) != null ? _b2 : "";
+            const duration = (_e = (_d2 = (_c2 = i.querySelector(".bili-video-card__stats__duration")) == null ? void 0 : _c2.textContent) == null ? void 0 : _d2.trim()) != null ? _e : "";
             const titleEl = i.querySelector(".bili-video-card__info--tit");
-            const title = (_e = (titleEl == null ? void 0 : titleEl.getAttribute("title")) || (titleEl == null ? void 0 : titleEl.textContent)) != null ? _e : "";
+            const title = (_f = (titleEl == null ? void 0 : titleEl.getAttribute("title")) || (titleEl == null ? void 0 : titleEl.textContent)) != null ? _f : "";
             if (title) {
               note = `${title}`;
             }
             const video = parseVideoURL(
-              (_h = (_f = titleEl == null ? void 0 : titleEl.parentElement) == null ? void 0 : _f.getAttribute("href")) != null ? _h : (_g = titleEl == null ? void 0 : titleEl.querySelector("a")) == null ? void 0 : _g.getAttribute("href")
+              (_i = (_g = titleEl == null ? void 0 : titleEl.parentElement) == null ? void 0 : _g.getAttribute("href")) != null ? _i : (_h = titleEl == null ? void 0 : titleEl.querySelector("a")) == null ? void 0 : _h.getAttribute("href")
             );
             if (video == null ? void 0 : video.id) {
               note += `(${video.id})`;
             }
             const isPromoted = i.classList.contains("is-rcmd") && !i.classList.contains("enable-no-interest");
             match = this.ctx.shouldExcludeVideo({
-              user,
+              user: __spreadProps(__spreadValues({}, user), { name: authorName }),
               duration,
               title,
               isPromoted
@@ -7401,7 +7483,7 @@ margin-right: 24px;
             matchCount += 1;
           }
           let container = i;
-          while (((_i = container.parentElement) == null ? void 0 : _i.childElementCount) === 1 || ((_j = container.parentElement) == null ? void 0 : _j.classList.values().some((cls) => _VideoListPatch.knownParentContainerClass.has(cls)))) {
+          while (((_j = container.parentElement) == null ? void 0 : _j.childElementCount) === 1 || ((_k = container.parentElement) == null ? void 0 : _k.classList.values().some((cls) => _VideoListPatch.knownParentContainerClass.has(cls)))) {
             container = container.parentElement;
           }
           listEl = container.parentElement || void 0;
@@ -7410,7 +7492,7 @@ margin-right: 24px;
           if (user && !hidden) {
             new VideoHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
               id: user.id,
-              name: ((_k = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _k.textContent) || user.id,
+              name: ((_l = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _l.textContent) || user.id,
               note
             }).render();
           }
@@ -7579,8 +7661,13 @@ margin-right: 24px;
         if (v.isPromoted && !videoListSettings_default.allowPromoted) {
           return true;
         }
-        if (v.user && blockedUsers_default.has(v.user.id)) {
-          return true;
+        if (v.user) {
+          if (blockedUsers_default.has(v.user.id)) {
+            return true;
+          }
+          if (v.user.name && blockedUserPatterns_default.shouldBlock(v.user.name)) {
+            return true;
+          }
         }
         if (v.duration) {
           const durationMs = Duration.cast(v.duration).toMilliseconds();

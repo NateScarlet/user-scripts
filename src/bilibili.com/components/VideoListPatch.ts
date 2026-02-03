@@ -39,6 +39,9 @@ export default class VideoListPatch {
       let match = false;
       let note = '';
       if (user) {
+        const authorEl = i.querySelector('.bili-video-card__info--author');
+        const authorName =
+          (authorEl?.getAttribute('title') || authorEl?.textContent) ?? '';
         const duration =
           i
             .querySelector('.bili-video-card__stats__duration')
@@ -61,7 +64,7 @@ export default class VideoListPatch {
           i.classList.contains('is-rcmd') &&
           !i.classList.contains('enable-no-interest');
         match = this.ctx.shouldExcludeVideo({
-          user,
+          user: { ...user, name: authorName },
           duration,
           title,
           isPromoted,

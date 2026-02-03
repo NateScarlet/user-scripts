@@ -3,6 +3,7 @@ import ExactSearchMatcher from '@/utils/ExactSearchMatcher';
 import videoListSettings from './models/videoListSettings';
 import searchSettings from './models/searchSettings';
 import blockedUsers from './models/blockedUsers';
+import blockedUserPatterns from './models/blockedUserPatterns';
 import blockedLiveRooms from './models/blockedLiveRooms';
 
 export default class Context {
@@ -16,7 +17,7 @@ export default class Context {
   }
 
   public readonly shouldExcludeVideo = (v: {
-    user?: { id: string };
+    user?: { id: string; name?: string };
     title: string;
     duration?: DurationInput;
     isPromoted?: boolean;
@@ -24,8 +25,13 @@ export default class Context {
     if (v.isPromoted && !videoListSettings.allowPromoted) {
       return true;
     }
-    if (v.user && blockedUsers.has(v.user.id)) {
-      return true;
+    if (v.user) {
+      if (blockedUsers.has(v.user.id)) {
+        return true;
+      }
+      if (v.user.name && blockedUserPatterns.shouldBlock(v.user.name)) {
+        return true;
+      }
     }
 
     if (v.duration) {
