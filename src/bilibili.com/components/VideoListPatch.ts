@@ -1,21 +1,30 @@
 import setHTMLElementDisplayHidden from '@/utils/setHTMLElementDisplayHidden';
+import injectStyle from '@/utils/injectStyle';
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
+import obtainHTMLElementByDataKey from '@/utils/obtainHTMLElementByDataKey';
 import randomUUID from '@/utils/randomUUID';
-import { html, nothing, render } from 'lit-html';
+import { mount } from 'svelte';
+import { writable, get } from 'svelte/store';
 import parseUserURL from '../utils/parseUserURL';
-import VideoHoverButton from './VideoHoverButton';
+import VideoHoverButton from './VideoHoverButton.svelte';
 import videoListSettings from '../models/videoListSettings';
 import Context from '../Context';
 import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 import parseVideoURL from '../utils/parseVideoURL';
-import getCurrentTheme from '../utils/getCurrentTheme';
+import VideoListPatchStatus from './VideoListPatchStatus.svelte';
 
 // spell-checker: word bili
 
 export default class VideoListPatch {
-  private disabled = false;
+  private readonly matchCountStore = writable(0);
+
+  private readonly disabledStore = writable(false);
 
   private static readonly id = randomUUID();
+  private static readonly parentKey = 'dde57f95-0cb5-4443-bbeb-2466d63db0f1';
+  private static readonly key = 'a1161956-2be7-4796-9f1b-528707156b11';
+
+  private readonly instances = new WeakMap<HTMLElement, VideoHoverButton>();
 
   private static readonly knownParentContainerClass = new Set([
     'bili-feed-card',
@@ -25,7 +34,26 @@ export default class VideoListPatch {
   constructor(private readonly ctx: Context) {}
 
   public readonly render = () => {
+    injectStyle(
+      VideoListPatch.parentKey,
+      `\
+[data-${VideoListPatch.parentKey}]:hover [data-${VideoListPatch.key}] {
+  filter: opacity(1);
+  transition: filter 0.2s linear 0.2s;
+}
+
+[data-${VideoListPatch.parentKey}] [data-${VideoListPatch.key}] {
+  filter: opacity(0);
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transition: filter 0.2s linear 0s;
+}
+`
+    );
     let matchCount = 0;
+    const disabled = get(this.disabledStore);
 
     let listEl: HTMLElement | undefined;
     document.querySelectorAll<HTMLElement>('.bili-video-card').forEach((i) => {
@@ -88,50 +116,75 @@ export default class VideoListPatch {
         container = container.parentElement;
       }
       listEl = container.parentElement || undefined;
-      const hidden = !this.disabled && match;
+      const hidden = !disabled && match;
       setHTMLElementDisplayHidden(container, hidden);
       if (user && !hidden) {
-        new VideoHoverButton(i.querySelector('.bili-video-card__image--wrap'), {
-          id: user.id,
-          name:
-            i.querySelector('.bili-video-card__info--author')?.textContent ||
-            user.id,
-          note,
-        }).render();
+        const target = i.querySelector('.bili-video-card__image--wrap');
+        if (target) {
+          const userData = {
+            id: user.id,
+            name:
+              i.querySelector('.bili-video-card__info--author')?.textContent ||
+              user.id,
+            note,
+          };
+          const wrapper = obtainHTMLElementByDataKey({
+            tag: 'div',
+            key: VideoListPatch.key,
+            parentNode: target,
+            onDidCreate: (el) => {
+              target.setAttribute(`data-${VideoListPatch.parentKey}`, '');
+              target.append(el);
+              const s = mount(VideoHoverButton, {
+                target: obtainStyledShadowRoot(el),
+                props: {
+                  user: userData,
+                },
+              });
+              this.instances.set(el, s);
+            },
+          });
+          const comp = this.instances.get(wrapper);
+          if (comp) {
+            comp.setUser(userData);
+          }
+        }
       }
     });
 
-    render(
-      matchCount === 0
-        ? nothing
-        : html`
-            <div
-              data-theme="${getCurrentTheme()}"
-              class="w-full text-gray-500 dark:text-gray-400 text-center m-1"
-            >
-              ${this.disabled
-                ? html`${matchCount} 条视频符合屏蔽规则`
-                : html`已屏蔽 ${matchCount} 条视频`}
-              <button
-                type="button"
-                class="border rounded py-1 px-2 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition ease-in-out duration-200"
-                @click=${() => {
-                  this.disabled = !this.disabled;
-                }}
-              >
-                ${this.disabled ? '屏蔽' : '全部显示'}
-              </button>
-            </div>
-          `,
-      obtainStyledShadowRoot(
-        obtainHTMLElementByID({
-          id: `video-list-patch-status-${VideoListPatch.id}`,
-          tag: 'div',
-          onDidCreate: (el) => {
-            listEl?.parentElement?.insertBefore(el, listEl);
+    this.matchCountStore.set(matchCount);
+
+    obtainHTMLElementByID({
+      id: `video-list-patch-status-${VideoListPatch.id}`,
+      tag: 'div',
+      onDidCreate: (el) => {
+        listEl?.parentElement?.insertBefore(el, listEl);
+        const shadowRoot = obtainStyledShadowRoot(el);
+        // Note: The VideoListPatchStatus component expects { stateStore }
+        // where stateStore is Writable<{ matchCount: number; disabled: boolean }>
+        // But here I have separate stores. I should combine them or update the component.
+        // It's cleaner to update the component or create a derived store.
+        // But I can't create derived store easily inside this render loop without potential issues.
+        // Let's create a combined store.
+        const stateStore = writable({ matchCount, disabled });
+        this.matchCountStore.subscribe((v) => {
+          stateStore.update((s) => ({ ...s, matchCount: v }));
+        });
+        this.disabledStore.subscribe((v) => {
+          stateStore.update((s) => ({ ...s, disabled: v }));
+        });
+
+        mount(VideoListPatchStatus, {
+          target: shadowRoot,
+          props: {
+            stateStore,
+            onToggle: () => {
+              this.disabledStore.update((v) => !v);
+              this.render();
+            },
           },
-        })
-      )
-    );
+        });
+      },
+    });
   };
 }

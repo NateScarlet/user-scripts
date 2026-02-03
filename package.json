@@ -2,6 +2,7 @@
   "name": "user-script",
   "version": "1.0.0",
   "description": "浏览器用户脚本(GreaseMonkey, TamperMonkey)",
+  "type": "module",
   "devDependencies": {
     "@types/greasemonkey": "^4.0.2",
     "@types/gulp": "^4.0.17",
@@ -10,7 +11,9 @@
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "autoprefixer": "^10.4.13",
+    "cross-env": "^10.1.0",
     "esbuild": "^0.18.4",
+    "esbuild-svelte": "^0.9.4",
     "eslint": "^8.43.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.8.0",
@@ -26,14 +29,17 @@
     "postcss-import": "^15.1.0",
     "prettier": "^3.6.2",
     "sass": "^1.63.4",
+    "svelte-check": "^4.3.6",
+    "svelte-preprocess": "^6.0.3",
     "tailwindcss": "^3.3.2",
-    "ts-node": "^10.4.0",
+    "ts-node": "^10.9.2",
     "typescript": "5.8.3"
   },
   "scripts": {
-    "build": "gulp build",
-    "dev": "gulp dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --no-warnings\" gulp build",
+    "dev": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --no-warnings\" gulp dev",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check": "svelte-check --workspace src"
   },
   "author": "NateScarlet",
   "license": "MIT",
@@ -42,7 +48,7 @@
     "@types/mustache": "^4.1.2",
     "core-js": "^3.44.0",
     "es-toolkit": "^1.39.9",
-    "lit-html": "^2.7.3",
-    "mustache": "^4.2.0"
+    "mustache": "^4.2.0",
+    "svelte": "^5.49.1"
   }
 }

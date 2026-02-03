@@ -2,7 +2,7 @@ const { log } = require('console');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['components/*.ts'],
+  content: ['./**/*.{ts,svelte}'],
   plugins: ['tailwindcss/nesting'],
   darkMode: ['selector', '[data-theme="dark"]'],
   theme: {

@@ -11,7 +11,8 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "verbatimModuleSyntax": true
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "**/*.svelte"]
 }

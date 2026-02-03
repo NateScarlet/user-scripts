@@ -29,6 +29,24 @@ export default class GMValue<T> {
     return this.loadingCount > 0;
   }
 
+  private readonly listeners = new Set<(value: T | undefined) => void>();
+
+  public readonly addChangeListener = (
+    listener: (value: T | undefined) => void
+  ) => {
+    this.listeners.add(listener);
+    return () => {
+      this.listeners.delete(listener);
+    };
+  };
+
+  public readonly subscribe = (
+    run: (value: T | undefined) => void
+  ): (() => void) => {
+    run(this.value);
+    return this.addChangeListener(run);
+  };
+
   public readonly refresh = async () => {
     if (this.isLoading) {
       await this.currentAction;
@@ -39,14 +57,20 @@ export default class GMValue<T> {
     this.currentAction = (async () => {
       try {
         const value = await GM.getValue(this.key);
+        let newValue: T | undefined;
         if (value == null) {
-          this.value = undefined;
+          newValue = undefined;
         } else if (typeof value === 'string') {
-          this.value = JSON.parse(value);
+          newValue = JSON.parse(value);
         } else {
           throw new Error(
             `GMValue(${this.key}): unrecognizable value '${value}'`
           );
+        }
+
+        if (JSON.stringify(this.value) !== JSON.stringify(newValue)) {
+          this.value = newValue;
+          this.listeners.forEach((i) => i(this.value));
         }
       } finally {
         this.loadingCount -= 1;
@@ -64,6 +88,7 @@ export default class GMValue<T> {
         } else {
           await GM.setValue(this.key, JSON.stringify(this.value));
         }
+        this.listeners.forEach((i) => i(this.value));
       } finally {
         this.loadingCount -= 1;
       }

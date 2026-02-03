@@ -15,6 +15,12 @@ export default new (class {
     return this.value.get();
   };
 
+  public readonly subscribe = (
+    run: (value: BlockedUserPattern[] | undefined) => void
+  ) => {
+    return this.value.subscribe(run);
+  };
+
   public set = (patterns: string[]) => {
     this.value.set(
       patterns.map((pattern) => {

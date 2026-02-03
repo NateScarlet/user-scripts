@@ -1,5 +1,6 @@
-import { build as esbuild } from './scripts/build';
-import { series, parallel } from 'gulp';
+import { build as esbuild } from './scripts/build.js';
+import gulp from 'gulp';
+const { series, parallel } = gulp;
 import { spawn } from 'child_process';
 
 function buildScript(watch: boolean) {

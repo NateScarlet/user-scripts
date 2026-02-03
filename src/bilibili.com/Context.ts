@@ -1,4 +1,4 @@
-import Duration, { DurationInput } from '@/utils/Duration';
+import Duration, { type DurationInput } from '@/utils/Duration';
 import ExactSearchMatcher from '@/utils/ExactSearchMatcher';
 import videoListSettings from './models/videoListSettings';
 import searchSettings from './models/searchSettings';

@@ -18,7 +18,7 @@
 
 import Polling from '@/utils/Polling';
 import waitUntil from '@/utils/waitUntil';
-import Component from './components/Component';
+import type Component from './components/Component';
 import SettingsDrawer from './components/SettingsDrawer';
 import FullHeaderButton from './components/FullHeaderButton';
 import migrate from './models/migrate';

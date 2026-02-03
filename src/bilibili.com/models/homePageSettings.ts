@@ -1,13 +1,27 @@
 import GMValue from '@/utils/GMValue';
+import type { Readable } from 'svelte/store';
 
-export default new (class HomePageSettings {
-  private readonly value = new GMValue<{
-    allowAdblockTips?: boolean;
-    floorCard?: {
-      excludeAll?: boolean;
-      excludeByChannel?: string[];
-    };
-  }>('homePageSettings@cb2f3e6c-a1e5-44de-b618-7715559b02ad', () => ({}));
+type HomePageSettingsValue = {
+  allowAdblockTips?: boolean;
+  floorCard?: {
+    excludeAll?: boolean;
+    excludeByChannel?: string[];
+  };
+};
+
+export default new (class HomePageSettings
+  implements Readable<HomePageSettingsValue | undefined>
+{
+  private readonly value = new GMValue<HomePageSettingsValue>(
+    'homePageSettings@cb2f3e6c-a1e5-44de-b618-7715559b02ad',
+    () => ({})
+  );
+
+  public readonly subscribe: Readable<
+    HomePageSettingsValue | undefined
+  >['subscribe'] = (run) => {
+    return this.value.subscribe(run);
+  };
 
   get allowAdblockTips() {
     return this.value.get().allowAdblockTips ?? false;

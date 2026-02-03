@@ -1,23 +1,52 @@
 import setHTMLElementDisplayHidden from '@/utils/setHTMLElementDisplayHidden';
+import injectStyle from '@/utils/injectStyle';
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
+import obtainHTMLElementByDataKey from '@/utils/obtainHTMLElementByDataKey';
 import randomUUID from '@/utils/randomUUID';
-import { html, nothing, render } from 'lit-html';
+import { mount } from 'svelte';
+import { get, writable } from 'svelte/store';
 import Context from '../Context';
 import parseLiveRoomURL from '../utils/parseLiveRoomURL';
-import LiveRoomHoverButton from './LiveRoomHoverButton';
+import LiveRoomHoverButton from './LiveRoomHoverButton.svelte';
 import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
+import LiveRoomListStatus from './LiveRoomListStatus.svelte';
 
 // spell-checker: word bili
 
 export default class LiveRoomPatch {
-  private disabled = false;
+  private readonly disabledStore = writable(false);
+
+  private readonly matchCountStore = writable(0);
 
   private static readonly id = randomUUID();
+  private static readonly parentKey = '321c1408-3ba8-4f8e-8ec8-4c491cf648c6';
+  private static readonly key = 'c2ad7200-7141-46cd-a0ce-ba71ca52e396';
+
+  private readonly instances = new WeakMap<HTMLElement, LiveRoomHoverButton>();
 
   constructor(private readonly ctx: Context) {}
 
   public readonly render = () => {
+    injectStyle(
+      LiveRoomPatch.parentKey,
+      `\
+[data-${LiveRoomPatch.parentKey}]:hover [data-${LiveRoomPatch.key}] {
+  filter: opacity(1);
+  transition: filter 0.2s linear 0.2s;
+}
+
+[data-${LiveRoomPatch.parentKey}] [data-${LiveRoomPatch.key}] {
+  filter: opacity(0);
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transition: filter 0.2s linear 0s;
+}
+`
+    );
     let matchCount = 0;
+    const disabled = get(this.disabledStore);
 
     let listEl: HTMLElement | undefined;
     document.querySelectorAll<HTMLElement>('a#card').forEach((i) => {
@@ -39,46 +68,63 @@ export default class LiveRoomPatch {
         container = container.parentElement;
       }
       listEl = container.parentElement || undefined;
-      const hidden = !this.disabled && match;
+      const hidden = !disabled && match;
       setHTMLElementDisplayHidden(container, hidden);
       if (!hidden) {
         // spell-checker: word Item_nickName_KO2QE Item_cover-wrap_BmU4h
-        new LiveRoomHoverButton(i.querySelector('.Item_cover-wrap_BmU4h'), {
-          id: room.id,
-          owner:
-            i.querySelector('.Item_nickName_KO2QE')?.textContent || room.id,
-        }).render();
+        const target = i.querySelector('.Item_cover-wrap_BmU4h');
+        if (target) {
+          const roomData = {
+            id: room.id,
+            owner:
+              i.querySelector('.Item_nickName_KO2QE')?.textContent || room.id,
+          };
+
+          const wrapper = obtainHTMLElementByDataKey({
+            tag: 'div',
+            key: LiveRoomPatch.key,
+            parentNode: target,
+            onDidCreate: (el) => {
+              target.setAttribute(`data-${LiveRoomPatch.parentKey}`, '');
+              target.append(el);
+              const s = mount(LiveRoomHoverButton, {
+                target: obtainStyledShadowRoot(el),
+                props: {
+                  room: roomData,
+                },
+              });
+              this.instances.set(el, s);
+            },
+          });
+
+          const comp = this.instances.get(wrapper);
+          if (comp) {
+            comp.setRoom(roomData);
+          }
+        }
       }
     });
 
-    render(
-      matchCount === 0
-        ? nothing
-        : html`
-            <div class="w-full text-gray-500 text-center m-1">
-              ${this.disabled
-                ? html`${matchCount} 个直播间符合屏蔽规则`
-                : html`已屏蔽 ${matchCount} 个直播间`}
-              <button
-                type="button"
-                class="border rounded py-1 px-2 text-black hover:bg-gray-200 transition ease-in-out duration-200"
-                @click=${() => {
-                  this.disabled = !this.disabled;
-                }}
-              >
-                ${this.disabled ? '屏蔽' : '全部显示'}
-              </button>
-            </div>
-          `,
-      obtainStyledShadowRoot(
-        obtainHTMLElementByID({
-          id: `live-room-list-patch-status-${LiveRoomPatch.id}`,
-          tag: 'div',
-          onDidCreate: (el) => {
-            listEl?.parentElement?.insertBefore(el, listEl);
+    this.matchCountStore.set(matchCount);
+
+    obtainHTMLElementByID({
+      id: `live-room-list-patch-status-${LiveRoomPatch.id}`,
+      tag: 'div',
+      onDidCreate: (el) => {
+        listEl?.parentElement?.insertBefore(el, listEl);
+        const shadowRoot = obtainStyledShadowRoot(el);
+        mount(LiveRoomListStatus, {
+          target: shadowRoot,
+          props: {
+            matchCountStore: this.matchCountStore,
+            disabledStore: this.disabledStore,
+            onToggleDisabled: () => {
+              this.disabledStore.update((v) => !v);
+              this.render();
+            },
           },
-        })
-      )
-    );
+        });
+      },
+    });
   };
 }

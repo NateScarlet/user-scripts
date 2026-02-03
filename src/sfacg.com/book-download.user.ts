@@ -17,19 +17,21 @@ import imageToMarkdown from '@/utils/imageToMarkdown';
 const __name__ = 'SF轻小说章节自动下载';
 
 (async function (): Promise<void> {
-  const chapter = document.querySelector('#article .article-title').textContent;
+  const chapter =
+    document.querySelector('#article .article-title')?.textContent ?? '';
   let lines = [
     `# ${chapter}`,
     `[原始页面](${location.href})`,
-    ...document
-      .querySelector('#article .article-desc')
-      .textContent.split(/\n */)
+    ...(document.querySelector('#article .article-desc')?.textContent ?? '')
+      .split(/\n */)
       .filter((i) => i),
     `---`,
   ];
-  const keywords = document
-    .querySelector<HTMLMetaElement>("meta[name='keywords']")
-    .content.split(',')
+  const keywords = (
+    document.querySelector<HTMLMetaElement>("meta[name='keywords']")?.content ??
+    ''
+  )
+    .split(',')
     .filter((i) => !['小说下载', 'TXT'].includes(i))
     .filter((i, index, keywords) => index === 0 || !i.startsWith(keywords[0]));
 

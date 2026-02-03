@@ -20,6 +20,12 @@ export default new (class {
     return !!this.value.get()[id];
   };
 
+  public readonly subscribe = (
+    run: (value: Record<string, Value | undefined> | undefined) => void
+  ) => {
+    return this.value.subscribe(run);
+  };
+
   public readonly get = (id: string) => {
     const value = this.value.get()[id]!;
     return {

@@ -15,9 +15,10 @@ import sleep from '@/utils/sleep';
 const __name__ = '刺猬猫章节自动下载';
 
 (async function (): Promise<void> {
-  const chapter = document.querySelector('#J_BookCnt .chapter').firstChild
-    .textContent;
-  let lines = [];
+  const chapter =
+    document.querySelector('#J_BookCnt .chapter')?.firstChild?.textContent ??
+    '';
+  let lines: string[] = [];
 
   let startTime = Date.now();
 
@@ -25,9 +26,11 @@ const __name__ = '刺猬猫章节自动下载';
     await sleep(1e3);
     // 收费章节
     for (const i of document.querySelectorAll<HTMLElement>('#J_BookImage')) {
-      const url: string = i.style['background-image'].match(
-        /(?:url\(")?(.+)(?:"\))?/
-      )[1];
+      const match = i.style.backgroundImage.match(/(?:url\(")?(.+)(?:"\))?/);
+      if (!match) {
+        continue;
+      }
+      const url: string = match[1];
       const line = await imageToMarkdown(await loadImage(url));
       lines.push(line);
     }

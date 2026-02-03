@@ -1,11 +1,23 @@
 import GMValue from '@/utils/GMValue';
+import type { Readable } from 'svelte/store';
 
-export default new (class SearchSettings {
-  private readonly value = new GMValue<{
-    strictTitleMatch?: boolean;
-    disableNavSuggestion?: boolean;
-    trending?: 'off';
-  }>('searchSettings@aa1595c8-1664-40de-a80c-9de375c2466a', () => ({}));
+type SearchSettingsValue = {
+  strictTitleMatch?: boolean;
+  disableNavSuggestion?: boolean;
+  trending?: 'off';
+};
+
+class SearchSettingsModel implements Readable<SearchSettingsValue | undefined> {
+  private readonly value = new GMValue<SearchSettingsValue>(
+    'searchSettings@aa1595c8-1664-40de-a80c-9de375c2466a',
+    () => ({})
+  );
+
+  public readonly subscribe: Readable<
+    SearchSettingsValue | undefined
+  >['subscribe'] = (run) => {
+    return this.value.subscribe(run);
+  };
 
   get strictTitleMatch() {
     return this.value.get().strictTitleMatch ?? false;
@@ -39,4 +51,7 @@ export default new (class SearchSettings {
       trending: v === 'on' ? undefined : v,
     });
   }
-})();
+}
+
+const searchSettings = new SearchSettingsModel();
+export default searchSettings;

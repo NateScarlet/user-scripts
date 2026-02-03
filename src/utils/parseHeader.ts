@@ -12,7 +12,7 @@ export default function parseHeader(headers: string): Map<string, string[]> {
     if (!ret.has(key)) {
       ret.set(key, []);
     }
-    ret.get(key).push(value);
+    ret.get(key)!.push(value);
   }
   return ret;
 }

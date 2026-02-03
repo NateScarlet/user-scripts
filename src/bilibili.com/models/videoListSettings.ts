@@ -1,4 +1,4 @@
-import Duration, { DurationInput } from '@/utils/Duration';
+import Duration, { type DurationInput } from '@/utils/Duration';
 import GMValue from '@/utils/GMValue';
 import optionalArray from '@/utils/optionalArray';
 
@@ -10,6 +10,22 @@ export default new (class VideoListSettings {
     durationLt?: string;
     excludeKeywords?: string[];
   }>('videoListSettings@4eb93ea9-8748-4647-876f-30451395e561', () => ({}));
+
+  public readonly subscribe = (
+    run: (
+      value:
+        | {
+            allowAdvertisement?: boolean;
+            allowPromoted?: boolean;
+            durationGte?: string;
+            durationLt?: string;
+            excludeKeywords?: string[];
+          }
+        | undefined
+    ) => void
+  ) => {
+    return this.value.subscribe(run);
+  };
 
   get allowAdvertisement() {
     return this.value.get().allowAdvertisement ?? false;

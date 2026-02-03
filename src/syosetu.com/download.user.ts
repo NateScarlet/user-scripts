@@ -82,7 +82,7 @@ async function downloadChapter(
 
 function clearMessage(): void {
   while (messageNodes.length) {
-    messageNodes.pop().remove();
+    messageNodes.pop()?.remove();
   }
 }
 function getMetaData(): string {
@@ -115,9 +115,7 @@ async function downloadChapterChunk(
     chapters.map((i) =>
       (async function (): Promise<string[]> {
         const ret = await Promise.all(
-          (
-            await downloadChapter(ncode, i.chapter)
-          )
+          (await downloadChapter(ncode, i.chapter))
             .split('\n')
             .map((i) => i.trim())
             .filter((i) => i.length > 0)
@@ -141,11 +139,13 @@ async function downloadChapterChunk(
 
 async function main(button: HTMLButtonElement): Promise<void> {
   clearMessage();
-  const ncode = urlLastPart(
-    document.querySelector<HTMLAnchorElement>(
-      '#novel_footer > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)'
-    ).href
+  const link = document.querySelector<HTMLAnchorElement>(
+    '#novel_footer > ul:nth-child(1) > li:nth-child(3) > a:nth-child(1)'
   );
+  if (!link) {
+    throw new Error('Link not found');
+  }
+  const ncode = urlLastPart(link.href);
   log(`start downloading: ${ncode}`);
   const chapters = [];
   for (const i of document.querySelectorAll<HTMLAnchorElement>(
@@ -157,7 +157,7 @@ async function main(button: HTMLButtonElement): Promise<void> {
   finishedCount = 0;
   totalCount = chapters.length;
   updateStatus();
-  const lines = [];
+  const lines: string[] = [];
   const chunkSize = 10;
   for (let i = 0; i < chapters.length; i += chunkSize) {
     lines.push(
@@ -195,6 +195,9 @@ async function main(button: HTMLButtonElement): Promise<void> {
       button.style.opacity = '';
     }
   };
-  document.querySelector('#novel_ex').after(button, statusIndicator);
-  log('activated');
+  const target = document.querySelector('#novel_ex');
+  if (target) {
+    target.after(button, statusIndicator);
+    log('activated');
+  }
 })();

@@ -1,9 +1,9 @@
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
-import { mdiEyeOffOutline } from '@mdi/js';
-import { render, html } from 'lit-html';
+import { mount } from 'svelte';
 import isNonNull from '@/utils/isNonNull';
 import randomUUID from '@/utils/randomUUID';
 import SettingsDrawer from './SettingsDrawer';
+import FullHeaderButtonComponent from './FullHeaderButton.svelte';
 
 export default class FullHeaderButton {
   private static readonly id = `full-header-button-${randomUUID()}`;
@@ -25,26 +25,13 @@ export default class FullHeaderButton {
       onDidCreate: (el) => {
         el.classList.add('right-entry-item');
         parent.prepend(...[parent.firstChild, el].filter(isNonNull));
+        mount(FullHeaderButtonComponent, {
+          target: el,
+          props: {
+            settings: this.settings,
+          },
+        });
       },
     });
-    render(
-      html`
-  <button
-    type="button"
-    class="right-entry__outside" 
-    @click=${(e: Event) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.settings.open();
-    }}
-  >
-    <svg viewBox="2 2 20 20" class="right-entry-icon" style="height: 20px; fill: currentColor;">
-      <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiEyeOffOutline}>
-    </svg>
-    <span class="right-entry-text">屏蔽</span>
-  </button>
-`,
-      container
-    );
   };
 }

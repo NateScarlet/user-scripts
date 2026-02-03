@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2026.02.03+1ef6493d
+// @version   2026.02.04+3891da4e
 // ==/UserScript==
 
 "use strict";
@@ -33,15 +33,15 @@
     throw Error("Symbol." + name + " is not defined");
   };
   var __pow = Math.pow;
-  var __defNormalProp = (obj, key2, value) => key2 in obj ? __defProp(obj, key2, { enumerable: true, configurable: true, writable: true, value }) : obj[key2] = value;
+  var __defNormalProp = (obj, key3, value) => key3 in obj ? __defProp(obj, key3, { enumerable: true, configurable: true, writable: true, value }) : obj[key3] = value;
   var __spreadValues = (a, b) => {
-    for (var prop in b || (b = {}))
-      if (__hasOwnProp.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
+    for (var prop2 in b || (b = {}))
+      if (__hasOwnProp.call(b, prop2))
+        __defNormalProp(a, prop2, b[prop2]);
     if (__getOwnPropSymbols)
-      for (var prop of __getOwnPropSymbols(b)) {
-        if (__propIsEnum.call(b, prop))
-          __defNormalProp(a, prop, b[prop]);
+      for (var prop2 of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop2))
+          __defNormalProp(a, prop2, b[prop2]);
       }
     return a;
   };
@@ -51,9 +51,9 @@
   };
   var __copyProps = (to, from, except, desc) => {
     if (from && typeof from === "object" || typeof from === "function") {
-      for (let key2 of __getOwnPropNames(from))
-        if (!__hasOwnProp.call(to, key2) && key2 !== except)
-          __defProp(to, key2, { get: () => from[key2], enumerable: !(desc = __getOwnPropDesc(from, key2)) || desc.enumerable });
+      for (let key3 of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key3) && key3 !== except)
+          __defProp(to, key3, { get: () => from[key3], enumerable: !(desc = __getOwnPropDesc(from, key3)) || desc.enumerable });
     }
     return to;
   };
@@ -65,9 +65,31 @@
     isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
     mod
   ));
-  var __publicField = (obj, key2, value) => {
-    __defNormalProp(obj, typeof key2 !== "symbol" ? key2 + "" : key2, value);
+  var __publicField = (obj, key3, value) => {
+    __defNormalProp(obj, typeof key3 !== "symbol" ? key3 + "" : key3, value);
     return value;
+  };
+  var __accessCheck = (obj, member, msg) => {
+    if (!member.has(obj))
+      throw TypeError("Cannot " + msg);
+  };
+  var __privateGet = (obj, member, getter) => {
+    __accessCheck(obj, member, "read from private field");
+    return getter ? getter.call(obj) : member.get(obj);
+  };
+  var __privateAdd = (obj, member, value) => {
+    if (member.has(obj))
+      throw TypeError("Cannot add the same private member more than once");
+    member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+  };
+  var __privateSet = (obj, member, value, setter) => {
+    __accessCheck(obj, member, "write to private field");
+    setter ? setter.call(obj, value) : member.set(obj, value);
+    return value;
+  };
+  var __privateMethod = (obj, member, method) => {
+    __accessCheck(obj, member, "access private method");
+    return method;
   };
   var __async = (__this, __arguments, generator) => {
     return new Promise((resolve, reject) => {
@@ -89,34 +111,34 @@
       step((generator = generator.apply(__this, __arguments)).next());
     });
   };
-  var __using = (stack, value, async) => {
+  var __using = (stack2, value, async2) => {
     if (value != null) {
       if (typeof value !== "object")
         throw TypeError("Object expected");
       var dispose;
-      if (async)
+      if (async2)
         dispose = value[__knownSymbol("asyncDispose")];
       if (dispose === void 0)
         dispose = value[__knownSymbol("dispose")];
       if (typeof dispose !== "function")
         throw TypeError("Object not disposable");
-      stack.push([async, dispose, value]);
-    } else if (async) {
-      stack.push([async]);
+      stack2.push([async2, dispose, value]);
+    } else if (async2) {
+      stack2.push([async2]);
     }
     return value;
   };
-  var __callDispose = (stack, error, hasError) => {
+  var __callDispose = (stack2, error, hasError) => {
     var E = typeof SuppressedError === "function" ? SuppressedError : function(e, s, m, _) {
       return _ = Error(m), _.name = "SuppressedError", _.error = e, _.suppressed = s, _;
     };
     var fail = (e) => error = hasError ? new E(e, error, "An error was suppressed during disposal") : (hasError = true, e);
-    var next = (it) => {
-      while (it = stack.pop()) {
+    var next2 = (it) => {
+      while (it = stack2.pop()) {
         try {
           var result = it[1] && it[1].call(it[2]);
           if (it[0])
-            return Promise.resolve(result).then(next, (e) => (fail(e), next()));
+            return Promise.resolve(result).then(next2, (e) => (fail(e), next2()));
         } catch (e) {
           fail(e);
         }
@@ -124,7 +146,7 @@
       if (hasError)
         throw error;
     };
-    return next();
+    return next2();
   };
 
   // node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/global-this.js
@@ -359,8 +381,8 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/environment-user-agent.js"(exports, module) {
       "use strict";
       var globalThis2 = require_global_this();
-      var navigator = globalThis2.navigator;
-      var userAgent = navigator && navigator.userAgent;
+      var navigator2 = globalThis2.navigator;
+      var userAgent = navigator2 && navigator2.userAgent;
       module.exports = userAgent ? String(userAgent) : "";
     }
   });
@@ -514,11 +536,11 @@
       "use strict";
       var globalThis2 = require_global_this();
       var defineProperty = Object.defineProperty;
-      module.exports = function(key2, value) {
+      module.exports = function(key3, value) {
         try {
-          defineProperty(globalThis2, key2, { value, configurable: true, writable: true });
+          defineProperty(globalThis2, key3, { value, configurable: true, writable: true });
         } catch (error) {
-          globalThis2[key2] = value;
+          globalThis2[key3] = value;
         }
         return value;
       };
@@ -549,8 +571,8 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/shared.js"(exports, module) {
       "use strict";
       var store = require_shared_store();
-      module.exports = function(key2, value) {
-        return store[key2] || (store[key2] = value || {});
+      module.exports = function(key3, value) {
+        return store[key3] || (store[key3] = value || {});
       };
     }
   });
@@ -574,8 +596,8 @@
       var uncurryThis = require_function_uncurry_this();
       var toObject = require_to_object();
       var hasOwnProperty = uncurryThis({}.hasOwnProperty);
-      module.exports = Object.hasOwn || function hasOwn(it, key2) {
-        return hasOwnProperty(toObject(it), key2);
+      module.exports = Object.hasOwn || function hasOwn(it, key3) {
+        return hasOwnProperty(toObject(it), key3);
       };
     }
   });
@@ -588,8 +610,8 @@
       var id = 0;
       var postfix = Math.random();
       var toString = uncurryThis(1.1.toString);
-      module.exports = function(key2) {
-        return "Symbol(" + (key2 === void 0 ? "" : key2) + ")_" + toString(++id + postfix, 36);
+      module.exports = function(key3) {
+        return "Symbol(" + (key3 === void 0 ? "" : key3) + ")_" + toString(++id + postfix, 36);
       };
     }
   });
@@ -655,8 +677,8 @@
       var toPrimitive = require_to_primitive();
       var isSymbol = require_is_symbol();
       module.exports = function(argument) {
-        var key2 = toPrimitive(argument, "string");
-        return isSymbol(key2) ? key2 : key2 + "";
+        var key3 = toPrimitive(argument, "string");
+        return isSymbol(key3) ? key3 : key3 + "";
       };
     }
   });
@@ -806,10 +828,10 @@
       var DESCRIPTORS = require_descriptors();
       var definePropertyModule = require_object_define_property();
       var createPropertyDescriptor = require_create_property_descriptor();
-      module.exports = DESCRIPTORS ? function(object, key2, value) {
-        return definePropertyModule.f(object, key2, createPropertyDescriptor(1, value));
-      } : function(object, key2, value) {
-        object[key2] = value;
+      module.exports = DESCRIPTORS ? function(object, key3, value) {
+        return definePropertyModule.f(object, key3, createPropertyDescriptor(1, value));
+      } : function(object, key3, value) {
+        object[key3] = value;
         return object;
       };
     }
@@ -870,8 +892,8 @@
       var shared = require_shared();
       var uid = require_uid();
       var keys = shared("keys");
-      module.exports = function(key2) {
-        return keys[key2] || (keys[key2] = uid(key2));
+      module.exports = function(key3) {
+        return keys[key3] || (keys[key3] = uid(key3));
       };
     }
   });
@@ -899,19 +921,19 @@
       var OBJECT_ALREADY_INITIALIZED = "Object already initialized";
       var TypeError2 = globalThis2.TypeError;
       var WeakMap2 = globalThis2.WeakMap;
-      var set;
-      var get;
+      var set2;
+      var get3;
       var has;
       var enforce = function(it) {
-        return has(it) ? get(it) : set(it, {});
+        return has(it) ? get3(it) : set2(it, {});
       };
       var getterFor = function(TYPE) {
         return function(it) {
-          var state;
-          if (!isObject(it) || (state = get(it)).type !== TYPE) {
+          var state2;
+          if (!isObject(it) || (state2 = get3(it)).type !== TYPE) {
             throw new TypeError2("Incompatible receiver, " + TYPE + " required");
           }
-          return state;
+          return state2;
         };
       };
       if (NATIVE_WEAK_MAP || shared.state) {
@@ -919,14 +941,14 @@
         store.get = store.get;
         store.has = store.has;
         store.set = store.set;
-        set = function(it, metadata) {
+        set2 = function(it, metadata) {
           if (store.has(it))
             throw new TypeError2(OBJECT_ALREADY_INITIALIZED);
           metadata.facade = it;
           store.set(it, metadata);
           return metadata;
         };
-        get = function(it) {
+        get3 = function(it) {
           return store.get(it) || {};
         };
         has = function(it) {
@@ -935,14 +957,14 @@
       } else {
         STATE = sharedKey("state");
         hiddenKeys[STATE] = true;
-        set = function(it, metadata) {
+        set2 = function(it, metadata) {
           if (hasOwn(it, STATE))
             throw new TypeError2(OBJECT_ALREADY_INITIALIZED);
           metadata.facade = it;
           createNonEnumerableProperty(it, STATE, metadata);
           return metadata;
         };
-        get = function(it) {
+        get3 = function(it) {
           return hasOwn(it, STATE) ? it[STATE] : {};
         };
         has = function(it) {
@@ -952,8 +974,8 @@
       var store;
       var STATE;
       module.exports = {
-        set,
-        get,
+        set: set2,
+        get: get3,
         has,
         enforce,
         getterFor
@@ -1010,9 +1032,9 @@
             value.prototype = void 0;
         } catch (error) {
         }
-        var state = enforceInternalState(value);
-        if (!hasOwn(state, "source")) {
-          state.source = join(TEMPLATE, typeof name == "string" ? name : "");
+        var state2 = enforceInternalState(value);
+        if (!hasOwn(state2, "source")) {
+          state2.source = join(TEMPLATE, typeof name == "string" ? name : "");
         }
         return value;
       };
@@ -1030,30 +1052,30 @@
       var definePropertyModule = require_object_define_property();
       var makeBuiltIn = require_make_built_in();
       var defineGlobalProperty = require_define_global_property();
-      module.exports = function(O, key2, value, options) {
+      module.exports = function(O, key3, value, options) {
         if (!options)
           options = {};
         var simple = options.enumerable;
-        var name = options.name !== void 0 ? options.name : key2;
+        var name = options.name !== void 0 ? options.name : key3;
         if (isCallable(value))
           makeBuiltIn(value, name, options);
         if (options.global) {
           if (simple)
-            O[key2] = value;
+            O[key3] = value;
           else
-            defineGlobalProperty(key2, value);
+            defineGlobalProperty(key3, value);
         } else {
           try {
             if (!options.unsafe)
-              delete O[key2];
-            else if (O[key2])
+              delete O[key3];
+            else if (O[key3])
               simple = true;
           } catch (error) {
           }
           if (simple)
-            O[key2] = value;
+            O[key3] = value;
           else
-            definePropertyModule.f(O, key2, {
+            definePropertyModule.f(O, key3, {
               value,
               enumerable: false,
               configurable: !options.nonConfigurable,
@@ -1097,8 +1119,8 @@
       var toIntegerOrInfinity = require_to_integer_or_infinity();
       var max = Math.max;
       var min = Math.min;
-      module.exports = function(index, length) {
-        var integer = toIntegerOrInfinity(index);
+      module.exports = function(index2, length) {
+        var integer = toIntegerOrInfinity(index2);
         return integer < 0 ? max(integer + length, 0) : min(integer, length);
       };
     }
@@ -1141,18 +1163,18 @@
           var length = lengthOfArrayLike(O);
           if (length === 0)
             return !IS_INCLUDES && -1;
-          var index = toAbsoluteIndex(fromIndex, length);
+          var index2 = toAbsoluteIndex(fromIndex, length);
           var value;
           if (IS_INCLUDES && el !== el)
-            while (length > index) {
-              value = O[index++];
+            while (length > index2) {
+              value = O[index2++];
               if (value !== value)
                 return true;
             }
           else
-            for (; length > index; index++) {
-              if ((IS_INCLUDES || index in O) && O[index] === el)
-                return IS_INCLUDES || index || 0;
+            for (; length > index2; index2++) {
+              if ((IS_INCLUDES || index2 in O) && O[index2] === el)
+                return IS_INCLUDES || index2 || 0;
             }
           return !IS_INCLUDES && -1;
         };
@@ -1177,17 +1199,17 @@
       var toIndexedObject = require_to_indexed_object();
       var indexOf = require_array_includes().indexOf;
       var hiddenKeys = require_hidden_keys();
-      var push = uncurryThis([].push);
+      var push2 = uncurryThis([].push);
       module.exports = function(object, names) {
         var O = toIndexedObject(object);
         var i = 0;
         var result = [];
-        var key2;
-        for (key2 in O)
-          !hasOwn(hiddenKeys, key2) && hasOwn(O, key2) && push(result, key2);
+        var key3;
+        for (key3 in O)
+          !hasOwn(hiddenKeys, key3) && hasOwn(O, key3) && push2(result, key3);
         while (names.length > i)
-          if (hasOwn(O, key2 = names[i++])) {
-            ~indexOf(result, key2) || push(result, key2);
+          if (hasOwn(O, key3 = names[i++])) {
+            ~indexOf(result, key3) || push2(result, key3);
           }
         return result;
       };
@@ -1257,14 +1279,14 @@
       var ownKeys = require_own_keys();
       var getOwnPropertyDescriptorModule = require_object_get_own_property_descriptor();
       var definePropertyModule = require_object_define_property();
-      module.exports = function(target, source, exceptions) {
-        var keys = ownKeys(source);
+      module.exports = function(target, source2, exceptions) {
+        var keys = ownKeys(source2);
         var defineProperty = definePropertyModule.f;
         var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
         for (var i = 0; i < keys.length; i++) {
-          var key2 = keys[i];
-          if (!hasOwn(target, key2) && !(exceptions && hasOwn(exceptions, key2))) {
-            defineProperty(target, key2, getOwnPropertyDescriptor(source, key2));
+          var key3 = keys[i];
+          if (!hasOwn(target, key3) && !(exceptions && hasOwn(exceptions, key3))) {
+            defineProperty(target, key3, getOwnPropertyDescriptor(source2, key3));
           }
         }
       };
@@ -1303,11 +1325,11 @@
       var defineGlobalProperty = require_define_global_property();
       var copyConstructorProperties = require_copy_constructor_properties();
       var isForced = require_is_forced();
-      module.exports = function(options, source) {
+      module.exports = function(options, source2) {
         var TARGET = options.target;
         var GLOBAL = options.global;
         var STATIC = options.stat;
-        var FORCED, target, key2, targetProperty, sourceProperty, descriptor;
+        var FORCED, target, key3, targetProperty, sourceProperty, descriptor;
         if (GLOBAL) {
           target = globalThis2;
         } else if (STATIC) {
@@ -1316,14 +1338,14 @@
           target = globalThis2[TARGET] && globalThis2[TARGET].prototype;
         }
         if (target)
-          for (key2 in source) {
-            sourceProperty = source[key2];
+          for (key3 in source2) {
+            sourceProperty = source2[key3];
             if (options.dontCallGetSet) {
-              descriptor = getOwnPropertyDescriptor(target, key2);
+              descriptor = getOwnPropertyDescriptor(target, key3);
               targetProperty = descriptor && descriptor.value;
             } else
-              targetProperty = target[key2];
-            FORCED = isForced(GLOBAL ? key2 : TARGET + (STATIC ? "." : "#") + key2, options.forced);
+              targetProperty = target[key3];
+            FORCED = isForced(GLOBAL ? key3 : TARGET + (STATIC ? "." : "#") + key3, options.forced);
             if (!FORCED && targetProperty !== void 0) {
               if (typeof sourceProperty == typeof targetProperty)
                 continue;
@@ -1332,7 +1354,7 @@
             if (options.sham || targetProperty && targetProperty.sham) {
               createNonEnumerableProperty(sourceProperty, "sham", true);
             }
-            defineBuiltIn(target, key2, sourceProperty, options);
+            defineBuiltIn(target, key3, sourceProperty, options);
           }
       };
     }
@@ -1344,10 +1366,10 @@
       "use strict";
       var NATIVE_BIND = require_function_bind_native();
       var FunctionPrototype = Function.prototype;
-      var apply = FunctionPrototype.apply;
+      var apply2 = FunctionPrototype.apply;
       var call = FunctionPrototype.call;
-      module.exports = typeof Reflect == "object" && Reflect.apply || (NATIVE_BIND ? call.bind(apply) : function() {
-        return call.apply(apply, arguments);
+      module.exports = typeof Reflect == "object" && Reflect.apply || (NATIVE_BIND ? call.bind(apply2) : function() {
+        return call.apply(apply2, arguments);
       });
     }
   });
@@ -1358,9 +1380,9 @@
       "use strict";
       var uncurryThis = require_function_uncurry_this();
       var aCallable = require_a_callable();
-      module.exports = function(object, key2, method) {
+      module.exports = function(object, key3, method) {
         try {
-          return uncurryThis(aCallable(Object.getOwnPropertyDescriptor(object, key2)[method]));
+          return uncurryThis(aCallable(Object.getOwnPropertyDescriptor(object, key3)[method]));
         } catch (error) {
         }
       };
@@ -1431,14 +1453,14 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/proxy-accessor.js"(exports, module) {
       "use strict";
       var defineProperty = require_object_define_property().f;
-      module.exports = function(Target, Source, key2) {
-        key2 in Target || defineProperty(Target, key2, {
+      module.exports = function(Target, Source, key3) {
+        key3 in Target || defineProperty(Target, key3, {
           configurable: true,
           get: function() {
-            return Source[key2];
+            return Source[key3];
           },
           set: function(it) {
-            Source[key2] = it;
+            Source[key3] = it;
           }
         });
       };
@@ -1490,9 +1512,9 @@
       var CORRECT_ARGUMENTS = classofRaw(function() {
         return arguments;
       }()) === "Arguments";
-      var tryGet = function(it, key2) {
+      var tryGet = function(it, key3) {
         try {
-          return it[key2];
+          return it[key3];
         } catch (error) {
         }
       };
@@ -1554,12 +1576,12 @@
       }("zxcasd");
       var V8_OR_CHAKRA_STACK_ENTRY = /\n\s*at [^:]*:[^\n]*/;
       var IS_V8_OR_CHAKRA_STACK = V8_OR_CHAKRA_STACK_ENTRY.test(TEST);
-      module.exports = function(stack, dropEntries) {
-        if (IS_V8_OR_CHAKRA_STACK && typeof stack == "string" && !$Error.prepareStackTrace) {
+      module.exports = function(stack2, dropEntries) {
+        if (IS_V8_OR_CHAKRA_STACK && typeof stack2 == "string" && !$Error.prepareStackTrace) {
           while (dropEntries--)
-            stack = replace(stack, V8_OR_CHAKRA_STACK_ENTRY, "");
+            stack2 = replace(stack2, V8_OR_CHAKRA_STACK_ENTRY, "");
         }
-        return stack;
+        return stack2;
       };
     }
   });
@@ -1588,12 +1610,12 @@
       var clearErrorStack = require_error_stack_clear();
       var ERROR_STACK_INSTALLABLE = require_error_stack_installable();
       var captureStackTrace = Error.captureStackTrace;
-      module.exports = function(error, C, stack, dropEntries) {
+      module.exports = function(error, C, stack2, dropEntries) {
         if (ERROR_STACK_INSTALLABLE) {
           if (captureStackTrace)
             captureStackTrace(error, C);
           else
-            createNonEnumerableProperty(error, "stack", clearErrorStack(stack, dropEntries));
+            createNonEnumerableProperty(error, "stack", clearErrorStack(stack2, dropEntries));
         }
       };
     }
@@ -1672,7 +1694,7 @@
       "use strict";
       var $ = require_export();
       var globalThis2 = require_global_this();
-      var apply = require_function_apply();
+      var apply2 = require_function_apply();
       var wrapErrorConstructorWithCause = require_wrap_error_constructor_with_cause();
       var WEB_ASSEMBLY = "WebAssembly";
       var WebAssembly = globalThis2[WEB_ASSEMBLY];
@@ -1689,54 +1711,54 @@
           $({ target: WEB_ASSEMBLY, stat: true, constructor: true, arity: 1, forced: FORCED }, O);
         }
       };
-      exportGlobalErrorCauseWrapper("Error", function(init) {
+      exportGlobalErrorCauseWrapper("Error", function(init2) {
         return function Error2(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
-      exportGlobalErrorCauseWrapper("EvalError", function(init) {
+      exportGlobalErrorCauseWrapper("EvalError", function(init2) {
         return function EvalError(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
-      exportGlobalErrorCauseWrapper("RangeError", function(init) {
+      exportGlobalErrorCauseWrapper("RangeError", function(init2) {
         return function RangeError(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
-      exportGlobalErrorCauseWrapper("ReferenceError", function(init) {
+      exportGlobalErrorCauseWrapper("ReferenceError", function(init2) {
         return function ReferenceError2(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
-      exportGlobalErrorCauseWrapper("SyntaxError", function(init) {
+      exportGlobalErrorCauseWrapper("SyntaxError", function(init2) {
         return function SyntaxError(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
-      exportGlobalErrorCauseWrapper("TypeError", function(init) {
+      exportGlobalErrorCauseWrapper("TypeError", function(init2) {
         return function TypeError2(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
-      exportGlobalErrorCauseWrapper("URIError", function(init) {
+      exportGlobalErrorCauseWrapper("URIError", function(init2) {
         return function URIError(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
-      exportWebAssemblyErrorCauseWrapper("CompileError", function(init) {
+      exportWebAssemblyErrorCauseWrapper("CompileError", function(init2) {
         return function CompileError(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
-      exportWebAssemblyErrorCauseWrapper("LinkError", function(init) {
+      exportWebAssemblyErrorCauseWrapper("LinkError", function(init2) {
         return function LinkError(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
-      exportWebAssemblyErrorCauseWrapper("RuntimeError", function(init) {
+      exportWebAssemblyErrorCauseWrapper("RuntimeError", function(init2) {
         return function RuntimeError(message) {
-          return apply(init, this, arguments);
+          return apply2(init2, this, arguments);
         };
       });
     }
@@ -1874,10 +1896,10 @@
         var props = toIndexedObject(Properties);
         var keys = objectKeys(Properties);
         var length = keys.length;
-        var index = 0;
-        var key2;
-        while (length > index)
-          definePropertyModule.f(O, key2 = keys[index++], props[key2]);
+        var index2 = 0;
+        var key3;
+        while (length > index2)
+          definePropertyModule.f(O, key3 = keys[index2++], props[key3]);
         return O;
       };
     }
@@ -2039,8 +2061,8 @@
       "use strict";
       var defineBuiltIn = require_define_built_in();
       module.exports = function(target, src, options) {
-        for (var key2 in src)
-          defineBuiltIn(target, key2, src[key2], options);
+        for (var key3 in src)
+          defineBuiltIn(target, key3, src[key3], options);
         return target;
       };
     }
@@ -2107,7 +2129,7 @@
       var wellKnownSymbol = require_well_known_symbol();
       var ASYNC_DISPOSE = wellKnownSymbol("asyncDispose");
       var DISPOSE = wellKnownSymbol("dispose");
-      var push = uncurryThis([].push);
+      var push2 = uncurryThis([].push);
       var getDisposeMethod = function(V, hint) {
         if (hint === "async-dispose") {
           var method = getMethod(V, ASYNC_DISPOSE);
@@ -2144,7 +2166,7 @@
         } else {
           resource = createDisposableResource(void 0, hint, method);
         }
-        push(disposable.stack, resource);
+        push2(disposable.stack, resource);
       };
     }
   });
@@ -2174,8 +2196,8 @@
       var HINT = "sync-dispose";
       var DISPOSED = "disposed";
       var PENDING = "pending";
-      var getPendingDisposableStackInternalState = function(stack) {
-        var internalState = getDisposableStackInternalState(stack);
+      var getPendingDisposableStackInternalState = function(stack2) {
+        var internalState = getDisposableStackInternalState(stack2);
         if (internalState.state === DISPOSED)
           throw new $ReferenceError(DISPOSABLE_STACK + " already disposed");
         return internalState;
@@ -2198,13 +2220,13 @@
           internalState.state = DISPOSED;
           if (!DESCRIPTORS)
             this.disposed = true;
-          var stack = internalState.stack;
-          var i = stack.length;
+          var stack2 = internalState.stack;
+          var i = stack2.length;
           var thrown = false;
           var suppressed;
           while (i) {
-            var disposeMethod = stack[--i];
-            stack[i] = null;
+            var disposeMethod = stack2[--i];
+            stack2[i] = null;
             try {
               disposeMethod();
             } catch (errorResult) {
@@ -2237,7 +2259,7 @@
           aCallable(onDispose);
           addDisposableResource(internalState, void 0, HINT, onDispose);
         },
-        move: function move() {
+        move: function move2() {
           var internalState = getPendingDisposableStackInternalState(this);
           var newDisposableStack = new $DisposableStack();
           getDisposableStackInternalState(newDisposableStack).stack = internalState.stack;
@@ -2405,7 +2427,7 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/is-array.js"(exports, module) {
       "use strict";
       var classof = require_classof_raw();
-      module.exports = Array.isArray || function isArray2(argument) {
+      module.exports = Array.isArray || function isArray(argument) {
         return classof(argument) === "Array";
       };
     }
@@ -2432,11 +2454,11 @@
       var DESCRIPTORS = require_descriptors();
       var definePropertyModule = require_object_define_property();
       var createPropertyDescriptor = require_create_property_descriptor();
-      module.exports = function(object, key2, value) {
+      module.exports = function(object, key3, value) {
         if (DESCRIPTORS)
-          definePropertyModule.f(object, key2, createPropertyDescriptor(0, value));
+          definePropertyModule.f(object, key3, createPropertyDescriptor(0, value));
         else
-          object[key2] = value;
+          object[key3] = value;
       };
     }
   });
@@ -2451,17 +2473,17 @@
       var classof = require_classof();
       var getBuiltIn = require_get_built_in();
       var inspectSource = require_inspect_source();
-      var noop = function() {
+      var noop2 = function() {
       };
       var construct = getBuiltIn("Reflect", "construct");
       var constructorRegExp = /^\s*(?:class|function)\b/;
       var exec = uncurryThis(constructorRegExp.exec);
-      var INCORRECT_TO_STRING = !constructorRegExp.test(noop);
+      var INCORRECT_TO_STRING = !constructorRegExp.test(noop2);
       var isConstructorModern = function isConstructor(argument) {
         if (!isCallable(argument))
           return false;
         try {
-          construct(noop, [], argument);
+          construct(noop2, [], argument);
           return true;
         } catch (error) {
           return false;
@@ -2496,7 +2518,7 @@
   var require_array_species_constructor = __commonJS({
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/array-species-constructor.js"(exports, module) {
       "use strict";
-      var isArray2 = require_is_array();
+      var isArray = require_is_array();
       var isConstructor = require_is_constructor();
       var isObject = require_is_object();
       var wellKnownSymbol = require_well_known_symbol();
@@ -2504,9 +2526,9 @@
       var $Array = Array;
       module.exports = function(originalArray) {
         var C;
-        if (isArray2(originalArray)) {
+        if (isArray(originalArray)) {
           C = originalArray.constructor;
-          if (isConstructor(C) && (C === $Array || isArray2(C.prototype)))
+          if (isConstructor(C) && (C === $Array || isArray(C.prototype)))
             C = void 0;
           else if (isObject(C)) {
             C = C[SPECIES];
@@ -2557,7 +2579,7 @@
       "use strict";
       var $ = require_export();
       var fails = require_fails();
-      var isArray2 = require_is_array();
+      var isArray = require_is_array();
       var isObject = require_is_object();
       var toObject = require_to_object();
       var lengthOfArrayLike = require_length_of_array_like();
@@ -2577,7 +2599,7 @@
         if (!isObject(O))
           return false;
         var spreadable = O[IS_CONCAT_SPREADABLE];
-        return spreadable !== void 0 ? !!spreadable : isArray2(O);
+        return spreadable !== void 0 ? !!spreadable : isArray(O);
       };
       var FORCED = !IS_CONCAT_SPREADABLE_SUPPORT || !arrayMethodHasSpeciesSupport("concat");
       $({ target: "Array", proto: true, arity: 1, forced: FORCED }, {
@@ -2715,7 +2737,7 @@
       var toObject = require_to_object();
       var lengthOfArrayLike = require_length_of_array_like();
       var arraySpeciesCreate = require_array_species_create();
-      var push = uncurryThis([].push);
+      var push2 = uncurryThis([].push);
       var createMethod = function(TYPE) {
         var IS_MAP = TYPE === 1;
         var IS_FILTER = TYPE === 2;
@@ -2726,20 +2748,20 @@
         var NO_HOLES = TYPE === 5 || IS_FIND_INDEX;
         return function($this, callbackfn, that, specificCreate) {
           var O = toObject($this);
-          var self2 = IndexedObject(O);
-          var length = lengthOfArrayLike(self2);
+          var self3 = IndexedObject(O);
+          var length = lengthOfArrayLike(self3);
           var boundFunction = bind(callbackfn, that);
-          var index = 0;
+          var index2 = 0;
           var create = specificCreate || arraySpeciesCreate;
           var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_REJECT ? create($this, 0) : void 0;
           var value, result;
-          for (; length > index; index++)
-            if (NO_HOLES || index in self2) {
-              value = self2[index];
-              result = boundFunction(value, index, O);
+          for (; length > index2; index2++)
+            if (NO_HOLES || index2 in self3) {
+              value = self3[index2];
+              result = boundFunction(value, index2, O);
               if (TYPE) {
                 if (IS_MAP)
-                  target[index] = result;
+                  target[index2] = result;
                 else if (result)
                   switch (TYPE) {
                     case 3:
@@ -2747,16 +2769,16 @@
                     case 5:
                       return value;
                     case 6:
-                      return index;
+                      return index2;
                     case 2:
-                      push(target, value);
+                      push2(target, value);
                   }
                 else
                   switch (TYPE) {
                     case 4:
                       return false;
                     case 7:
-                      push(target, value);
+                      push2(target, value);
                   }
               }
             }
@@ -2848,7 +2870,7 @@
       var nativeDefineProperty = definePropertyModule.f;
       var nativeGetOwnPropertyNames = getOwnPropertyNamesExternal.f;
       var nativePropertyIsEnumerable = propertyIsEnumerableModule.f;
-      var push = uncurryThis([].push);
+      var push2 = uncurryThis([].push);
       var AllSymbols = shared("symbols");
       var ObjectPrototypeSymbols = shared("op-symbols");
       var WellKnownSymbolsStore = shared("wks");
@@ -2869,7 +2891,7 @@
           }
         })).a !== 7;
       }) ? fallbackDefineProperty : nativeDefineProperty;
-      var wrap2 = function(tag2, description) {
+      var wrap = function(tag2, description) {
         var symbol = AllSymbols[tag2] = nativeObjectCreate(SymbolPrototype);
         setInternalState(symbol, {
           type: SYMBOL,
@@ -2884,29 +2906,29 @@
         if (O === ObjectPrototype)
           $defineProperty(ObjectPrototypeSymbols, P, Attributes);
         anObject(O);
-        var key2 = toPropertyKey(P);
+        var key3 = toPropertyKey(P);
         anObject(Attributes);
-        if (hasOwn(AllSymbols, key2)) {
+        if (hasOwn(AllSymbols, key3)) {
           if (!Attributes.enumerable) {
             if (!hasOwn(O, HIDDEN))
               nativeDefineProperty(O, HIDDEN, createPropertyDescriptor(1, nativeObjectCreate(null)));
-            O[HIDDEN][key2] = true;
+            O[HIDDEN][key3] = true;
           } else {
-            if (hasOwn(O, HIDDEN) && O[HIDDEN][key2])
-              O[HIDDEN][key2] = false;
+            if (hasOwn(O, HIDDEN) && O[HIDDEN][key3])
+              O[HIDDEN][key3] = false;
             Attributes = nativeObjectCreate(Attributes, { enumerable: createPropertyDescriptor(0, false) });
           }
-          return setSymbolDescriptor(O, key2, Attributes);
+          return setSymbolDescriptor(O, key3, Attributes);
         }
-        return nativeDefineProperty(O, key2, Attributes);
+        return nativeDefineProperty(O, key3, Attributes);
       };
       var $defineProperties = function defineProperties(O, Properties) {
         anObject(O);
         var properties = toIndexedObject(Properties);
         var keys = objectKeys(properties).concat($getOwnPropertySymbols(properties));
-        $forEach(keys, function(key2) {
-          if (!DESCRIPTORS || call($propertyIsEnumerable, properties, key2))
-            $defineProperty(O, key2, properties[key2]);
+        $forEach(keys, function(key3) {
+          if (!DESCRIPTORS || call($propertyIsEnumerable, properties, key3))
+            $defineProperty(O, key3, properties[key3]);
         });
         return O;
       };
@@ -2922,11 +2944,11 @@
       };
       var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(O, P) {
         var it = toIndexedObject(O);
-        var key2 = toPropertyKey(P);
-        if (it === ObjectPrototype && hasOwn(AllSymbols, key2) && !hasOwn(ObjectPrototypeSymbols, key2))
+        var key3 = toPropertyKey(P);
+        if (it === ObjectPrototype && hasOwn(AllSymbols, key3) && !hasOwn(ObjectPrototypeSymbols, key3))
           return;
-        var descriptor = nativeGetOwnPropertyDescriptor(it, key2);
-        if (descriptor && hasOwn(AllSymbols, key2) && !(hasOwn(it, HIDDEN) && it[HIDDEN][key2])) {
+        var descriptor = nativeGetOwnPropertyDescriptor(it, key3);
+        if (descriptor && hasOwn(AllSymbols, key3) && !(hasOwn(it, HIDDEN) && it[HIDDEN][key3])) {
           descriptor.enumerable = true;
         }
         return descriptor;
@@ -2934,9 +2956,9 @@
       var $getOwnPropertyNames = function getOwnPropertyNames(O) {
         var names = nativeGetOwnPropertyNames(toIndexedObject(O));
         var result = [];
-        $forEach(names, function(key2) {
-          if (!hasOwn(AllSymbols, key2) && !hasOwn(hiddenKeys, key2))
-            push(result, key2);
+        $forEach(names, function(key3) {
+          if (!hasOwn(AllSymbols, key3) && !hasOwn(hiddenKeys, key3))
+            push2(result, key3);
         });
         return result;
       };
@@ -2944,9 +2966,9 @@
         var IS_OBJECT_PROTOTYPE = O === ObjectPrototype;
         var names = nativeGetOwnPropertyNames(IS_OBJECT_PROTOTYPE ? ObjectPrototypeSymbols : toIndexedObject(O));
         var result = [];
-        $forEach(names, function(key2) {
-          if (hasOwn(AllSymbols, key2) && (!IS_OBJECT_PROTOTYPE || hasOwn(ObjectPrototype, key2))) {
-            push(result, AllSymbols[key2]);
+        $forEach(names, function(key3) {
+          if (hasOwn(AllSymbols, key3) && (!IS_OBJECT_PROTOTYPE || hasOwn(ObjectPrototype, key3))) {
+            push2(result, AllSymbols[key3]);
           }
         });
         return result;
@@ -2974,14 +2996,14 @@
           };
           if (DESCRIPTORS && USE_SETTER)
             setSymbolDescriptor(ObjectPrototype, tag2, { configurable: true, set: setter });
-          return wrap2(tag2, description);
+          return wrap(tag2, description);
         };
         SymbolPrototype = $Symbol[PROTOTYPE];
         defineBuiltIn(SymbolPrototype, "toString", function toString() {
           return getInternalState(this).tag;
         });
         defineBuiltIn($Symbol, "withoutSetter", function(description) {
-          return wrap2(uid(description), description);
+          return wrap(uid(description), description);
         });
         propertyIsEnumerableModule.f = $propertyIsEnumerable;
         definePropertyModule.f = $defineProperty;
@@ -2990,7 +3012,7 @@
         getOwnPropertyNamesModule.f = getOwnPropertyNamesExternal.f = $getOwnPropertyNames;
         getOwnPropertySymbolsModule.f = $getOwnPropertySymbols;
         wrappedWellKnownSymbolModule.f = function(name) {
-          return wrap2(wellKnownSymbol(name), name);
+          return wrap(wellKnownSymbol(name), name);
         };
         if (DESCRIPTORS) {
           defineBuiltInAccessor(SymbolPrototype, "description", {
@@ -3065,8 +3087,8 @@
       var StringToSymbolRegistry = shared("string-to-symbol-registry");
       var SymbolToStringRegistry = shared("symbol-to-string-registry");
       $({ target: "Symbol", stat: true, forced: !NATIVE_SYMBOL_REGISTRY }, {
-        "for": function(key2) {
-          var string = toString(key2);
+        "for": function(key3) {
+          var string = toString(key3);
           if (hasOwn(StringToSymbolRegistry, string))
             return StringToSymbolRegistry[string];
           var symbol = getBuiltIn("Symbol")(string);
@@ -3105,36 +3127,36 @@
     "node_modules/.pnpm/core-js@3.44.0/node_modules/core-js/internals/get-json-replacer-function.js"(exports, module) {
       "use strict";
       var uncurryThis = require_function_uncurry_this();
-      var isArray2 = require_is_array();
+      var isArray = require_is_array();
       var isCallable = require_is_callable();
       var classof = require_classof_raw();
       var toString = require_to_string();
-      var push = uncurryThis([].push);
+      var push2 = uncurryThis([].push);
       module.exports = function(replacer) {
         if (isCallable(replacer))
           return replacer;
-        if (!isArray2(replacer))
+        if (!isArray(replacer))
           return;
         var rawLength = replacer.length;
         var keys = [];
         for (var i = 0; i < rawLength; i++) {
-          var element = replacer[i];
-          if (typeof element == "string")
-            push(keys, element);
-          else if (typeof element == "number" || classof(element) === "Number" || classof(element) === "String")
-            push(keys, toString(element));
+          var element2 = replacer[i];
+          if (typeof element2 == "string")
+            push2(keys, element2);
+          else if (typeof element2 == "number" || classof(element2) === "Number" || classof(element2) === "String")
+            push2(keys, toString(element2));
         }
         var keysLength = keys.length;
-        var root = true;
-        return function(key2, value) {
-          if (root) {
-            root = false;
+        var root15 = true;
+        return function(key3, value) {
+          if (root15) {
+            root15 = false;
             return value;
           }
-          if (isArray2(this))
+          if (isArray(this))
             return value;
           for (var j = 0; j < keysLength; j++)
-            if (keys[j] === key2)
+            if (keys[j] === key3)
               return value;
         };
       };
@@ -3147,7 +3169,7 @@
       "use strict";
       var $ = require_export();
       var getBuiltIn = require_get_built_in();
-      var apply = require_function_apply();
+      var apply2 = require_function_apply();
       var call = require_function_call();
       var uncurryThis = require_function_uncurry_this();
       var fails = require_fails();
@@ -3178,18 +3200,18 @@
         var $replacer = getReplacerFunction(replacer);
         if (!isCallable($replacer) && (it === void 0 || isSymbol(it)))
           return;
-        args[1] = function(key2, value) {
+        args[1] = function(key3, value) {
           if (isCallable($replacer))
-            value = call($replacer, this, $String(key2), value);
+            value = call($replacer, this, $String(key3), value);
           if (!isSymbol(value))
             return value;
         };
-        return apply($stringify, null, args);
+        return apply2($stringify, null, args);
       };
       var fixIllFormed = function(match, offset, string) {
         var prev = charAt(string, offset - 1);
-        var next = charAt(string, offset + 1);
-        if (exec(low, match) && !exec(hi, next) || exec(hi, match) && !exec(low, prev)) {
+        var next2 = charAt(string, offset + 1);
+        if (exec(low, match) && !exec(hi, next2) || exec(hi, match) && !exec(low, prev)) {
           return "\\u" + numberToString(charCodeAt(match, 0), 16);
         }
         return match;
@@ -3199,7 +3221,7 @@
           // eslint-disable-next-line no-unused-vars -- required for `.length`
           stringify: function stringify(it, replacer, space) {
             var args = arraySlice(arguments);
-            var result = apply(WRONG_SYMBOLS_CONVERSION ? stringifyWithSymbolsFix : $stringify, null, args);
+            var result = apply2(WRONG_SYMBOLS_CONVERSION ? stringifyWithSymbolsFix : $stringify, null, args);
             return ILL_FORMED_UNICODE && typeof result == "string" ? replace(result, tester, fixIllFormed) : result;
           }
         });
@@ -3591,8 +3613,8 @@
           value: create(null)
         });
       }
-      module.exports = function(key2) {
-        ArrayPrototype[UNSCOPABLES][key2] = true;
+      module.exports = function(key3) {
+        ArrayPrototype[UNSCOPABLES][key3] = true;
       };
     }
   });
@@ -3617,9 +3639,9 @@
       var returnThis = function() {
         return this;
       };
-      module.exports = function(IteratorConstructor, NAME, next, ENUMERABLE_NEXT) {
+      module.exports = function(IteratorConstructor, NAME, next2, ENUMERABLE_NEXT) {
         var TO_STRING_TAG = NAME + " Iterator";
-        IteratorConstructor.prototype = create(IteratorPrototype, { next: createPropertyDescriptor(+!ENUMERABLE_NEXT, next) });
+        IteratorConstructor.prototype = create(IteratorPrototype, { next: createPropertyDescriptor(+!ENUMERABLE_NEXT, next2) });
         setToStringTag(IteratorConstructor, TO_STRING_TAG, false, true);
         Iterators[TO_STRING_TAG] = returnThis;
         return IteratorConstructor;
@@ -3656,8 +3678,8 @@
       var returnThis = function() {
         return this;
       };
-      module.exports = function(Iterable, NAME, IteratorConstructor, next, DEFAULT, IS_SET, FORCED) {
-        createIteratorConstructor(IteratorConstructor, NAME, next);
+      module.exports = function(Iterable, NAME, IteratorConstructor, next2, DEFAULT, IS_SET, FORCED) {
+        createIteratorConstructor(IteratorConstructor, NAME, next2);
         var getIterationMethod = function(KIND) {
           if (KIND === DEFAULT && defaultIterator)
             return defaultIterator;
@@ -3774,20 +3796,20 @@
           // kind
         });
       }, function() {
-        var state = getInternalState(this);
-        var target = state.target;
-        var index = state.index++;
-        if (!target || index >= target.length) {
-          state.target = null;
+        var state2 = getInternalState(this);
+        var target = state2.target;
+        var index2 = state2.index++;
+        if (!target || index2 >= target.length) {
+          state2.target = null;
           return createIterResultObject(void 0, true);
         }
-        switch (state.kind) {
+        switch (state2.kind) {
           case "keys":
-            return createIterResultObject(index, false);
+            return createIterResultObject(index2, false);
           case "values":
-            return createIterResultObject(target[index], false);
+            return createIterResultObject(target[index2], false);
         }
-        return createIterResultObject([index, target[index]], false);
+        return createIterResultObject([index2, target[index2]], false);
       }, "values");
       var values = Iterators.Arguments = Iterators.Array;
       addToUnscopables("keys");
@@ -3907,8 +3929,8 @@
   });
 
   // src/utils/Polling.ts
-  var import_disposable_stack = __toESM(require_disposable_stack3());
-  var import_symbol = __toESM(require_symbol3());
+  var import_disposable_stack = __toESM(require_disposable_stack3(), 1);
+  var import_symbol = __toESM(require_symbol3(), 1);
 
   // src/utils/isAbortError.ts
   function isAbortError(err) {
@@ -3934,16 +3956,16 @@
     }
   };
   function createOptions({
-    update,
-    scheduleNext = (next) => {
-      const stack = new DisposableStack();
-      stack.adopt(requestAnimationFrame(next), cancelAnimationFrame);
-      return stack;
+    update: update2,
+    scheduleNext = (next2) => {
+      const stack2 = new DisposableStack();
+      stack2.adopt(requestAnimationFrame(next2), cancelAnimationFrame);
+      return stack2;
     },
     onError
   }) {
     return {
-      update,
+      update: update2,
       scheduleNext,
       onError
     };
@@ -3968,14 +3990,14 @@
     }
     run() {
       return __async(this, null, function* () {
-        var _a5, _b2, _c2, _d2, _e, _f;
+        var _a5, _b2, _c2, _d, _e, _f;
         var _stack = [];
         try {
           if (this.active != null) {
             return;
           }
-          const stack = __using(_stack, new DisposableStack());
-          stack.defer(() => {
+          const stack2 = __using(_stack, new DisposableStack());
+          stack2.defer(() => {
             var _a6;
             (_a6 = this.active) == null ? void 0 : _a6.stack.dispose();
             this.active = void 0;
@@ -3988,7 +4010,7 @@
               yield this.options.update(ctx);
             } catch (err) {
               if (!isAbortError(err)) {
-                (_d2 = (_c2 = this.options).onError) == null ? void 0 : _d2.call(_c2, err);
+                (_d = (_c2 = this.options).onError) == null ? void 0 : _d.call(_c2, err);
               }
             }
             if (ctx.stack.disposed) {
@@ -4035,7 +4057,7 @@
       onTimeout = () => {
         throw new Error("wait timeout");
       },
-      scheduleNext = (next) => setTimeout(next, 100)
+      scheduleNext = (next2) => setTimeout(next2, 100)
     }) {
       const startAt = performance.now();
       let readyAt = 0;
@@ -4057,36 +4079,6012 @@
     });
   }
 
-  // src/utils/obtainHTMLElementByID.ts
-  function obtainHTMLElementByID({
-    tag: tag2,
-    id,
-    onDidCreate
-  }) {
-    const match = document.getElementById(id);
-    if (match) {
-      return match;
+  // node_modules/.pnpm/esm-env@1.2.2/node_modules/esm-env/true.js
+  var true_default = true;
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/shared/utils.js
+  var is_array = Array.isArray;
+  var index_of = Array.prototype.indexOf;
+  var includes = Array.prototype.includes;
+  var array_from = Array.from;
+  var object_keys = Object.keys;
+  var define_property = Object.defineProperty;
+  var get_descriptor = Object.getOwnPropertyDescriptor;
+  var get_descriptors = Object.getOwnPropertyDescriptors;
+  var object_prototype = Object.prototype;
+  var array_prototype = Array.prototype;
+  var get_prototype_of = Object.getPrototypeOf;
+  var is_extensible = Object.isExtensible;
+  function is_function(thing) {
+    return typeof thing === "function";
+  }
+  var noop = () => {
+  };
+  function run_all(arr) {
+    for (var i = 0; i < arr.length; i++) {
+      arr[i]();
     }
-    const el = document.createElement(tag2);
-    el.id = id;
-    onDidCreate == null ? void 0 : onDidCreate(el);
-    return el;
+  }
+  function deferred() {
+    var resolve;
+    var reject;
+    var promise = new Promise((res, rej) => {
+      resolve = res;
+      reject = rej;
+    });
+    return { promise, resolve, reject };
   }
 
-  // src/utils/randomUUID.ts
-  function fallback() {
-    const ts = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-      const r = (ts + Math.random()) * 16 % 16 | 0;
-      const v = c === "x" ? r : r & 3 | 8;
-      return v.toString(16);
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/constants.js
+  var DERIVED = 1 << 1;
+  var EFFECT = 1 << 2;
+  var RENDER_EFFECT = 1 << 3;
+  var MANAGED_EFFECT = 1 << 24;
+  var BLOCK_EFFECT = 1 << 4;
+  var BRANCH_EFFECT = 1 << 5;
+  var ROOT_EFFECT = 1 << 6;
+  var BOUNDARY_EFFECT = 1 << 7;
+  var CONNECTED = 1 << 9;
+  var CLEAN = 1 << 10;
+  var DIRTY = 1 << 11;
+  var MAYBE_DIRTY = 1 << 12;
+  var INERT = 1 << 13;
+  var DESTROYED = 1 << 14;
+  var EFFECT_RAN = 1 << 15;
+  var EFFECT_TRANSPARENT = 1 << 16;
+  var EAGER_EFFECT = 1 << 17;
+  var HEAD_EFFECT = 1 << 18;
+  var EFFECT_PRESERVED = 1 << 19;
+  var USER_EFFECT = 1 << 20;
+  var EFFECT_OFFSCREEN = 1 << 25;
+  var WAS_MARKED = 1 << 15;
+  var REACTION_IS_UPDATING = 1 << 21;
+  var ASYNC = 1 << 22;
+  var ERROR_VALUE = 1 << 23;
+  var STATE_SYMBOL = Symbol("$state");
+  var LEGACY_PROPS = Symbol("legacy props");
+  var LOADING_ATTR_SYMBOL = Symbol("");
+  var PROXY_PATH_SYMBOL = Symbol("proxy path");
+  var STALE_REACTION = new class StaleReactionError extends Error {
+    constructor() {
+      super(...arguments);
+      __publicField(this, "name", "StaleReactionError");
+      __publicField(this, "message", "The reaction that called `getAbortSignal()` was re-run or destroyed");
+    }
+  }();
+  var TEXT_NODE = 3;
+  var COMMENT_NODE = 8;
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/shared/errors.js
+  function lifecycle_outside_component(name) {
+    if (true_default) {
+      const error = new Error(`lifecycle_outside_component
+\`${name}(...)\` can only be used during component initialisation
+https://svelte.dev/e/lifecycle_outside_component`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/lifecycle_outside_component`);
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/errors.js
+  function async_derived_orphan() {
+    if (true_default) {
+      const error = new Error(`async_derived_orphan
+Cannot create a \`$derived(...)\` with an \`await\` expression outside of an effect tree
+https://svelte.dev/e/async_derived_orphan`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/async_derived_orphan`);
+    }
+  }
+  function bind_invalid_checkbox_value() {
+    if (true_default) {
+      const error = new Error(`bind_invalid_checkbox_value
+Using \`bind:value\` together with a checkbox input is not allowed. Use \`bind:checked\` instead
+https://svelte.dev/e/bind_invalid_checkbox_value`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/bind_invalid_checkbox_value`);
+    }
+  }
+  function derived_references_self() {
+    if (true_default) {
+      const error = new Error(`derived_references_self
+A derived value cannot reference itself recursively
+https://svelte.dev/e/derived_references_self`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/derived_references_self`);
+    }
+  }
+  function effect_in_teardown(rune) {
+    if (true_default) {
+      const error = new Error(`effect_in_teardown
+\`${rune}\` cannot be used inside an effect cleanup function
+https://svelte.dev/e/effect_in_teardown`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/effect_in_teardown`);
+    }
+  }
+  function effect_in_unowned_derived() {
+    if (true_default) {
+      const error = new Error(`effect_in_unowned_derived
+Effect cannot be created inside a \`$derived\` value that was not itself created inside an effect
+https://svelte.dev/e/effect_in_unowned_derived`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/effect_in_unowned_derived`);
+    }
+  }
+  function effect_orphan(rune) {
+    if (true_default) {
+      const error = new Error(`effect_orphan
+\`${rune}\` can only be used inside an effect (e.g. during component initialisation)
+https://svelte.dev/e/effect_orphan`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/effect_orphan`);
+    }
+  }
+  function effect_update_depth_exceeded() {
+    if (true_default) {
+      const error = new Error(`effect_update_depth_exceeded
+Maximum update depth exceeded. This typically indicates that an effect reads and writes the same piece of state
+https://svelte.dev/e/effect_update_depth_exceeded`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/effect_update_depth_exceeded`);
+    }
+  }
+  function hydration_failed() {
+    if (true_default) {
+      const error = new Error(`hydration_failed
+Failed to hydrate the application
+https://svelte.dev/e/hydration_failed`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/hydration_failed`);
+    }
+  }
+  function props_invalid_value(key3) {
+    if (true_default) {
+      const error = new Error(`props_invalid_value
+Cannot do \`bind:${key3}={undefined}\` when \`${key3}\` has a fallback value
+https://svelte.dev/e/props_invalid_value`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/props_invalid_value`);
+    }
+  }
+  function rune_outside_svelte(rune) {
+    if (true_default) {
+      const error = new Error(`rune_outside_svelte
+The \`${rune}\` rune is only available inside \`.svelte\` and \`.svelte.js/ts\` files
+https://svelte.dev/e/rune_outside_svelte`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/rune_outside_svelte`);
+    }
+  }
+  function state_descriptors_fixed() {
+    if (true_default) {
+      const error = new Error(`state_descriptors_fixed
+Property descriptors defined on \`$state\` objects must contain \`value\` and always be \`enumerable\`, \`configurable\` and \`writable\`.
+https://svelte.dev/e/state_descriptors_fixed`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/state_descriptors_fixed`);
+    }
+  }
+  function state_prototype_fixed() {
+    if (true_default) {
+      const error = new Error(`state_prototype_fixed
+Cannot set prototype of \`$state\` object
+https://svelte.dev/e/state_prototype_fixed`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/state_prototype_fixed`);
+    }
+  }
+  function state_unsafe_mutation() {
+    if (true_default) {
+      const error = new Error(`state_unsafe_mutation
+Updating state inside \`$derived(...)\`, \`$inspect(...)\` or a template expression is forbidden. If the value should not be reactive, declare it without \`$state\`
+https://svelte.dev/e/state_unsafe_mutation`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/state_unsafe_mutation`);
+    }
+  }
+  function svelte_boundary_reset_onerror() {
+    if (true_default) {
+      const error = new Error(`svelte_boundary_reset_onerror
+A \`<svelte:boundary>\` \`reset\` function cannot be called while an error is still being handled
+https://svelte.dev/e/svelte_boundary_reset_onerror`);
+      error.name = "Svelte error";
+      throw error;
+    } else {
+      throw new Error(`https://svelte.dev/e/svelte_boundary_reset_onerror`);
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/constants.js
+  var EACH_ITEM_REACTIVE = 1;
+  var EACH_INDEX_REACTIVE = 1 << 1;
+  var EACH_IS_CONTROLLED = 1 << 2;
+  var EACH_IS_ANIMATED = 1 << 3;
+  var EACH_ITEM_IMMUTABLE = 1 << 4;
+  var PROPS_IS_IMMUTABLE = 1;
+  var PROPS_IS_RUNES = 1 << 1;
+  var PROPS_IS_UPDATED = 1 << 2;
+  var PROPS_IS_BINDABLE = 1 << 3;
+  var PROPS_IS_LAZY_INITIAL = 1 << 4;
+  var TRANSITION_IN = 1;
+  var TRANSITION_OUT = 1 << 1;
+  var TRANSITION_GLOBAL = 1 << 2;
+  var TEMPLATE_FRAGMENT = 1;
+  var TEMPLATE_USE_IMPORT_NODE = 1 << 1;
+  var TEMPLATE_USE_SVG = 1 << 2;
+  var TEMPLATE_USE_MATHML = 1 << 3;
+  var HYDRATION_START = "[";
+  var HYDRATION_START_ELSE = "[!";
+  var HYDRATION_END = "]";
+  var HYDRATION_ERROR = {};
+  var ELEMENT_PRESERVE_ATTRIBUTE_CASE = 1 << 1;
+  var ELEMENT_IS_INPUT = 1 << 2;
+  var UNINITIALIZED = Symbol();
+  var FILENAME = Symbol("filename");
+  var HMR = Symbol("hmr");
+  var NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/warnings.js
+  var bold = "font-weight: bold";
+  var normal = "font-weight: normal";
+  function await_waterfall(name, location) {
+    if (true_default) {
+      console.warn(`%c[svelte] await_waterfall
+%cAn async derived, \`${name}\` (${location}) was not read immediately after it resolved. This often indicates an unnecessary waterfall, which can slow down your app
+https://svelte.dev/e/await_waterfall`, bold, normal);
+    } else {
+      console.warn(`https://svelte.dev/e/await_waterfall`);
+    }
+  }
+  function hydration_attribute_changed(attribute, html2, value) {
+    if (true_default) {
+      console.warn(`%c[svelte] hydration_attribute_changed
+%cThe \`${attribute}\` attribute on \`${html2}\` changed its value between server and client renders. The client value, \`${value}\`, will be ignored in favour of the server value
+https://svelte.dev/e/hydration_attribute_changed`, bold, normal);
+    } else {
+      console.warn(`https://svelte.dev/e/hydration_attribute_changed`);
+    }
+  }
+  function hydration_mismatch(location) {
+    if (true_default) {
+      console.warn(
+        `%c[svelte] hydration_mismatch
+%c${location ? `Hydration failed because the initial UI does not match what was rendered on the server. The error occurred near ${location}` : "Hydration failed because the initial UI does not match what was rendered on the server"}
+https://svelte.dev/e/hydration_mismatch`,
+        bold,
+        normal
+      );
+    } else {
+      console.warn(`https://svelte.dev/e/hydration_mismatch`);
+    }
+  }
+  function lifecycle_double_unmount() {
+    if (true_default) {
+      console.warn(`%c[svelte] lifecycle_double_unmount
+%cTried to unmount a component that was not mounted
+https://svelte.dev/e/lifecycle_double_unmount`, bold, normal);
+    } else {
+      console.warn(`https://svelte.dev/e/lifecycle_double_unmount`);
+    }
+  }
+  function state_proxy_equality_mismatch(operator) {
+    if (true_default) {
+      console.warn(`%c[svelte] state_proxy_equality_mismatch
+%cReactive \`$state(...)\` proxies and the values they proxy have different identities. Because of this, comparisons with \`${operator}\` will produce unexpected results
+https://svelte.dev/e/state_proxy_equality_mismatch`, bold, normal);
+    } else {
+      console.warn(`https://svelte.dev/e/state_proxy_equality_mismatch`);
+    }
+  }
+  function state_proxy_unmount() {
+    if (true_default) {
+      console.warn(`%c[svelte] state_proxy_unmount
+%cTried to unmount a state proxy, rather than a component
+https://svelte.dev/e/state_proxy_unmount`, bold, normal);
+    } else {
+      console.warn(`https://svelte.dev/e/state_proxy_unmount`);
+    }
+  }
+  function svelte_boundary_reset_noop() {
+    if (true_default) {
+      console.warn(`%c[svelte] svelte_boundary_reset_noop
+%cA \`<svelte:boundary>\` \`reset\` function only resets the boundary the first time it is called
+https://svelte.dev/e/svelte_boundary_reset_noop`, bold, normal);
+    } else {
+      console.warn(`https://svelte.dev/e/svelte_boundary_reset_noop`);
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/hydration.js
+  var hydrating = false;
+  function set_hydrating(value) {
+    hydrating = value;
+  }
+  var hydrate_node;
+  function set_hydrate_node(node) {
+    if (node === null) {
+      hydration_mismatch();
+      throw HYDRATION_ERROR;
+    }
+    return hydrate_node = node;
+  }
+  function hydrate_next() {
+    return set_hydrate_node(get_next_sibling(hydrate_node));
+  }
+  function reset(node) {
+    if (!hydrating)
+      return;
+    if (get_next_sibling(hydrate_node) !== null) {
+      hydration_mismatch();
+      throw HYDRATION_ERROR;
+    }
+    hydrate_node = node;
+  }
+  function next(count = 1) {
+    if (hydrating) {
+      var i = count;
+      var node = hydrate_node;
+      while (i--) {
+        node = /** @type {TemplateNode} */
+        get_next_sibling(node);
+      }
+      hydrate_node = node;
+    }
+  }
+  function skip_nodes(remove = true) {
+    var depth = 0;
+    var node = hydrate_node;
+    while (true) {
+      if (node.nodeType === COMMENT_NODE) {
+        var data = (
+          /** @type {Comment} */
+          node.data
+        );
+        if (data === HYDRATION_END) {
+          if (depth === 0)
+            return node;
+          depth -= 1;
+        } else if (data === HYDRATION_START || data === HYDRATION_START_ELSE) {
+          depth += 1;
+        }
+      }
+      var next2 = (
+        /** @type {TemplateNode} */
+        get_next_sibling(node)
+      );
+      if (remove)
+        node.remove();
+      node = next2;
+    }
+  }
+  function read_hydration_instruction(node) {
+    if (!node || node.nodeType !== COMMENT_NODE) {
+      hydration_mismatch();
+      throw HYDRATION_ERROR;
+    }
+    return (
+      /** @type {Comment} */
+      node.data
+    );
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/equality.js
+  function equals(value) {
+    return value === this.v;
+  }
+  function safe_not_equal(a, b) {
+    return a != a ? b == b : a !== b || a !== null && typeof a === "object" || typeof a === "function";
+  }
+  function safe_equals(value) {
+    return !safe_not_equal(value, this.v);
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/flags/index.js
+  var async_mode_flag = false;
+  var legacy_mode_flag = false;
+  var tracing_mode_flag = false;
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dev/tracing.js
+  var tracing_expressions = null;
+  function tag(source2, label) {
+    source2.label = label;
+    tag_proxy(source2.v, label);
+    return source2;
+  }
+  function tag_proxy(value, label) {
+    var _a5;
+    (_a5 = value == null ? void 0 : value[PROXY_PATH_SYMBOL]) == null ? void 0 : _a5.call(value, label);
+    return value;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/shared/dev.js
+  function get_error(label) {
+    const error = new Error();
+    const stack2 = get_stack();
+    if (stack2.length === 0) {
+      return null;
+    }
+    stack2.unshift("\n");
+    define_property(error, "stack", {
+      value: stack2.join("\n")
+    });
+    define_property(error, "name", {
+      value: label
+    });
+    return (
+      /** @type {Error & { stack: string }} */
+      error
+    );
+  }
+  function get_stack() {
+    const limit = Error.stackTraceLimit;
+    Error.stackTraceLimit = Infinity;
+    const stack2 = new Error().stack;
+    Error.stackTraceLimit = limit;
+    if (!stack2)
+      return [];
+    const lines = stack2.split("\n");
+    const new_lines = [];
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const posixified = line.replaceAll("\\", "/");
+      if (line.trim() === "Error") {
+        continue;
+      }
+      if (line.includes("validate_each_keys")) {
+        return [];
+      }
+      if (posixified.includes("svelte/src/internal") || posixified.includes("node_modules/.vite")) {
+        continue;
+      }
+      new_lines.push(line);
+    }
+    return new_lines;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/context.js
+  var component_context = null;
+  function set_component_context(context) {
+    component_context = context;
+  }
+  var dev_stack = null;
+  function set_dev_stack(stack2) {
+    dev_stack = stack2;
+  }
+  var dev_current_component_function = null;
+  function set_dev_current_component_function(fn) {
+    dev_current_component_function = fn;
+  }
+  function push(props, runes = false, fn) {
+    component_context = {
+      p: component_context,
+      i: false,
+      c: null,
+      e: null,
+      s: props,
+      x: null,
+      l: legacy_mode_flag && !runes ? { s: null, u: null, $: [] } : null
+    };
+    if (true_default) {
+      component_context.function = fn;
+      dev_current_component_function = fn;
+    }
+  }
+  function pop(component2) {
+    var _a5;
+    var context = (
+      /** @type {ComponentContext} */
+      component_context
+    );
+    var effects = context.e;
+    if (effects !== null) {
+      context.e = null;
+      for (var fn of effects) {
+        create_user_effect(fn);
+      }
+    }
+    if (component2 !== void 0) {
+      context.x = component2;
+    }
+    context.i = true;
+    component_context = context.p;
+    if (true_default) {
+      dev_current_component_function = (_a5 = component_context == null ? void 0 : component_context.function) != null ? _a5 : null;
+    }
+    return component2 != null ? component2 : (
+      /** @type {T} */
+      {}
+    );
+  }
+  function is_runes() {
+    return !legacy_mode_flag || component_context !== null && component_context.l === null;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/task.js
+  var micro_tasks = [];
+  function run_micro_tasks() {
+    var tasks = micro_tasks;
+    micro_tasks = [];
+    run_all(tasks);
+  }
+  function queue_micro_task(fn) {
+    if (micro_tasks.length === 0 && !is_flushing_sync) {
+      var tasks = micro_tasks;
+      queueMicrotask(() => {
+        if (tasks === micro_tasks)
+          run_micro_tasks();
+      });
+    }
+    micro_tasks.push(fn);
+  }
+  function flush_tasks() {
+    while (micro_tasks.length > 0) {
+      run_micro_tasks();
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/error-handling.js
+  var adjustments = /* @__PURE__ */ new WeakMap();
+  function handle_error(error) {
+    var effect2 = active_effect;
+    if (effect2 === null) {
+      active_reaction.f |= ERROR_VALUE;
+      return error;
+    }
+    if (true_default && error instanceof Error && !adjustments.has(error)) {
+      adjustments.set(error, get_adjustments(error, effect2));
+    }
+    if ((effect2.f & EFFECT_RAN) === 0) {
+      if ((effect2.f & BOUNDARY_EFFECT) === 0) {
+        if (true_default && !effect2.parent && error instanceof Error) {
+          apply_adjustments(error);
+        }
+        throw error;
+      }
+      effect2.b.error(error);
+    } else {
+      invoke_error_boundary(error, effect2);
+    }
+  }
+  function invoke_error_boundary(error, effect2) {
+    while (effect2 !== null) {
+      if ((effect2.f & BOUNDARY_EFFECT) !== 0) {
+        try {
+          effect2.b.error(error);
+          return;
+        } catch (e) {
+          error = e;
+        }
+      }
+      effect2 = effect2.parent;
+    }
+    if (true_default && error instanceof Error) {
+      apply_adjustments(error);
+    }
+    throw error;
+  }
+  function get_adjustments(error, effect2) {
+    var _a5, _b2, _c2;
+    const message_descriptor = get_descriptor(error, "message");
+    if (message_descriptor && !message_descriptor.configurable)
+      return;
+    var indent = is_firefox ? "  " : "	";
+    var component_stack = `
+${indent}in ${((_a5 = effect2.fn) == null ? void 0 : _a5.name) || "<unknown>"}`;
+    var context = effect2.ctx;
+    while (context !== null) {
+      component_stack += `
+${indent}in ${(_b2 = context.function) == null ? void 0 : _b2[FILENAME].split("/").pop()}`;
+      context = context.p;
+    }
+    return {
+      message: error.message + `
+${component_stack}
+`,
+      stack: (_c2 = error.stack) == null ? void 0 : _c2.split("\n").filter((line) => !line.includes("svelte/src/internal")).join("\n")
+    };
+  }
+  function apply_adjustments(error) {
+    const adjusted = adjustments.get(error);
+    if (adjusted) {
+      define_property(error, "message", {
+        value: adjusted.message
+      });
+      define_property(error, "stack", {
+        value: adjusted.stack
+      });
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/status.js
+  var STATUS_MASK = ~(DIRTY | MAYBE_DIRTY | CLEAN);
+  function set_signal_status(signal, status) {
+    signal.f = signal.f & STATUS_MASK | status;
+  }
+  function update_derived_status(derived3) {
+    if ((derived3.f & CONNECTED) !== 0 || derived3.deps === null) {
+      set_signal_status(derived3, CLEAN);
+    } else {
+      set_signal_status(derived3, MAYBE_DIRTY);
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/utils.js
+  function clear_marked(deps) {
+    if (deps === null)
+      return;
+    for (const dep of deps) {
+      if ((dep.f & DERIVED) === 0 || (dep.f & WAS_MARKED) === 0) {
+        continue;
+      }
+      dep.f ^= WAS_MARKED;
+      clear_marked(
+        /** @type {Derived} */
+        dep.deps
+      );
+    }
+  }
+  function defer_effect(effect2, dirty_effects, maybe_dirty_effects) {
+    if ((effect2.f & DIRTY) !== 0) {
+      dirty_effects.add(effect2);
+    } else if ((effect2.f & MAYBE_DIRTY) !== 0) {
+      maybe_dirty_effects.add(effect2);
+    }
+    clear_marked(effect2.deps);
+    set_signal_status(effect2, CLEAN);
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/batch.js
+  var batches = /* @__PURE__ */ new Set();
+  var current_batch = null;
+  var previous_batch = null;
+  var batch_values = null;
+  var queued_root_effects = [];
+  var last_scheduled_effect = null;
+  var is_flushing = false;
+  var is_flushing_sync = false;
+  var _commit_callbacks, _discard_callbacks, _pending, _blocking_pending, _deferred, _dirty_effects, _maybe_dirty_effects, _decrement_queued, _traverse_effect_tree, traverse_effect_tree_fn, _defer_effects, defer_effects_fn, _commit, commit_fn;
+  var _Batch = class _Batch {
+    constructor() {
+      /**
+       * Traverse the effect tree, executing effects or stashing
+       * them for later execution as appropriate
+       * @param {Effect} root
+       * @param {Effect[]} effects
+       * @param {Effect[]} render_effects
+       */
+      __privateAdd(this, _traverse_effect_tree);
+      /**
+       * @param {Effect[]} effects
+       */
+      __privateAdd(this, _defer_effects);
+      __privateAdd(this, _commit);
+      __publicField(this, "committed", false);
+      /**
+       * The current values of any sources that are updated in this batch
+       * They keys of this map are identical to `this.#previous`
+       * @type {Map<Source, any>}
+       */
+      __publicField(this, "current", /* @__PURE__ */ new Map());
+      /**
+       * The values of any sources that are updated in this batch _before_ those updates took place.
+       * They keys of this map are identical to `this.#current`
+       * @type {Map<Source, any>}
+       */
+      __publicField(this, "previous", /* @__PURE__ */ new Map());
+      /**
+       * When the batch is committed (and the DOM is updated), we need to remove old branches
+       * and append new ones by calling the functions added inside (if/each/key/etc) blocks
+       * @type {Set<() => void>}
+       */
+      __privateAdd(this, _commit_callbacks, /* @__PURE__ */ new Set());
+      /**
+       * If a fork is discarded, we need to destroy any effects that are no longer needed
+       * @type {Set<(batch: Batch) => void>}
+       */
+      __privateAdd(this, _discard_callbacks, /* @__PURE__ */ new Set());
+      /**
+       * The number of async effects that are currently in flight
+       */
+      __privateAdd(this, _pending, 0);
+      /**
+       * The number of async effects that are currently in flight, _not_ inside a pending boundary
+       */
+      __privateAdd(this, _blocking_pending, 0);
+      /**
+       * A deferred that resolves when the batch is committed, used with `settled()`
+       * TODO replace with Promise.withResolvers once supported widely enough
+       * @type {{ promise: Promise<void>, resolve: (value?: any) => void, reject: (reason: unknown) => void } | null}
+       */
+      __privateAdd(this, _deferred, null);
+      /**
+       * Deferred effects (which run after async work has completed) that are DIRTY
+       * @type {Set<Effect>}
+       */
+      __privateAdd(this, _dirty_effects, /* @__PURE__ */ new Set());
+      /**
+       * Deferred effects that are MAYBE_DIRTY
+       * @type {Set<Effect>}
+       */
+      __privateAdd(this, _maybe_dirty_effects, /* @__PURE__ */ new Set());
+      /**
+       * A set of branches that still exist, but will be destroyed when this batch
+       * is committed — we skip over these during `process`
+       * @type {Set<Effect>}
+       */
+      __publicField(this, "skipped_effects", /* @__PURE__ */ new Set());
+      __publicField(this, "is_fork", false);
+      __privateAdd(this, _decrement_queued, false);
+    }
+    is_deferred() {
+      return this.is_fork || __privateGet(this, _blocking_pending) > 0;
+    }
+    /**
+     *
+     * @param {Effect[]} root_effects
+     */
+    process(root_effects) {
+      var _a5;
+      queued_root_effects = [];
+      this.apply();
+      var effects = [];
+      var render_effects = [];
+      for (const root15 of root_effects) {
+        __privateMethod(this, _traverse_effect_tree, traverse_effect_tree_fn).call(this, root15, effects, render_effects);
+      }
+      if (this.is_deferred()) {
+        __privateMethod(this, _defer_effects, defer_effects_fn).call(this, render_effects);
+        __privateMethod(this, _defer_effects, defer_effects_fn).call(this, effects);
+        for (const e of this.skipped_effects) {
+          reset_branch(e);
+        }
+      } else {
+        for (const fn of __privateGet(this, _commit_callbacks))
+          fn();
+        __privateGet(this, _commit_callbacks).clear();
+        if (__privateGet(this, _pending) === 0) {
+          __privateMethod(this, _commit, commit_fn).call(this);
+        }
+        previous_batch = this;
+        current_batch = null;
+        flush_queued_effects(render_effects);
+        flush_queued_effects(effects);
+        previous_batch = null;
+        (_a5 = __privateGet(this, _deferred)) == null ? void 0 : _a5.resolve();
+      }
+      batch_values = null;
+    }
+    /**
+     * Associate a change to a given source with the current
+     * batch, noting its previous and current values
+     * @param {Source} source
+     * @param {any} value
+     */
+    capture(source2, value) {
+      if (value !== UNINITIALIZED && !this.previous.has(source2)) {
+        this.previous.set(source2, value);
+      }
+      if ((source2.f & ERROR_VALUE) === 0) {
+        this.current.set(source2, source2.v);
+        batch_values == null ? void 0 : batch_values.set(source2, source2.v);
+      }
+    }
+    activate() {
+      current_batch = this;
+      this.apply();
+    }
+    deactivate() {
+      if (current_batch !== this)
+        return;
+      current_batch = null;
+      batch_values = null;
+    }
+    flush() {
+      this.activate();
+      if (queued_root_effects.length > 0) {
+        flush_effects();
+        if (current_batch !== null && current_batch !== this) {
+          return;
+        }
+      } else if (__privateGet(this, _pending) === 0) {
+        this.process([]);
+      }
+      this.deactivate();
+    }
+    discard() {
+      for (const fn of __privateGet(this, _discard_callbacks))
+        fn(this);
+      __privateGet(this, _discard_callbacks).clear();
+    }
+    /**
+     *
+     * @param {boolean} blocking
+     */
+    increment(blocking) {
+      __privateSet(this, _pending, __privateGet(this, _pending) + 1);
+      if (blocking)
+        __privateSet(this, _blocking_pending, __privateGet(this, _blocking_pending) + 1);
+    }
+    /**
+     *
+     * @param {boolean} blocking
+     */
+    decrement(blocking) {
+      __privateSet(this, _pending, __privateGet(this, _pending) - 1);
+      if (blocking)
+        __privateSet(this, _blocking_pending, __privateGet(this, _blocking_pending) - 1);
+      if (__privateGet(this, _decrement_queued))
+        return;
+      __privateSet(this, _decrement_queued, true);
+      queue_micro_task(() => {
+        __privateSet(this, _decrement_queued, false);
+        if (!this.is_deferred()) {
+          this.revive();
+        } else if (queued_root_effects.length > 0) {
+          this.flush();
+        }
+      });
+    }
+    revive() {
+      for (const e of __privateGet(this, _dirty_effects)) {
+        __privateGet(this, _maybe_dirty_effects).delete(e);
+        set_signal_status(e, DIRTY);
+        schedule_effect(e);
+      }
+      for (const e of __privateGet(this, _maybe_dirty_effects)) {
+        set_signal_status(e, MAYBE_DIRTY);
+        schedule_effect(e);
+      }
+      this.flush();
+    }
+    /** @param {() => void} fn */
+    oncommit(fn) {
+      __privateGet(this, _commit_callbacks).add(fn);
+    }
+    /** @param {(batch: Batch) => void} fn */
+    ondiscard(fn) {
+      __privateGet(this, _discard_callbacks).add(fn);
+    }
+    settled() {
+      var _a5;
+      return ((_a5 = __privateGet(this, _deferred)) != null ? _a5 : __privateSet(this, _deferred, deferred())).promise;
+    }
+    static ensure() {
+      if (current_batch === null) {
+        const batch = current_batch = new _Batch();
+        batches.add(current_batch);
+        if (!is_flushing_sync) {
+          queue_micro_task(() => {
+            if (current_batch !== batch) {
+              return;
+            }
+            batch.flush();
+          });
+        }
+      }
+      return current_batch;
+    }
+    apply() {
+      if (!async_mode_flag || !this.is_fork && batches.size === 1)
+        return;
+      batch_values = new Map(this.current);
+      for (const batch of batches) {
+        if (batch === this)
+          continue;
+        for (const [source2, previous] of batch.previous) {
+          if (!batch_values.has(source2)) {
+            batch_values.set(source2, previous);
+          }
+        }
+      }
+    }
+  };
+  _commit_callbacks = new WeakMap();
+  _discard_callbacks = new WeakMap();
+  _pending = new WeakMap();
+  _blocking_pending = new WeakMap();
+  _deferred = new WeakMap();
+  _dirty_effects = new WeakMap();
+  _maybe_dirty_effects = new WeakMap();
+  _decrement_queued = new WeakMap();
+  _traverse_effect_tree = new WeakSet();
+  traverse_effect_tree_fn = function(root15, effects, render_effects) {
+    var _a5;
+    root15.f ^= CLEAN;
+    var effect2 = root15.first;
+    var pending_boundary = null;
+    while (effect2 !== null) {
+      var flags2 = effect2.f;
+      var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
+      var is_skippable_branch = is_branch && (flags2 & CLEAN) !== 0;
+      var skip = is_skippable_branch || (flags2 & INERT) !== 0 || this.skipped_effects.has(effect2);
+      if (async_mode_flag && pending_boundary === null && (flags2 & BOUNDARY_EFFECT) !== 0 && ((_a5 = effect2.b) == null ? void 0 : _a5.is_pending)) {
+        pending_boundary = effect2;
+      }
+      if (!skip && effect2.fn !== null) {
+        if (is_branch) {
+          effect2.f ^= CLEAN;
+        } else if (pending_boundary !== null && (flags2 & (EFFECT | RENDER_EFFECT | MANAGED_EFFECT)) !== 0) {
+          pending_boundary.b.defer_effect(effect2);
+        } else if ((flags2 & EFFECT) !== 0) {
+          effects.push(effect2);
+        } else if (async_mode_flag && (flags2 & (RENDER_EFFECT | MANAGED_EFFECT)) !== 0) {
+          render_effects.push(effect2);
+        } else if (is_dirty(effect2)) {
+          if ((flags2 & BLOCK_EFFECT) !== 0)
+            __privateGet(this, _maybe_dirty_effects).add(effect2);
+          update_effect(effect2);
+        }
+        var child2 = effect2.first;
+        if (child2 !== null) {
+          effect2 = child2;
+          continue;
+        }
+      }
+      var parent = effect2.parent;
+      effect2 = effect2.next;
+      while (effect2 === null && parent !== null) {
+        if (parent === pending_boundary) {
+          pending_boundary = null;
+        }
+        effect2 = parent.next;
+        parent = parent.parent;
+      }
+    }
+  };
+  _defer_effects = new WeakSet();
+  defer_effects_fn = function(effects) {
+    for (var i = 0; i < effects.length; i += 1) {
+      defer_effect(effects[i], __privateGet(this, _dirty_effects), __privateGet(this, _maybe_dirty_effects));
+    }
+  };
+  _commit = new WeakSet();
+  commit_fn = function() {
+    var _a5;
+    if (batches.size > 1) {
+      this.previous.clear();
+      var previous_batch_values = batch_values;
+      var is_earlier = true;
+      for (const batch of batches) {
+        if (batch === this) {
+          is_earlier = false;
+          continue;
+        }
+        const sources = [];
+        for (const [source2, value] of this.current) {
+          if (batch.current.has(source2)) {
+            if (is_earlier && value !== batch.current.get(source2)) {
+              batch.current.set(source2, value);
+            } else {
+              continue;
+            }
+          }
+          sources.push(source2);
+        }
+        if (sources.length === 0) {
+          continue;
+        }
+        const others = [...batch.current.keys()].filter((s) => !this.current.has(s));
+        if (others.length > 0) {
+          var prev_queued_root_effects = queued_root_effects;
+          queued_root_effects = [];
+          const marked = /* @__PURE__ */ new Set();
+          const checked = /* @__PURE__ */ new Map();
+          for (const source2 of sources) {
+            mark_effects(source2, others, marked, checked);
+          }
+          if (queued_root_effects.length > 0) {
+            current_batch = batch;
+            batch.apply();
+            for (const root15 of queued_root_effects) {
+              __privateMethod(_a5 = batch, _traverse_effect_tree, traverse_effect_tree_fn).call(_a5, root15, [], []);
+            }
+            batch.deactivate();
+          }
+          queued_root_effects = prev_queued_root_effects;
+        }
+      }
+      current_batch = null;
+      batch_values = previous_batch_values;
+    }
+    this.committed = true;
+    batches.delete(this);
+  };
+  var Batch = _Batch;
+  function flushSync(fn) {
+    var was_flushing_sync = is_flushing_sync;
+    is_flushing_sync = true;
+    try {
+      var result;
+      if (fn) {
+        if (current_batch !== null) {
+          flush_effects();
+        }
+        result = fn();
+      }
+      while (true) {
+        flush_tasks();
+        if (queued_root_effects.length === 0) {
+          current_batch == null ? void 0 : current_batch.flush();
+          if (queued_root_effects.length === 0) {
+            last_scheduled_effect = null;
+            return (
+              /** @type {T} */
+              result
+            );
+          }
+        }
+        flush_effects();
+      }
+    } finally {
+      is_flushing_sync = was_flushing_sync;
+    }
+  }
+  function flush_effects() {
+    var _a5;
+    is_flushing = true;
+    var source_stacks = true_default ? /* @__PURE__ */ new Set() : null;
+    try {
+      var flush_count = 0;
+      while (queued_root_effects.length > 0) {
+        var batch = Batch.ensure();
+        if (flush_count++ > 1e3) {
+          if (true_default) {
+            var updates = /* @__PURE__ */ new Map();
+            for (const source2 of batch.current.keys()) {
+              for (const [stack2, update2] of (_a5 = source2.updated) != null ? _a5 : []) {
+                var entry = updates.get(stack2);
+                if (!entry) {
+                  entry = { error: update2.error, count: 0 };
+                  updates.set(stack2, entry);
+                }
+                entry.count += update2.count;
+              }
+            }
+            for (const update2 of updates.values()) {
+              if (update2.error) {
+                console.error(update2.error);
+              }
+            }
+          }
+          infinite_loop_guard();
+        }
+        batch.process(queued_root_effects);
+        old_values.clear();
+        if (true_default) {
+          for (const source2 of batch.current.keys()) {
+            source_stacks.add(source2);
+          }
+        }
+      }
+    } finally {
+      is_flushing = false;
+      last_scheduled_effect = null;
+      if (true_default) {
+        for (
+          const source2 of
+          /** @type {Set<Source>} */
+          source_stacks
+        ) {
+          source2.updated = null;
+        }
+      }
+    }
+  }
+  function infinite_loop_guard() {
+    try {
+      effect_update_depth_exceeded();
+    } catch (error) {
+      if (true_default) {
+        define_property(error, "stack", { value: "" });
+      }
+      invoke_error_boundary(error, last_scheduled_effect);
+    }
+  }
+  var eager_block_effects = null;
+  function flush_queued_effects(effects) {
+    var length = effects.length;
+    if (length === 0)
+      return;
+    var i = 0;
+    while (i < length) {
+      var effect2 = effects[i++];
+      if ((effect2.f & (DESTROYED | INERT)) === 0 && is_dirty(effect2)) {
+        eager_block_effects = /* @__PURE__ */ new Set();
+        update_effect(effect2);
+        if (effect2.deps === null && effect2.first === null && effect2.nodes === null) {
+          if (effect2.teardown === null && effect2.ac === null) {
+            unlink_effect(effect2);
+          } else {
+            effect2.fn = null;
+          }
+        }
+        if ((eager_block_effects == null ? void 0 : eager_block_effects.size) > 0) {
+          old_values.clear();
+          for (const e of eager_block_effects) {
+            if ((e.f & (DESTROYED | INERT)) !== 0)
+              continue;
+            const ordered_effects = [e];
+            let ancestor = e.parent;
+            while (ancestor !== null) {
+              if (eager_block_effects.has(ancestor)) {
+                eager_block_effects.delete(ancestor);
+                ordered_effects.push(ancestor);
+              }
+              ancestor = ancestor.parent;
+            }
+            for (let j = ordered_effects.length - 1; j >= 0; j--) {
+              const e2 = ordered_effects[j];
+              if ((e2.f & (DESTROYED | INERT)) !== 0)
+                continue;
+              update_effect(e2);
+            }
+          }
+          eager_block_effects.clear();
+        }
+      }
+    }
+    eager_block_effects = null;
+  }
+  function mark_effects(value, sources, marked, checked) {
+    if (marked.has(value))
+      return;
+    marked.add(value);
+    if (value.reactions !== null) {
+      for (const reaction of value.reactions) {
+        const flags2 = reaction.f;
+        if ((flags2 & DERIVED) !== 0) {
+          mark_effects(
+            /** @type {Derived} */
+            reaction,
+            sources,
+            marked,
+            checked
+          );
+        } else if ((flags2 & (ASYNC | BLOCK_EFFECT)) !== 0 && (flags2 & DIRTY) === 0 && depends_on(reaction, sources, checked)) {
+          set_signal_status(reaction, DIRTY);
+          schedule_effect(
+            /** @type {Effect} */
+            reaction
+          );
+        }
+      }
+    }
+  }
+  function depends_on(reaction, sources, checked) {
+    const depends = checked.get(reaction);
+    if (depends !== void 0)
+      return depends;
+    if (reaction.deps !== null) {
+      for (const dep of reaction.deps) {
+        if (includes.call(sources, dep)) {
+          return true;
+        }
+        if ((dep.f & DERIVED) !== 0 && depends_on(
+          /** @type {Derived} */
+          dep,
+          sources,
+          checked
+        )) {
+          checked.set(
+            /** @type {Derived} */
+            dep,
+            true
+          );
+          return true;
+        }
+      }
+    }
+    checked.set(reaction, false);
+    return false;
+  }
+  function schedule_effect(signal) {
+    var effect2 = last_scheduled_effect = signal;
+    while (effect2.parent !== null) {
+      effect2 = effect2.parent;
+      var flags2 = effect2.f;
+      if (is_flushing && effect2 === active_effect && (flags2 & BLOCK_EFFECT) !== 0 && (flags2 & HEAD_EFFECT) === 0) {
+        return;
+      }
+      if ((flags2 & (ROOT_EFFECT | BRANCH_EFFECT)) !== 0) {
+        if ((flags2 & CLEAN) === 0)
+          return;
+        effect2.f ^= CLEAN;
+      }
+    }
+    queued_root_effects.push(effect2);
+  }
+  function reset_branch(effect2) {
+    if ((effect2.f & BRANCH_EFFECT) !== 0 && (effect2.f & CLEAN) !== 0) {
+      return;
+    }
+    set_signal_status(effect2, CLEAN);
+    var e = effect2.first;
+    while (e !== null) {
+      reset_branch(e);
+      e = e.next;
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/reactivity/create-subscriber.js
+  function createSubscriber(start) {
+    let subscribers = 0;
+    let version = source(0);
+    let stop;
+    if (true_default) {
+      tag(version, "createSubscriber version");
+    }
+    return () => {
+      if (effect_tracking()) {
+        get(version);
+        render_effect(() => {
+          if (subscribers === 0) {
+            stop = untrack(() => start(() => increment(version)));
+          }
+          subscribers += 1;
+          return () => {
+            queue_micro_task(() => {
+              subscribers -= 1;
+              if (subscribers === 0) {
+                stop == null ? void 0 : stop();
+                stop = void 0;
+                increment(version);
+              }
+            });
+          };
+        });
+      }
+    };
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/blocks/boundary.js
+  var flags = EFFECT_TRANSPARENT | EFFECT_PRESERVED | BOUNDARY_EFFECT;
+  function boundary(node, props, children) {
+    new Boundary(node, props, children);
+  }
+  var _anchor, _hydrate_open, _props, _children, _effect, _main_effect, _pending_effect, _failed_effect, _offscreen_fragment, _pending_anchor, _local_pending_count, _pending_count, _pending_count_update_queued, _is_creating_fallback, _dirty_effects2, _maybe_dirty_effects2, _effect_pending, _effect_pending_subscriber, _hydrate_resolved_content, hydrate_resolved_content_fn, _hydrate_pending_content, hydrate_pending_content_fn, _get_anchor, get_anchor_fn, _run, run_fn, _show_pending_snippet, show_pending_snippet_fn, _update_pending_count, update_pending_count_fn;
+  var Boundary = class {
+    /**
+     * @param {TemplateNode} node
+     * @param {BoundaryProps} props
+     * @param {((anchor: Node) => void)} children
+     */
+    constructor(node, props, children) {
+      __privateAdd(this, _hydrate_resolved_content);
+      __privateAdd(this, _hydrate_pending_content);
+      __privateAdd(this, _get_anchor);
+      /**
+       * @param {() => Effect | null} fn
+       */
+      __privateAdd(this, _run);
+      __privateAdd(this, _show_pending_snippet);
+      /**
+       * Updates the pending count associated with the currently visible pending snippet,
+       * if any, such that we can replace the snippet with content once work is done
+       * @param {1 | -1} d
+       */
+      __privateAdd(this, _update_pending_count);
+      /** @type {Boundary | null} */
+      __publicField(this, "parent");
+      __publicField(this, "is_pending", false);
+      /** @type {TemplateNode} */
+      __privateAdd(this, _anchor, void 0);
+      /** @type {TemplateNode | null} */
+      __privateAdd(this, _hydrate_open, hydrating ? hydrate_node : null);
+      /** @type {BoundaryProps} */
+      __privateAdd(this, _props, void 0);
+      /** @type {((anchor: Node) => void)} */
+      __privateAdd(this, _children, void 0);
+      /** @type {Effect} */
+      __privateAdd(this, _effect, void 0);
+      /** @type {Effect | null} */
+      __privateAdd(this, _main_effect, null);
+      /** @type {Effect | null} */
+      __privateAdd(this, _pending_effect, null);
+      /** @type {Effect | null} */
+      __privateAdd(this, _failed_effect, null);
+      /** @type {DocumentFragment | null} */
+      __privateAdd(this, _offscreen_fragment, null);
+      /** @type {TemplateNode | null} */
+      __privateAdd(this, _pending_anchor, null);
+      __privateAdd(this, _local_pending_count, 0);
+      __privateAdd(this, _pending_count, 0);
+      __privateAdd(this, _pending_count_update_queued, false);
+      __privateAdd(this, _is_creating_fallback, false);
+      /** @type {Set<Effect>} */
+      __privateAdd(this, _dirty_effects2, /* @__PURE__ */ new Set());
+      /** @type {Set<Effect>} */
+      __privateAdd(this, _maybe_dirty_effects2, /* @__PURE__ */ new Set());
+      /**
+       * A source containing the number of pending async deriveds/expressions.
+       * Only created if `$effect.pending()` is used inside the boundary,
+       * otherwise updating the source results in needless `Batch.ensure()`
+       * calls followed by no-op flushes
+       * @type {Source<number> | null}
+       */
+      __privateAdd(this, _effect_pending, null);
+      __privateAdd(this, _effect_pending_subscriber, createSubscriber(() => {
+        __privateSet(this, _effect_pending, source(__privateGet(this, _local_pending_count)));
+        if (true_default) {
+          tag(__privateGet(this, _effect_pending), "$effect.pending()");
+        }
+        return () => {
+          __privateSet(this, _effect_pending, null);
+        };
+      }));
+      __privateSet(this, _anchor, node);
+      __privateSet(this, _props, props);
+      __privateSet(this, _children, children);
+      this.parent = /** @type {Effect} */
+      active_effect.b;
+      this.is_pending = !!__privateGet(this, _props).pending;
+      __privateSet(this, _effect, block(() => {
+        active_effect.b = this;
+        if (hydrating) {
+          const comment2 = __privateGet(this, _hydrate_open);
+          hydrate_next();
+          const server_rendered_pending = (
+            /** @type {Comment} */
+            comment2.nodeType === COMMENT_NODE && /** @type {Comment} */
+            comment2.data === HYDRATION_START_ELSE
+          );
+          if (server_rendered_pending) {
+            __privateMethod(this, _hydrate_pending_content, hydrate_pending_content_fn).call(this);
+          } else {
+            __privateMethod(this, _hydrate_resolved_content, hydrate_resolved_content_fn).call(this);
+            if (__privateGet(this, _pending_count) === 0) {
+              this.is_pending = false;
+            }
+          }
+        } else {
+          var anchor = __privateMethod(this, _get_anchor, get_anchor_fn).call(this);
+          try {
+            __privateSet(this, _main_effect, branch(() => children(anchor)));
+          } catch (error) {
+            this.error(error);
+          }
+          if (__privateGet(this, _pending_count) > 0) {
+            __privateMethod(this, _show_pending_snippet, show_pending_snippet_fn).call(this);
+          } else {
+            this.is_pending = false;
+          }
+        }
+        return () => {
+          var _a5;
+          (_a5 = __privateGet(this, _pending_anchor)) == null ? void 0 : _a5.remove();
+        };
+      }, flags));
+      if (hydrating) {
+        __privateSet(this, _anchor, hydrate_node);
+      }
+    }
+    /**
+     * Defer an effect inside a pending boundary until the boundary resolves
+     * @param {Effect} effect
+     */
+    defer_effect(effect2) {
+      defer_effect(effect2, __privateGet(this, _dirty_effects2), __privateGet(this, _maybe_dirty_effects2));
+    }
+    /**
+     * Returns `false` if the effect exists inside a boundary whose pending snippet is shown
+     * @returns {boolean}
+     */
+    is_rendered() {
+      return !this.is_pending && (!this.parent || this.parent.is_rendered());
+    }
+    has_pending_snippet() {
+      return !!__privateGet(this, _props).pending;
+    }
+    /**
+     * Update the source that powers `$effect.pending()` inside this boundary,
+     * and controls when the current `pending` snippet (if any) is removed.
+     * Do not call from inside the class
+     * @param {1 | -1} d
+     */
+    update_pending_count(d) {
+      __privateMethod(this, _update_pending_count, update_pending_count_fn).call(this, d);
+      __privateSet(this, _local_pending_count, __privateGet(this, _local_pending_count) + d);
+      if (!__privateGet(this, _effect_pending) || __privateGet(this, _pending_count_update_queued))
+        return;
+      __privateSet(this, _pending_count_update_queued, true);
+      queue_micro_task(() => {
+        __privateSet(this, _pending_count_update_queued, false);
+        if (__privateGet(this, _effect_pending)) {
+          internal_set(__privateGet(this, _effect_pending), __privateGet(this, _local_pending_count));
+        }
+      });
+    }
+    get_effect_pending() {
+      __privateGet(this, _effect_pending_subscriber).call(this);
+      return get(
+        /** @type {Source<number>} */
+        __privateGet(this, _effect_pending)
+      );
+    }
+    /** @param {unknown} error */
+    error(error) {
+      var onerror = __privateGet(this, _props).onerror;
+      let failed = __privateGet(this, _props).failed;
+      if (__privateGet(this, _is_creating_fallback) || !onerror && !failed) {
+        throw error;
+      }
+      if (__privateGet(this, _main_effect)) {
+        destroy_effect(__privateGet(this, _main_effect));
+        __privateSet(this, _main_effect, null);
+      }
+      if (__privateGet(this, _pending_effect)) {
+        destroy_effect(__privateGet(this, _pending_effect));
+        __privateSet(this, _pending_effect, null);
+      }
+      if (__privateGet(this, _failed_effect)) {
+        destroy_effect(__privateGet(this, _failed_effect));
+        __privateSet(this, _failed_effect, null);
+      }
+      if (hydrating) {
+        set_hydrate_node(
+          /** @type {TemplateNode} */
+          __privateGet(this, _hydrate_open)
+        );
+        next();
+        set_hydrate_node(skip_nodes());
+      }
+      var did_reset = false;
+      var calling_on_error = false;
+      const reset2 = () => {
+        if (did_reset) {
+          svelte_boundary_reset_noop();
+          return;
+        }
+        did_reset = true;
+        if (calling_on_error) {
+          svelte_boundary_reset_onerror();
+        }
+        Batch.ensure();
+        __privateSet(this, _local_pending_count, 0);
+        if (__privateGet(this, _failed_effect) !== null) {
+          pause_effect(__privateGet(this, _failed_effect), () => {
+            __privateSet(this, _failed_effect, null);
+          });
+        }
+        this.is_pending = this.has_pending_snippet();
+        __privateSet(this, _main_effect, __privateMethod(this, _run, run_fn).call(this, () => {
+          __privateSet(this, _is_creating_fallback, false);
+          return branch(() => __privateGet(this, _children).call(this, __privateGet(this, _anchor)));
+        }));
+        if (__privateGet(this, _pending_count) > 0) {
+          __privateMethod(this, _show_pending_snippet, show_pending_snippet_fn).call(this);
+        } else {
+          this.is_pending = false;
+        }
+      };
+      queue_micro_task(() => {
+        try {
+          calling_on_error = true;
+          onerror == null ? void 0 : onerror(error, reset2);
+          calling_on_error = false;
+        } catch (error2) {
+          invoke_error_boundary(error2, __privateGet(this, _effect) && __privateGet(this, _effect).parent);
+        }
+        if (failed) {
+          __privateSet(this, _failed_effect, __privateMethod(this, _run, run_fn).call(this, () => {
+            Batch.ensure();
+            __privateSet(this, _is_creating_fallback, true);
+            try {
+              return branch(() => {
+                failed(
+                  __privateGet(this, _anchor),
+                  () => error,
+                  () => reset2
+                );
+              });
+            } catch (error2) {
+              invoke_error_boundary(
+                error2,
+                /** @type {Effect} */
+                __privateGet(this, _effect).parent
+              );
+              return null;
+            } finally {
+              __privateSet(this, _is_creating_fallback, false);
+            }
+          }));
+        }
+      });
+    }
+  };
+  _anchor = new WeakMap();
+  _hydrate_open = new WeakMap();
+  _props = new WeakMap();
+  _children = new WeakMap();
+  _effect = new WeakMap();
+  _main_effect = new WeakMap();
+  _pending_effect = new WeakMap();
+  _failed_effect = new WeakMap();
+  _offscreen_fragment = new WeakMap();
+  _pending_anchor = new WeakMap();
+  _local_pending_count = new WeakMap();
+  _pending_count = new WeakMap();
+  _pending_count_update_queued = new WeakMap();
+  _is_creating_fallback = new WeakMap();
+  _dirty_effects2 = new WeakMap();
+  _maybe_dirty_effects2 = new WeakMap();
+  _effect_pending = new WeakMap();
+  _effect_pending_subscriber = new WeakMap();
+  _hydrate_resolved_content = new WeakSet();
+  hydrate_resolved_content_fn = function() {
+    try {
+      __privateSet(this, _main_effect, branch(() => __privateGet(this, _children).call(this, __privateGet(this, _anchor))));
+    } catch (error) {
+      this.error(error);
+    }
+  };
+  _hydrate_pending_content = new WeakSet();
+  hydrate_pending_content_fn = function() {
+    const pending2 = __privateGet(this, _props).pending;
+    if (!pending2)
+      return;
+    __privateSet(this, _pending_effect, branch(() => pending2(__privateGet(this, _anchor))));
+    queue_micro_task(() => {
+      var anchor = __privateMethod(this, _get_anchor, get_anchor_fn).call(this);
+      __privateSet(this, _main_effect, __privateMethod(this, _run, run_fn).call(this, () => {
+        Batch.ensure();
+        return branch(() => __privateGet(this, _children).call(this, anchor));
+      }));
+      if (__privateGet(this, _pending_count) > 0) {
+        __privateMethod(this, _show_pending_snippet, show_pending_snippet_fn).call(this);
+      } else {
+        pause_effect(
+          /** @type {Effect} */
+          __privateGet(this, _pending_effect),
+          () => {
+            __privateSet(this, _pending_effect, null);
+          }
+        );
+        this.is_pending = false;
+      }
+    });
+  };
+  _get_anchor = new WeakSet();
+  get_anchor_fn = function() {
+    var anchor = __privateGet(this, _anchor);
+    if (this.is_pending) {
+      __privateSet(this, _pending_anchor, create_text());
+      __privateGet(this, _anchor).before(__privateGet(this, _pending_anchor));
+      anchor = __privateGet(this, _pending_anchor);
+    }
+    return anchor;
+  };
+  _run = new WeakSet();
+  run_fn = function(fn) {
+    var previous_effect = active_effect;
+    var previous_reaction = active_reaction;
+    var previous_ctx = component_context;
+    set_active_effect(__privateGet(this, _effect));
+    set_active_reaction(__privateGet(this, _effect));
+    set_component_context(__privateGet(this, _effect).ctx);
+    try {
+      return fn();
+    } catch (e) {
+      handle_error(e);
+      return null;
+    } finally {
+      set_active_effect(previous_effect);
+      set_active_reaction(previous_reaction);
+      set_component_context(previous_ctx);
+    }
+  };
+  _show_pending_snippet = new WeakSet();
+  show_pending_snippet_fn = function() {
+    const pending2 = (
+      /** @type {(anchor: Node) => void} */
+      __privateGet(this, _props).pending
+    );
+    if (__privateGet(this, _main_effect) !== null) {
+      __privateSet(this, _offscreen_fragment, document.createDocumentFragment());
+      __privateGet(this, _offscreen_fragment).append(
+        /** @type {TemplateNode} */
+        __privateGet(this, _pending_anchor)
+      );
+      move_effect(__privateGet(this, _main_effect), __privateGet(this, _offscreen_fragment));
+    }
+    if (__privateGet(this, _pending_effect) === null) {
+      __privateSet(this, _pending_effect, branch(() => pending2(__privateGet(this, _anchor))));
+    }
+  };
+  _update_pending_count = new WeakSet();
+  update_pending_count_fn = function(d) {
+    var _a5;
+    if (!this.has_pending_snippet()) {
+      if (this.parent) {
+        __privateMethod(_a5 = this.parent, _update_pending_count, update_pending_count_fn).call(_a5, d);
+      }
+      return;
+    }
+    __privateSet(this, _pending_count, __privateGet(this, _pending_count) + d);
+    if (__privateGet(this, _pending_count) === 0) {
+      this.is_pending = false;
+      for (const e of __privateGet(this, _dirty_effects2)) {
+        set_signal_status(e, DIRTY);
+        schedule_effect(e);
+      }
+      for (const e of __privateGet(this, _maybe_dirty_effects2)) {
+        set_signal_status(e, MAYBE_DIRTY);
+        schedule_effect(e);
+      }
+      __privateGet(this, _dirty_effects2).clear();
+      __privateGet(this, _maybe_dirty_effects2).clear();
+      if (__privateGet(this, _pending_effect)) {
+        pause_effect(__privateGet(this, _pending_effect), () => {
+          __privateSet(this, _pending_effect, null);
+        });
+      }
+      if (__privateGet(this, _offscreen_fragment)) {
+        __privateGet(this, _anchor).before(__privateGet(this, _offscreen_fragment));
+        __privateSet(this, _offscreen_fragment, null);
+      }
+    }
+  };
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/async.js
+  function flatten(blockers, sync, async2, fn) {
+    const d = is_runes() ? derived : derived_safe_equal;
+    var pending2 = blockers.filter((b) => !b.settled);
+    if (async2.length === 0 && pending2.length === 0) {
+      fn(sync.map(d));
+      return;
+    }
+    var batch = current_batch;
+    var parent = (
+      /** @type {Effect} */
+      active_effect
+    );
+    var restore = capture();
+    var blocker_promise = pending2.length === 1 ? pending2[0].promise : pending2.length > 1 ? Promise.all(pending2.map((b) => b.promise)) : null;
+    function finish(values) {
+      restore();
+      try {
+        fn(values);
+      } catch (error) {
+        if ((parent.f & DESTROYED) === 0) {
+          invoke_error_boundary(error, parent);
+        }
+      }
+      batch == null ? void 0 : batch.deactivate();
+      unset_context();
+    }
+    if (async2.length === 0) {
+      blocker_promise.then(() => finish(sync.map(d)));
+      return;
+    }
+    function run3() {
+      restore();
+      Promise.all(async2.map((expression) => async_derived(expression))).then((result) => finish([...sync.map(d), ...result])).catch((error) => invoke_error_boundary(error, parent));
+    }
+    if (blocker_promise) {
+      blocker_promise.then(run3);
+    } else {
+      run3();
+    }
+  }
+  function capture() {
+    var previous_effect = active_effect;
+    var previous_reaction = active_reaction;
+    var previous_component_context = component_context;
+    var previous_batch2 = current_batch;
+    if (true_default) {
+      var previous_dev_stack = dev_stack;
+    }
+    return function restore(activate_batch = true) {
+      set_active_effect(previous_effect);
+      set_active_reaction(previous_reaction);
+      set_component_context(previous_component_context);
+      if (activate_batch)
+        previous_batch2 == null ? void 0 : previous_batch2.activate();
+      if (true_default) {
+        set_from_async_derived(null);
+        set_dev_stack(previous_dev_stack);
+      }
+    };
+  }
+  function unset_context() {
+    set_active_effect(null);
+    set_active_reaction(null);
+    set_component_context(null);
+    if (true_default) {
+      set_from_async_derived(null);
+      set_dev_stack(null);
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/deriveds.js
+  var current_async_effect = null;
+  function set_from_async_derived(v) {
+    current_async_effect = v;
+  }
+  var recent_async_deriveds = /* @__PURE__ */ new Set();
+  // @__NO_SIDE_EFFECTS__
+  function derived(fn) {
+    var flags2 = DERIVED | DIRTY;
+    var parent_derived = active_reaction !== null && (active_reaction.f & DERIVED) !== 0 ? (
+      /** @type {Derived} */
+      active_reaction
+    ) : null;
+    if (active_effect !== null) {
+      active_effect.f |= EFFECT_PRESERVED;
+    }
+    const signal = {
+      ctx: component_context,
+      deps: null,
+      effects: null,
+      equals,
+      f: flags2,
+      fn,
+      reactions: null,
+      rv: 0,
+      v: (
+        /** @type {V} */
+        UNINITIALIZED
+      ),
+      wv: 0,
+      parent: parent_derived != null ? parent_derived : active_effect,
+      ac: null
+    };
+    if (true_default && tracing_mode_flag) {
+      signal.created = get_error("created at");
+    }
+    return signal;
+  }
+  // @__NO_SIDE_EFFECTS__
+  function async_derived(fn, label, location) {
+    let parent = (
+      /** @type {Effect | null} */
+      active_effect
+    );
+    if (parent === null) {
+      async_derived_orphan();
+    }
+    var boundary2 = (
+      /** @type {Boundary} */
+      parent.b
+    );
+    var promise = (
+      /** @type {Promise<V>} */
+      /** @type {unknown} */
+      void 0
+    );
+    var signal = source(
+      /** @type {V} */
+      UNINITIALIZED
+    );
+    if (true_default)
+      signal.label = label;
+    var should_suspend = !active_reaction;
+    var deferreds = /* @__PURE__ */ new Map();
+    async_effect(() => {
+      var _a5;
+      if (true_default)
+        current_async_effect = active_effect;
+      var d = deferred();
+      promise = d.promise;
+      try {
+        Promise.resolve(fn()).then(d.resolve, d.reject).then(() => {
+          if (batch === current_batch && batch.committed) {
+            batch.deactivate();
+          }
+          unset_context();
+        });
+      } catch (error) {
+        d.reject(error);
+        unset_context();
+      }
+      if (true_default)
+        current_async_effect = null;
+      var batch = (
+        /** @type {Batch} */
+        current_batch
+      );
+      if (should_suspend) {
+        var blocking = boundary2.is_rendered();
+        boundary2.update_pending_count(1);
+        batch.increment(blocking);
+        (_a5 = deferreds.get(batch)) == null ? void 0 : _a5.reject(STALE_REACTION);
+        deferreds.delete(batch);
+        deferreds.set(batch, d);
+      }
+      const handler = (value, error = void 0) => {
+        current_async_effect = null;
+        batch.activate();
+        if (error) {
+          if (error !== STALE_REACTION) {
+            signal.f |= ERROR_VALUE;
+            internal_set(signal, error);
+          }
+        } else {
+          if ((signal.f & ERROR_VALUE) !== 0) {
+            signal.f ^= ERROR_VALUE;
+          }
+          internal_set(signal, value);
+          for (const [b, d2] of deferreds) {
+            deferreds.delete(b);
+            if (b === batch)
+              break;
+            d2.reject(STALE_REACTION);
+          }
+          if (true_default && location !== void 0) {
+            recent_async_deriveds.add(signal);
+            setTimeout(() => {
+              if (recent_async_deriveds.has(signal)) {
+                await_waterfall(
+                  /** @type {string} */
+                  signal.label,
+                  location
+                );
+                recent_async_deriveds.delete(signal);
+              }
+            });
+          }
+        }
+        if (should_suspend) {
+          boundary2.update_pending_count(-1);
+          batch.decrement(blocking);
+        }
+      };
+      d.promise.then(handler, (e) => handler(null, e || "unknown"));
+    });
+    teardown(() => {
+      for (const d of deferreds.values()) {
+        d.reject(STALE_REACTION);
+      }
+    });
+    if (true_default) {
+      signal.f |= ASYNC;
+    }
+    return new Promise((fulfil) => {
+      function next2(p) {
+        function go() {
+          if (p === promise) {
+            fulfil(signal);
+          } else {
+            next2(promise);
+          }
+        }
+        p.then(go, go);
+      }
+      next2(promise);
     });
   }
-  function randomUUID() {
-    if (window.isSecureContext && typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-      return crypto.randomUUID();
+  // @__NO_SIDE_EFFECTS__
+  function user_derived(fn) {
+    const d = /* @__PURE__ */ derived(fn);
+    if (!async_mode_flag)
+      push_reaction_value(d);
+    return d;
+  }
+  // @__NO_SIDE_EFFECTS__
+  function derived_safe_equal(fn) {
+    const signal = /* @__PURE__ */ derived(fn);
+    signal.equals = safe_equals;
+    return signal;
+  }
+  function destroy_derived_effects(derived3) {
+    var effects = derived3.effects;
+    if (effects !== null) {
+      derived3.effects = null;
+      for (var i = 0; i < effects.length; i += 1) {
+        destroy_effect(
+          /** @type {Effect} */
+          effects[i]
+        );
+      }
     }
-    return fallback();
+  }
+  var stack = [];
+  function get_derived_parent_effect(derived3) {
+    var parent = derived3.parent;
+    while (parent !== null) {
+      if ((parent.f & DERIVED) === 0) {
+        return (parent.f & DESTROYED) === 0 ? (
+          /** @type {Effect} */
+          parent
+        ) : null;
+      }
+      parent = parent.parent;
+    }
+    return null;
+  }
+  function execute_derived(derived3) {
+    var value;
+    var prev_active_effect = active_effect;
+    set_active_effect(get_derived_parent_effect(derived3));
+    if (true_default) {
+      let prev_eager_effects = eager_effects;
+      set_eager_effects(/* @__PURE__ */ new Set());
+      try {
+        if (includes.call(stack, derived3)) {
+          derived_references_self();
+        }
+        stack.push(derived3);
+        derived3.f &= ~WAS_MARKED;
+        destroy_derived_effects(derived3);
+        value = update_reaction(derived3);
+      } finally {
+        set_active_effect(prev_active_effect);
+        set_eager_effects(prev_eager_effects);
+        stack.pop();
+      }
+    } else {
+      try {
+        derived3.f &= ~WAS_MARKED;
+        destroy_derived_effects(derived3);
+        value = update_reaction(derived3);
+      } finally {
+        set_active_effect(prev_active_effect);
+      }
+    }
+    return value;
+  }
+  function update_derived(derived3) {
+    var _a5, _b2;
+    var value = execute_derived(derived3);
+    if (!derived3.equals(value)) {
+      derived3.wv = increment_write_version();
+      if (!((_a5 = current_batch) == null ? void 0 : _a5.is_fork) || derived3.deps === null) {
+        derived3.v = value;
+        if (derived3.deps === null) {
+          set_signal_status(derived3, CLEAN);
+          return;
+        }
+      }
+    }
+    if (is_destroying_effect) {
+      return;
+    }
+    if (batch_values !== null) {
+      if (effect_tracking() || ((_b2 = current_batch) == null ? void 0 : _b2.is_fork)) {
+        batch_values.set(derived3, value);
+      }
+    } else {
+      update_derived_status(derived3);
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/sources.js
+  var eager_effects = /* @__PURE__ */ new Set();
+  var old_values = /* @__PURE__ */ new Map();
+  function set_eager_effects(v) {
+    eager_effects = v;
+  }
+  var eager_effects_deferred = false;
+  function set_eager_effects_deferred() {
+    eager_effects_deferred = true;
+  }
+  function source(v, stack2) {
+    var signal = {
+      f: 0,
+      // TODO ideally we could skip this altogether, but it causes type errors
+      v,
+      reactions: null,
+      equals,
+      rv: 0,
+      wv: 0
+    };
+    if (true_default && tracing_mode_flag) {
+      signal.created = stack2 != null ? stack2 : get_error("created at");
+      signal.updated = null;
+      signal.set_during_effect = false;
+      signal.trace = null;
+    }
+    return signal;
+  }
+  // @__NO_SIDE_EFFECTS__
+  function state(v, stack2) {
+    const s = source(v, stack2);
+    push_reaction_value(s);
+    return s;
+  }
+  // @__NO_SIDE_EFFECTS__
+  function mutable_source(initial_value, immutable = false, trackable = true) {
+    var _a5, _b2;
+    const s = source(initial_value);
+    if (!immutable) {
+      s.equals = safe_equals;
+    }
+    if (legacy_mode_flag && trackable && component_context !== null && component_context.l !== null) {
+      ((_b2 = (_a5 = component_context.l).s) != null ? _b2 : _a5.s = []).push(s);
+    }
+    return s;
+  }
+  function set(source2, value, should_proxy = false) {
+    if (active_reaction !== null && // since we are untracking the function inside `$inspect.with` we need to add this check
+    // to ensure we error if state is set inside an inspect effect
+    (!untracking || (active_reaction.f & EAGER_EFFECT) !== 0) && is_runes() && (active_reaction.f & (DERIVED | BLOCK_EFFECT | ASYNC | EAGER_EFFECT)) !== 0 && (current_sources === null || !includes.call(current_sources, source2))) {
+      state_unsafe_mutation();
+    }
+    let new_value = should_proxy ? proxy(value) : value;
+    if (true_default) {
+      tag_proxy(
+        new_value,
+        /** @type {string} */
+        source2.label
+      );
+    }
+    return internal_set(source2, new_value);
+  }
+  function internal_set(source2, value) {
+    var _a5, _b2, _c2;
+    if (!source2.equals(value)) {
+      var old_value = source2.v;
+      if (is_destroying_effect) {
+        old_values.set(source2, value);
+      } else {
+        old_values.set(source2, old_value);
+      }
+      source2.v = value;
+      var batch = Batch.ensure();
+      batch.capture(source2, old_value);
+      if (true_default) {
+        if (tracing_mode_flag || active_effect !== null) {
+          (_a5 = source2.updated) != null ? _a5 : source2.updated = /* @__PURE__ */ new Map();
+          const count = ((_c2 = (_b2 = source2.updated.get("")) == null ? void 0 : _b2.count) != null ? _c2 : 0) + 1;
+          source2.updated.set("", { error: (
+            /** @type {any} */
+            null
+          ), count });
+          if (tracing_mode_flag || count > 5) {
+            const error = get_error("updated at");
+            if (error !== null) {
+              let entry = source2.updated.get(error.stack);
+              if (!entry) {
+                entry = { error, count: 0 };
+                source2.updated.set(error.stack, entry);
+              }
+              entry.count++;
+            }
+          }
+        }
+        if (active_effect !== null) {
+          source2.set_during_effect = true;
+        }
+      }
+      if ((source2.f & DERIVED) !== 0) {
+        const derived3 = (
+          /** @type {Derived} */
+          source2
+        );
+        if ((source2.f & DIRTY) !== 0) {
+          execute_derived(derived3);
+        }
+        update_derived_status(derived3);
+      }
+      source2.wv = increment_write_version();
+      mark_reactions(source2, DIRTY);
+      if (is_runes() && active_effect !== null && (active_effect.f & CLEAN) !== 0 && (active_effect.f & (BRANCH_EFFECT | ROOT_EFFECT)) === 0) {
+        if (untracked_writes === null) {
+          set_untracked_writes([source2]);
+        } else {
+          untracked_writes.push(source2);
+        }
+      }
+      if (!batch.is_fork && eager_effects.size > 0 && !eager_effects_deferred) {
+        flush_eager_effects();
+      }
+    }
+    return value;
+  }
+  function flush_eager_effects() {
+    eager_effects_deferred = false;
+    for (const effect2 of eager_effects) {
+      if ((effect2.f & CLEAN) !== 0) {
+        set_signal_status(effect2, MAYBE_DIRTY);
+      }
+      if (is_dirty(effect2)) {
+        update_effect(effect2);
+      }
+    }
+    eager_effects.clear();
+  }
+  function increment(source2) {
+    set(source2, source2.v + 1);
+  }
+  function mark_reactions(signal, status) {
+    var _a5;
+    var reactions = signal.reactions;
+    if (reactions === null)
+      return;
+    var runes = is_runes();
+    var length = reactions.length;
+    for (var i = 0; i < length; i++) {
+      var reaction = reactions[i];
+      var flags2 = reaction.f;
+      if (!runes && reaction === active_effect)
+        continue;
+      if (true_default && (flags2 & EAGER_EFFECT) !== 0) {
+        eager_effects.add(reaction);
+        continue;
+      }
+      var not_dirty = (flags2 & DIRTY) === 0;
+      if (not_dirty) {
+        set_signal_status(reaction, status);
+      }
+      if ((flags2 & DERIVED) !== 0) {
+        var derived3 = (
+          /** @type {Derived} */
+          reaction
+        );
+        (_a5 = batch_values) == null ? void 0 : _a5.delete(derived3);
+        if ((flags2 & WAS_MARKED) === 0) {
+          if (flags2 & CONNECTED) {
+            reaction.f |= WAS_MARKED;
+          }
+          mark_reactions(derived3, MAYBE_DIRTY);
+        }
+      } else if (not_dirty) {
+        if ((flags2 & BLOCK_EFFECT) !== 0 && eager_block_effects !== null) {
+          eager_block_effects.add(
+            /** @type {Effect} */
+            reaction
+          );
+        }
+        schedule_effect(
+          /** @type {Effect} */
+          reaction
+        );
+      }
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/proxy.js
+  var regex_is_valid_identifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/;
+  function proxy(value) {
+    if (typeof value !== "object" || value === null || STATE_SYMBOL in value) {
+      return value;
+    }
+    const prototype = get_prototype_of(value);
+    if (prototype !== object_prototype && prototype !== array_prototype) {
+      return value;
+    }
+    var sources = /* @__PURE__ */ new Map();
+    var is_proxied_array = is_array(value);
+    var version = state(0);
+    var stack2 = true_default && tracing_mode_flag ? get_error("created at") : null;
+    var parent_version = update_version;
+    var with_parent = (fn) => {
+      if (update_version === parent_version) {
+        return fn();
+      }
+      var reaction = active_reaction;
+      var version2 = update_version;
+      set_active_reaction(null);
+      set_update_version(parent_version);
+      var result = fn();
+      set_active_reaction(reaction);
+      set_update_version(version2);
+      return result;
+    };
+    if (is_proxied_array) {
+      sources.set("length", state(
+        /** @type {any[]} */
+        value.length,
+        stack2
+      ));
+      if (true_default) {
+        value = /** @type {any} */
+        inspectable_array(
+          /** @type {any[]} */
+          value
+        );
+      }
+    }
+    var path = "";
+    let updating = false;
+    function update_path(new_path) {
+      if (updating)
+        return;
+      updating = true;
+      path = new_path;
+      tag(version, `${path} version`);
+      for (const [prop2, source2] of sources) {
+        tag(source2, get_label(path, prop2));
+      }
+      updating = false;
+    }
+    return new Proxy(
+      /** @type {any} */
+      value,
+      {
+        defineProperty(_, prop2, descriptor) {
+          if (!("value" in descriptor) || descriptor.configurable === false || descriptor.enumerable === false || descriptor.writable === false) {
+            state_descriptors_fixed();
+          }
+          var s = sources.get(prop2);
+          if (s === void 0) {
+            s = with_parent(() => {
+              var s2 = state(descriptor.value, stack2);
+              sources.set(prop2, s2);
+              if (true_default && typeof prop2 === "string") {
+                tag(s2, get_label(path, prop2));
+              }
+              return s2;
+            });
+          } else {
+            set(s, descriptor.value, true);
+          }
+          return true;
+        },
+        deleteProperty(target, prop2) {
+          var s = sources.get(prop2);
+          if (s === void 0) {
+            if (prop2 in target) {
+              const s2 = with_parent(() => state(UNINITIALIZED, stack2));
+              sources.set(prop2, s2);
+              increment(version);
+              if (true_default) {
+                tag(s2, get_label(path, prop2));
+              }
+            }
+          } else {
+            set(s, UNINITIALIZED);
+            increment(version);
+          }
+          return true;
+        },
+        get(target, prop2, receiver) {
+          var _a5;
+          if (prop2 === STATE_SYMBOL) {
+            return value;
+          }
+          if (true_default && prop2 === PROXY_PATH_SYMBOL) {
+            return update_path;
+          }
+          var s = sources.get(prop2);
+          var exists = prop2 in target;
+          if (s === void 0 && (!exists || ((_a5 = get_descriptor(target, prop2)) == null ? void 0 : _a5.writable))) {
+            s = with_parent(() => {
+              var p = proxy(exists ? target[prop2] : UNINITIALIZED);
+              var s2 = state(p, stack2);
+              if (true_default) {
+                tag(s2, get_label(path, prop2));
+              }
+              return s2;
+            });
+            sources.set(prop2, s);
+          }
+          if (s !== void 0) {
+            var v = get(s);
+            return v === UNINITIALIZED ? void 0 : v;
+          }
+          return Reflect.get(target, prop2, receiver);
+        },
+        getOwnPropertyDescriptor(target, prop2) {
+          var descriptor = Reflect.getOwnPropertyDescriptor(target, prop2);
+          if (descriptor && "value" in descriptor) {
+            var s = sources.get(prop2);
+            if (s)
+              descriptor.value = get(s);
+          } else if (descriptor === void 0) {
+            var source2 = sources.get(prop2);
+            var value2 = source2 == null ? void 0 : source2.v;
+            if (source2 !== void 0 && value2 !== UNINITIALIZED) {
+              return {
+                enumerable: true,
+                configurable: true,
+                value: value2,
+                writable: true
+              };
+            }
+          }
+          return descriptor;
+        },
+        has(target, prop2) {
+          var _a5;
+          if (prop2 === STATE_SYMBOL) {
+            return true;
+          }
+          var s = sources.get(prop2);
+          var has = s !== void 0 && s.v !== UNINITIALIZED || Reflect.has(target, prop2);
+          if (s !== void 0 || active_effect !== null && (!has || ((_a5 = get_descriptor(target, prop2)) == null ? void 0 : _a5.writable))) {
+            if (s === void 0) {
+              s = with_parent(() => {
+                var p = has ? proxy(target[prop2]) : UNINITIALIZED;
+                var s2 = state(p, stack2);
+                if (true_default) {
+                  tag(s2, get_label(path, prop2));
+                }
+                return s2;
+              });
+              sources.set(prop2, s);
+            }
+            var value2 = get(s);
+            if (value2 === UNINITIALIZED) {
+              return false;
+            }
+          }
+          return has;
+        },
+        set(target, prop2, value2, receiver) {
+          var _a5;
+          var s = sources.get(prop2);
+          var has = prop2 in target;
+          if (is_proxied_array && prop2 === "length") {
+            for (var i = value2; i < /** @type {Source<number>} */
+            s.v; i += 1) {
+              var other_s = sources.get(i + "");
+              if (other_s !== void 0) {
+                set(other_s, UNINITIALIZED);
+              } else if (i in target) {
+                other_s = with_parent(() => state(UNINITIALIZED, stack2));
+                sources.set(i + "", other_s);
+                if (true_default) {
+                  tag(other_s, get_label(path, i));
+                }
+              }
+            }
+          }
+          if (s === void 0) {
+            if (!has || ((_a5 = get_descriptor(target, prop2)) == null ? void 0 : _a5.writable)) {
+              s = with_parent(() => state(void 0, stack2));
+              if (true_default) {
+                tag(s, get_label(path, prop2));
+              }
+              set(s, proxy(value2));
+              sources.set(prop2, s);
+            }
+          } else {
+            has = s.v !== UNINITIALIZED;
+            var p = with_parent(() => proxy(value2));
+            set(s, p);
+          }
+          var descriptor = Reflect.getOwnPropertyDescriptor(target, prop2);
+          if (descriptor == null ? void 0 : descriptor.set) {
+            descriptor.set.call(receiver, value2);
+          }
+          if (!has) {
+            if (is_proxied_array && typeof prop2 === "string") {
+              var ls = (
+                /** @type {Source<number>} */
+                sources.get("length")
+              );
+              var n = Number(prop2);
+              if (Number.isInteger(n) && n >= ls.v) {
+                set(ls, n + 1);
+              }
+            }
+            increment(version);
+          }
+          return true;
+        },
+        ownKeys(target) {
+          get(version);
+          var own_keys = Reflect.ownKeys(target).filter((key4) => {
+            var source3 = sources.get(key4);
+            return source3 === void 0 || source3.v !== UNINITIALIZED;
+          });
+          for (var [key3, source2] of sources) {
+            if (source2.v !== UNINITIALIZED && !(key3 in target)) {
+              own_keys.push(key3);
+            }
+          }
+          return own_keys;
+        },
+        setPrototypeOf() {
+          state_prototype_fixed();
+        }
+      }
+    );
+  }
+  function get_label(path, prop2) {
+    var _a5;
+    if (typeof prop2 === "symbol")
+      return `${path}[Symbol(${(_a5 = prop2.description) != null ? _a5 : ""})]`;
+    if (regex_is_valid_identifier.test(prop2))
+      return `${path}.${prop2}`;
+    return /^\d+$/.test(prop2) ? `${path}[${prop2}]` : `${path}['${prop2}']`;
+  }
+  function get_proxied_value(value) {
+    try {
+      if (value !== null && typeof value === "object" && STATE_SYMBOL in value) {
+        return value[STATE_SYMBOL];
+      }
+    } catch (e) {
+    }
+    return value;
+  }
+  var ARRAY_MUTATING_METHODS = /* @__PURE__ */ new Set([
+    "copyWithin",
+    "fill",
+    "pop",
+    "push",
+    "reverse",
+    "shift",
+    "sort",
+    "splice",
+    "unshift"
+  ]);
+  function inspectable_array(array) {
+    return new Proxy(array, {
+      get(target, prop2, receiver) {
+        var value = Reflect.get(target, prop2, receiver);
+        if (!ARRAY_MUTATING_METHODS.has(
+          /** @type {string} */
+          prop2
+        )) {
+          return value;
+        }
+        return function(...args) {
+          set_eager_effects_deferred();
+          var result = value.apply(this, args);
+          flush_eager_effects();
+          return result;
+        };
+      }
+    });
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dev/equality.js
+  function init_array_prototype_warnings() {
+    const array_prototype2 = Array.prototype;
+    const cleanup = Array.__svelte_cleanup;
+    if (cleanup) {
+      cleanup();
+    }
+    const { indexOf, lastIndexOf, includes: includes2 } = array_prototype2;
+    array_prototype2.indexOf = function(item, from_index) {
+      const index2 = indexOf.call(this, item, from_index);
+      if (index2 === -1) {
+        for (let i = from_index != null ? from_index : 0; i < this.length; i += 1) {
+          if (get_proxied_value(this[i]) === item) {
+            state_proxy_equality_mismatch("array.indexOf(...)");
+            break;
+          }
+        }
+      }
+      return index2;
+    };
+    array_prototype2.lastIndexOf = function(item, from_index) {
+      const index2 = lastIndexOf.call(this, item, from_index != null ? from_index : this.length - 1);
+      if (index2 === -1) {
+        for (let i = 0; i <= (from_index != null ? from_index : this.length - 1); i += 1) {
+          if (get_proxied_value(this[i]) === item) {
+            state_proxy_equality_mismatch("array.lastIndexOf(...)");
+            break;
+          }
+        }
+      }
+      return index2;
+    };
+    array_prototype2.includes = function(item, from_index) {
+      const has = includes2.call(this, item, from_index);
+      if (!has) {
+        for (let i = 0; i < this.length; i += 1) {
+          if (get_proxied_value(this[i]) === item) {
+            state_proxy_equality_mismatch("array.includes(...)");
+            break;
+          }
+        }
+      }
+      return has;
+    };
+    Array.__svelte_cleanup = () => {
+      array_prototype2.indexOf = indexOf;
+      array_prototype2.lastIndexOf = lastIndexOf;
+      array_prototype2.includes = includes2;
+    };
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/operations.js
+  var $window;
+  var $document;
+  var is_firefox;
+  var first_child_getter;
+  var next_sibling_getter;
+  function init_operations() {
+    if ($window !== void 0) {
+      return;
+    }
+    $window = window;
+    $document = document;
+    is_firefox = /Firefox/.test(navigator.userAgent);
+    var element_prototype = Element.prototype;
+    var node_prototype = Node.prototype;
+    var text_prototype = Text.prototype;
+    first_child_getter = get_descriptor(node_prototype, "firstChild").get;
+    next_sibling_getter = get_descriptor(node_prototype, "nextSibling").get;
+    if (is_extensible(element_prototype)) {
+      element_prototype.__click = void 0;
+      element_prototype.__className = void 0;
+      element_prototype.__attributes = null;
+      element_prototype.__style = void 0;
+      element_prototype.__e = void 0;
+    }
+    if (is_extensible(text_prototype)) {
+      text_prototype.__t = void 0;
+    }
+    if (true_default) {
+      element_prototype.__svelte_meta = null;
+      init_array_prototype_warnings();
+    }
+  }
+  function create_text(value = "") {
+    return document.createTextNode(value);
+  }
+  // @__NO_SIDE_EFFECTS__
+  function get_first_child(node) {
+    return (
+      /** @type {TemplateNode | null} */
+      first_child_getter.call(node)
+    );
+  }
+  // @__NO_SIDE_EFFECTS__
+  function get_next_sibling(node) {
+    return (
+      /** @type {TemplateNode | null} */
+      next_sibling_getter.call(node)
+    );
+  }
+  function child(node, is_text) {
+    if (!hydrating) {
+      return /* @__PURE__ */ get_first_child(node);
+    }
+    var child2 = /* @__PURE__ */ get_first_child(hydrate_node);
+    if (child2 === null) {
+      child2 = hydrate_node.appendChild(create_text());
+    } else if (is_text && child2.nodeType !== TEXT_NODE) {
+      var text2 = create_text();
+      child2 == null ? void 0 : child2.before(text2);
+      set_hydrate_node(text2);
+      return text2;
+    }
+    if (is_text) {
+      merge_text_nodes(
+        /** @type {Text} */
+        child2
+      );
+    }
+    set_hydrate_node(child2);
+    return child2;
+  }
+  function first_child(node, is_text = false) {
+    var _a5, _b2;
+    if (!hydrating) {
+      var first = /* @__PURE__ */ get_first_child(node);
+      if (first instanceof Comment && first.data === "")
+        return /* @__PURE__ */ get_next_sibling(first);
+      return first;
+    }
+    if (is_text) {
+      if (((_a5 = hydrate_node) == null ? void 0 : _a5.nodeType) !== TEXT_NODE) {
+        var text2 = create_text();
+        (_b2 = hydrate_node) == null ? void 0 : _b2.before(text2);
+        set_hydrate_node(text2);
+        return text2;
+      }
+      merge_text_nodes(
+        /** @type {Text} */
+        hydrate_node
+      );
+    }
+    return hydrate_node;
+  }
+  function sibling(node, count = 1, is_text = false) {
+    let next_sibling = hydrating ? hydrate_node : node;
+    var last_sibling;
+    while (count--) {
+      last_sibling = next_sibling;
+      next_sibling = /** @type {TemplateNode} */
+      /* @__PURE__ */ get_next_sibling(next_sibling);
+    }
+    if (!hydrating) {
+      return next_sibling;
+    }
+    if (is_text) {
+      if ((next_sibling == null ? void 0 : next_sibling.nodeType) !== TEXT_NODE) {
+        var text2 = create_text();
+        if (next_sibling === null) {
+          last_sibling == null ? void 0 : last_sibling.after(text2);
+        } else {
+          next_sibling.before(text2);
+        }
+        set_hydrate_node(text2);
+        return text2;
+      }
+      merge_text_nodes(
+        /** @type {Text} */
+        next_sibling
+      );
+    }
+    set_hydrate_node(next_sibling);
+    return next_sibling;
+  }
+  function clear_text_content(node) {
+    node.textContent = "";
+  }
+  function should_defer_append() {
+    if (!async_mode_flag)
+      return false;
+    if (eager_block_effects !== null)
+      return false;
+    var flags2 = (
+      /** @type {Effect} */
+      active_effect.f
+    );
+    return (flags2 & EFFECT_RAN) !== 0;
+  }
+  function merge_text_nodes(text2) {
+    if (
+      /** @type {string} */
+      text2.nodeValue.length < 65536
+    ) {
+      return;
+    }
+    let next2 = text2.nextSibling;
+    while (next2 !== null && next2.nodeType === TEXT_NODE) {
+      next2.remove();
+      text2.nodeValue += /** @type {string} */
+      next2.nodeValue;
+      next2 = text2.nextSibling;
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/misc.js
+  function remove_textarea_child(dom) {
+    if (hydrating && get_first_child(dom) !== null) {
+      clear_text_content(dom);
+    }
+  }
+  var listening_to_form_reset = false;
+  function add_form_reset_listener() {
+    if (!listening_to_form_reset) {
+      listening_to_form_reset = true;
+      document.addEventListener(
+        "reset",
+        (evt) => {
+          Promise.resolve().then(() => {
+            var _a5;
+            if (!evt.defaultPrevented) {
+              for (
+                const e of
+                /**@type {HTMLFormElement} */
+                evt.target.elements
+              ) {
+                (_a5 = e.__on_r) == null ? void 0 : _a5.call(e);
+              }
+            }
+          });
+        },
+        // In the capture phase to guarantee we get noticed of it (no possibility of stopPropagation)
+        { capture: true }
+      );
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/bindings/shared.js
+  function without_reactive_context(fn) {
+    var previous_reaction = active_reaction;
+    var previous_effect = active_effect;
+    set_active_reaction(null);
+    set_active_effect(null);
+    try {
+      return fn();
+    } finally {
+      set_active_reaction(previous_reaction);
+      set_active_effect(previous_effect);
+    }
+  }
+  function listen_to_event_and_reset_event(element2, event2, handler, on_reset = handler) {
+    element2.addEventListener(event2, () => without_reactive_context(handler));
+    const prev = element2.__on_r;
+    if (prev) {
+      element2.__on_r = () => {
+        prev();
+        on_reset(true);
+      };
+    } else {
+      element2.__on_r = () => on_reset(true);
+    }
+    add_form_reset_listener();
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/effects.js
+  function validate_effect(rune) {
+    if (active_effect === null) {
+      if (active_reaction === null) {
+        effect_orphan(rune);
+      }
+      effect_in_unowned_derived();
+    }
+    if (is_destroying_effect) {
+      effect_in_teardown(rune);
+    }
+  }
+  function push_effect(effect2, parent_effect) {
+    var parent_last = parent_effect.last;
+    if (parent_last === null) {
+      parent_effect.last = parent_effect.first = effect2;
+    } else {
+      parent_last.next = effect2;
+      effect2.prev = parent_last;
+      parent_effect.last = effect2;
+    }
+  }
+  function create_effect(type, fn, sync) {
+    var _a5;
+    var parent = active_effect;
+    if (true_default) {
+      while (parent !== null && (parent.f & EAGER_EFFECT) !== 0) {
+        parent = parent.parent;
+      }
+    }
+    if (parent !== null && (parent.f & INERT) !== 0) {
+      type |= INERT;
+    }
+    var effect2 = {
+      ctx: component_context,
+      deps: null,
+      nodes: null,
+      f: type | DIRTY | CONNECTED,
+      first: null,
+      fn,
+      last: null,
+      next: null,
+      parent,
+      b: parent && parent.b,
+      prev: null,
+      teardown: null,
+      wv: 0,
+      ac: null
+    };
+    if (true_default) {
+      effect2.component_function = dev_current_component_function;
+    }
+    if (sync) {
+      try {
+        update_effect(effect2);
+        effect2.f |= EFFECT_RAN;
+      } catch (e2) {
+        destroy_effect(effect2);
+        throw e2;
+      }
+    } else if (fn !== null) {
+      schedule_effect(effect2);
+    }
+    var e = effect2;
+    if (sync && e.deps === null && e.teardown === null && e.nodes === null && e.first === e.last && // either `null`, or a singular child
+    (e.f & EFFECT_PRESERVED) === 0) {
+      e = e.first;
+      if ((type & BLOCK_EFFECT) !== 0 && (type & EFFECT_TRANSPARENT) !== 0 && e !== null) {
+        e.f |= EFFECT_TRANSPARENT;
+      }
+    }
+    if (e !== null) {
+      e.parent = parent;
+      if (parent !== null) {
+        push_effect(e, parent);
+      }
+      if (active_reaction !== null && (active_reaction.f & DERIVED) !== 0 && (type & ROOT_EFFECT) === 0) {
+        var derived3 = (
+          /** @type {Derived} */
+          active_reaction
+        );
+        ((_a5 = derived3.effects) != null ? _a5 : derived3.effects = []).push(e);
+      }
+    }
+    return effect2;
+  }
+  function effect_tracking() {
+    return active_reaction !== null && !untracking;
+  }
+  function teardown(fn) {
+    const effect2 = create_effect(RENDER_EFFECT, null, false);
+    set_signal_status(effect2, CLEAN);
+    effect2.teardown = fn;
+    return effect2;
+  }
+  function user_effect(fn) {
+    var _a5;
+    validate_effect("$effect");
+    if (true_default) {
+      define_property(fn, "name", {
+        value: "$effect"
+      });
+    }
+    var flags2 = (
+      /** @type {Effect} */
+      active_effect.f
+    );
+    var defer = !active_reaction && (flags2 & BRANCH_EFFECT) !== 0 && (flags2 & EFFECT_RAN) === 0;
+    if (defer) {
+      var context = (
+        /** @type {ComponentContext} */
+        component_context
+      );
+      ((_a5 = context.e) != null ? _a5 : context.e = []).push(fn);
+    } else {
+      return create_user_effect(fn);
+    }
+  }
+  function create_user_effect(fn) {
+    return create_effect(EFFECT | USER_EFFECT, fn, false);
+  }
+  function effect_root(fn) {
+    Batch.ensure();
+    const effect2 = create_effect(ROOT_EFFECT | EFFECT_PRESERVED, fn, true);
+    return () => {
+      destroy_effect(effect2);
+    };
+  }
+  function component_root(fn) {
+    Batch.ensure();
+    const effect2 = create_effect(ROOT_EFFECT | EFFECT_PRESERVED, fn, true);
+    return (options = {}) => {
+      return new Promise((fulfil) => {
+        if (options.outro) {
+          pause_effect(effect2, () => {
+            destroy_effect(effect2);
+            fulfil(void 0);
+          });
+        } else {
+          destroy_effect(effect2);
+          fulfil(void 0);
+        }
+      });
+    };
+  }
+  function effect(fn) {
+    return create_effect(EFFECT, fn, false);
+  }
+  function async_effect(fn) {
+    return create_effect(ASYNC | EFFECT_PRESERVED, fn, true);
+  }
+  function render_effect(fn, flags2 = 0) {
+    return create_effect(RENDER_EFFECT | flags2, fn, true);
+  }
+  function template_effect(fn, sync = [], async2 = [], blockers = []) {
+    flatten(blockers, sync, async2, (values) => {
+      create_effect(RENDER_EFFECT, () => fn(...values.map(get)), true);
+    });
+  }
+  function block(fn, flags2 = 0) {
+    var effect2 = create_effect(BLOCK_EFFECT | flags2, fn, true);
+    if (true_default) {
+      effect2.dev_stack = dev_stack;
+    }
+    return effect2;
+  }
+  function branch(fn) {
+    return create_effect(BRANCH_EFFECT | EFFECT_PRESERVED, fn, true);
+  }
+  function execute_effect_teardown(effect2) {
+    var teardown2 = effect2.teardown;
+    if (teardown2 !== null) {
+      const previously_destroying_effect = is_destroying_effect;
+      const previous_reaction = active_reaction;
+      set_is_destroying_effect(true);
+      set_active_reaction(null);
+      try {
+        teardown2.call(null);
+      } finally {
+        set_is_destroying_effect(previously_destroying_effect);
+        set_active_reaction(previous_reaction);
+      }
+    }
+  }
+  function destroy_effect_children(signal, remove_dom = false) {
+    var effect2 = signal.first;
+    signal.first = signal.last = null;
+    while (effect2 !== null) {
+      const controller = effect2.ac;
+      if (controller !== null) {
+        without_reactive_context(() => {
+          controller.abort(STALE_REACTION);
+        });
+      }
+      var next2 = effect2.next;
+      if ((effect2.f & ROOT_EFFECT) !== 0) {
+        effect2.parent = null;
+      } else {
+        destroy_effect(effect2, remove_dom);
+      }
+      effect2 = next2;
+    }
+  }
+  function destroy_block_effect_children(signal) {
+    var effect2 = signal.first;
+    while (effect2 !== null) {
+      var next2 = effect2.next;
+      if ((effect2.f & BRANCH_EFFECT) === 0) {
+        destroy_effect(effect2);
+      }
+      effect2 = next2;
+    }
+  }
+  function destroy_effect(effect2, remove_dom = true) {
+    var removed = false;
+    if ((remove_dom || (effect2.f & HEAD_EFFECT) !== 0) && effect2.nodes !== null && effect2.nodes.end !== null) {
+      remove_effect_dom(
+        effect2.nodes.start,
+        /** @type {TemplateNode} */
+        effect2.nodes.end
+      );
+      removed = true;
+    }
+    destroy_effect_children(effect2, remove_dom && !removed);
+    remove_reactions(effect2, 0);
+    set_signal_status(effect2, DESTROYED);
+    var transitions = effect2.nodes && effect2.nodes.t;
+    if (transitions !== null) {
+      for (const transition2 of transitions) {
+        transition2.stop();
+      }
+    }
+    execute_effect_teardown(effect2);
+    var parent = effect2.parent;
+    if (parent !== null && parent.first !== null) {
+      unlink_effect(effect2);
+    }
+    if (true_default) {
+      effect2.component_function = null;
+    }
+    effect2.next = effect2.prev = effect2.teardown = effect2.ctx = effect2.deps = effect2.fn = effect2.nodes = effect2.ac = null;
+  }
+  function remove_effect_dom(node, end) {
+    while (node !== null) {
+      var next2 = node === end ? null : get_next_sibling(node);
+      node.remove();
+      node = next2;
+    }
+  }
+  function unlink_effect(effect2) {
+    var parent = effect2.parent;
+    var prev = effect2.prev;
+    var next2 = effect2.next;
+    if (prev !== null)
+      prev.next = next2;
+    if (next2 !== null)
+      next2.prev = prev;
+    if (parent !== null) {
+      if (parent.first === effect2)
+        parent.first = next2;
+      if (parent.last === effect2)
+        parent.last = prev;
+    }
+  }
+  function pause_effect(effect2, callback, destroy = true) {
+    var transitions = [];
+    pause_children(effect2, transitions, true);
+    var fn = () => {
+      if (destroy)
+        destroy_effect(effect2);
+      if (callback)
+        callback();
+    };
+    var remaining = transitions.length;
+    if (remaining > 0) {
+      var check = () => --remaining || fn();
+      for (var transition2 of transitions) {
+        transition2.out(check);
+      }
+    } else {
+      fn();
+    }
+  }
+  function pause_children(effect2, transitions, local) {
+    if ((effect2.f & INERT) !== 0)
+      return;
+    effect2.f ^= INERT;
+    var t = effect2.nodes && effect2.nodes.t;
+    if (t !== null) {
+      for (const transition2 of t) {
+        if (transition2.is_global || local) {
+          transitions.push(transition2);
+        }
+      }
+    }
+    var child2 = effect2.first;
+    while (child2 !== null) {
+      var sibling2 = child2.next;
+      var transparent = (child2.f & EFFECT_TRANSPARENT) !== 0 || // If this is a branch effect without a block effect parent,
+      // it means the parent block effect was pruned. In that case,
+      // transparency information was transferred to the branch effect.
+      (child2.f & BRANCH_EFFECT) !== 0 && (effect2.f & BLOCK_EFFECT) !== 0;
+      pause_children(child2, transitions, transparent ? local : false);
+      child2 = sibling2;
+    }
+  }
+  function resume_effect(effect2) {
+    resume_children(effect2, true);
+  }
+  function resume_children(effect2, local) {
+    if ((effect2.f & INERT) === 0)
+      return;
+    effect2.f ^= INERT;
+    if ((effect2.f & CLEAN) === 0) {
+      set_signal_status(effect2, DIRTY);
+      schedule_effect(effect2);
+    }
+    var child2 = effect2.first;
+    while (child2 !== null) {
+      var sibling2 = child2.next;
+      var transparent = (child2.f & EFFECT_TRANSPARENT) !== 0 || (child2.f & BRANCH_EFFECT) !== 0;
+      resume_children(child2, transparent ? local : false);
+      child2 = sibling2;
+    }
+    var t = effect2.nodes && effect2.nodes.t;
+    if (t !== null) {
+      for (const transition2 of t) {
+        if (transition2.is_global || local) {
+          transition2.in();
+        }
+      }
+    }
+  }
+  function move_effect(effect2, fragment) {
+    if (!effect2.nodes)
+      return;
+    var node = effect2.nodes.start;
+    var end = effect2.nodes.end;
+    while (node !== null) {
+      var next2 = node === end ? null : get_next_sibling(node);
+      fragment.append(node);
+      node = next2;
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/legacy.js
+  var captured_signals = null;
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/runtime.js
+  var is_updating_effect = false;
+  var is_destroying_effect = false;
+  function set_is_destroying_effect(value) {
+    is_destroying_effect = value;
+  }
+  var active_reaction = null;
+  var untracking = false;
+  function set_active_reaction(reaction) {
+    active_reaction = reaction;
+  }
+  var active_effect = null;
+  function set_active_effect(effect2) {
+    active_effect = effect2;
+  }
+  var current_sources = null;
+  function push_reaction_value(value) {
+    if (active_reaction !== null && (!async_mode_flag || (active_reaction.f & DERIVED) !== 0)) {
+      if (current_sources === null) {
+        current_sources = [value];
+      } else {
+        current_sources.push(value);
+      }
+    }
+  }
+  var new_deps = null;
+  var skipped_deps = 0;
+  var untracked_writes = null;
+  function set_untracked_writes(value) {
+    untracked_writes = value;
+  }
+  var write_version = 1;
+  var read_version = 0;
+  var update_version = read_version;
+  function set_update_version(value) {
+    update_version = value;
+  }
+  function increment_write_version() {
+    return ++write_version;
+  }
+  function is_dirty(reaction) {
+    var flags2 = reaction.f;
+    if ((flags2 & DIRTY) !== 0) {
+      return true;
+    }
+    if (flags2 & DERIVED) {
+      reaction.f &= ~WAS_MARKED;
+    }
+    if ((flags2 & MAYBE_DIRTY) !== 0) {
+      var dependencies = (
+        /** @type {Value[]} */
+        reaction.deps
+      );
+      var length = dependencies.length;
+      for (var i = 0; i < length; i++) {
+        var dependency = dependencies[i];
+        if (is_dirty(
+          /** @type {Derived} */
+          dependency
+        )) {
+          update_derived(
+            /** @type {Derived} */
+            dependency
+          );
+        }
+        if (dependency.wv > reaction.wv) {
+          return true;
+        }
+      }
+      if ((flags2 & CONNECTED) !== 0 && // During time traveling we don't want to reset the status so that
+      // traversal of the graph in the other batches still happens
+      batch_values === null) {
+        set_signal_status(reaction, CLEAN);
+      }
+    }
+    return false;
+  }
+  function schedule_possible_effect_self_invalidation(signal, effect2, root15 = true) {
+    var reactions = signal.reactions;
+    if (reactions === null)
+      return;
+    if (!async_mode_flag && current_sources !== null && includes.call(current_sources, signal)) {
+      return;
+    }
+    for (var i = 0; i < reactions.length; i++) {
+      var reaction = reactions[i];
+      if ((reaction.f & DERIVED) !== 0) {
+        schedule_possible_effect_self_invalidation(
+          /** @type {Derived} */
+          reaction,
+          effect2,
+          false
+        );
+      } else if (effect2 === reaction) {
+        if (root15) {
+          set_signal_status(reaction, DIRTY);
+        } else if ((reaction.f & CLEAN) !== 0) {
+          set_signal_status(reaction, MAYBE_DIRTY);
+        }
+        schedule_effect(
+          /** @type {Effect} */
+          reaction
+        );
+      }
+    }
+  }
+  function update_reaction(reaction) {
+    var _a5, _b2, _c2;
+    var previous_deps = new_deps;
+    var previous_skipped_deps = skipped_deps;
+    var previous_untracked_writes = untracked_writes;
+    var previous_reaction = active_reaction;
+    var previous_sources = current_sources;
+    var previous_component_context = component_context;
+    var previous_untracking = untracking;
+    var previous_update_version = update_version;
+    var flags2 = reaction.f;
+    new_deps = /** @type {null | Value[]} */
+    null;
+    skipped_deps = 0;
+    untracked_writes = null;
+    active_reaction = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) === 0 ? reaction : null;
+    current_sources = null;
+    set_component_context(reaction.ctx);
+    untracking = false;
+    update_version = ++read_version;
+    if (reaction.ac !== null) {
+      without_reactive_context(() => {
+        reaction.ac.abort(STALE_REACTION);
+      });
+      reaction.ac = null;
+    }
+    try {
+      reaction.f |= REACTION_IS_UPDATING;
+      var fn = (
+        /** @type {Function} */
+        reaction.fn
+      );
+      var result = fn();
+      var deps = reaction.deps;
+      var is_fork = (_a5 = current_batch) == null ? void 0 : _a5.is_fork;
+      if (new_deps !== null) {
+        var i;
+        if (!is_fork) {
+          remove_reactions(reaction, skipped_deps);
+        }
+        if (deps !== null && skipped_deps > 0) {
+          deps.length = skipped_deps + new_deps.length;
+          for (i = 0; i < new_deps.length; i++) {
+            deps[skipped_deps + i] = new_deps[i];
+          }
+        } else {
+          reaction.deps = deps = new_deps;
+        }
+        if (effect_tracking() && (reaction.f & CONNECTED) !== 0) {
+          for (i = skipped_deps; i < deps.length; i++) {
+            ((_c2 = (_b2 = deps[i]).reactions) != null ? _c2 : _b2.reactions = []).push(reaction);
+          }
+        }
+      } else if (!is_fork && deps !== null && skipped_deps < deps.length) {
+        remove_reactions(reaction, skipped_deps);
+        deps.length = skipped_deps;
+      }
+      if (is_runes() && untracked_writes !== null && !untracking && deps !== null && (reaction.f & (DERIVED | MAYBE_DIRTY | DIRTY)) === 0) {
+        for (i = 0; i < /** @type {Source[]} */
+        untracked_writes.length; i++) {
+          schedule_possible_effect_self_invalidation(
+            untracked_writes[i],
+            /** @type {Effect} */
+            reaction
+          );
+        }
+      }
+      if (previous_reaction !== null && previous_reaction !== reaction) {
+        read_version++;
+        if (previous_reaction.deps !== null) {
+          for (let i2 = 0; i2 < previous_skipped_deps; i2 += 1) {
+            previous_reaction.deps[i2].rv = read_version;
+          }
+        }
+        if (previous_deps !== null) {
+          for (const dep of previous_deps) {
+            dep.rv = read_version;
+          }
+        }
+        if (untracked_writes !== null) {
+          if (previous_untracked_writes === null) {
+            previous_untracked_writes = untracked_writes;
+          } else {
+            previous_untracked_writes.push(.../** @type {Source[]} */
+            untracked_writes);
+          }
+        }
+      }
+      if ((reaction.f & ERROR_VALUE) !== 0) {
+        reaction.f ^= ERROR_VALUE;
+      }
+      return result;
+    } catch (error) {
+      return handle_error(error);
+    } finally {
+      reaction.f ^= REACTION_IS_UPDATING;
+      new_deps = previous_deps;
+      skipped_deps = previous_skipped_deps;
+      untracked_writes = previous_untracked_writes;
+      active_reaction = previous_reaction;
+      current_sources = previous_sources;
+      set_component_context(previous_component_context);
+      untracking = previous_untracking;
+      update_version = previous_update_version;
+    }
+  }
+  function remove_reaction(signal, dependency) {
+    let reactions = dependency.reactions;
+    if (reactions !== null) {
+      var index2 = index_of.call(reactions, signal);
+      if (index2 !== -1) {
+        var new_length = reactions.length - 1;
+        if (new_length === 0) {
+          reactions = dependency.reactions = null;
+        } else {
+          reactions[index2] = reactions[new_length];
+          reactions.pop();
+        }
+      }
+    }
+    if (reactions === null && (dependency.f & DERIVED) !== 0 && // Destroying a child effect while updating a parent effect can cause a dependency to appear
+    // to be unused, when in fact it is used by the currently-updating parent. Checking `new_deps`
+    // allows us to skip the expensive work of disconnecting and immediately reconnecting it
+    (new_deps === null || !includes.call(new_deps, dependency))) {
+      var derived3 = (
+        /** @type {Derived} */
+        dependency
+      );
+      if ((derived3.f & CONNECTED) !== 0) {
+        derived3.f ^= CONNECTED;
+        derived3.f &= ~WAS_MARKED;
+      }
+      update_derived_status(derived3);
+      destroy_derived_effects(derived3);
+      remove_reactions(derived3, 0);
+    }
+  }
+  function remove_reactions(signal, start_index) {
+    var dependencies = signal.deps;
+    if (dependencies === null)
+      return;
+    for (var i = start_index; i < dependencies.length; i++) {
+      remove_reaction(signal, dependencies[i]);
+    }
+  }
+  function update_effect(effect2) {
+    var _a5;
+    var flags2 = effect2.f;
+    if ((flags2 & DESTROYED) !== 0) {
+      return;
+    }
+    set_signal_status(effect2, CLEAN);
+    var previous_effect = active_effect;
+    var was_updating_effect = is_updating_effect;
+    active_effect = effect2;
+    is_updating_effect = true;
+    if (true_default) {
+      var previous_component_fn = dev_current_component_function;
+      set_dev_current_component_function(effect2.component_function);
+      var previous_stack = (
+        /** @type {any} */
+        dev_stack
+      );
+      set_dev_stack((_a5 = effect2.dev_stack) != null ? _a5 : dev_stack);
+    }
+    try {
+      if ((flags2 & (BLOCK_EFFECT | MANAGED_EFFECT)) !== 0) {
+        destroy_block_effect_children(effect2);
+      } else {
+        destroy_effect_children(effect2);
+      }
+      execute_effect_teardown(effect2);
+      var teardown2 = update_reaction(effect2);
+      effect2.teardown = typeof teardown2 === "function" ? teardown2 : null;
+      effect2.wv = write_version;
+      if (true_default && tracing_mode_flag && (effect2.f & DIRTY) !== 0 && effect2.deps !== null) {
+        for (var dep of effect2.deps) {
+          if (dep.set_during_effect) {
+            dep.wv = increment_write_version();
+            dep.set_during_effect = false;
+          }
+        }
+      }
+    } finally {
+      is_updating_effect = was_updating_effect;
+      active_effect = previous_effect;
+      if (true_default) {
+        set_dev_current_component_function(previous_component_fn);
+        set_dev_stack(previous_stack);
+      }
+    }
+  }
+  function tick() {
+    return __async(this, null, function* () {
+      if (async_mode_flag) {
+        return new Promise((f) => {
+          requestAnimationFrame(() => f());
+          setTimeout(() => f());
+        });
+      }
+      yield Promise.resolve();
+      flushSync();
+    });
+  }
+  function get(signal) {
+    var _a5, _b2, _c2;
+    var flags2 = signal.f;
+    var is_derived = (flags2 & DERIVED) !== 0;
+    (_a5 = captured_signals) == null ? void 0 : _a5.add(signal);
+    if (active_reaction !== null && !untracking) {
+      var destroyed = active_effect !== null && (active_effect.f & DESTROYED) !== 0;
+      if (!destroyed && (current_sources === null || !includes.call(current_sources, signal))) {
+        var deps = active_reaction.deps;
+        if ((active_reaction.f & REACTION_IS_UPDATING) !== 0) {
+          if (signal.rv < read_version) {
+            signal.rv = read_version;
+            if (new_deps === null && deps !== null && deps[skipped_deps] === signal) {
+              skipped_deps++;
+            } else if (new_deps === null) {
+              new_deps = [signal];
+            } else {
+              new_deps.push(signal);
+            }
+          }
+        } else {
+          ((_b2 = active_reaction.deps) != null ? _b2 : active_reaction.deps = []).push(signal);
+          var reactions = signal.reactions;
+          if (reactions === null) {
+            signal.reactions = [active_reaction];
+          } else if (!includes.call(reactions, active_reaction)) {
+            reactions.push(active_reaction);
+          }
+        }
+      }
+    }
+    if (true_default) {
+      recent_async_deriveds.delete(signal);
+      if (tracing_mode_flag && !untracking && tracing_expressions !== null && active_reaction !== null && tracing_expressions.reaction === active_reaction) {
+        if (signal.trace) {
+          signal.trace();
+        } else {
+          var trace2 = get_error("traced at");
+          if (trace2) {
+            var entry = tracing_expressions.entries.get(signal);
+            if (entry === void 0) {
+              entry = { traces: [] };
+              tracing_expressions.entries.set(signal, entry);
+            }
+            var last = entry.traces[entry.traces.length - 1];
+            if (trace2.stack !== (last == null ? void 0 : last.stack)) {
+              entry.traces.push(trace2);
+            }
+          }
+        }
+      }
+    }
+    if (is_destroying_effect && old_values.has(signal)) {
+      return old_values.get(signal);
+    }
+    if (is_derived) {
+      var derived3 = (
+        /** @type {Derived} */
+        signal
+      );
+      if (is_destroying_effect) {
+        var value = derived3.v;
+        if ((derived3.f & CLEAN) === 0 && derived3.reactions !== null || depends_on_old_values(derived3)) {
+          value = execute_derived(derived3);
+        }
+        old_values.set(derived3, value);
+        return value;
+      }
+      var should_connect = (derived3.f & CONNECTED) === 0 && !untracking && active_reaction !== null && (is_updating_effect || (active_reaction.f & CONNECTED) !== 0);
+      var is_new = derived3.deps === null;
+      if (is_dirty(derived3)) {
+        if (should_connect) {
+          derived3.f |= CONNECTED;
+        }
+        update_derived(derived3);
+      }
+      if (should_connect && !is_new) {
+        reconnect(derived3);
+      }
+    }
+    if ((_c2 = batch_values) == null ? void 0 : _c2.has(signal)) {
+      return batch_values.get(signal);
+    }
+    if ((signal.f & ERROR_VALUE) !== 0) {
+      throw signal.v;
+    }
+    return signal.v;
+  }
+  function reconnect(derived3) {
+    var _a5;
+    if (derived3.deps === null)
+      return;
+    derived3.f |= CONNECTED;
+    for (const dep of derived3.deps) {
+      ((_a5 = dep.reactions) != null ? _a5 : dep.reactions = []).push(derived3);
+      if ((dep.f & DERIVED) !== 0 && (dep.f & CONNECTED) === 0) {
+        reconnect(
+          /** @type {Derived} */
+          dep
+        );
+      }
+    }
+  }
+  function depends_on_old_values(derived3) {
+    if (derived3.v === UNINITIALIZED)
+      return true;
+    if (derived3.deps === null)
+      return false;
+    for (const dep of derived3.deps) {
+      if (old_values.has(dep)) {
+        return true;
+      }
+      if ((dep.f & DERIVED) !== 0 && depends_on_old_values(
+        /** @type {Derived} */
+        dep
+      )) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function untrack(fn) {
+    var previous_untracking = untracking;
+    try {
+      untracking = true;
+      return fn();
+    } finally {
+      untracking = previous_untracking;
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/utils.js
+  var DOM_BOOLEAN_ATTRIBUTES = [
+    "allowfullscreen",
+    "async",
+    "autofocus",
+    "autoplay",
+    "checked",
+    "controls",
+    "default",
+    "disabled",
+    "formnovalidate",
+    "indeterminate",
+    "inert",
+    "ismap",
+    "loop",
+    "multiple",
+    "muted",
+    "nomodule",
+    "novalidate",
+    "open",
+    "playsinline",
+    "readonly",
+    "required",
+    "reversed",
+    "seamless",
+    "selected",
+    "webkitdirectory",
+    "defer",
+    "disablepictureinpicture",
+    "disableremoteplayback"
+  ];
+  var DOM_PROPERTIES = [
+    ...DOM_BOOLEAN_ATTRIBUTES,
+    "formNoValidate",
+    "isMap",
+    "noModule",
+    "playsInline",
+    "readOnly",
+    "value",
+    "volume",
+    "defaultValue",
+    "defaultChecked",
+    "srcObject",
+    "noValidate",
+    "allowFullscreen",
+    "disablePictureInPicture",
+    "disableRemotePlayback"
+  ];
+  var PASSIVE_EVENTS = ["touchstart", "touchmove"];
+  function is_passive_event(name) {
+    return PASSIVE_EVENTS.includes(name);
+  }
+  var STATE_CREATION_RUNES = (
+    /** @type {const} */
+    [
+      "$state",
+      "$state.raw",
+      "$derived",
+      "$derived.by"
+    ]
+  );
+  var RUNES = (
+    /** @type {const} */
+    [
+      ...STATE_CREATION_RUNES,
+      "$state.eager",
+      "$state.snapshot",
+      "$props",
+      "$props.id",
+      "$bindable",
+      "$effect",
+      "$effect.pre",
+      "$effect.tracking",
+      "$effect.root",
+      "$effect.pending",
+      "$inspect",
+      "$inspect().with",
+      "$inspect.trace",
+      "$host"
+    ]
+  );
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/events.js
+  var all_registered_events = /* @__PURE__ */ new Set();
+  var root_event_handles = /* @__PURE__ */ new Set();
+  function create_event(event_name, dom, handler, options = {}) {
+    function target_handler(event2) {
+      if (!options.capture) {
+        handle_event_propagation.call(dom, event2);
+      }
+      if (!event2.cancelBubble) {
+        return without_reactive_context(() => {
+          return handler == null ? void 0 : handler.call(this, event2);
+        });
+      }
+    }
+    if (event_name.startsWith("pointer") || event_name.startsWith("touch") || event_name === "wheel") {
+      queue_micro_task(() => {
+        dom.addEventListener(event_name, target_handler, options);
+      });
+    } else {
+      dom.addEventListener(event_name, target_handler, options);
+    }
+    return target_handler;
+  }
+  function event(event_name, dom, handler, capture2, passive2) {
+    var options = { capture: capture2, passive: passive2 };
+    var target_handler = create_event(event_name, dom, handler, options);
+    if (dom === document.body || // @ts-ignore
+    dom === window || // @ts-ignore
+    dom === document || // Firefox has quirky behavior, it can happen that we still get "canplay" events when the element is already removed
+    dom instanceof HTMLMediaElement) {
+      teardown(() => {
+        dom.removeEventListener(event_name, target_handler, options);
+      });
+    }
+  }
+  function delegate(events) {
+    for (var i = 0; i < events.length; i++) {
+      all_registered_events.add(events[i]);
+    }
+    for (var fn of root_event_handles) {
+      fn(events);
+    }
+  }
+  var last_propagated_event = null;
+  function handle_event_propagation(event2) {
+    var _a5;
+    var handler_element = this;
+    var owner_document = (
+      /** @type {Node} */
+      handler_element.ownerDocument
+    );
+    var event_name = event2.type;
+    var path = ((_a5 = event2.composedPath) == null ? void 0 : _a5.call(event2)) || [];
+    var current_target = (
+      /** @type {null | Element} */
+      path[0] || event2.target
+    );
+    last_propagated_event = event2;
+    var path_idx = 0;
+    var handled_at = last_propagated_event === event2 && event2.__root;
+    if (handled_at) {
+      var at_idx = path.indexOf(handled_at);
+      if (at_idx !== -1 && (handler_element === document || handler_element === /** @type {any} */
+      window)) {
+        event2.__root = handler_element;
+        return;
+      }
+      var handler_idx = path.indexOf(handler_element);
+      if (handler_idx === -1) {
+        return;
+      }
+      if (at_idx <= handler_idx) {
+        path_idx = at_idx;
+      }
+    }
+    current_target = /** @type {Element} */
+    path[path_idx] || event2.target;
+    if (current_target === handler_element)
+      return;
+    define_property(event2, "currentTarget", {
+      configurable: true,
+      get() {
+        return current_target || owner_document;
+      }
+    });
+    var previous_reaction = active_reaction;
+    var previous_effect = active_effect;
+    set_active_reaction(null);
+    set_active_effect(null);
+    try {
+      var throw_error;
+      var other_errors = [];
+      while (current_target !== null) {
+        var parent_element = current_target.assignedSlot || current_target.parentNode || /** @type {any} */
+        current_target.host || null;
+        try {
+          var delegated = current_target["__" + event_name];
+          if (delegated != null && (!/** @type {any} */
+          current_target.disabled || // DOM could've been updated already by the time this is reached, so we check this as well
+          // -> the target could not have been disabled because it emits the event in the first place
+          event2.target === current_target)) {
+            delegated.call(current_target, event2);
+          }
+        } catch (error) {
+          if (throw_error) {
+            other_errors.push(error);
+          } else {
+            throw_error = error;
+          }
+        }
+        if (event2.cancelBubble || parent_element === handler_element || parent_element === null) {
+          break;
+        }
+        current_target = parent_element;
+      }
+      if (throw_error) {
+        for (let error of other_errors) {
+          queueMicrotask(() => {
+            throw error;
+          });
+        }
+        throw throw_error;
+      }
+    } finally {
+      event2.__root = handler_element;
+      delete event2.currentTarget;
+      set_active_reaction(previous_reaction);
+      set_active_effect(previous_effect);
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/reconciler.js
+  function create_fragment_from_html(html2) {
+    var elem = document.createElement("template");
+    elem.innerHTML = html2.replaceAll("<!>", "<!---->");
+    return elem.content;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/template.js
+  function assign_nodes(start, end) {
+    var effect2 = (
+      /** @type {Effect} */
+      active_effect
+    );
+    if (effect2.nodes === null) {
+      effect2.nodes = { start, end, a: null, t: null };
+    }
+  }
+  // @__NO_SIDE_EFFECTS__
+  function from_html(content, flags2) {
+    var is_fragment = (flags2 & TEMPLATE_FRAGMENT) !== 0;
+    var use_import_node = (flags2 & TEMPLATE_USE_IMPORT_NODE) !== 0;
+    var node;
+    var has_start = !content.startsWith("<!>");
+    return () => {
+      if (hydrating) {
+        assign_nodes(hydrate_node, null);
+        return hydrate_node;
+      }
+      if (node === void 0) {
+        node = create_fragment_from_html(has_start ? content : "<!>" + content);
+        if (!is_fragment)
+          node = /** @type {TemplateNode} */
+          get_first_child(node);
+      }
+      var clone = (
+        /** @type {TemplateNode} */
+        use_import_node || is_firefox ? document.importNode(node, true) : node.cloneNode(true)
+      );
+      if (is_fragment) {
+        var start = (
+          /** @type {TemplateNode} */
+          get_first_child(clone)
+        );
+        var end = (
+          /** @type {TemplateNode} */
+          clone.lastChild
+        );
+        assign_nodes(start, end);
+      } else {
+        assign_nodes(clone, clone);
+      }
+      return clone;
+    };
+  }
+  function text(value = "") {
+    if (!hydrating) {
+      var t = create_text(value + "");
+      assign_nodes(t, t);
+      return t;
+    }
+    var node = hydrate_node;
+    if (node.nodeType !== TEXT_NODE) {
+      node.before(node = create_text());
+      set_hydrate_node(node);
+    } else {
+      merge_text_nodes(
+        /** @type {Text} */
+        node
+      );
+    }
+    assign_nodes(node, node);
+    return node;
+  }
+  function comment() {
+    if (hydrating) {
+      assign_nodes(hydrate_node, null);
+      return hydrate_node;
+    }
+    var frag = document.createDocumentFragment();
+    var start = document.createComment("");
+    var anchor = create_text();
+    frag.append(start, anchor);
+    assign_nodes(start, anchor);
+    return frag;
+  }
+  function append(anchor, dom) {
+    if (hydrating) {
+      var effect2 = (
+        /** @type {Effect & { nodes: EffectNodes }} */
+        active_effect
+      );
+      if ((effect2.f & EFFECT_RAN) === 0 || effect2.nodes.end === null) {
+        effect2.nodes.end = hydrate_node;
+      }
+      hydrate_next();
+      return;
+    }
+    if (anchor === null) {
+      return;
+    }
+    anchor.before(
+      /** @type {Node} */
+      dom
+    );
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/render.js
+  var should_intro = true;
+  function set_text(text2, value) {
+    var _a5;
+    var str = value == null ? "" : typeof value === "object" ? value + "" : value;
+    if (str !== ((_a5 = text2.__t) != null ? _a5 : text2.__t = text2.nodeValue)) {
+      text2.__t = str;
+      text2.nodeValue = str + "";
+    }
+  }
+  function mount(component2, options) {
+    return _mount(component2, options);
+  }
+  function hydrate(component2, options) {
+    var _a5;
+    init_operations();
+    options.intro = (_a5 = options.intro) != null ? _a5 : false;
+    const target = options.target;
+    const was_hydrating = hydrating;
+    const previous_hydrate_node = hydrate_node;
+    try {
+      var anchor = get_first_child(target);
+      while (anchor && (anchor.nodeType !== COMMENT_NODE || /** @type {Comment} */
+      anchor.data !== HYDRATION_START)) {
+        anchor = get_next_sibling(anchor);
+      }
+      if (!anchor) {
+        throw HYDRATION_ERROR;
+      }
+      set_hydrating(true);
+      set_hydrate_node(
+        /** @type {Comment} */
+        anchor
+      );
+      const instance = _mount(component2, __spreadProps(__spreadValues({}, options), { anchor }));
+      set_hydrating(false);
+      return (
+        /**  @type {Exports} */
+        instance
+      );
+    } catch (error) {
+      if (error instanceof Error && error.message.split("\n").some((line) => line.startsWith("https://svelte.dev/e/"))) {
+        throw error;
+      }
+      if (error !== HYDRATION_ERROR) {
+        console.warn("Failed to hydrate: ", error);
+      }
+      if (options.recover === false) {
+        hydration_failed();
+      }
+      init_operations();
+      clear_text_content(target);
+      set_hydrating(false);
+      return mount(component2, options);
+    } finally {
+      set_hydrating(was_hydrating);
+      set_hydrate_node(previous_hydrate_node);
+    }
+  }
+  var document_listeners = /* @__PURE__ */ new Map();
+  function _mount(Component, { target, anchor, props = {}, events, context, intro = true }) {
+    init_operations();
+    var registered_events = /* @__PURE__ */ new Set();
+    var event_handle = (events2) => {
+      for (var i = 0; i < events2.length; i++) {
+        var event_name = events2[i];
+        if (registered_events.has(event_name))
+          continue;
+        registered_events.add(event_name);
+        var passive2 = is_passive_event(event_name);
+        target.addEventListener(event_name, handle_event_propagation, { passive: passive2 });
+        var n = document_listeners.get(event_name);
+        if (n === void 0) {
+          document.addEventListener(event_name, handle_event_propagation, { passive: passive2 });
+          document_listeners.set(event_name, 1);
+        } else {
+          document_listeners.set(event_name, n + 1);
+        }
+      }
+    };
+    event_handle(array_from(all_registered_events));
+    root_event_handles.add(event_handle);
+    var component2 = void 0;
+    var unmount2 = component_root(() => {
+      var anchor_node = anchor != null ? anchor : target.appendChild(create_text());
+      boundary(
+        /** @type {TemplateNode} */
+        anchor_node,
+        {
+          pending: () => {
+          }
+        },
+        (anchor_node2) => {
+          if (context) {
+            push({});
+            var ctx = (
+              /** @type {ComponentContext} */
+              component_context
+            );
+            ctx.c = context;
+          }
+          if (events) {
+            props.$$events = events;
+          }
+          if (hydrating) {
+            assign_nodes(
+              /** @type {TemplateNode} */
+              anchor_node2,
+              null
+            );
+          }
+          should_intro = intro;
+          component2 = Component(anchor_node2, props) || {};
+          should_intro = true;
+          if (hydrating) {
+            active_effect.nodes.end = hydrate_node;
+            if (hydrate_node === null || hydrate_node.nodeType !== COMMENT_NODE || /** @type {Comment} */
+            hydrate_node.data !== HYDRATION_END) {
+              hydration_mismatch();
+              throw HYDRATION_ERROR;
+            }
+          }
+          if (context) {
+            pop();
+          }
+        }
+      );
+      return () => {
+        var _a5;
+        for (var event_name of registered_events) {
+          target.removeEventListener(event_name, handle_event_propagation);
+          var n = (
+            /** @type {number} */
+            document_listeners.get(event_name)
+          );
+          if (--n === 0) {
+            document.removeEventListener(event_name, handle_event_propagation);
+            document_listeners.delete(event_name);
+          } else {
+            document_listeners.set(event_name, n);
+          }
+        }
+        root_event_handles.delete(event_handle);
+        if (anchor_node !== anchor) {
+          (_a5 = anchor_node.parentNode) == null ? void 0 : _a5.removeChild(anchor_node);
+        }
+      };
+    });
+    mounted_components.set(component2, unmount2);
+    return component2;
+  }
+  var mounted_components = /* @__PURE__ */ new WeakMap();
+  function unmount(component2, options) {
+    const fn = mounted_components.get(component2);
+    if (fn) {
+      mounted_components.delete(component2);
+      return fn(options);
+    }
+    if (true_default) {
+      if (STATE_SYMBOL in component2) {
+        state_proxy_unmount();
+      } else {
+        lifecycle_double_unmount();
+      }
+    }
+    return Promise.resolve();
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/blocks/branches.js
+  var _batches, _onscreen, _offscreen, _outroing, _transition, _commit2, _discard;
+  var BranchManager = class {
+    /**
+     * @param {TemplateNode} anchor
+     * @param {boolean} transition
+     */
+    constructor(anchor, transition2 = true) {
+      /** @type {TemplateNode} */
+      __publicField(this, "anchor");
+      /** @type {Map<Batch, Key>} */
+      __privateAdd(this, _batches, /* @__PURE__ */ new Map());
+      /**
+       * Map of keys to effects that are currently rendered in the DOM.
+       * These effects are visible and actively part of the document tree.
+       * Example:
+       * ```
+       * {#if condition}
+       * 	foo
+       * {:else}
+       * 	bar
+       * {/if}
+       * ```
+       * Can result in the entries `true->Effect` and `false->Effect`
+       * @type {Map<Key, Effect>}
+       */
+      __privateAdd(this, _onscreen, /* @__PURE__ */ new Map());
+      /**
+       * Similar to #onscreen with respect to the keys, but contains branches that are not yet
+       * in the DOM, because their insertion is deferred.
+       * @type {Map<Key, Branch>}
+       */
+      __privateAdd(this, _offscreen, /* @__PURE__ */ new Map());
+      /**
+       * Keys of effects that are currently outroing
+       * @type {Set<Key>}
+       */
+      __privateAdd(this, _outroing, /* @__PURE__ */ new Set());
+      /**
+       * Whether to pause (i.e. outro) on change, or destroy immediately.
+       * This is necessary for `<svelte:element>`
+       */
+      __privateAdd(this, _transition, true);
+      __privateAdd(this, _commit2, () => {
+        var batch = (
+          /** @type {Batch} */
+          current_batch
+        );
+        if (!__privateGet(this, _batches).has(batch))
+          return;
+        var key3 = (
+          /** @type {Key} */
+          __privateGet(this, _batches).get(batch)
+        );
+        var onscreen = __privateGet(this, _onscreen).get(key3);
+        if (onscreen) {
+          resume_effect(onscreen);
+          __privateGet(this, _outroing).delete(key3);
+        } else {
+          var offscreen = __privateGet(this, _offscreen).get(key3);
+          if (offscreen) {
+            __privateGet(this, _onscreen).set(key3, offscreen.effect);
+            __privateGet(this, _offscreen).delete(key3);
+            offscreen.fragment.lastChild.remove();
+            this.anchor.before(offscreen.fragment);
+            onscreen = offscreen.effect;
+          }
+        }
+        for (const [b, k] of __privateGet(this, _batches)) {
+          __privateGet(this, _batches).delete(b);
+          if (b === batch) {
+            break;
+          }
+          const offscreen2 = __privateGet(this, _offscreen).get(k);
+          if (offscreen2) {
+            destroy_effect(offscreen2.effect);
+            __privateGet(this, _offscreen).delete(k);
+          }
+        }
+        for (const [k, effect2] of __privateGet(this, _onscreen)) {
+          if (k === key3 || __privateGet(this, _outroing).has(k))
+            continue;
+          const on_destroy = () => {
+            const keys = Array.from(__privateGet(this, _batches).values());
+            if (keys.includes(k)) {
+              var fragment = document.createDocumentFragment();
+              move_effect(effect2, fragment);
+              fragment.append(create_text());
+              __privateGet(this, _offscreen).set(k, { effect: effect2, fragment });
+            } else {
+              destroy_effect(effect2);
+            }
+            __privateGet(this, _outroing).delete(k);
+            __privateGet(this, _onscreen).delete(k);
+          };
+          if (__privateGet(this, _transition) || !onscreen) {
+            __privateGet(this, _outroing).add(k);
+            pause_effect(effect2, on_destroy, false);
+          } else {
+            on_destroy();
+          }
+        }
+      });
+      /**
+       * @param {Batch} batch
+       */
+      __privateAdd(this, _discard, (batch) => {
+        __privateGet(this, _batches).delete(batch);
+        const keys = Array.from(__privateGet(this, _batches).values());
+        for (const [k, branch2] of __privateGet(this, _offscreen)) {
+          if (!keys.includes(k)) {
+            destroy_effect(branch2.effect);
+            __privateGet(this, _offscreen).delete(k);
+          }
+        }
+      });
+      this.anchor = anchor;
+      __privateSet(this, _transition, transition2);
+    }
+    /**
+     *
+     * @param {any} key
+     * @param {null | ((target: TemplateNode) => void)} fn
+     */
+    ensure(key3, fn) {
+      var batch = (
+        /** @type {Batch} */
+        current_batch
+      );
+      var defer = should_defer_append();
+      if (fn && !__privateGet(this, _onscreen).has(key3) && !__privateGet(this, _offscreen).has(key3)) {
+        if (defer) {
+          var fragment = document.createDocumentFragment();
+          var target = create_text();
+          fragment.append(target);
+          __privateGet(this, _offscreen).set(key3, {
+            effect: branch(() => fn(target)),
+            fragment
+          });
+        } else {
+          __privateGet(this, _onscreen).set(
+            key3,
+            branch(() => fn(this.anchor))
+          );
+        }
+      }
+      __privateGet(this, _batches).set(batch, key3);
+      if (defer) {
+        for (const [k, effect2] of __privateGet(this, _onscreen)) {
+          if (k === key3) {
+            batch.skipped_effects.delete(effect2);
+          } else {
+            batch.skipped_effects.add(effect2);
+          }
+        }
+        for (const [k, branch2] of __privateGet(this, _offscreen)) {
+          if (k === key3) {
+            batch.skipped_effects.delete(branch2.effect);
+          } else {
+            batch.skipped_effects.add(branch2.effect);
+          }
+        }
+        batch.oncommit(__privateGet(this, _commit2));
+        batch.ondiscard(__privateGet(this, _discard));
+      } else {
+        if (hydrating) {
+          this.anchor = hydrate_node;
+        }
+        __privateGet(this, _commit2).call(this);
+      }
+    }
+  };
+  _batches = new WeakMap();
+  _onscreen = new WeakMap();
+  _offscreen = new WeakMap();
+  _outroing = new WeakMap();
+  _transition = new WeakMap();
+  _commit2 = new WeakMap();
+  _discard = new WeakMap();
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/blocks/if.js
+  function if_block(node, fn, elseif = false) {
+    if (hydrating) {
+      hydrate_next();
+    }
+    var branches = new BranchManager(node);
+    var flags2 = elseif ? EFFECT_TRANSPARENT : 0;
+    function update_branch(condition, fn2) {
+      if (hydrating) {
+        const is_else = read_hydration_instruction(node) === HYDRATION_START_ELSE;
+        if (condition === is_else) {
+          var anchor = skip_nodes();
+          set_hydrate_node(anchor);
+          branches.anchor = anchor;
+          set_hydrating(false);
+          branches.ensure(condition, fn2);
+          set_hydrating(true);
+          return;
+        }
+      }
+      branches.ensure(condition, fn2);
+    }
+    block(() => {
+      var has_branch = false;
+      fn((fn2, flag = true) => {
+        has_branch = true;
+        update_branch(flag, fn2);
+      });
+      if (!has_branch) {
+        update_branch(false, null);
+      }
+    }, flags2);
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/blocks/each.js
+  function pause_effects(state2, to_destroy, controlled_anchor) {
+    var _a5;
+    var transitions = [];
+    var length = to_destroy.length;
+    var group;
+    var remaining = to_destroy.length;
+    for (var i = 0; i < length; i++) {
+      let effect2 = to_destroy[i];
+      pause_effect(
+        effect2,
+        () => {
+          if (group) {
+            group.pending.delete(effect2);
+            group.done.add(effect2);
+            if (group.pending.size === 0) {
+              var groups = (
+                /** @type {Set<EachOutroGroup>} */
+                state2.outrogroups
+              );
+              destroy_effects(array_from(group.done));
+              groups.delete(group);
+              if (groups.size === 0) {
+                state2.outrogroups = null;
+              }
+            }
+          } else {
+            remaining -= 1;
+          }
+        },
+        false
+      );
+    }
+    if (remaining === 0) {
+      var fast_path = transitions.length === 0 && controlled_anchor !== null;
+      if (fast_path) {
+        var anchor = (
+          /** @type {Element} */
+          controlled_anchor
+        );
+        var parent_node = (
+          /** @type {Element} */
+          anchor.parentNode
+        );
+        clear_text_content(parent_node);
+        parent_node.append(anchor);
+        state2.items.clear();
+      }
+      destroy_effects(to_destroy, !fast_path);
+    } else {
+      group = {
+        pending: new Set(to_destroy),
+        done: /* @__PURE__ */ new Set()
+      };
+      ((_a5 = state2.outrogroups) != null ? _a5 : state2.outrogroups = /* @__PURE__ */ new Set()).add(group);
+    }
+  }
+  function destroy_effects(to_destroy, remove_dom = true) {
+    for (var i = 0; i < to_destroy.length; i++) {
+      destroy_effect(to_destroy[i], remove_dom);
+    }
+  }
+  var offscreen_anchor;
+  function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = null) {
+    var anchor = node;
+    var items = /* @__PURE__ */ new Map();
+    var is_controlled = (flags2 & EACH_IS_CONTROLLED) !== 0;
+    if (is_controlled) {
+      var parent_node = (
+        /** @type {Element} */
+        node
+      );
+      anchor = hydrating ? set_hydrate_node(get_first_child(parent_node)) : parent_node.appendChild(create_text());
+    }
+    if (hydrating) {
+      hydrate_next();
+    }
+    var fallback3 = null;
+    var each_array = derived_safe_equal(() => {
+      var collection = get_collection();
+      return is_array(collection) ? collection : collection == null ? [] : array_from(collection);
+    });
+    var array;
+    var first_run = true;
+    function commit() {
+      state2.fallback = fallback3;
+      reconcile(state2, array, anchor, flags2, get_key);
+      if (fallback3 !== null) {
+        if (array.length === 0) {
+          if ((fallback3.f & EFFECT_OFFSCREEN) === 0) {
+            resume_effect(fallback3);
+          } else {
+            fallback3.f ^= EFFECT_OFFSCREEN;
+            move(fallback3, null, anchor);
+          }
+        } else {
+          pause_effect(fallback3, () => {
+            fallback3 = null;
+          });
+        }
+      }
+    }
+    var effect2 = block(() => {
+      array = /** @type {V[]} */
+      get(each_array);
+      var length = array.length;
+      let mismatch = false;
+      if (hydrating) {
+        var is_else = read_hydration_instruction(anchor) === HYDRATION_START_ELSE;
+        if (is_else !== (length === 0)) {
+          anchor = skip_nodes();
+          set_hydrate_node(anchor);
+          set_hydrating(false);
+          mismatch = true;
+        }
+      }
+      var keys = /* @__PURE__ */ new Set();
+      var batch = (
+        /** @type {Batch} */
+        current_batch
+      );
+      var defer = should_defer_append();
+      for (var index2 = 0; index2 < length; index2 += 1) {
+        if (hydrating && hydrate_node.nodeType === COMMENT_NODE && /** @type {Comment} */
+        hydrate_node.data === HYDRATION_END) {
+          anchor = /** @type {Comment} */
+          hydrate_node;
+          mismatch = true;
+          set_hydrating(false);
+        }
+        var value = array[index2];
+        var key3 = get_key(value, index2);
+        var item = first_run ? null : items.get(key3);
+        if (item) {
+          if (item.v)
+            internal_set(item.v, value);
+          if (item.i)
+            internal_set(item.i, index2);
+          if (defer) {
+            batch.skipped_effects.delete(item.e);
+          }
+        } else {
+          item = create_item(
+            items,
+            first_run ? anchor : offscreen_anchor != null ? offscreen_anchor : offscreen_anchor = create_text(),
+            value,
+            key3,
+            index2,
+            render_fn,
+            flags2,
+            get_collection
+          );
+          if (!first_run) {
+            item.e.f |= EFFECT_OFFSCREEN;
+          }
+          items.set(key3, item);
+        }
+        keys.add(key3);
+      }
+      if (length === 0 && fallback_fn && !fallback3) {
+        if (first_run) {
+          fallback3 = branch(() => fallback_fn(anchor));
+        } else {
+          fallback3 = branch(() => fallback_fn(offscreen_anchor != null ? offscreen_anchor : offscreen_anchor = create_text()));
+          fallback3.f |= EFFECT_OFFSCREEN;
+        }
+      }
+      if (hydrating && length > 0) {
+        set_hydrate_node(skip_nodes());
+      }
+      if (!first_run) {
+        if (defer) {
+          for (const [key4, item2] of items) {
+            if (!keys.has(key4)) {
+              batch.skipped_effects.add(item2.e);
+            }
+          }
+          batch.oncommit(commit);
+          batch.ondiscard(() => {
+          });
+        } else {
+          commit();
+        }
+      }
+      if (mismatch) {
+        set_hydrating(true);
+      }
+      get(each_array);
+    });
+    var state2 = { effect: effect2, flags: flags2, items, outrogroups: null, fallback: fallback3 };
+    first_run = false;
+    if (hydrating) {
+      anchor = hydrate_node;
+    }
+  }
+  function skip_to_branch(effect2) {
+    while (effect2 !== null && (effect2.f & BRANCH_EFFECT) === 0) {
+      effect2 = effect2.next;
+    }
+    return effect2;
+  }
+  function reconcile(state2, array, anchor, flags2, get_key) {
+    var _a5, _b2, _c2, _d, _e, _f, _g, _h, _i;
+    var is_animated = (flags2 & EACH_IS_ANIMATED) !== 0;
+    var length = array.length;
+    var items = state2.items;
+    var current = skip_to_branch(state2.effect.first);
+    var seen;
+    var prev = null;
+    var to_animate;
+    var matched = [];
+    var stashed = [];
+    var value;
+    var key3;
+    var effect2;
+    var i;
+    if (is_animated) {
+      for (i = 0; i < length; i += 1) {
+        value = array[i];
+        key3 = get_key(value, i);
+        effect2 = /** @type {EachItem} */
+        items.get(key3).e;
+        if ((effect2.f & EFFECT_OFFSCREEN) === 0) {
+          (_b2 = (_a5 = effect2.nodes) == null ? void 0 : _a5.a) == null ? void 0 : _b2.measure();
+          (to_animate != null ? to_animate : to_animate = /* @__PURE__ */ new Set()).add(effect2);
+        }
+      }
+    }
+    for (i = 0; i < length; i += 1) {
+      value = array[i];
+      key3 = get_key(value, i);
+      effect2 = /** @type {EachItem} */
+      items.get(key3).e;
+      if (state2.outrogroups !== null) {
+        for (const group of state2.outrogroups) {
+          group.pending.delete(effect2);
+          group.done.delete(effect2);
+        }
+      }
+      if ((effect2.f & EFFECT_OFFSCREEN) !== 0) {
+        effect2.f ^= EFFECT_OFFSCREEN;
+        if (effect2 === current) {
+          move(effect2, null, anchor);
+        } else {
+          var next2 = prev ? prev.next : current;
+          if (effect2 === state2.effect.last) {
+            state2.effect.last = effect2.prev;
+          }
+          if (effect2.prev)
+            effect2.prev.next = effect2.next;
+          if (effect2.next)
+            effect2.next.prev = effect2.prev;
+          link(state2, prev, effect2);
+          link(state2, effect2, next2);
+          move(effect2, next2, anchor);
+          prev = effect2;
+          matched = [];
+          stashed = [];
+          current = skip_to_branch(prev.next);
+          continue;
+        }
+      }
+      if ((effect2.f & INERT) !== 0) {
+        resume_effect(effect2);
+        if (is_animated) {
+          (_d = (_c2 = effect2.nodes) == null ? void 0 : _c2.a) == null ? void 0 : _d.unfix();
+          (to_animate != null ? to_animate : to_animate = /* @__PURE__ */ new Set()).delete(effect2);
+        }
+      }
+      if (effect2 !== current) {
+        if (seen !== void 0 && seen.has(effect2)) {
+          if (matched.length < stashed.length) {
+            var start = stashed[0];
+            var j;
+            prev = start.prev;
+            var a = matched[0];
+            var b = matched[matched.length - 1];
+            for (j = 0; j < matched.length; j += 1) {
+              move(matched[j], start, anchor);
+            }
+            for (j = 0; j < stashed.length; j += 1) {
+              seen.delete(stashed[j]);
+            }
+            link(state2, a.prev, b.next);
+            link(state2, prev, a);
+            link(state2, b, start);
+            current = start;
+            prev = b;
+            i -= 1;
+            matched = [];
+            stashed = [];
+          } else {
+            seen.delete(effect2);
+            move(effect2, current, anchor);
+            link(state2, effect2.prev, effect2.next);
+            link(state2, effect2, prev === null ? state2.effect.first : prev.next);
+            link(state2, prev, effect2);
+            prev = effect2;
+          }
+          continue;
+        }
+        matched = [];
+        stashed = [];
+        while (current !== null && current !== effect2) {
+          (seen != null ? seen : seen = /* @__PURE__ */ new Set()).add(current);
+          stashed.push(current);
+          current = skip_to_branch(current.next);
+        }
+        if (current === null) {
+          continue;
+        }
+      }
+      if ((effect2.f & EFFECT_OFFSCREEN) === 0) {
+        matched.push(effect2);
+      }
+      prev = effect2;
+      current = skip_to_branch(effect2.next);
+    }
+    if (state2.outrogroups !== null) {
+      for (const group of state2.outrogroups) {
+        if (group.pending.size === 0) {
+          destroy_effects(array_from(group.done));
+          (_e = state2.outrogroups) == null ? void 0 : _e.delete(group);
+        }
+      }
+      if (state2.outrogroups.size === 0) {
+        state2.outrogroups = null;
+      }
+    }
+    if (current !== null || seen !== void 0) {
+      var to_destroy = [];
+      if (seen !== void 0) {
+        for (effect2 of seen) {
+          if ((effect2.f & INERT) === 0) {
+            to_destroy.push(effect2);
+          }
+        }
+      }
+      while (current !== null) {
+        if ((current.f & INERT) === 0 && current !== state2.fallback) {
+          to_destroy.push(current);
+        }
+        current = skip_to_branch(current.next);
+      }
+      var destroy_length = to_destroy.length;
+      if (destroy_length > 0) {
+        var controlled_anchor = (flags2 & EACH_IS_CONTROLLED) !== 0 && length === 0 ? anchor : null;
+        if (is_animated) {
+          for (i = 0; i < destroy_length; i += 1) {
+            (_g = (_f = to_destroy[i].nodes) == null ? void 0 : _f.a) == null ? void 0 : _g.measure();
+          }
+          for (i = 0; i < destroy_length; i += 1) {
+            (_i = (_h = to_destroy[i].nodes) == null ? void 0 : _h.a) == null ? void 0 : _i.fix();
+          }
+        }
+        pause_effects(state2, to_destroy, controlled_anchor);
+      }
+    }
+    if (is_animated) {
+      queue_micro_task(() => {
+        var _a6, _b3;
+        if (to_animate === void 0)
+          return;
+        for (effect2 of to_animate) {
+          (_b3 = (_a6 = effect2.nodes) == null ? void 0 : _a6.a) == null ? void 0 : _b3.apply();
+        }
+      });
+    }
+  }
+  function create_item(items, anchor, value, key3, index2, render_fn, flags2, get_collection) {
+    var v = (flags2 & EACH_ITEM_REACTIVE) !== 0 ? (flags2 & EACH_ITEM_IMMUTABLE) === 0 ? mutable_source(value, false, false) : source(value) : null;
+    var i = (flags2 & EACH_INDEX_REACTIVE) !== 0 ? source(index2) : null;
+    if (true_default && v) {
+      v.trace = () => {
+        var _a5;
+        get_collection()[(_a5 = i == null ? void 0 : i.v) != null ? _a5 : index2];
+      };
+    }
+    return {
+      v,
+      i,
+      e: branch(() => {
+        render_fn(anchor, v != null ? v : value, i != null ? i : index2, get_collection);
+        return () => {
+          items.delete(key3);
+        };
+      })
+    };
+  }
+  function move(effect2, next2, anchor) {
+    if (!effect2.nodes)
+      return;
+    var node = effect2.nodes.start;
+    var end = effect2.nodes.end;
+    var dest = next2 && (next2.f & EFFECT_OFFSCREEN) === 0 ? (
+      /** @type {EffectNodes} */
+      next2.nodes.start
+    ) : anchor;
+    while (node !== null) {
+      var next_node = (
+        /** @type {TemplateNode} */
+        get_next_sibling(node)
+      );
+      dest.before(node);
+      if (node === end) {
+        return;
+      }
+      node = next_node;
+    }
+  }
+  function link(state2, prev, next2) {
+    if (prev === null) {
+      state2.effect.first = next2;
+    } else {
+      prev.next = next2;
+    }
+    if (next2 === null) {
+      state2.effect.last = prev;
+    } else {
+      next2.prev = prev;
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/timing.js
+  var now = true_default ? () => performance.now() : () => Date.now();
+  var raf = {
+    // don't access requestAnimationFrame eagerly outside method
+    // this allows basic testing of user code without JSDOM
+    // bunder will eval and remove ternary when the user's app is built
+    tick: (
+      /** @param {any} _ */
+      (_) => (true_default ? requestAnimationFrame : noop)(_)
+    ),
+    now: () => now(),
+    tasks: /* @__PURE__ */ new Set()
+  };
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/loop.js
+  function run_tasks() {
+    const now2 = raf.now();
+    raf.tasks.forEach((task) => {
+      if (!task.c(now2)) {
+        raf.tasks.delete(task);
+        task.f();
+      }
+    });
+    if (raf.tasks.size !== 0) {
+      raf.tick(run_tasks);
+    }
+  }
+  function loop(callback) {
+    let task;
+    if (raf.tasks.size === 0) {
+      raf.tick(run_tasks);
+    }
+    return {
+      promise: new Promise((fulfill) => {
+        raf.tasks.add(task = { c: callback, f: fulfill });
+      }),
+      abort() {
+        raf.tasks.delete(task);
+      }
+    };
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/transitions.js
+  function dispatch_event(element2, type) {
+    without_reactive_context(() => {
+      element2.dispatchEvent(new CustomEvent(type));
+    });
+  }
+  function css_property_to_camelcase(style) {
+    if (style === "float")
+      return "cssFloat";
+    if (style === "offset")
+      return "cssOffset";
+    if (style.startsWith("--"))
+      return style;
+    const parts = style.split("-");
+    if (parts.length === 1)
+      return parts[0];
+    return parts[0] + parts.slice(1).map(
+      /** @param {any} word */
+      (word) => word[0].toUpperCase() + word.slice(1)
+    ).join("");
+  }
+  function css_to_keyframe(css) {
+    const keyframe = {};
+    const parts = css.split(";");
+    for (const part of parts) {
+      const [property, value] = part.split(":");
+      if (!property || value === void 0)
+        break;
+      const formatted_property = css_property_to_camelcase(property.trim());
+      keyframe[formatted_property] = value.trim();
+    }
+    return keyframe;
+  }
+  var linear = (t) => t;
+  function transition(flags2, element2, get_fn, get_params) {
+    var _a5, _b2;
+    var is_intro = (flags2 & TRANSITION_IN) !== 0;
+    var is_outro = (flags2 & TRANSITION_OUT) !== 0;
+    var is_both = is_intro && is_outro;
+    var is_global = (flags2 & TRANSITION_GLOBAL) !== 0;
+    var direction = is_both ? "both" : is_intro ? "in" : "out";
+    var current_options;
+    var inert = element2.inert;
+    var overflow = element2.style.overflow;
+    var intro;
+    var outro;
+    function get_options() {
+      return without_reactive_context(() => {
+        var _a6;
+        return current_options != null ? current_options : current_options = get_fn()(element2, (_a6 = get_params == null ? void 0 : get_params()) != null ? _a6 : (
+          /** @type {P} */
+          {}
+        ), {
+          direction
+        });
+      });
+    }
+    var transition2 = {
+      is_global,
+      in() {
+        var _a6;
+        element2.inert = inert;
+        if (!is_intro) {
+          outro == null ? void 0 : outro.abort();
+          (_a6 = outro == null ? void 0 : outro.reset) == null ? void 0 : _a6.call(outro);
+          return;
+        }
+        if (!is_outro) {
+          intro == null ? void 0 : intro.abort();
+        }
+        intro = animate(element2, get_options(), outro, 1, () => {
+          dispatch_event(element2, "introend");
+          intro == null ? void 0 : intro.abort();
+          intro = current_options = void 0;
+          element2.style.overflow = overflow;
+        });
+      },
+      out(fn) {
+        if (!is_outro) {
+          fn == null ? void 0 : fn();
+          current_options = void 0;
+          return;
+        }
+        element2.inert = true;
+        outro = animate(element2, get_options(), intro, 0, () => {
+          dispatch_event(element2, "outroend");
+          fn == null ? void 0 : fn();
+        });
+      },
+      stop: () => {
+        intro == null ? void 0 : intro.abort();
+        outro == null ? void 0 : outro.abort();
+      }
+    };
+    var e = (
+      /** @type {Effect & { nodes: EffectNodes }} */
+      active_effect
+    );
+    ((_b2 = (_a5 = e.nodes).t) != null ? _b2 : _a5.t = []).push(transition2);
+    if (is_intro && should_intro) {
+      var run3 = is_global;
+      if (!run3) {
+        var block2 = (
+          /** @type {Effect | null} */
+          e.parent
+        );
+        while (block2 && (block2.f & EFFECT_TRANSPARENT) !== 0) {
+          while (block2 = block2.parent) {
+            if ((block2.f & BLOCK_EFFECT) !== 0)
+              break;
+          }
+        }
+        run3 = !block2 || (block2.f & EFFECT_RAN) !== 0;
+      }
+      if (run3) {
+        effect(() => {
+          untrack(() => transition2.in());
+        });
+      }
+    }
+  }
+  function animate(element2, options, counterpart, t2, on_finish) {
+    var is_intro = t2 === 1;
+    if (is_function(options)) {
+      var a;
+      var aborted2 = false;
+      queue_micro_task(() => {
+        if (aborted2)
+          return;
+        var o = options({ direction: is_intro ? "in" : "out" });
+        a = animate(element2, o, counterpart, t2, on_finish);
+      });
+      return {
+        abort: () => {
+          aborted2 = true;
+          a == null ? void 0 : a.abort();
+        },
+        deactivate: () => a.deactivate(),
+        reset: () => a.reset(),
+        t: () => a.t()
+      };
+    }
+    counterpart == null ? void 0 : counterpart.deactivate();
+    if (!(options == null ? void 0 : options.duration) && !(options == null ? void 0 : options.delay)) {
+      dispatch_event(element2, is_intro ? "introstart" : "outrostart");
+      on_finish();
+      return {
+        abort: noop,
+        deactivate: noop,
+        reset: noop,
+        t: () => t2
+      };
+    }
+    const { delay = 0, css, tick: tick2, easing = linear } = options;
+    var keyframes = [];
+    if (is_intro && counterpart === void 0) {
+      if (tick2) {
+        tick2(0, 1);
+      }
+      if (css) {
+        var styles = css_to_keyframe(css(0, 1));
+        keyframes.push(styles, styles);
+      }
+    }
+    var get_t = () => 1 - t2;
+    var animation2 = element2.animate(keyframes, { duration: delay, fill: "forwards" });
+    animation2.onfinish = () => {
+      var _a5;
+      animation2.cancel();
+      dispatch_event(element2, is_intro ? "introstart" : "outrostart");
+      var t1 = (_a5 = counterpart == null ? void 0 : counterpart.t()) != null ? _a5 : 1 - t2;
+      counterpart == null ? void 0 : counterpart.abort();
+      var delta = t2 - t1;
+      var duration = (
+        /** @type {number} */
+        options.duration * Math.abs(delta)
+      );
+      var keyframes2 = [];
+      if (duration > 0) {
+        var needs_overflow_hidden = false;
+        if (css) {
+          var n = Math.ceil(duration / (1e3 / 60));
+          for (var i = 0; i <= n; i += 1) {
+            var t = t1 + delta * easing(i / n);
+            var styles2 = css_to_keyframe(css(t, 1 - t));
+            keyframes2.push(styles2);
+            needs_overflow_hidden || (needs_overflow_hidden = styles2.overflow === "hidden");
+          }
+        }
+        if (needs_overflow_hidden) {
+          element2.style.overflow = "hidden";
+        }
+        get_t = () => {
+          var time = (
+            /** @type {number} */
+            /** @type {globalThis.Animation} */
+            animation2.currentTime
+          );
+          return t1 + delta * easing(time / duration);
+        };
+        if (tick2) {
+          loop(() => {
+            if (animation2.playState !== "running")
+              return false;
+            var t3 = get_t();
+            tick2(t3, 1 - t3);
+            return true;
+          });
+        }
+      }
+      animation2 = element2.animate(keyframes2, { duration, fill: "forwards" });
+      animation2.onfinish = () => {
+        get_t = () => t2;
+        tick2 == null ? void 0 : tick2(t2, 1 - t2);
+        on_finish();
+      };
+    };
+    return {
+      abort: () => {
+        if (animation2) {
+          animation2.cancel();
+          animation2.effect = null;
+          animation2.onfinish = noop;
+        }
+      },
+      deactivate: () => {
+        on_finish = noop;
+      },
+      reset: () => {
+        if (t2 === 0) {
+          tick2 == null ? void 0 : tick2(1, 0);
+        }
+      },
+      t: () => get_t()
+    };
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/shared/attributes.js
+  var whitespace = [..." 	\n\r\f \v\uFEFF"];
+  function to_class(value, hash2, directives) {
+    var classname = value == null ? "" : "" + value;
+    if (hash2) {
+      classname = classname ? classname + " " + hash2 : hash2;
+    }
+    if (directives) {
+      for (var key3 in directives) {
+        if (directives[key3]) {
+          classname = classname ? classname + " " + key3 : key3;
+        } else if (classname.length) {
+          var len = key3.length;
+          var a = 0;
+          while ((a = classname.indexOf(key3, a)) >= 0) {
+            var b = a + len;
+            if ((a === 0 || whitespace.includes(classname[a - 1])) && (b === classname.length || whitespace.includes(classname[b]))) {
+              classname = (a === 0 ? "" : classname.substring(0, a)) + classname.substring(b + 1);
+            } else {
+              a = b;
+            }
+          }
+        }
+      }
+    }
+    return classname === "" ? null : classname;
+  }
+  function append_styles(styles, important = false) {
+    var separator = important ? " !important;" : ";";
+    var css = "";
+    for (var key3 in styles) {
+      var value = styles[key3];
+      if (value != null && value !== "") {
+        css += " " + key3 + ": " + value + separator;
+      }
+    }
+    return css;
+  }
+  function to_css_name(name) {
+    if (name[0] !== "-" || name[1] !== "-") {
+      return name.toLowerCase();
+    }
+    return name;
+  }
+  function to_style(value, styles) {
+    if (styles) {
+      var new_style = "";
+      var normal_styles;
+      var important_styles;
+      if (Array.isArray(styles)) {
+        normal_styles = styles[0];
+        important_styles = styles[1];
+      } else {
+        normal_styles = styles;
+      }
+      if (value) {
+        value = String(value).replaceAll(/\s*\/\*.*?\*\/\s*/g, "").trim();
+        var in_str = false;
+        var in_apo = 0;
+        var in_comment = false;
+        var reserved_names = [];
+        if (normal_styles) {
+          reserved_names.push(...Object.keys(normal_styles).map(to_css_name));
+        }
+        if (important_styles) {
+          reserved_names.push(...Object.keys(important_styles).map(to_css_name));
+        }
+        var start_index = 0;
+        var name_index = -1;
+        const len = value.length;
+        for (var i = 0; i < len; i++) {
+          var c = value[i];
+          if (in_comment) {
+            if (c === "/" && value[i - 1] === "*") {
+              in_comment = false;
+            }
+          } else if (in_str) {
+            if (in_str === c) {
+              in_str = false;
+            }
+          } else if (c === "/" && value[i + 1] === "*") {
+            in_comment = true;
+          } else if (c === '"' || c === "'") {
+            in_str = c;
+          } else if (c === "(") {
+            in_apo++;
+          } else if (c === ")") {
+            in_apo--;
+          }
+          if (!in_comment && in_str === false && in_apo === 0) {
+            if (c === ":" && name_index === -1) {
+              name_index = i;
+            } else if (c === ";" || i === len - 1) {
+              if (name_index !== -1) {
+                var name = to_css_name(value.substring(start_index, name_index).trim());
+                if (!reserved_names.includes(name)) {
+                  if (c !== ";") {
+                    i++;
+                  }
+                  var property = value.substring(start_index, i).trim();
+                  new_style += " " + property + ";";
+                }
+              }
+              start_index = i + 1;
+              name_index = -1;
+            }
+          }
+        }
+      }
+      if (normal_styles) {
+        new_style += append_styles(normal_styles);
+      }
+      if (important_styles) {
+        new_style += append_styles(important_styles, true);
+      }
+      new_style = new_style.trim();
+      return new_style === "" ? null : new_style;
+    }
+    return value == null ? null : String(value);
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/class.js
+  function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
+    var prev = dom.__className;
+    if (hydrating || prev !== value || prev === void 0) {
+      var next_class_name = to_class(value, hash2, next_classes);
+      if (!hydrating || next_class_name !== dom.getAttribute("class")) {
+        if (next_class_name == null) {
+          dom.removeAttribute("class");
+        } else if (is_html) {
+          dom.className = next_class_name;
+        } else {
+          dom.setAttribute("class", next_class_name);
+        }
+      }
+      dom.__className = value;
+    } else if (next_classes && prev_classes !== next_classes) {
+      for (var key3 in next_classes) {
+        var is_present = !!next_classes[key3];
+        if (prev_classes == null || is_present !== !!prev_classes[key3]) {
+          dom.classList.toggle(key3, is_present);
+        }
+      }
+    }
+    return next_classes;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/style.js
+  function update_styles(dom, prev = {}, next2, priority) {
+    for (var key3 in next2) {
+      var value = next2[key3];
+      if (prev[key3] !== value) {
+        if (next2[key3] == null) {
+          dom.style.removeProperty(key3);
+        } else {
+          dom.style.setProperty(key3, value, priority);
+        }
+      }
+    }
+  }
+  function set_style(dom, value, prev_styles, next_styles) {
+    var prev = dom.__style;
+    if (hydrating || prev !== value) {
+      var next_style_attr = to_style(value, next_styles);
+      if (!hydrating || next_style_attr !== dom.getAttribute("style")) {
+        if (next_style_attr == null) {
+          dom.removeAttribute("style");
+        } else {
+          dom.style.cssText = next_style_attr;
+        }
+      }
+      dom.__style = value;
+    } else if (next_styles) {
+      if (Array.isArray(next_styles)) {
+        update_styles(dom, prev_styles == null ? void 0 : prev_styles[0], next_styles[0]);
+        update_styles(dom, prev_styles == null ? void 0 : prev_styles[1], next_styles[1], "important");
+      } else {
+        update_styles(dom, prev_styles, next_styles);
+      }
+    }
+    return next_styles;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/attributes.js
+  var CLASS = Symbol("class");
+  var STYLE = Symbol("style");
+  var IS_CUSTOM_ELEMENT = Symbol("is custom element");
+  var IS_HTML = Symbol("is html");
+  function remove_input_defaults(input) {
+    if (!hydrating)
+      return;
+    var already_removed = false;
+    var remove_defaults = () => {
+      if (already_removed)
+        return;
+      already_removed = true;
+      if (input.hasAttribute("value")) {
+        var value = input.value;
+        set_attribute2(input, "value", null);
+        input.value = value;
+      }
+      if (input.hasAttribute("checked")) {
+        var checked = input.checked;
+        set_attribute2(input, "checked", null);
+        input.checked = checked;
+      }
+    };
+    input.__on_r = remove_defaults;
+    queue_micro_task(remove_defaults);
+    add_form_reset_listener();
+  }
+  function set_value(element2, value) {
+    var attributes = get_attributes(element2);
+    if (attributes.value === (attributes.value = // treat null and undefined the same for the initial value
+    value != null ? value : void 0) || // @ts-expect-error
+    // `progress` elements always need their value set when it's `0`
+    element2.value === value && (value !== 0 || element2.nodeName !== "PROGRESS")) {
+      return;
+    }
+    element2.value = value != null ? value : "";
+  }
+  function set_checked(element2, checked) {
+    var attributes = get_attributes(element2);
+    if (attributes.checked === (attributes.checked = // treat null and undefined the same for the initial value
+    checked != null ? checked : void 0)) {
+      return;
+    }
+    element2.checked = checked;
+  }
+  function set_attribute2(element2, attribute, value, skip_warning) {
+    var attributes = get_attributes(element2);
+    if (hydrating) {
+      attributes[attribute] = element2.getAttribute(attribute);
+      if (attribute === "src" || attribute === "srcset" || attribute === "href" && element2.nodeName === "LINK") {
+        if (!skip_warning) {
+          check_src_in_dev_hydration(element2, attribute, value != null ? value : "");
+        }
+        return;
+      }
+    }
+    if (attributes[attribute] === (attributes[attribute] = value))
+      return;
+    if (attribute === "loading") {
+      element2[LOADING_ATTR_SYMBOL] = value;
+    }
+    if (value == null) {
+      element2.removeAttribute(attribute);
+    } else if (typeof value !== "string" && get_setters(element2).includes(attribute)) {
+      element2[attribute] = value;
+    } else {
+      element2.setAttribute(attribute, value);
+    }
+  }
+  function get_attributes(element2) {
+    var _a5;
+    return (
+      /** @type {Record<string | symbol, unknown>} **/
+      // @ts-expect-error
+      (_a5 = element2.__attributes) != null ? _a5 : element2.__attributes = {
+        [IS_CUSTOM_ELEMENT]: element2.nodeName.includes("-"),
+        [IS_HTML]: element2.namespaceURI === NAMESPACE_HTML
+      }
+    );
+  }
+  var setters_cache = /* @__PURE__ */ new Map();
+  function get_setters(element2) {
+    var cache_key = element2.getAttribute("is") || element2.nodeName;
+    var setters = setters_cache.get(cache_key);
+    if (setters)
+      return setters;
+    setters_cache.set(cache_key, setters = []);
+    var descriptors;
+    var proto = element2;
+    var element_proto = Element.prototype;
+    while (element_proto !== proto) {
+      descriptors = get_descriptors(proto);
+      for (var key3 in descriptors) {
+        if (descriptors[key3].set) {
+          setters.push(key3);
+        }
+      }
+      proto = get_prototype_of(proto);
+    }
+    return setters;
+  }
+  function check_src_in_dev_hydration(element2, attribute, value) {
+    var _a5;
+    if (!true_default)
+      return;
+    if (attribute === "srcset" && srcset_url_equal(element2, value))
+      return;
+    if (src_url_equal((_a5 = element2.getAttribute(attribute)) != null ? _a5 : "", value))
+      return;
+    hydration_attribute_changed(
+      attribute,
+      element2.outerHTML.replace(element2.innerHTML, element2.innerHTML && "..."),
+      String(value)
+    );
+  }
+  function src_url_equal(element_src, url) {
+    if (element_src === url)
+      return true;
+    return new URL(element_src, document.baseURI).href === new URL(url, document.baseURI).href;
+  }
+  function split_srcset(srcset) {
+    return srcset.split(",").map((src) => src.trim().split(" ").filter(Boolean));
+  }
+  function srcset_url_equal(element2, srcset) {
+    var element_urls = split_srcset(element2.srcset);
+    var urls = split_srcset(srcset);
+    return urls.length === element_urls.length && urls.every(
+      ([url, width], i) => width === element_urls[i][1] && // We need to test both ways because Vite will create an a full URL with
+      // `new URL(asset, import.meta.url).href` for the client when `base: './'`, and the
+      // relative URLs inside srcset are not automatically resolved to absolute URLs by
+      // browsers (in contrast to img.src). This means both SSR and DOM code could
+      // contain relative or absolute URLs.
+      (src_url_equal(element_urls[i][0], url) || src_url_equal(url, element_urls[i][0]))
+    );
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/bindings/input.js
+  function bind_value(input, get3, set2 = get3) {
+    var batches2 = /* @__PURE__ */ new WeakSet();
+    listen_to_event_and_reset_event(input, "input", (is_reset) => __async(this, null, function* () {
+      if (true_default && input.type === "checkbox") {
+        bind_invalid_checkbox_value();
+      }
+      var value = is_reset ? input.defaultValue : input.value;
+      value = is_numberlike_input(input) ? to_number(value) : value;
+      set2(value);
+      if (current_batch !== null) {
+        batches2.add(current_batch);
+      }
+      yield tick();
+      if (value !== (value = get3())) {
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        var length = input.value.length;
+        input.value = value != null ? value : "";
+        if (end !== null) {
+          var new_length = input.value.length;
+          if (start === end && end === length && new_length > length) {
+            input.selectionStart = new_length;
+            input.selectionEnd = new_length;
+          } else {
+            input.selectionStart = start;
+            input.selectionEnd = Math.min(end, new_length);
+          }
+        }
+      }
+    }));
+    if (
+      // If we are hydrating and the value has since changed,
+      // then use the updated value from the input instead.
+      hydrating && input.defaultValue !== input.value || // If defaultValue is set, then value == defaultValue
+      // TODO Svelte 6: remove input.value check and set to empty string?
+      untrack(get3) == null && input.value
+    ) {
+      set2(is_numberlike_input(input) ? to_number(input.value) : input.value);
+      if (current_batch !== null) {
+        batches2.add(current_batch);
+      }
+    }
+    render_effect(() => {
+      var _a5;
+      if (true_default && input.type === "checkbox") {
+        bind_invalid_checkbox_value();
+      }
+      var value = get3();
+      if (input === document.activeElement) {
+        var batch = (
+          /** @type {Batch} */
+          (_a5 = previous_batch) != null ? _a5 : current_batch
+        );
+        if (batches2.has(batch)) {
+          return;
+        }
+      }
+      if (is_numberlike_input(input) && value === to_number(input.value)) {
+        return;
+      }
+      if (input.type === "date" && !value && !input.value) {
+        return;
+      }
+      if (value !== input.value) {
+        input.value = value != null ? value : "";
+      }
+    });
+  }
+  function is_numberlike_input(input) {
+    var type = input.type;
+    return type === "number" || type === "range";
+  }
+  function to_number(value) {
+    return value === "" ? null : +value;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/bindings/this.js
+  function is_bound_this(bound_value, element_or_component) {
+    return bound_value === element_or_component || (bound_value == null ? void 0 : bound_value[STATE_SYMBOL]) === element_or_component;
+  }
+  function bind_this(element_or_component = {}, update2, get_value, get_parts) {
+    effect(() => {
+      var old_parts;
+      var parts;
+      render_effect(() => {
+        old_parts = parts;
+        parts = (get_parts == null ? void 0 : get_parts()) || [];
+        untrack(() => {
+          if (element_or_component !== get_value(...parts)) {
+            update2(element_or_component, ...parts);
+            if (old_parts && is_bound_this(get_value(...old_parts), element_or_component)) {
+              update2(null, ...old_parts);
+            }
+          }
+        });
+      });
+      return () => {
+        queue_micro_task(() => {
+          if (parts && is_bound_this(get_value(...parts), element_or_component)) {
+            update2(null, ...parts);
+          }
+        });
+      };
+    });
+    return element_or_component;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/store/utils.js
+  function subscribe_to_store(store, run3, invalidate) {
+    if (store == null) {
+      run3(void 0);
+      if (invalidate)
+        invalidate(void 0);
+      return noop;
+    }
+    const unsub = untrack(
+      () => store.subscribe(
+        run3,
+        // @ts-expect-error
+        invalidate
+      )
+    );
+    return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/store/shared/index.js
+  var subscriber_queue = [];
+  function writable(value, start = noop) {
+    let stop = null;
+    const subscribers = /* @__PURE__ */ new Set();
+    function set2(new_value) {
+      if (safe_not_equal(value, new_value)) {
+        value = new_value;
+        if (stop) {
+          const run_queue = !subscriber_queue.length;
+          for (const subscriber of subscribers) {
+            subscriber[1]();
+            subscriber_queue.push(subscriber, value);
+          }
+          if (run_queue) {
+            for (let i = 0; i < subscriber_queue.length; i += 2) {
+              subscriber_queue[i][0](subscriber_queue[i + 1]);
+            }
+            subscriber_queue.length = 0;
+          }
+        }
+      }
+    }
+    function update2(fn) {
+      set2(fn(
+        /** @type {T} */
+        value
+      ));
+    }
+    function subscribe(run3, invalidate = noop) {
+      const subscriber = [run3, invalidate];
+      subscribers.add(subscriber);
+      if (subscribers.size === 1) {
+        stop = start(set2, update2) || noop;
+      }
+      run3(
+        /** @type {T} */
+        value
+      );
+      return () => {
+        subscribers.delete(subscriber);
+        if (subscribers.size === 0 && stop) {
+          stop();
+          stop = null;
+        }
+      };
+    }
+    return { set: set2, update: update2, subscribe };
+  }
+  function get2(store) {
+    let value;
+    subscribe_to_store(store, (_) => value = _)();
+    return value;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/store.js
+  var is_store_binding = false;
+  var IS_UNMOUNTED = Symbol();
+  function store_get(store, store_name, stores) {
+    var _a5;
+    const entry = (_a5 = stores[store_name]) != null ? _a5 : stores[store_name] = {
+      store: null,
+      source: mutable_source(void 0),
+      unsubscribe: noop
+    };
+    if (true_default) {
+      entry.source.label = store_name;
+    }
+    if (entry.store !== store && !(IS_UNMOUNTED in stores)) {
+      entry.unsubscribe();
+      entry.store = store != null ? store : null;
+      if (store == null) {
+        entry.source.v = void 0;
+        entry.unsubscribe = noop;
+      } else {
+        var is_synchronous_callback = true;
+        entry.unsubscribe = subscribe_to_store(store, (v) => {
+          if (is_synchronous_callback) {
+            entry.source.v = v;
+          } else {
+            set(entry.source, v);
+          }
+        });
+        is_synchronous_callback = false;
+      }
+    }
+    if (store && IS_UNMOUNTED in stores) {
+      return get2(store);
+    }
+    return get(entry.source);
+  }
+  function setup_stores() {
+    const stores = {};
+    function cleanup() {
+      teardown(() => {
+        for (var store_name in stores) {
+          const ref = stores[store_name];
+          ref.unsubscribe();
+        }
+        define_property(stores, IS_UNMOUNTED, {
+          enumerable: false,
+          value: true
+        });
+      });
+    }
+    return [stores, cleanup];
+  }
+  function capture_store_binding(fn) {
+    var previous_is_store_binding = is_store_binding;
+    try {
+      is_store_binding = false;
+      return [fn(), is_store_binding];
+    } finally {
+      is_store_binding = previous_is_store_binding;
+    }
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/reactivity/props.js
+  function prop(props, key3, flags2, fallback3) {
+    var _a5, _b2;
+    var runes = !legacy_mode_flag || (flags2 & PROPS_IS_RUNES) !== 0;
+    var bindable = (flags2 & PROPS_IS_BINDABLE) !== 0;
+    var lazy = (flags2 & PROPS_IS_LAZY_INITIAL) !== 0;
+    var fallback_value = (
+      /** @type {V} */
+      fallback3
+    );
+    var fallback_dirty = true;
+    var get_fallback = () => {
+      if (fallback_dirty) {
+        fallback_dirty = false;
+        fallback_value = lazy ? untrack(
+          /** @type {() => V} */
+          fallback3
+        ) : (
+          /** @type {V} */
+          fallback3
+        );
+      }
+      return fallback_value;
+    };
+    var setter;
+    if (bindable) {
+      var is_entry_props = STATE_SYMBOL in props || LEGACY_PROPS in props;
+      setter = (_b2 = (_a5 = get_descriptor(props, key3)) == null ? void 0 : _a5.set) != null ? _b2 : is_entry_props && key3 in props ? (v) => props[key3] = v : void 0;
+    }
+    var initial_value;
+    var is_store_sub = false;
+    if (bindable) {
+      [initial_value, is_store_sub] = capture_store_binding(() => (
+        /** @type {V} */
+        props[key3]
+      ));
+    } else {
+      initial_value = /** @type {V} */
+      props[key3];
+    }
+    if (initial_value === void 0 && fallback3 !== void 0) {
+      initial_value = get_fallback();
+      if (setter) {
+        if (runes)
+          props_invalid_value(key3);
+        setter(initial_value);
+      }
+    }
+    var getter;
+    if (runes) {
+      getter = () => {
+        var value = (
+          /** @type {V} */
+          props[key3]
+        );
+        if (value === void 0)
+          return get_fallback();
+        fallback_dirty = true;
+        return value;
+      };
+    } else {
+      getter = () => {
+        var value = (
+          /** @type {V} */
+          props[key3]
+        );
+        if (value !== void 0) {
+          fallback_value = /** @type {V} */
+          void 0;
+        }
+        return value === void 0 ? fallback_value : value;
+      };
+    }
+    if (runes && (flags2 & PROPS_IS_UPDATED) === 0) {
+      return getter;
+    }
+    if (setter) {
+      var legacy_parent = props.$$legacy;
+      return (
+        /** @type {() => V} */
+        function(value, mutation) {
+          if (arguments.length > 0) {
+            if (!runes || !mutation || legacy_parent || is_store_sub) {
+              setter(mutation ? getter() : value);
+            }
+            return value;
+          }
+          return getter();
+        }
+      );
+    }
+    var overridden = false;
+    var d = ((flags2 & PROPS_IS_IMMUTABLE) !== 0 ? derived : derived_safe_equal)(() => {
+      overridden = false;
+      return getter();
+    });
+    if (true_default) {
+      d.label = key3;
+    }
+    if (bindable)
+      get(d);
+    var parent_effect = (
+      /** @type {Effect} */
+      active_effect
+    );
+    return (
+      /** @type {() => V} */
+      function(value, mutation) {
+        if (arguments.length > 0) {
+          const new_value = mutation ? get(d) : runes && bindable ? proxy(value) : value;
+          set(d, new_value);
+          overridden = true;
+          if (fallback_value !== void 0) {
+            fallback_value = new_value;
+          }
+          return value;
+        }
+        if (is_destroying_effect && overridden || (parent_effect.f & DESTROYED) !== 0) {
+          return d.v;
+        }
+        return get(d);
+      }
+    );
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/legacy/legacy-client.js
+  function createClassComponent(options) {
+    return new Svelte4Component(options);
+  }
+  var _events, _instance;
+  var Svelte4Component = class {
+    /**
+     * @param {ComponentConstructorOptions & {
+     *  component: any;
+     * }} options
+     */
+    constructor(options) {
+      /** @type {any} */
+      __privateAdd(this, _events, void 0);
+      /** @type {Record<string, any>} */
+      __privateAdd(this, _instance, void 0);
+      var _a5, _b2;
+      var sources = /* @__PURE__ */ new Map();
+      var add_source = (key3, value) => {
+        var s = mutable_source(value, false, false);
+        sources.set(key3, s);
+        return s;
+      };
+      const props = new Proxy(
+        __spreadProps(__spreadValues({}, options.props || {}), { $$events: {} }),
+        {
+          get(target, prop2) {
+            var _a6;
+            return get((_a6 = sources.get(prop2)) != null ? _a6 : add_source(prop2, Reflect.get(target, prop2)));
+          },
+          has(target, prop2) {
+            var _a6;
+            if (prop2 === LEGACY_PROPS)
+              return true;
+            get((_a6 = sources.get(prop2)) != null ? _a6 : add_source(prop2, Reflect.get(target, prop2)));
+            return Reflect.has(target, prop2);
+          },
+          set(target, prop2, value) {
+            var _a6;
+            set((_a6 = sources.get(prop2)) != null ? _a6 : add_source(prop2, value), value);
+            return Reflect.set(target, prop2, value);
+          }
+        }
+      );
+      __privateSet(this, _instance, (options.hydrate ? hydrate : mount)(options.component, {
+        target: options.target,
+        anchor: options.anchor,
+        props,
+        context: options.context,
+        intro: (_a5 = options.intro) != null ? _a5 : false,
+        recover: options.recover
+      }));
+      if (!async_mode_flag && (!((_b2 = options == null ? void 0 : options.props) == null ? void 0 : _b2.$$host) || options.sync === false)) {
+        flushSync();
+      }
+      __privateSet(this, _events, props.$$events);
+      for (const key3 of Object.keys(__privateGet(this, _instance))) {
+        if (key3 === "$set" || key3 === "$destroy" || key3 === "$on")
+          continue;
+        define_property(this, key3, {
+          get() {
+            return __privateGet(this, _instance)[key3];
+          },
+          /** @param {any} value */
+          set(value) {
+            __privateGet(this, _instance)[key3] = value;
+          },
+          enumerable: true
+        });
+      }
+      __privateGet(this, _instance).$set = /** @param {Record<string, any>} next */
+      (next2) => {
+        Object.assign(props, next2);
+      };
+      __privateGet(this, _instance).$destroy = () => {
+        unmount(__privateGet(this, _instance));
+      };
+    }
+    /** @param {Record<string, any>} props */
+    $set(props) {
+      __privateGet(this, _instance).$set(props);
+    }
+    /**
+     * @param {string} event
+     * @param {(...args: any[]) => any} callback
+     * @returns {any}
+     */
+    $on(event2, callback) {
+      __privateGet(this, _events)[event2] = __privateGet(this, _events)[event2] || [];
+      const cb = (...args) => callback.call(this, ...args);
+      __privateGet(this, _events)[event2].push(cb);
+      return () => {
+        __privateGet(this, _events)[event2] = __privateGet(this, _events)[event2].filter(
+          /** @param {any} fn */
+          (fn) => fn !== cb
+        );
+      };
+    }
+    $destroy() {
+      __privateGet(this, _instance).$destroy();
+    }
+  };
+  _events = new WeakMap();
+  _instance = new WeakMap();
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/client/dom/elements/custom-element.js
+  var SvelteElement;
+  if (typeof HTMLElement === "function") {
+    SvelteElement = class extends HTMLElement {
+      /**
+       * @param {*} $$componentCtor
+       * @param {*} $$slots
+       * @param {ShadowRootInit | undefined} shadow_root_init
+       */
+      constructor($$componentCtor, $$slots, shadow_root_init) {
+        super();
+        /** The Svelte component constructor */
+        __publicField(this, "$$ctor");
+        /** Slots */
+        __publicField(this, "$$s");
+        /** @type {any} The Svelte component instance */
+        __publicField(this, "$$c");
+        /** Whether or not the custom element is connected */
+        __publicField(this, "$$cn", false);
+        /** @type {Record<string, any>} Component props data */
+        __publicField(this, "$$d", {});
+        /** `true` if currently in the process of reflecting component props back to attributes */
+        __publicField(this, "$$r", false);
+        /** @type {Record<string, CustomElementPropDefinition>} Props definition (name, reflected, type etc) */
+        __publicField(this, "$$p_d", {});
+        /** @type {Record<string, EventListenerOrEventListenerObject[]>} Event listeners */
+        __publicField(this, "$$l", {});
+        /** @type {Map<EventListenerOrEventListenerObject, Function>} Event listener unsubscribe functions */
+        __publicField(this, "$$l_u", /* @__PURE__ */ new Map());
+        /** @type {any} The managed render effect for reflecting attributes */
+        __publicField(this, "$$me");
+        /** @type {ShadowRoot | null} The ShadowRoot of the custom element */
+        __publicField(this, "$$shadowRoot", null);
+        this.$$ctor = $$componentCtor;
+        this.$$s = $$slots;
+        if (shadow_root_init) {
+          this.$$shadowRoot = this.attachShadow(shadow_root_init);
+        }
+      }
+      /**
+       * @param {string} type
+       * @param {EventListenerOrEventListenerObject} listener
+       * @param {boolean | AddEventListenerOptions} [options]
+       */
+      addEventListener(type, listener, options) {
+        this.$$l[type] = this.$$l[type] || [];
+        this.$$l[type].push(listener);
+        if (this.$$c) {
+          const unsub = this.$$c.$on(type, listener);
+          this.$$l_u.set(listener, unsub);
+        }
+        super.addEventListener(type, listener, options);
+      }
+      /**
+       * @param {string} type
+       * @param {EventListenerOrEventListenerObject} listener
+       * @param {boolean | AddEventListenerOptions} [options]
+       */
+      removeEventListener(type, listener, options) {
+        super.removeEventListener(type, listener, options);
+        if (this.$$c) {
+          const unsub = this.$$l_u.get(listener);
+          if (unsub) {
+            unsub();
+            this.$$l_u.delete(listener);
+          }
+        }
+      }
+      connectedCallback() {
+        return __async(this, null, function* () {
+          this.$$cn = true;
+          if (!this.$$c) {
+            let create_slot = function(name) {
+              return (anchor) => {
+                const slot2 = document.createElement("slot");
+                if (name !== "default")
+                  slot2.name = name;
+                append(anchor, slot2);
+              };
+            };
+            yield Promise.resolve();
+            if (!this.$$cn || this.$$c) {
+              return;
+            }
+            const $$slots = {};
+            const existing_slots = get_custom_elements_slots(this);
+            for (const name of this.$$s) {
+              if (name in existing_slots) {
+                if (name === "default" && !this.$$d.children) {
+                  this.$$d.children = create_slot(name);
+                  $$slots.default = true;
+                } else {
+                  $$slots[name] = create_slot(name);
+                }
+              }
+            }
+            for (const attribute of this.attributes) {
+              const name = this.$$g_p(attribute.name);
+              if (!(name in this.$$d)) {
+                this.$$d[name] = get_custom_element_value(name, attribute.value, this.$$p_d, "toProp");
+              }
+            }
+            for (const key3 in this.$$p_d) {
+              if (!(key3 in this.$$d) && this[key3] !== void 0) {
+                this.$$d[key3] = this[key3];
+                delete this[key3];
+              }
+            }
+            this.$$c = createClassComponent({
+              component: this.$$ctor,
+              target: this.$$shadowRoot || this,
+              props: __spreadProps(__spreadValues({}, this.$$d), {
+                $$slots,
+                $$host: this
+              })
+            });
+            this.$$me = effect_root(() => {
+              render_effect(() => {
+                var _a5;
+                this.$$r = true;
+                for (const key3 of object_keys(this.$$c)) {
+                  if (!((_a5 = this.$$p_d[key3]) == null ? void 0 : _a5.reflect))
+                    continue;
+                  this.$$d[key3] = this.$$c[key3];
+                  const attribute_value = get_custom_element_value(
+                    key3,
+                    this.$$d[key3],
+                    this.$$p_d,
+                    "toAttribute"
+                  );
+                  if (attribute_value == null) {
+                    this.removeAttribute(this.$$p_d[key3].attribute || key3);
+                  } else {
+                    this.setAttribute(this.$$p_d[key3].attribute || key3, attribute_value);
+                  }
+                }
+                this.$$r = false;
+              });
+            });
+            for (const type in this.$$l) {
+              for (const listener of this.$$l[type]) {
+                const unsub = this.$$c.$on(type, listener);
+                this.$$l_u.set(listener, unsub);
+              }
+            }
+            this.$$l = {};
+          }
+        });
+      }
+      // We don't need this when working within Svelte code, but for compatibility of people using this outside of Svelte
+      // and setting attributes through setAttribute etc, this is helpful
+      /**
+       * @param {string} attr
+       * @param {string} _oldValue
+       * @param {string} newValue
+       */
+      attributeChangedCallback(attr2, _oldValue, newValue) {
+        var _a5;
+        if (this.$$r)
+          return;
+        attr2 = this.$$g_p(attr2);
+        this.$$d[attr2] = get_custom_element_value(attr2, newValue, this.$$p_d, "toProp");
+        (_a5 = this.$$c) == null ? void 0 : _a5.$set({ [attr2]: this.$$d[attr2] });
+      }
+      disconnectedCallback() {
+        this.$$cn = false;
+        Promise.resolve().then(() => {
+          if (!this.$$cn && this.$$c) {
+            this.$$c.$destroy();
+            this.$$me();
+            this.$$c = void 0;
+          }
+        });
+      }
+      /**
+       * @param {string} attribute_name
+       */
+      $$g_p(attribute_name) {
+        return object_keys(this.$$p_d).find(
+          (key3) => this.$$p_d[key3].attribute === attribute_name || !this.$$p_d[key3].attribute && key3.toLowerCase() === attribute_name
+        ) || attribute_name;
+      }
+    };
+  }
+  function get_custom_element_value(prop2, value, props_definition, transform) {
+    var _a5;
+    const type = (_a5 = props_definition[prop2]) == null ? void 0 : _a5.type;
+    value = type === "Boolean" && typeof value !== "boolean" ? value != null : value;
+    if (!transform || !props_definition[prop2]) {
+      return value;
+    } else if (transform === "toAttribute") {
+      switch (type) {
+        case "Object":
+        case "Array":
+          return value == null ? null : JSON.stringify(value);
+        case "Boolean":
+          return value ? "" : null;
+        case "Number":
+          return value == null ? null : value;
+        default:
+          return value;
+      }
+    } else {
+      switch (type) {
+        case "Object":
+        case "Array":
+          return value && JSON.parse(value);
+        case "Boolean":
+          return value;
+        case "Number":
+          return value != null ? +value : value;
+        default:
+          return value;
+      }
+    }
+  }
+  function get_custom_elements_slots(element2) {
+    const result = {};
+    element2.childNodes.forEach((node) => {
+      result[
+        /** @type {Element} node */
+        node.slot || "default"
+      ] = true;
+    });
+    return result;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/index-client.js
+  if (true_default) {
+    let throw_rune_error = function(rune) {
+      if (!(rune in globalThis)) {
+        let value;
+        Object.defineProperty(globalThis, rune, {
+          configurable: true,
+          // eslint-disable-next-line getter-return
+          get: () => {
+            if (value !== void 0) {
+              return value;
+            }
+            rune_outside_svelte(rune);
+          },
+          set: (v) => {
+            value = v;
+          }
+        });
+      }
+    };
+    throw_rune_error("$state");
+    throw_rune_error("$effect");
+    throw_rune_error("$derived");
+    throw_rune_error("$inspect");
+    throw_rune_error("$props");
+    throw_rune_error("$bindable");
+  }
+  function onMount(fn) {
+    if (component_context === null) {
+      lifecycle_outside_component("onMount");
+    }
+    if (legacy_mode_flag && component_context.l !== null) {
+      init_update_callbacks(component_context).m.push(fn);
+    } else {
+      user_effect(() => {
+        const cleanup = untrack(fn);
+        if (typeof cleanup === "function")
+          return (
+            /** @type {() => void} */
+            cleanup
+          );
+      });
+    }
+  }
+  function init_update_callbacks(context) {
+    var _a5;
+    var l = (
+      /** @type {ComponentContextLegacy} */
+      context.l
+    );
+    return (_a5 = l.u) != null ? _a5 : l.u = { a: [], b: [], m: [] };
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/version.js
+  var PUBLIC_VERSION = "5";
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/internal/disclose-version.js
+  var _a2, _b, _c;
+  if (typeof window !== "undefined") {
+    ((_c = (_b = (_a2 = window.__svelte) != null ? _a2 : window.__svelte = {}).v) != null ? _c : _b.v = /* @__PURE__ */ new Set()).add(PUBLIC_VERSION);
   }
 
   // node_modules/.pnpm/@mdi+js@7.4.47/node_modules/@mdi/js/mdi.js
@@ -4100,954 +10098,377 @@
   var mdiEyeOffOutline = "M2,5.27L3.28,4L20,20.72L18.73,22L15.65,18.92C14.5,19.3 13.28,19.5 12,19.5C7,19.5 2.73,16.39 1,12C1.69,10.24 2.79,8.69 4.19,7.46L2,5.27M12,9A3,3 0 0,1 15,12C15,12.35 14.94,12.69 14.83,13L11,9.17C11.31,9.06 11.65,9 12,9M12,4.5C17,4.5 21.27,7.61 23,12C22.18,14.08 20.79,15.88 19,17.19L17.58,15.76C18.94,14.82 20.06,13.54 20.82,12C19.17,8.64 15.76,6.5 12,6.5C10.91,6.5 9.84,6.68 8.84,7L7.3,5.47C8.74,4.85 10.33,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C12.69,17.5 13.37,17.43 14,17.29L11.72,15C10.29,14.85 9.15,13.71 9,12.28L5.6,8.87C4.61,9.72 3.78,10.78 3.18,12Z";
   var mdiOpenInNew = "M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z";
 
-  // node_modules/.pnpm/lit-html@2.8.0/node_modules/lit-html/development/lit-html.js
-  var _a2;
-  var _b;
-  var _c;
-  var _d;
-  var DEV_MODE = false;
-  var ENABLE_EXTRA_SECURITY_HOOKS = true;
-  var ENABLE_SHADYDOM_NOPATCH = true;
-  var NODE_MODE = false;
-  var global2 = NODE_MODE ? globalThis : window;
-  var debugLogEvent = DEV_MODE ? (event) => {
-    const shouldEmit = global2.emitLitDebugLogEvents;
-    if (!shouldEmit) {
-      return;
-    }
-    global2.dispatchEvent(new CustomEvent("lit-debug", {
-      detail: event
-    }));
-  } : void 0;
-  var debugLogRenderId = 0;
-  var issueWarning;
-  if (DEV_MODE) {
-    (_a2 = global2.litIssuedWarnings) !== null && _a2 !== void 0 ? _a2 : global2.litIssuedWarnings = /* @__PURE__ */ new Set();
-    issueWarning = (code, warning) => {
-      warning += code ? ` See https://lit.dev/msg/${code} for more information.` : "";
-      if (!global2.litIssuedWarnings.has(warning)) {
-        console.warn(warning);
-        global2.litIssuedWarnings.add(warning);
-      }
-    };
-    issueWarning("dev-mode", `Lit is in dev mode. Not recommended for production!`);
-  }
-  var wrap = ENABLE_SHADYDOM_NOPATCH && ((_b = global2.ShadyDOM) === null || _b === void 0 ? void 0 : _b.inUse) && ((_c = global2.ShadyDOM) === null || _c === void 0 ? void 0 : _c.noPatch) === true ? global2.ShadyDOM.wrap : (node) => node;
-  var trustedTypes = global2.trustedTypes;
-  var policy = trustedTypes ? trustedTypes.createPolicy("lit-html", {
-    createHTML: (s) => s
-  }) : void 0;
-  var identityFunction = (value) => value;
-  var noopSanitizer = (_node, _name, _type) => identityFunction;
-  var setSanitizer = (newSanitizer) => {
-    if (!ENABLE_EXTRA_SECURITY_HOOKS) {
-      return;
-    }
-    if (sanitizerFactoryInternal !== noopSanitizer) {
-      throw new Error(`Attempted to overwrite existing lit-html security policy. setSanitizeDOMValueFactory should be called at most once.`);
-    }
-    sanitizerFactoryInternal = newSanitizer;
-  };
-  var _testOnlyClearSanitizerFactoryDoNotCallOrElse = () => {
-    sanitizerFactoryInternal = noopSanitizer;
-  };
-  var createSanitizer = (node, name, type) => {
-    return sanitizerFactoryInternal(node, name, type);
-  };
-  var boundAttributeSuffix = "$lit$";
-  var marker = `lit$${String(Math.random()).slice(9)}$`;
-  var markerMatch = "?" + marker;
-  var nodeMarker = `<${markerMatch}>`;
-  var d = NODE_MODE && global2.document === void 0 ? {
-    createTreeWalker() {
-      return {};
-    }
-  } : document;
-  var createMarker = () => d.createComment("");
-  var isPrimitive = (value) => value === null || typeof value != "object" && typeof value != "function";
-  var isArray = Array.isArray;
-  var isIterable = (value) => isArray(value) || // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  typeof (value === null || value === void 0 ? void 0 : value[Symbol.iterator]) === "function";
-  var SPACE_CHAR = `[ 	
-\f\r]`;
-  var ATTR_VALUE_CHAR = `[^ 	
-\f\r"'\`<>=]`;
-  var NAME_CHAR = `[^\\s"'>=/]`;
-  var textEndRegex = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g;
-  var COMMENT_START = 1;
-  var TAG_NAME = 2;
-  var DYNAMIC_TAG_NAME = 3;
-  var commentEndRegex = /-->/g;
-  var comment2EndRegex = />/g;
-  var tagEndRegex = new RegExp(`>|${SPACE_CHAR}(?:(${NAME_CHAR}+)(${SPACE_CHAR}*=${SPACE_CHAR}*(?:${ATTR_VALUE_CHAR}|("|')|))|$)`, "g");
-  var ENTIRE_MATCH = 0;
-  var ATTRIBUTE_NAME = 1;
-  var SPACES_AND_EQUALS = 2;
-  var QUOTE_CHAR = 3;
-  var singleQuoteAttrEndRegex = /'/g;
-  var doubleQuoteAttrEndRegex = /"/g;
-  var rawTextElement = /^(?:script|style|textarea|title)$/i;
-  var HTML_RESULT = 1;
-  var SVG_RESULT = 2;
-  var ATTRIBUTE_PART = 1;
-  var CHILD_PART = 2;
-  var PROPERTY_PART = 3;
-  var BOOLEAN_ATTRIBUTE_PART = 4;
-  var EVENT_PART = 5;
-  var ELEMENT_PART = 6;
-  var COMMENT_PART = 7;
-  var tag = (type) => (strings, ...values) => {
-    if (DEV_MODE && strings.some((s) => s === void 0)) {
-      console.warn("Some template strings are undefined.\nThis is probably caused by illegal octal escape sequences.");
-    }
-    return {
-      // This property needs to remain unminified.
-      ["_$litType$"]: type,
-      strings,
-      values
-    };
-  };
-  var html = tag(HTML_RESULT);
-  var svg = tag(SVG_RESULT);
-  var noChange = Symbol.for("lit-noChange");
-  var nothing = Symbol.for("lit-nothing");
-  var templateCache = /* @__PURE__ */ new WeakMap();
-  var walker = d.createTreeWalker(d, 129, null, false);
-  var sanitizerFactoryInternal = noopSanitizer;
-  function trustFromTemplateString(tsa, stringFromTSA) {
-    if (!Array.isArray(tsa) || !tsa.hasOwnProperty("raw")) {
-      let message = "invalid template strings array";
-      if (DEV_MODE) {
-        message = `
-          Internal Error: expected template strings to be an array
-          with a 'raw' field. Faking a template strings array by
-          calling html or svg like an ordinary function is effectively
-          the same as calling unsafeHtml and can lead to major security
-          issues, e.g. opening your code up to XSS attacks.
-          If you're using the html or svg tagged template functions normally
-          and still seeing this error, please file a bug at
-          https://github.com/lit/lit/issues/new?template=bug_report.md
-          and include information about your build tooling, if any.
-        `.trim().replace(/\n */g, "\n");
-      }
-      throw new Error(message);
-    }
-    return policy !== void 0 ? policy.createHTML(stringFromTSA) : stringFromTSA;
-  }
-  var getTemplateHtml = (strings, type) => {
-    const l = strings.length - 1;
-    const attrNames = [];
-    let html2 = type === SVG_RESULT ? "<svg>" : "";
-    let rawTextEndRegex;
-    let regex = textEndRegex;
-    for (let i = 0; i < l; i++) {
-      const s = strings[i];
-      let attrNameEndIndex = -1;
-      let attrName;
-      let lastIndex = 0;
-      let match;
-      while (lastIndex < s.length) {
-        regex.lastIndex = lastIndex;
-        match = regex.exec(s);
-        if (match === null) {
-          break;
-        }
-        lastIndex = regex.lastIndex;
-        if (regex === textEndRegex) {
-          if (match[COMMENT_START] === "!--") {
-            regex = commentEndRegex;
-          } else if (match[COMMENT_START] !== void 0) {
-            regex = comment2EndRegex;
-          } else if (match[TAG_NAME] !== void 0) {
-            if (rawTextElement.test(match[TAG_NAME])) {
-              rawTextEndRegex = new RegExp(`</${match[TAG_NAME]}`, "g");
-            }
-            regex = tagEndRegex;
-          } else if (match[DYNAMIC_TAG_NAME] !== void 0) {
-            if (DEV_MODE) {
-              throw new Error("Bindings in tag names are not supported. Please use static templates instead. See https://lit.dev/docs/templates/expressions/#static-expressions");
-            }
-            regex = tagEndRegex;
-          }
-        } else if (regex === tagEndRegex) {
-          if (match[ENTIRE_MATCH] === ">") {
-            regex = rawTextEndRegex !== null && rawTextEndRegex !== void 0 ? rawTextEndRegex : textEndRegex;
-            attrNameEndIndex = -1;
-          } else if (match[ATTRIBUTE_NAME] === void 0) {
-            attrNameEndIndex = -2;
-          } else {
-            attrNameEndIndex = regex.lastIndex - match[SPACES_AND_EQUALS].length;
-            attrName = match[ATTRIBUTE_NAME];
-            regex = match[QUOTE_CHAR] === void 0 ? tagEndRegex : match[QUOTE_CHAR] === '"' ? doubleQuoteAttrEndRegex : singleQuoteAttrEndRegex;
-          }
-        } else if (regex === doubleQuoteAttrEndRegex || regex === singleQuoteAttrEndRegex) {
-          regex = tagEndRegex;
-        } else if (regex === commentEndRegex || regex === comment2EndRegex) {
-          regex = textEndRegex;
-        } else {
-          regex = tagEndRegex;
-          rawTextEndRegex = void 0;
-        }
-      }
-      if (DEV_MODE) {
-        console.assert(attrNameEndIndex === -1 || regex === tagEndRegex || regex === singleQuoteAttrEndRegex || regex === doubleQuoteAttrEndRegex, "unexpected parse state B");
-      }
-      const end = regex === tagEndRegex && strings[i + 1].startsWith("/>") ? " " : "";
-      html2 += regex === textEndRegex ? s + nodeMarker : attrNameEndIndex >= 0 ? (attrNames.push(attrName), s.slice(0, attrNameEndIndex) + boundAttributeSuffix + s.slice(attrNameEndIndex)) + marker + end : s + marker + (attrNameEndIndex === -2 ? (attrNames.push(void 0), i) : end);
-    }
-    const htmlResult = html2 + (strings[l] || "<?>") + (type === SVG_RESULT ? "</svg>" : "");
-    return [trustFromTemplateString(strings, htmlResult), attrNames];
-  };
-  var Template = class _Template {
-    constructor({ strings, ["_$litType$"]: type }, options) {
-      this.parts = [];
-      let node;
-      let nodeIndex = 0;
-      let attrNameIndex = 0;
-      const partCount = strings.length - 1;
-      const parts = this.parts;
-      const [html2, attrNames] = getTemplateHtml(strings, type);
-      this.el = _Template.createElement(html2, options);
-      walker.currentNode = this.el.content;
-      if (type === SVG_RESULT) {
-        const content = this.el.content;
-        const svgElement = content.firstChild;
-        svgElement.remove();
-        content.append(...svgElement.childNodes);
-      }
-      while ((node = walker.nextNode()) !== null && parts.length < partCount) {
-        if (node.nodeType === 1) {
-          if (DEV_MODE) {
-            const tag2 = node.localName;
-            if (/^(?:textarea|template)$/i.test(tag2) && node.innerHTML.includes(marker)) {
-              const m = `Expressions are not supported inside \`${tag2}\` elements. See https://lit.dev/msg/expression-in-${tag2} for more information.`;
-              if (tag2 === "template") {
-                throw new Error(m);
-              } else
-                issueWarning("", m);
-            }
-          }
-          if (node.hasAttributes()) {
-            const attrsToRemove = [];
-            for (const name of node.getAttributeNames()) {
-              if (name.endsWith(boundAttributeSuffix) || name.startsWith(marker)) {
-                const realName = attrNames[attrNameIndex++];
-                attrsToRemove.push(name);
-                if (realName !== void 0) {
-                  const value = node.getAttribute(realName.toLowerCase() + boundAttributeSuffix);
-                  const statics = value.split(marker);
-                  const m = /([.?@])?(.*)/.exec(realName);
-                  parts.push({
-                    type: ATTRIBUTE_PART,
-                    index: nodeIndex,
-                    name: m[2],
-                    strings: statics,
-                    ctor: m[1] === "." ? PropertyPart : m[1] === "?" ? BooleanAttributePart : m[1] === "@" ? EventPart : AttributePart
-                  });
-                } else {
-                  parts.push({
-                    type: ELEMENT_PART,
-                    index: nodeIndex
-                  });
-                }
-              }
-            }
-            for (const name of attrsToRemove) {
-              node.removeAttribute(name);
-            }
-          }
-          if (rawTextElement.test(node.tagName)) {
-            const strings2 = node.textContent.split(marker);
-            const lastIndex = strings2.length - 1;
-            if (lastIndex > 0) {
-              node.textContent = trustedTypes ? trustedTypes.emptyScript : "";
-              for (let i = 0; i < lastIndex; i++) {
-                node.append(strings2[i], createMarker());
-                walker.nextNode();
-                parts.push({ type: CHILD_PART, index: ++nodeIndex });
-              }
-              node.append(strings2[lastIndex], createMarker());
-            }
-          }
-        } else if (node.nodeType === 8) {
-          const data = node.data;
-          if (data === markerMatch) {
-            parts.push({ type: CHILD_PART, index: nodeIndex });
-          } else {
-            let i = -1;
-            while ((i = node.data.indexOf(marker, i + 1)) !== -1) {
-              parts.push({ type: COMMENT_PART, index: nodeIndex });
-              i += marker.length - 1;
-            }
-          }
-        }
-        nodeIndex++;
-      }
-      debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-        kind: "template prep",
-        template: this,
-        clonableTemplate: this.el,
-        parts: this.parts,
-        strings
-      });
-    }
-    // Overridden via `litHtmlPolyfillSupport` to provide platform support.
-    /** @nocollapse */
-    static createElement(html2, _options) {
-      const el = d.createElement("template");
-      el.innerHTML = html2;
-      return el;
-    }
-  };
-  function resolveDirective(part, value, parent = part, attributeIndex) {
-    var _a5, _b2, _c2;
-    var _d2;
-    if (value === noChange) {
-      return value;
-    }
-    let currentDirective = attributeIndex !== void 0 ? (_a5 = parent.__directives) === null || _a5 === void 0 ? void 0 : _a5[attributeIndex] : parent.__directive;
-    const nextDirectiveConstructor = isPrimitive(value) ? void 0 : (
-      // This property needs to remain unminified.
-      value["_$litDirective$"]
+  // src/bilibili.com/utils/getCurrentTheme.ts
+  var cache;
+  function compute() {
+    const match = getComputedStyle(document.body).backgroundColor.match(
+      /^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*[\d.]+)?\s*\)$/
     );
-    if ((currentDirective === null || currentDirective === void 0 ? void 0 : currentDirective.constructor) !== nextDirectiveConstructor) {
-      (_b2 = currentDirective === null || currentDirective === void 0 ? void 0 : currentDirective["_$notifyDirectiveConnectionChanged"]) === null || _b2 === void 0 ? void 0 : _b2.call(currentDirective, false);
-      if (nextDirectiveConstructor === void 0) {
-        currentDirective = void 0;
-      } else {
-        currentDirective = new nextDirectiveConstructor(part);
-        currentDirective._$initialize(part, parent, attributeIndex);
-      }
-      if (attributeIndex !== void 0) {
-        ((_c2 = (_d2 = parent).__directives) !== null && _c2 !== void 0 ? _c2 : _d2.__directives = [])[attributeIndex] = currentDirective;
-      } else {
-        parent.__directive = currentDirective;
-      }
+    if (match) {
+      const luminance = (0.299 * Number.parseInt(match[1], 10) + 0.587 * Number.parseInt(match[2], 10) + 0.114 * Number.parseInt(match[3], 10)) / 255;
+      return luminance > 0.5 ? "light" : "dark";
     }
-    if (currentDirective !== void 0) {
-      value = resolveDirective(part, currentDirective._$resolve(part, value.values), currentDirective, attributeIndex);
-    }
-    return value;
+    return "light";
   }
-  var TemplateInstance = class {
-    constructor(template, parent) {
-      this._$parts = [];
-      this._$disconnectableChildren = void 0;
-      this._$template = template;
-      this._$parent = parent;
+  function getCurrentTheme() {
+    var _a5;
+    const now2 = (_a5 = performance == null ? void 0 : performance.now()) != null ? _a5 : Date.now();
+    if (!cache || now2 >= cache.notAfter) {
+      cache = { value: compute(), notAfter: now2 + 1e3 };
     }
-    // Called by ChildPart parentNode getter
-    get parentNode() {
-      return this._$parent.parentNode;
-    }
-    // See comment in Disconnectable interface for why this is a getter
-    get _$isConnected() {
-      return this._$parent._$isConnected;
-    }
-    // This method is separate from the constructor because we need to return a
-    // DocumentFragment and we don't want to hold onto it with an instance field.
-    _clone(options) {
-      var _a5;
-      const { el: { content }, parts } = this._$template;
-      const fragment = ((_a5 = options === null || options === void 0 ? void 0 : options.creationScope) !== null && _a5 !== void 0 ? _a5 : d).importNode(content, true);
-      walker.currentNode = fragment;
-      let node = walker.nextNode();
-      let nodeIndex = 0;
-      let partIndex = 0;
-      let templatePart = parts[0];
-      while (templatePart !== void 0) {
-        if (nodeIndex === templatePart.index) {
-          let part;
-          if (templatePart.type === CHILD_PART) {
-            part = new ChildPart(node, node.nextSibling, this, options);
-          } else if (templatePart.type === ATTRIBUTE_PART) {
-            part = new templatePart.ctor(node, templatePart.name, templatePart.strings, this, options);
-          } else if (templatePart.type === ELEMENT_PART) {
-            part = new ElementPart(node, this, options);
-          }
-          this._$parts.push(part);
-          templatePart = parts[++partIndex];
-        }
-        if (nodeIndex !== (templatePart === null || templatePart === void 0 ? void 0 : templatePart.index)) {
-          node = walker.nextNode();
-          nodeIndex++;
-        }
-      }
-      walker.currentNode = d;
-      return fragment;
-    }
-    _update(values) {
-      let i = 0;
-      for (const part of this._$parts) {
-        if (part !== void 0) {
-          debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-            kind: "set part",
-            part,
-            value: values[i],
-            valueIndex: i,
-            values,
-            templateInstance: this
-          });
-          if (part.strings !== void 0) {
-            part._$setValue(values, part, i);
-            i += part.strings.length - 2;
-          } else {
-            part._$setValue(values[i]);
-          }
-        }
-        i++;
-      }
-    }
-  };
-  var ChildPart = class _ChildPart {
-    constructor(startNode, endNode, parent, options) {
-      var _a5;
-      this.type = CHILD_PART;
-      this._$committedValue = nothing;
-      this._$disconnectableChildren = void 0;
-      this._$startNode = startNode;
-      this._$endNode = endNode;
-      this._$parent = parent;
-      this.options = options;
-      this.__isConnected = (_a5 = options === null || options === void 0 ? void 0 : options.isConnected) !== null && _a5 !== void 0 ? _a5 : true;
-      if (ENABLE_EXTRA_SECURITY_HOOKS) {
-        this._textSanitizer = void 0;
-      }
-    }
-    // See comment in Disconnectable interface for why this is a getter
-    get _$isConnected() {
-      var _a5, _b2;
-      return (_b2 = (_a5 = this._$parent) === null || _a5 === void 0 ? void 0 : _a5._$isConnected) !== null && _b2 !== void 0 ? _b2 : this.__isConnected;
-    }
-    /**
-     * The parent node into which the part renders its content.
-     *
-     * A ChildPart's content consists of a range of adjacent child nodes of
-     * `.parentNode`, possibly bordered by 'marker nodes' (`.startNode` and
-     * `.endNode`).
-     *
-     * - If both `.startNode` and `.endNode` are non-null, then the part's content
-     * consists of all siblings between `.startNode` and `.endNode`, exclusively.
-     *
-     * - If `.startNode` is non-null but `.endNode` is null, then the part's
-     * content consists of all siblings following `.startNode`, up to and
-     * including the last child of `.parentNode`. If `.endNode` is non-null, then
-     * `.startNode` will always be non-null.
-     *
-     * - If both `.endNode` and `.startNode` are null, then the part's content
-     * consists of all child nodes of `.parentNode`.
-     */
-    get parentNode() {
-      let parentNode = wrap(this._$startNode).parentNode;
-      const parent = this._$parent;
-      if (parent !== void 0 && (parentNode === null || parentNode === void 0 ? void 0 : parentNode.nodeType) === 11) {
-        parentNode = parent.parentNode;
-      }
-      return parentNode;
-    }
-    /**
-     * The part's leading marker node, if any. See `.parentNode` for more
-     * information.
-     */
-    get startNode() {
-      return this._$startNode;
-    }
-    /**
-     * The part's trailing marker node, if any. See `.parentNode` for more
-     * information.
-     */
-    get endNode() {
-      return this._$endNode;
-    }
-    _$setValue(value, directiveParent = this) {
-      var _a5;
-      if (DEV_MODE && this.parentNode === null) {
-        throw new Error(`This \`ChildPart\` has no \`parentNode\` and therefore cannot accept a value. This likely means the element containing the part was manipulated in an unsupported way outside of Lit's control such that the part's marker nodes were ejected from DOM. For example, setting the element's \`innerHTML\` or \`textContent\` can do this.`);
-      }
-      value = resolveDirective(this, value, directiveParent);
-      if (isPrimitive(value)) {
-        if (value === nothing || value == null || value === "") {
-          if (this._$committedValue !== nothing) {
-            debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-              kind: "commit nothing to child",
-              start: this._$startNode,
-              end: this._$endNode,
-              parent: this._$parent,
-              options: this.options
-            });
-            this._$clear();
-          }
-          this._$committedValue = nothing;
-        } else if (value !== this._$committedValue && value !== noChange) {
-          this._commitText(value);
-        }
-      } else if (value["_$litType$"] !== void 0) {
-        this._commitTemplateResult(value);
-      } else if (value.nodeType !== void 0) {
-        if (DEV_MODE && ((_a5 = this.options) === null || _a5 === void 0 ? void 0 : _a5.host) === value) {
-          this._commitText(`[probable mistake: rendered a template's host in itself (commonly caused by writing \${this} in a template]`);
-          console.warn(`Attempted to render the template host`, value, `inside itself. This is almost always a mistake, and in dev mode `, `we render some warning text. In production however, we'll `, `render it, which will usually result in an error, and sometimes `, `in the element disappearing from the DOM.`);
-          return;
-        }
-        this._commitNode(value);
-      } else if (isIterable(value)) {
-        this._commitIterable(value);
-      } else {
-        this._commitText(value);
-      }
-    }
-    _insert(node) {
-      return wrap(wrap(this._$startNode).parentNode).insertBefore(node, this._$endNode);
-    }
-    _commitNode(value) {
-      var _a5;
-      if (this._$committedValue !== value) {
-        this._$clear();
-        if (ENABLE_EXTRA_SECURITY_HOOKS && sanitizerFactoryInternal !== noopSanitizer) {
-          const parentNodeName = (_a5 = this._$startNode.parentNode) === null || _a5 === void 0 ? void 0 : _a5.nodeName;
-          if (parentNodeName === "STYLE" || parentNodeName === "SCRIPT") {
-            let message = "Forbidden";
-            if (DEV_MODE) {
-              if (parentNodeName === "STYLE") {
-                message = `Lit does not support binding inside style nodes. This is a security risk, as style injection attacks can exfiltrate data and spoof UIs. Consider instead using css\`...\` literals to compose styles, and make do dynamic styling with css custom properties, ::parts, <slot>s, and by mutating the DOM rather than stylesheets.`;
-              } else {
-                message = `Lit does not support binding inside script nodes. This is a security risk, as it could allow arbitrary code execution.`;
-              }
-            }
-            throw new Error(message);
-          }
-        }
-        debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-          kind: "commit node",
-          start: this._$startNode,
-          parent: this._$parent,
-          value,
-          options: this.options
-        });
-        this._$committedValue = this._insert(value);
-      }
-    }
-    _commitText(value) {
-      if (this._$committedValue !== nothing && isPrimitive(this._$committedValue)) {
-        const node = wrap(this._$startNode).nextSibling;
-        if (ENABLE_EXTRA_SECURITY_HOOKS) {
-          if (this._textSanitizer === void 0) {
-            this._textSanitizer = createSanitizer(node, "data", "property");
-          }
-          value = this._textSanitizer(value);
-        }
-        debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-          kind: "commit text",
-          node,
-          value,
-          options: this.options
-        });
-        node.data = value;
-      } else {
-        if (ENABLE_EXTRA_SECURITY_HOOKS) {
-          const textNode = d.createTextNode("");
-          this._commitNode(textNode);
-          if (this._textSanitizer === void 0) {
-            this._textSanitizer = createSanitizer(textNode, "data", "property");
-          }
-          value = this._textSanitizer(value);
-          debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-            kind: "commit text",
-            node: textNode,
-            value,
-            options: this.options
-          });
-          textNode.data = value;
-        } else {
-          this._commitNode(d.createTextNode(value));
-          debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-            kind: "commit text",
-            node: wrap(this._$startNode).nextSibling,
-            value,
-            options: this.options
-          });
-        }
-      }
-      this._$committedValue = value;
-    }
-    _commitTemplateResult(result) {
-      var _a5;
-      const { values, ["_$litType$"]: type } = result;
-      const template = typeof type === "number" ? this._$getTemplate(result) : (type.el === void 0 && (type.el = Template.createElement(trustFromTemplateString(type.h, type.h[0]), this.options)), type);
-      if (((_a5 = this._$committedValue) === null || _a5 === void 0 ? void 0 : _a5._$template) === template) {
-        debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-          kind: "template updating",
-          template,
-          instance: this._$committedValue,
-          parts: this._$committedValue._$parts,
-          options: this.options,
-          values
-        });
-        this._$committedValue._update(values);
-      } else {
-        const instance = new TemplateInstance(template, this);
-        const fragment = instance._clone(this.options);
-        debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-          kind: "template instantiated",
-          template,
-          instance,
-          parts: instance._$parts,
-          options: this.options,
-          fragment,
-          values
-        });
-        instance._update(values);
-        debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-          kind: "template instantiated and updated",
-          template,
-          instance,
-          parts: instance._$parts,
-          options: this.options,
-          fragment,
-          values
-        });
-        this._commitNode(fragment);
-        this._$committedValue = instance;
-      }
-    }
-    // Overridden via `litHtmlPolyfillSupport` to provide platform support.
-    /** @internal */
-    _$getTemplate(result) {
-      let template = templateCache.get(result.strings);
-      if (template === void 0) {
-        templateCache.set(result.strings, template = new Template(result));
-      }
-      return template;
-    }
-    _commitIterable(value) {
-      if (!isArray(this._$committedValue)) {
-        this._$committedValue = [];
-        this._$clear();
-      }
-      const itemParts = this._$committedValue;
-      let partIndex = 0;
-      let itemPart;
-      for (const item of value) {
-        if (partIndex === itemParts.length) {
-          itemParts.push(itemPart = new _ChildPart(this._insert(createMarker()), this._insert(createMarker()), this, this.options));
-        } else {
-          itemPart = itemParts[partIndex];
-        }
-        itemPart._$setValue(item);
-        partIndex++;
-      }
-      if (partIndex < itemParts.length) {
-        this._$clear(itemPart && wrap(itemPart._$endNode).nextSibling, partIndex);
-        itemParts.length = partIndex;
-      }
-    }
-    /**
-     * Removes the nodes contained within this Part from the DOM.
-     *
-     * @param start Start node to clear from, for clearing a subset of the part's
-     *     DOM (used when truncating iterables)
-     * @param from  When `start` is specified, the index within the iterable from
-     *     which ChildParts are being removed, used for disconnecting directives in
-     *     those Parts.
-     *
-     * @internal
-     */
-    _$clear(start = wrap(this._$startNode).nextSibling, from) {
-      var _a5;
-      (_a5 = this._$notifyConnectionChanged) === null || _a5 === void 0 ? void 0 : _a5.call(this, false, true, from);
-      while (start && start !== this._$endNode) {
-        const n = wrap(start).nextSibling;
-        wrap(start).remove();
-        start = n;
-      }
-    }
-    /**
-     * Implementation of RootPart's `isConnected`. Note that this metod
-     * should only be called on `RootPart`s (the `ChildPart` returned from a
-     * top-level `render()` call). It has no effect on non-root ChildParts.
-     * @param isConnected Whether to set
-     * @internal
-     */
-    setConnected(isConnected) {
-      var _a5;
-      if (this._$parent === void 0) {
-        this.__isConnected = isConnected;
-        (_a5 = this._$notifyConnectionChanged) === null || _a5 === void 0 ? void 0 : _a5.call(this, isConnected);
-      } else if (DEV_MODE) {
-        throw new Error("part.setConnected() may only be called on a RootPart returned from render().");
-      }
-    }
-  };
-  var AttributePart = class {
-    constructor(element, name, strings, parent, options) {
-      this.type = ATTRIBUTE_PART;
-      this._$committedValue = nothing;
-      this._$disconnectableChildren = void 0;
-      this.element = element;
-      this.name = name;
-      this._$parent = parent;
-      this.options = options;
-      if (strings.length > 2 || strings[0] !== "" || strings[1] !== "") {
-        this._$committedValue = new Array(strings.length - 1).fill(new String());
-        this.strings = strings;
-      } else {
-        this._$committedValue = nothing;
-      }
-      if (ENABLE_EXTRA_SECURITY_HOOKS) {
-        this._sanitizer = void 0;
-      }
-    }
-    get tagName() {
-      return this.element.tagName;
-    }
-    // See comment in Disconnectable interface for why this is a getter
-    get _$isConnected() {
-      return this._$parent._$isConnected;
-    }
-    /**
-     * Sets the value of this part by resolving the value from possibly multiple
-     * values and static strings and committing it to the DOM.
-     * If this part is single-valued, `this._strings` will be undefined, and the
-     * method will be called with a single value argument. If this part is
-     * multi-value, `this._strings` will be defined, and the method is called
-     * with the value array of the part's owning TemplateInstance, and an offset
-     * into the value array from which the values should be read.
-     * This method is overloaded this way to eliminate short-lived array slices
-     * of the template instance values, and allow a fast-path for single-valued
-     * parts.
-     *
-     * @param value The part value, or an array of values for multi-valued parts
-     * @param valueIndex the index to start reading values from. `undefined` for
-     *   single-valued parts
-     * @param noCommit causes the part to not commit its value to the DOM. Used
-     *   in hydration to prime attribute parts with their first-rendered value,
-     *   but not set the attribute, and in SSR to no-op the DOM operation and
-     *   capture the value for serialization.
-     *
-     * @internal
-     */
-    _$setValue(value, directiveParent = this, valueIndex, noCommit) {
-      const strings = this.strings;
-      let change = false;
-      if (strings === void 0) {
-        value = resolveDirective(this, value, directiveParent, 0);
-        change = !isPrimitive(value) || value !== this._$committedValue && value !== noChange;
-        if (change) {
-          this._$committedValue = value;
-        }
-      } else {
-        const values = value;
-        value = strings[0];
-        let i, v;
-        for (i = 0; i < strings.length - 1; i++) {
-          v = resolveDirective(this, values[valueIndex + i], directiveParent, i);
-          if (v === noChange) {
-            v = this._$committedValue[i];
-          }
-          change || (change = !isPrimitive(v) || v !== this._$committedValue[i]);
-          if (v === nothing) {
-            value = nothing;
-          } else if (value !== nothing) {
-            value += (v !== null && v !== void 0 ? v : "") + strings[i + 1];
-          }
-          this._$committedValue[i] = v;
-        }
-      }
-      if (change && !noCommit) {
-        this._commitValue(value);
-      }
-    }
-    /** @internal */
-    _commitValue(value) {
-      if (value === nothing) {
-        wrap(this.element).removeAttribute(this.name);
-      } else {
-        if (ENABLE_EXTRA_SECURITY_HOOKS) {
-          if (this._sanitizer === void 0) {
-            this._sanitizer = sanitizerFactoryInternal(this.element, this.name, "attribute");
-          }
-          value = this._sanitizer(value !== null && value !== void 0 ? value : "");
-        }
-        debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-          kind: "commit attribute",
-          element: this.element,
-          name: this.name,
-          value,
-          options: this.options
-        });
-        wrap(this.element).setAttribute(this.name, value !== null && value !== void 0 ? value : "");
-      }
-    }
-  };
-  var PropertyPart = class extends AttributePart {
-    constructor() {
-      super(...arguments);
-      this.type = PROPERTY_PART;
-    }
-    /** @internal */
-    _commitValue(value) {
-      if (ENABLE_EXTRA_SECURITY_HOOKS) {
-        if (this._sanitizer === void 0) {
-          this._sanitizer = sanitizerFactoryInternal(this.element, this.name, "property");
-        }
-        value = this._sanitizer(value);
-      }
-      debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-        kind: "commit property",
-        element: this.element,
-        name: this.name,
-        value,
-        options: this.options
-      });
-      this.element[this.name] = value === nothing ? void 0 : value;
-    }
-  };
-  var emptyStringForBooleanAttribute = trustedTypes ? trustedTypes.emptyScript : "";
-  var BooleanAttributePart = class extends AttributePart {
-    constructor() {
-      super(...arguments);
-      this.type = BOOLEAN_ATTRIBUTE_PART;
-    }
-    /** @internal */
-    _commitValue(value) {
-      debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-        kind: "commit boolean attribute",
-        element: this.element,
-        name: this.name,
-        value: !!(value && value !== nothing),
-        options: this.options
-      });
-      if (value && value !== nothing) {
-        wrap(this.element).setAttribute(this.name, emptyStringForBooleanAttribute);
-      } else {
-        wrap(this.element).removeAttribute(this.name);
-      }
-    }
-  };
-  var EventPart = class extends AttributePart {
-    constructor(element, name, strings, parent, options) {
-      super(element, name, strings, parent, options);
-      this.type = EVENT_PART;
-      if (DEV_MODE && this.strings !== void 0) {
-        throw new Error(`A \`<${element.localName}>\` has a \`@${name}=...\` listener with invalid content. Event listeners in templates must have exactly one expression and no surrounding text.`);
-      }
-    }
-    // EventPart does not use the base _$setValue/_resolveValue implementation
-    // since the dirty checking is more complex
-    /** @internal */
-    _$setValue(newListener, directiveParent = this) {
-      var _a5;
-      newListener = (_a5 = resolveDirective(this, newListener, directiveParent, 0)) !== null && _a5 !== void 0 ? _a5 : nothing;
-      if (newListener === noChange) {
-        return;
-      }
-      const oldListener = this._$committedValue;
-      const shouldRemoveListener = newListener === nothing && oldListener !== nothing || newListener.capture !== oldListener.capture || newListener.once !== oldListener.once || newListener.passive !== oldListener.passive;
-      const shouldAddListener = newListener !== nothing && (oldListener === nothing || shouldRemoveListener);
-      debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-        kind: "commit event listener",
-        element: this.element,
-        name: this.name,
-        value: newListener,
-        options: this.options,
-        removeListener: shouldRemoveListener,
-        addListener: shouldAddListener,
-        oldListener
-      });
-      if (shouldRemoveListener) {
-        this.element.removeEventListener(this.name, this, oldListener);
-      }
-      if (shouldAddListener) {
-        this.element.addEventListener(this.name, this, newListener);
-      }
-      this._$committedValue = newListener;
-    }
-    handleEvent(event) {
-      var _a5, _b2;
-      if (typeof this._$committedValue === "function") {
-        this._$committedValue.call((_b2 = (_a5 = this.options) === null || _a5 === void 0 ? void 0 : _a5.host) !== null && _b2 !== void 0 ? _b2 : this.element, event);
-      } else {
-        this._$committedValue.handleEvent(event);
-      }
-    }
-  };
-  var ElementPart = class {
-    constructor(element, parent, options) {
-      this.element = element;
-      this.type = ELEMENT_PART;
-      this._$disconnectableChildren = void 0;
-      this._$parent = parent;
-      this.options = options;
-    }
-    // See comment in Disconnectable interface for why this is a getter
-    get _$isConnected() {
-      return this._$parent._$isConnected;
-    }
-    _$setValue(value) {
-      debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-        kind: "commit to element binding",
-        element: this.element,
-        value,
-        options: this.options
-      });
-      resolveDirective(this, value);
-    }
-  };
-  var polyfillSupport = DEV_MODE ? global2.litHtmlPolyfillSupportDevMode : global2.litHtmlPolyfillSupport;
-  polyfillSupport === null || polyfillSupport === void 0 ? void 0 : polyfillSupport(Template, ChildPart);
-  ((_d = global2.litHtmlVersions) !== null && _d !== void 0 ? _d : global2.litHtmlVersions = []).push("2.8.0");
-  if (DEV_MODE && global2.litHtmlVersions.length > 1) {
-    issueWarning("multiple-versions", `Multiple versions of Lit loaded. Loading multiple versions is not recommended.`);
-  }
-  var render = (value, container, options) => {
-    var _a5, _b2;
-    if (DEV_MODE && container == null) {
-      throw new TypeError(`The container to render into may not be ${container}`);
-    }
-    const renderId = DEV_MODE ? debugLogRenderId++ : 0;
-    const partOwnerNode = (_a5 = options === null || options === void 0 ? void 0 : options.renderBefore) !== null && _a5 !== void 0 ? _a5 : container;
-    let part = partOwnerNode["_$litPart$"];
-    debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-      kind: "begin render",
-      id: renderId,
-      value,
-      container,
-      options,
-      part
-    });
-    if (part === void 0) {
-      const endNode = (_b2 = options === null || options === void 0 ? void 0 : options.renderBefore) !== null && _b2 !== void 0 ? _b2 : null;
-      partOwnerNode["_$litPart$"] = part = new ChildPart(container.insertBefore(createMarker(), endNode), endNode, void 0, options !== null && options !== void 0 ? options : {});
-    }
-    part._$setValue(value);
-    debugLogEvent === null || debugLogEvent === void 0 ? void 0 : debugLogEvent({
-      kind: "end render",
-      id: renderId,
-      value,
-      container,
-      options,
-      part
-    });
-    return part;
-  };
-  if (ENABLE_EXTRA_SECURITY_HOOKS) {
-    render.setSanitizer = setSanitizer;
-    render.createSanitizer = createSanitizer;
-    if (DEV_MODE) {
-      render._testOnlyClearSanitizerFactoryDoNotCallOrElse = _testOnlyClearSanitizerFactoryDoNotCallOrElse;
-    }
+    return cache.value;
   }
 
-  // src/utils/compare.ts
-  function compare(a, b) {
-    if (a > b) {
-      return 1;
+  // src/utils/GMValue.ts
+  var import_symbol2 = __toESM(require_symbol3(), 1);
+  var _a3;
+  var GMValue = class {
+    constructor(key3, defaultValue) {
+      this.key = key3;
+      this.defaultValue = defaultValue;
+      __publicField(this, "value");
+      __publicField(this, "loadingCount", 0);
+      __publicField(this, "currentAction");
+      __publicField(this, "polling");
+      __publicField(this, "listeners", /* @__PURE__ */ new Set());
+      __publicField(this, "addChangeListener", (listener) => {
+        this.listeners.add(listener);
+        return () => {
+          this.listeners.delete(listener);
+        };
+      });
+      __publicField(this, "subscribe", (run3) => {
+        run3(this.value);
+        return this.addChangeListener(run3);
+      });
+      __publicField(this, "refresh", () => __async(this, null, function* () {
+        if (this.isLoading) {
+          yield this.currentAction;
+          return;
+        }
+        this.loadingCount += 1;
+        this.currentAction = (() => __async(this, null, function* () {
+          try {
+            const value = yield GM.getValue(this.key);
+            let newValue;
+            if (value == null) {
+              newValue = void 0;
+            } else if (typeof value === "string") {
+              newValue = JSON.parse(value);
+            } else {
+              throw new Error(
+                `GMValue(${this.key}): unrecognizable value '${value}'`
+              );
+            }
+            if (JSON.stringify(this.value) !== JSON.stringify(newValue)) {
+              this.value = newValue;
+              this.listeners.forEach((i) => i(this.value));
+            }
+          } finally {
+            this.loadingCount -= 1;
+          }
+        }))();
+        yield this.currentAction;
+      }));
+      __publicField(this, "flush", () => __async(this, null, function* () {
+        this.loadingCount += 1;
+        this.currentAction = (() => __async(this, null, function* () {
+          try {
+            if (this.value == null) {
+              yield GM.deleteValue(this.key);
+            } else {
+              yield GM.setValue(this.key, JSON.stringify(this.value));
+            }
+            this.listeners.forEach((i) => i(this.value));
+          } finally {
+            this.loadingCount -= 1;
+          }
+        }))();
+        yield this.currentAction;
+      }));
+      __publicField(this, "get", () => {
+        var _a5;
+        return (_a5 = this.value) != null ? _a5 : this.defaultValue();
+      });
+      __publicField(this, "set", (v) => {
+        this.value = v;
+        this.flush();
+      });
+      __publicField(this, _a3, () => {
+        this.polling.stop();
+      });
+      this.polling = new Polling({
+        update: () => this.refresh(),
+        scheduleNext: (next2) => {
+          const stack2 = new DisposableStack();
+          stack2.adopt(setTimeout(next2, 500), clearTimeout);
+          return stack2;
+        }
+      });
     }
-    if (a < b) {
-      return -1;
+    get isLoading() {
+      return this.loadingCount > 0;
     }
-    return 0;
+  };
+  _a3 = Symbol.dispose;
+
+  // src/bilibili.com/models/homePageSettings.ts
+  var homePageSettings_default = new class HomePageSettings {
+    constructor() {
+      __publicField(this, "value", new GMValue(
+        "homePageSettings@cb2f3e6c-a1e5-44de-b618-7715559b02ad",
+        () => ({})
+      ));
+      __publicField(this, "subscribe", (run3) => {
+        return this.value.subscribe(run3);
+      });
+      __publicField(this, "floorCard", new class {
+        constructor(parent) {
+          this.parent = parent;
+          __publicField(this, "shouldExclude", (i) => {
+            if (this.excludeAll) {
+              return true;
+            }
+            if (this.excludeByChannel.includes(i.channel)) {
+              return true;
+            }
+            return false;
+          });
+        }
+        get value() {
+          return this.parent.value.get().floorCard;
+        }
+        set value(v) {
+          this.parent.value.set(__spreadProps(__spreadValues({}, this.parent.value.get()), {
+            floorCard: v
+          }));
+        }
+        get excludeAll() {
+          var _a5;
+          return (_a5 = this.value) == null ? void 0 : _a5.excludeAll;
+        }
+        set excludeAll(v) {
+          this.value = __spreadProps(__spreadValues({}, this.value), {
+            excludeAll: v
+          });
+        }
+        get excludeByChannel() {
+          var _a5, _b2;
+          return (_b2 = (_a5 = this.value) == null ? void 0 : _a5.excludeByChannel) != null ? _b2 : [];
+        }
+        set excludeByChannel(v) {
+          this.value = __spreadProps(__spreadValues({}, this.value), {
+            excludeByChannel: Array.from(new Set(v)).sort()
+          });
+        }
+      }(this));
+    }
+    get allowAdblockTips() {
+      var _a5;
+      return (_a5 = this.value.get().allowAdblockTips) != null ? _a5 : false;
+    }
+    set allowAdblockTips(v) {
+      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+        allowAdblockTips: v || void 0
+      }));
+    }
+  }();
+
+  // src/bilibili.com/components/SettingsDrawer/HomePageSettings.svelte
+  var root_2 = from_html(`<div class="text-gray-500 dark:text-gray-200 text-sm">可通过指针悬停在卡片上时左上角显示的按钮来屏蔽单个频道的推广</div>`);
+  var root_4 = from_html(`<li class="bg-gray-300 dark:bg-gray-700 rounded px-1 flex items-center"><span> </span> <button type="button"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em]"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg></button></li>`);
+  var root_3 = from_html(`<div><h2 class="flex-none text-sm text-gray-500 dark:text-gray-200">已屏蔽频道 <span class="text-sm"> </span></h2> <ol class="flex flex-wrap gap-2 items-center"></ol></div>`);
+  var root = from_html(`<section><h1 class="text-sm text-gray-500 dark:text-gray-200">主页</h1> <div class="px-1"><label><input type="checkbox"/> <span>允许</span> <span class="text-sm rounded" style="
+          color: #e58900;
+          background-color: #fff0e3;
+        ">检测到您的页面...</span> <span>提示</span></label> <section><h2 class="text-gray-500 dark:text-gray-200 text-sm">楼层推广卡片</h2> <div class="px-1"><div><label><input type="checkbox"/> <span>屏蔽所有</span></label></div> <!></div></section></div></section>`);
+  function HomePageSettings2($$anchor, $$props) {
+    push($$props, true);
+    const $homePageSettings = () => store_get(homePageSettings_default, "$homePageSettings", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    var section = root();
+    var div = sibling(child(section), 2);
+    var label = child(div);
+    var input = child(label);
+    remove_input_defaults(input);
+    input.__change = (e) => {
+      homePageSettings_default.allowAdblockTips = e.currentTarget.checked;
+    };
+    next(6);
+    reset(label);
+    var section_1 = sibling(label, 2);
+    var div_1 = sibling(child(section_1), 2);
+    var div_2 = child(div_1);
+    var label_1 = child(div_2);
+    var input_1 = child(label_1);
+    remove_input_defaults(input_1);
+    input_1.__change = (e) => {
+      homePageSettings_default.floorCard.excludeAll = e.currentTarget.checked;
+    };
+    next(2);
+    reset(label_1);
+    reset(div_2);
+    var node = sibling(div_2, 2);
+    {
+      var consequent_1 = ($$anchor2) => {
+        var fragment = comment();
+        var node_1 = first_child(fragment);
+        {
+          var consequent = ($$anchor3) => {
+            var div_3 = root_2();
+            append($$anchor3, div_3);
+          };
+          var alternate = ($$anchor3) => {
+            var div_4 = root_3();
+            var h2 = child(div_4);
+            var span = sibling(child(h2));
+            var text2 = child(span);
+            reset(span);
+            reset(h2);
+            var ol = sibling(h2, 2);
+            each(ol, 5, () => {
+              var _a5, _b2, _c2;
+              return (_c2 = (_b2 = (_a5 = $homePageSettings()) == null ? void 0 : _a5.floorCard) == null ? void 0 : _b2.excludeByChannel) != null ? _c2 : [];
+            }, (channel) => channel, ($$anchor4, channel) => {
+              var li = root_4();
+              var span_1 = child(li);
+              var text_1 = child(span_1, true);
+              reset(span_1);
+              var button = sibling(span_1, 2);
+              button.__click = () => {
+                homePageSettings_default.floorCard.excludeByChannel = homePageSettings_default.floorCard.excludeByChannel.filter((i) => i !== get(channel));
+              };
+              var svg = child(button);
+              var path = child(svg);
+              reset(svg);
+              reset(button);
+              reset(li);
+              template_effect(() => {
+                set_text(text_1, get(channel));
+                set_attribute2(path, "d", mdiClose);
+              });
+              append($$anchor4, li);
+            });
+            reset(ol);
+            reset(div_4);
+            template_effect(() => {
+              var _a5, _b2, _c2, _d;
+              return set_text(text2, `(${(_d = ((_c2 = (_b2 = (_a5 = $homePageSettings()) == null ? void 0 : _a5.floorCard) == null ? void 0 : _b2.excludeByChannel) != null ? _c2 : []).length) != null ? _d : ""})`);
+            });
+            append($$anchor3, div_4);
+          };
+          if_block(node_1, ($$render) => {
+            var _a5, _b2, _c2;
+            if (((_c2 = (_b2 = (_a5 = $homePageSettings()) == null ? void 0 : _a5.floorCard) == null ? void 0 : _b2.excludeByChannel) != null ? _c2 : []).length === 0)
+              $$render(consequent);
+            else
+              $$render(alternate, false);
+          });
+        }
+        append($$anchor2, fragment);
+      };
+      if_block(node, ($$render) => {
+        var _a5, _b2, _c2;
+        if (!((_c2 = (_b2 = (_a5 = $homePageSettings()) == null ? void 0 : _a5.floorCard) == null ? void 0 : _b2.excludeAll) != null ? _c2 : false))
+          $$render(consequent_1);
+      });
+    }
+    reset(div_1);
+    reset(section_1);
+    reset(div);
+    reset(section);
+    template_effect(() => {
+      var _a5, _b2, _c2, _d, _e;
+      set_checked(input, (_b2 = (_a5 = $homePageSettings()) == null ? void 0 : _a5.allowAdblockTips) != null ? _b2 : false);
+      set_checked(input_1, (_e = (_d = (_c2 = $homePageSettings()) == null ? void 0 : _c2.floorCard) == null ? void 0 : _d.excludeAll) != null ? _e : false);
+    });
+    append($$anchor, section);
+    pop();
+    $$cleanup();
   }
+  delegate(["change", "click"]);
+
+  // src/bilibili.com/models/searchSettings.ts
+  var SearchSettingsModel = class {
+    constructor() {
+      __publicField(this, "value", new GMValue(
+        "searchSettings@aa1595c8-1664-40de-a80c-9de375c2466a",
+        () => ({})
+      ));
+      __publicField(this, "subscribe", (run3) => {
+        return this.value.subscribe(run3);
+      });
+    }
+    get strictTitleMatch() {
+      var _a5;
+      return (_a5 = this.value.get().strictTitleMatch) != null ? _a5 : false;
+    }
+    set strictTitleMatch(v) {
+      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+        strictTitleMatch: v || void 0
+      }));
+    }
+    get disableNavSuggestion() {
+      return this.value.get().disableNavSuggestion;
+    }
+    set disableNavSuggestion(v) {
+      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+        disableNavSuggestion: v
+      }));
+    }
+    get trending() {
+      var _a5;
+      return (_a5 = this.value.get().trending) != null ? _a5 : "on";
+    }
+    set trending(v) {
+      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+        trending: v === "on" ? void 0 : v
+      }));
+    }
+  };
+  var searchSettings = new SearchSettingsModel();
+  var searchSettings_default = searchSettings;
+
+  // src/bilibili.com/components/SettingsDrawer/SearchSettings.svelte
+  var root2 = from_html(`<section><h1 class="text-sm text-gray-500 dark:text-gray-200">搜索</h1> <div class="px-1"><label><input type="checkbox"/> <span>严格标题匹配</span></label> <div class="text-gray-500 dark:text-gray-200 text-sm">标题必须包含所有关键词，屏蔽联想词和标签匹配</div></div> <div class="px-1"><label><input type="checkbox"/> <span>禁用导航栏搜索建议</span></label> <div class="text-gray-500 dark:text-gray-200 text-sm">仅隐藏文本，不影响默认搜索行为</div></div></section>`);
+  function SearchSettings($$anchor, $$props) {
+    push($$props, true);
+    const $searchSettings = () => store_get(searchSettings_default, "$searchSettings", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    var section = root2();
+    var div = sibling(child(section), 2);
+    var label = child(div);
+    var input = child(label);
+    remove_input_defaults(input);
+    input.__change = (e) => {
+      searchSettings_default.strictTitleMatch = e.currentTarget.checked;
+    };
+    next(2);
+    reset(label);
+    next(2);
+    reset(div);
+    var div_1 = sibling(div, 2);
+    var label_1 = child(div_1);
+    var input_1 = child(label_1);
+    remove_input_defaults(input_1);
+    input_1.__change = (e) => {
+      searchSettings_default.disableNavSuggestion = e.currentTarget.checked;
+    };
+    next(2);
+    reset(label_1);
+    next(2);
+    reset(div_1);
+    reset(section);
+    template_effect(() => {
+      var _a5, _b2, _c2, _d;
+      set_checked(input, (_b2 = (_a5 = $searchSettings()) == null ? void 0 : _a5.strictTitleMatch) != null ? _b2 : false);
+      set_checked(input_1, (_d = (_c2 = $searchSettings()) == null ? void 0 : _c2.disableNavSuggestion) != null ? _d : false);
+    });
+    append($$anchor, section);
+    pop();
+    $$cleanup();
+  }
+  delegate(["change"]);
 
   // node_modules/.pnpm/es-toolkit@1.39.9/node_modules/es-toolkit/dist/function/debounce.mjs
   function debounce(func, debounceMs, { signal, edges } = {}) {
@@ -5123,269 +10544,6 @@
     }
     return Object.prototype.toString.call(value) === "[object Object]";
   }
-
-  // src/utils/growTextAreaHeight.ts
-  function growTextAreaHeight(el) {
-    const maxHeight = Math.min(window.innerHeight, el.scrollHeight);
-    if (el.scrollHeight > el.clientHeight && el.clientHeight < maxHeight) {
-      el.style.height = `${maxHeight}px`;
-    }
-  }
-
-  // src/utils/isNonNull.ts
-  function isNonNull(v) {
-    return v != null;
-  }
-
-  // src/utils/GMValue.ts
-  var import_symbol2 = __toESM(require_symbol3());
-  var _a3;
-  var GMValue = class {
-    constructor(key2, defaultValue) {
-      this.key = key2;
-      this.defaultValue = defaultValue;
-      __publicField(this, "value");
-      __publicField(this, "loadingCount", 0);
-      __publicField(this, "currentAction");
-      __publicField(this, "polling");
-      __publicField(this, "refresh", () => __async(this, null, function* () {
-        if (this.isLoading) {
-          yield this.currentAction;
-          return;
-        }
-        this.loadingCount += 1;
-        this.currentAction = (() => __async(this, null, function* () {
-          try {
-            const value = yield GM.getValue(this.key);
-            if (value == null) {
-              this.value = void 0;
-            } else if (typeof value === "string") {
-              this.value = JSON.parse(value);
-            } else {
-              throw new Error(
-                `GMValue(${this.key}): unrecognizable value '${value}'`
-              );
-            }
-          } finally {
-            this.loadingCount -= 1;
-          }
-        }))();
-        yield this.currentAction;
-      }));
-      __publicField(this, "flush", () => __async(this, null, function* () {
-        this.loadingCount += 1;
-        this.currentAction = (() => __async(this, null, function* () {
-          try {
-            if (this.value == null) {
-              yield GM.deleteValue(this.key);
-            } else {
-              yield GM.setValue(this.key, JSON.stringify(this.value));
-            }
-          } finally {
-            this.loadingCount -= 1;
-          }
-        }))();
-        yield this.currentAction;
-      }));
-      __publicField(this, "get", () => {
-        var _a5;
-        return (_a5 = this.value) != null ? _a5 : this.defaultValue();
-      });
-      __publicField(this, "set", (v) => {
-        this.value = v;
-        this.flush();
-      });
-      __publicField(this, _a3, () => {
-        this.polling.stop();
-      });
-      this.polling = new Polling({
-        update: () => this.refresh(),
-        scheduleNext: (next) => {
-          const stack = new DisposableStack();
-          stack.adopt(setTimeout(next, 500), clearTimeout);
-          return stack;
-        }
-      });
-    }
-    get isLoading() {
-      return this.loadingCount > 0;
-    }
-  };
-  _a3 = Symbol.dispose;
-
-  // src/bilibili.com/models/blockedUsers.ts
-  var blockedUsers_default = new class {
-    constructor() {
-      __publicField(this, "value", new GMValue("blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4", () => ({})));
-      __publicField(this, "has", (id) => {
-        return id in this.value.get();
-      });
-      __publicField(this, "get", (id) => {
-        const value = this.value.get()[id];
-        if (!value) {
-          return;
-        }
-        const {
-          blockedAt: rawBlockedAt = 0,
-          name = id,
-          note = ""
-        } = typeof value === "boolean" ? {} : value != null ? value : {};
-        const blockedAt = new Date(rawBlockedAt);
-        return {
-          id,
-          blockedAt,
-          name,
-          idAsNumber: Number.parseInt(id, 10),
-          rawBlockedAt,
-          note
-        };
-      });
-      __publicField(this, "distinctID", () => {
-        return Object.keys(this.value.get());
-      });
-      __publicField(this, "add", ({
-        id,
-        name,
-        note
-      }) => {
-        if (this.has(id)) {
-          return;
-        }
-        this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-          [id]: {
-            name: name.trim(),
-            blockedAt: Date.now(),
-            note: note || void 0
-          }
-        }));
-      });
-      __publicField(this, "update", (id, update) => {
-        var _a5;
-        const existing = this.get(id);
-        if (existing) {
-          this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-            [id]: {
-              name: update.name || existing.name,
-              blockedAt: update.blockedAt || existing.blockedAt.getTime(),
-              note: ((_a5 = update.note) != null ? _a5 : existing.note) || void 0
-            }
-          }));
-        }
-      });
-      __publicField(this, "remove", (id) => {
-        if (!this.has(id)) {
-          return;
-        }
-        this.value.set(
-          Object.fromEntries(
-            Object.entries(this.value.get()).filter(([k]) => k !== id)
-          )
-        );
-      });
-      __publicField(this, "toggle", (user, force) => {
-        const want = force != null ? force : !this.has(user.id);
-        if (want) {
-          this.add(user);
-        } else {
-          this.remove(user.id);
-        }
-      });
-    }
-  }();
-
-  // src/bilibili.com/models/blockedUserPatterns.ts
-  var blockedUserPatterns_default = new class {
-    constructor() {
-      __publicField(this, "value", new GMValue(
-        "blockedUserPatterns@206ceed9-b514-4902-ad70-aa621fed5cd4",
-        () => []
-      ));
-      __publicField(this, "get", () => {
-        return this.value.get();
-      });
-      __publicField(this, "set", (patterns) => {
-        this.value.set(
-          patterns.map((pattern) => {
-            let finalPattern = pattern;
-            try {
-              new RegExp(pattern);
-            } catch (e) {
-              finalPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-            }
-            return {
-              pattern: finalPattern,
-              blockedAt: Date.now()
-            };
-          })
-        );
-      });
-      __publicField(this, "shouldBlock", (name) => {
-        return this.value.get().some((p) => {
-          try {
-            return new RegExp(p.pattern).test(name);
-          } catch (e) {
-            return false;
-          }
-        });
-      });
-    }
-  }();
-
-  // src/bilibili.com/models/homePageSettings.ts
-  var homePageSettings_default = new class HomePageSettings {
-    constructor() {
-      __publicField(this, "value", new GMValue("homePageSettings@cb2f3e6c-a1e5-44de-b618-7715559b02ad", () => ({})));
-      __publicField(this, "floorCard", new class {
-        constructor(parent) {
-          this.parent = parent;
-          __publicField(this, "shouldExclude", (i) => {
-            if (this.excludeAll) {
-              return true;
-            }
-            if (this.excludeByChannel.includes(i.channel)) {
-              return true;
-            }
-            return false;
-          });
-        }
-        get value() {
-          return this.parent.value.get().floorCard;
-        }
-        set value(v) {
-          this.parent.value.set(__spreadProps(__spreadValues({}, this.parent.value.get()), {
-            floorCard: v
-          }));
-        }
-        get excludeAll() {
-          var _a5;
-          return (_a5 = this.value) == null ? void 0 : _a5.excludeAll;
-        }
-        set excludeAll(v) {
-          this.value = __spreadProps(__spreadValues({}, this.value), {
-            excludeAll: v
-          });
-        }
-        get excludeByChannel() {
-          var _a5, _b2;
-          return (_b2 = (_a5 = this.value) == null ? void 0 : _a5.excludeByChannel) != null ? _b2 : [];
-        }
-        set excludeByChannel(v) {
-          this.value = __spreadProps(__spreadValues({}, this.value), {
-            excludeByChannel: Array.from(new Set(v)).sort()
-          });
-        }
-      }(this));
-    }
-    get allowAdblockTips() {
-      var _a5;
-      return (_a5 = this.value.get().allowAdblockTips) != null ? _a5 : false;
-    }
-    set allowAdblockTips(v) {
-      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-        allowAdblockTips: v || void 0
-      }));
-    }
-  }();
 
   // src/utils/castDate.ts
   function castDate(v) {
@@ -5802,27 +10960,27 @@
   __publicField(_Duration, "MONTH", _Duration.DAY / 10 * 146097 / 4800 * 10);
   __publicField(_Duration, "YEAR", _Duration.MONTH * 12);
   __publicField(_Duration, "fromMilliseconds", (milliseconds = 0) => {
-    const d2 = {};
+    const d = {};
     let ms = milliseconds;
     if (ms < 0) {
-      d2.negative = true;
+      d.negative = true;
       ms = -ms;
     }
-    d2.hours = Math.trunc(ms / _Duration.HOUR);
+    d.hours = Math.trunc(ms / _Duration.HOUR);
     ms %= _Duration.HOUR;
-    d2.minutes = Math.trunc(ms / _Duration.MINUTE);
+    d.minutes = Math.trunc(ms / _Duration.MINUTE);
     ms %= _Duration.MINUTE;
-    d2.seconds = Math.trunc(ms / _Duration.SECOND);
+    d.seconds = Math.trunc(ms / _Duration.SECOND);
     ms %= _Duration.SECOND;
-    d2.milliseconds = ms;
-    return new _Duration(d2);
+    d.milliseconds = ms;
+    return new _Duration(d);
   });
   __publicField(_Duration, "fromTimeCode", (value) => {
     if (value === "") {
       return new _Duration({ invalid: true });
     }
     let s = value;
-    const d2 = {
+    const d = {
       negative: false,
       hours: 0,
       minutes: 0,
@@ -5830,27 +10988,27 @@
     };
     if (s.startsWith("-")) {
       s = s.slice(1);
-      d2.negative = true;
+      d.negative = true;
     }
     const parts = s.split(/[:：]/);
     parts.splice(0, 0, ...["0", "0"].splice(parts.length - 1));
     const [hours, minutes, seconds] = parts;
     if (hours) {
-      d2.hours = parseFloat(hours);
+      d.hours = parseFloat(hours);
     }
     if (minutes) {
-      d2.minutes = parseFloat(minutes);
+      d.minutes = parseFloat(minutes);
     }
     if (seconds) {
-      d2.seconds = parseFloat(seconds);
+      d.seconds = parseFloat(seconds);
     }
-    return new _Duration(d2);
+    return new _Duration(d);
   });
   /**
    * @param value iso 8601 duration string
    */
   __publicField(_Duration, "parse", (value) => {
-    const d2 = {
+    const d = {
       invalid: false,
       negative: false,
       years: 0,
@@ -5863,10 +11021,10 @@
       milliseconds: 0
     };
     let s = value;
-    [d2.negative, s] = leadingNegative(s);
+    [d.negative, s] = leadingNegative(s);
     if (s === "" || !s.startsWith("P")) {
-      d2.invalid = true;
-      return new _Duration(d2);
+      d.invalid = true;
+      return new _Duration(d);
     }
     s = s.slice(1);
     let afterT = false;
@@ -5898,58 +11056,58 @@
         }
       }
       if (!pre && !post) {
-        d2.invalid = true;
-        return new _Duration(d2);
+        d.invalid = true;
+        return new _Duration(d);
       }
       const u = s[0];
       s = s.slice(1);
       if (!afterT) {
         switch (u) {
           case "Y":
-            d2.years += v;
-            d2.months += f * (_Duration.YEAR / _Duration.MONTH / scale);
+            d.years += v;
+            d.months += f * (_Duration.YEAR / _Duration.MONTH / scale);
             break;
           case "M":
-            d2.months += v;
-            d2.weeks += f * (_Duration.MONTH / _Duration.WEEK / scale);
+            d.months += v;
+            d.weeks += f * (_Duration.MONTH / _Duration.WEEK / scale);
             break;
           case "W":
-            d2.weeks += v;
-            d2.days += f * (_Duration.WEEK / _Duration.DAY / scale);
+            d.weeks += v;
+            d.days += f * (_Duration.WEEK / _Duration.DAY / scale);
             break;
           case "D":
-            d2.days += v;
-            d2.hours += f * (_Duration.DAY / _Duration.HOUR / scale);
+            d.days += v;
+            d.hours += f * (_Duration.DAY / _Duration.HOUR / scale);
             break;
           default:
-            d2.invalid = true;
-            return new _Duration(d2);
+            d.invalid = true;
+            return new _Duration(d);
         }
       } else {
         switch (u) {
           case "H":
-            d2.hours += v;
-            d2.minutes += f * (_Duration.HOUR / _Duration.MINUTE / scale);
+            d.hours += v;
+            d.minutes += f * (_Duration.HOUR / _Duration.MINUTE / scale);
             break;
           case "M":
-            d2.minutes += v;
-            d2.seconds += f * (_Duration.MINUTE / _Duration.SECOND / scale);
+            d.minutes += v;
+            d.seconds += f * (_Duration.MINUTE / _Duration.SECOND / scale);
             break;
           case "S":
-            d2.seconds += v;
-            d2.milliseconds += f * (_Duration.SECOND / _Duration.MILLISECOND / scale);
+            d.seconds += v;
+            d.milliseconds += f * (_Duration.SECOND / _Duration.MILLISECOND / scale);
             break;
           default:
-            d2.invalid = true;
-            return new _Duration(d2);
+            d.invalid = true;
+            return new _Duration(d);
         }
       }
       if (post && s !== "") {
-        d2.invalid = true;
-        return new _Duration(d2);
+        d.invalid = true;
+        return new _Duration(d);
       }
     }
-    return new _Duration(d2);
+    return new _Duration(d);
   });
   __publicField(_Duration, "cast", (v) => {
     if (v instanceof _Duration) {
@@ -5977,6 +11135,9 @@
   var videoListSettings_default = new class VideoListSettings {
     constructor() {
       __publicField(this, "value", new GMValue("videoListSettings@4eb93ea9-8748-4647-876f-30451395e561", () => ({})));
+      __publicField(this, "subscribe", (run3) => {
+        return this.value.subscribe(run3);
+      });
     }
     get allowAdvertisement() {
       var _a5;
@@ -6010,13 +11171,13 @@
       return Duration.parse((_a5 = this.value.get().durationGte) != null ? _a5 : "");
     }
     set durationGte(v) {
-      const d2 = Duration.cast(v);
-      if (d2.toMilliseconds() >= Duration.HOUR) {
+      const d = Duration.cast(v);
+      if (d.toMilliseconds() >= Duration.HOUR) {
         this.durationGte = "PT1M";
         return;
       }
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-        durationGte: d2.invalid ? void 0 : d2.toISOString()
+        durationGte: d.invalid ? void 0 : d.toISOString()
       }));
     }
     get durationLt() {
@@ -6028,49 +11189,632 @@
       return v;
     }
     set durationLt(v) {
-      const d2 = Duration.cast(v);
-      if (d2.valid && d2.toMilliseconds() <= 10 * Duration.MINUTE) {
+      const d = Duration.cast(v);
+      if (d.valid && d.toMilliseconds() <= 10 * Duration.MINUTE) {
         this.durationLt = "PT30M";
         return;
       }
       this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-        durationLt: d2.invalid ? void 0 : d2.toISOString()
+        durationLt: d.invalid ? void 0 : d.toISOString()
       }));
     }
   }();
 
-  // src/bilibili.com/models/searchSettings.ts
-  var searchSettings_default = new class SearchSettings {
+  // src/utils/growTextAreaHeight.ts
+  function growTextAreaHeight(el) {
+    const maxHeight = Math.min(window.innerHeight, el.scrollHeight);
+    if (el.scrollHeight > el.clientHeight && el.clientHeight < maxHeight) {
+      el.style.height = `${maxHeight}px`;
+    }
+  }
+
+  // src/bilibili.com/components/SettingsDrawer/VideoListSettings.svelte
+  var root3 = from_html(`<section><h1 class="text-sm text-gray-500 dark:text-gray-200">视频列表</h1> <div class="px-1"><label><input type="checkbox"/> <span>允许广告（非视频）</span></label> <label><input type="checkbox"/> <span>允许推广</span></label> <label class="flex items-center"><span class="flex-none w-32">最短（含）</span> <input class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500" type="text" placeholder="HH:MM:SS"/></label> <label class="flex items-center"><span class="flex-none w-32">最长（不含）</span> <input class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500" type="text" placeholder="HH:MM:SS"/></label> <label class="flex items-center"><div class="flex-none w-32">排除关键词</div> <div class="flex-auto"><textarea class="w-full border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500" placeholder=""></textarea> <div class="text-gray-500 dark:text-gray-200 text-sm">不显示标题含关键词的视频。每行一个，不区分大小写。</div></div></label></div></section>`);
+  function VideoListSettings2($$anchor, $$props) {
+    push($$props, true);
+    const $videoListSettings = () => store_get(videoListSettings_default, "$videoListSettings", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    const onVideListDurationGteChange = debounce(
+      (e) => {
+        const el = e.target;
+        videoListSettings_default.durationGte = el.value;
+        el.value = videoListSettings_default.durationGte.toTimeCode();
+      },
+      5e3
+    );
+    const onVideListDurationLtChange = debounce(
+      (e) => {
+        const el = e.target;
+        videoListSettings_default.durationLt = el.value;
+        el.value = videoListSettings_default.durationLt.toTimeCode();
+      },
+      5e3
+    );
+    let excludedKeywordsBuffer = state(void 0);
+    let excludedKeywords = user_derived(() => {
+      var _a5, _b2, _c2;
+      return (_c2 = get(excludedKeywordsBuffer)) != null ? _c2 : ((_b2 = (_a5 = $videoListSettings()) == null ? void 0 : _a5.excludeKeywords) != null ? _b2 : []).join("\n");
+    });
+    function updateExcludedKeywords(v) {
+      set(excludedKeywordsBuffer, v, true);
+      videoListSettings_default.excludeKeywords = v.split("\n");
+    }
+    var section = root3();
+    var div = sibling(child(section), 2);
+    var label = child(div);
+    var input = child(label);
+    remove_input_defaults(input);
+    input.__change = (e) => {
+      videoListSettings_default.allowAdvertisement = e.currentTarget.checked;
+    };
+    next(2);
+    reset(label);
+    var label_1 = sibling(label, 2);
+    var input_1 = child(label_1);
+    remove_input_defaults(input_1);
+    input_1.__change = (e) => {
+      videoListSettings_default.allowPromoted = e.currentTarget.checked;
+    };
+    next(2);
+    reset(label_1);
+    var label_2 = sibling(label_1, 2);
+    var input_2 = sibling(child(label_2), 2);
+    input_2.__input = onVideListDurationGteChange;
+    input_2.__keydown = (e) => e.stopPropagation();
+    input_2.__keyup = (e) => {
+      if (e.key === "Enter") {
+        onVideListDurationGteChange(e);
+        onVideListDurationGteChange.flush();
+      }
+    };
+    reset(label_2);
+    var label_3 = sibling(label_2, 2);
+    var input_3 = sibling(child(label_3), 2);
+    input_3.__input = onVideListDurationLtChange;
+    input_3.__keydown = (e) => e.stopPropagation();
+    input_3.__keyup = (e) => {
+      if (e.key === "Enter") {
+        onVideListDurationLtChange(e);
+        onVideListDurationLtChange.flush();
+      }
+    };
+    reset(label_3);
+    var label_4 = sibling(label_3, 2);
+    var div_1 = sibling(child(label_4), 2);
+    var textarea = child(div_1);
+    remove_textarea_child(textarea);
+    textarea.__input = (e) => {
+      const el = e.currentTarget;
+      updateExcludedKeywords(el.value);
+      growTextAreaHeight(el);
+    };
+    textarea.__keydown = (e) => e.stopPropagation();
+    next(2);
+    reset(div_1);
+    reset(label_4);
+    reset(div);
+    reset(section);
+    template_effect(
+      ($0, $1) => {
+        var _a5, _b2, _c2, _d;
+        set_checked(input, (_b2 = (_a5 = $videoListSettings()) == null ? void 0 : _a5.allowAdvertisement) != null ? _b2 : false);
+        set_checked(input_1, (_d = (_c2 = $videoListSettings()) == null ? void 0 : _c2.allowPromoted) != null ? _d : false);
+        input_2.defaultValue = $0;
+        input_3.defaultValue = $1;
+        set_value(textarea, get(excludedKeywords));
+      },
+      [
+        () => videoListSettings_default.durationGte.toTimeCode(),
+        () => videoListSettings_default.durationLt.toTimeCode()
+      ]
+    );
+    event("blur", input_2, () => onVideListDurationGteChange.flush());
+    event("blur", input_3, () => onVideListDurationLtChange.flush());
+    event("focus", textarea, (e) => growTextAreaHeight(e.currentTarget));
+    event("blur", textarea, () => {
+      set(excludedKeywordsBuffer, void 0);
+    });
+    append($$anchor, section);
+    pop();
+    $$cleanup();
+  }
+  delegate(["change", "input", "keydown", "keyup"]);
+
+  // src/bilibili.com/models/blockedUserPatterns.ts
+  var blockedUserPatterns_default = new class {
     constructor() {
-      __publicField(this, "value", new GMValue("searchSettings@aa1595c8-1664-40de-a80c-9de375c2466a", () => ({})));
-    }
-    get strictTitleMatch() {
-      var _a5;
-      return (_a5 = this.value.get().strictTitleMatch) != null ? _a5 : false;
-    }
-    set strictTitleMatch(v) {
-      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-        strictTitleMatch: v || void 0
-      }));
-    }
-    get disableNavSuggestion() {
-      return this.value.get().disableNavSuggestion;
-    }
-    set disableNavSuggestion(v) {
-      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-        disableNavSuggestion: v
-      }));
-    }
-    get trending() {
-      var _a5;
-      return (_a5 = this.value.get().trending) != null ? _a5 : "on";
-    }
-    set trending(v) {
-      this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
-        trending: v === "on" ? void 0 : v
-      }));
+      __publicField(this, "value", new GMValue(
+        "blockedUserPatterns@206ceed9-b514-4902-ad70-aa621fed5cd4",
+        () => []
+      ));
+      __publicField(this, "get", () => {
+        return this.value.get();
+      });
+      __publicField(this, "subscribe", (run3) => {
+        return this.value.subscribe(run3);
+      });
+      __publicField(this, "set", (patterns) => {
+        this.value.set(
+          patterns.map((pattern) => {
+            let finalPattern = pattern;
+            try {
+              new RegExp(pattern);
+            } catch (e) {
+              finalPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            }
+            return {
+              pattern: finalPattern,
+              blockedAt: Date.now()
+            };
+          })
+        );
+      });
+      __publicField(this, "shouldBlock", (name) => {
+        return this.value.get().some((p) => {
+          try {
+            return new RegExp(p.pattern).test(name);
+          } catch (e) {
+            return false;
+          }
+        });
+      });
     }
   }();
+
+  // src/bilibili.com/components/SettingsDrawer/BlockedUserPatternsSettings.svelte
+  var root4 = from_html(`<section><h1 class="text-sm text-gray-500 dark:text-gray-200">屏蔽名称匹配的用户</h1> <div class="px-1"><textarea class="w-full border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500" placeholder=""></textarea> <div class="text-gray-500 dark:text-gray-200 text-sm">每行一个，支持正则。</div></div></section>`);
+  function BlockedUserPatternsSettings($$anchor, $$props) {
+    push($$props, true);
+    const $blockedUserPatterns = () => store_get(blockedUserPatterns_default, "$blockedUserPatterns", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    let blockedUserPatternsBuffer = state(void 0);
+    let patternsList = user_derived(() => {
+      var _a5;
+      return (_a5 = $blockedUserPatterns()) != null ? _a5 : [];
+    });
+    let patternsText = user_derived(() => {
+      var _a5;
+      return (_a5 = get(blockedUserPatternsBuffer)) != null ? _a5 : get(patternsList).map((i) => i.pattern).join("\n");
+    });
+    function updatePatterns(v) {
+      set(blockedUserPatternsBuffer, v, true);
+      blockedUserPatterns_default.set(v.split("\n").map((i) => i.trim()).filter((i) => i));
+    }
+    var section = root4();
+    var div = sibling(child(section), 2);
+    var textarea = child(div);
+    remove_textarea_child(textarea);
+    textarea.__input = (e) => {
+      const el = e.currentTarget;
+      updatePatterns(el.value);
+      growTextAreaHeight(el);
+    };
+    textarea.__keydown = (e) => e.stopPropagation();
+    next(2);
+    reset(div);
+    reset(section);
+    template_effect(() => set_value(textarea, get(patternsText)));
+    event("focus", textarea, (e) => growTextAreaHeight(e.currentTarget));
+    event("blur", textarea, () => {
+      set(blockedUserPatternsBuffer, void 0);
+    });
+    append($$anchor, section);
+    pop();
+    $$cleanup();
+  }
+  delegate(["input", "keydown"]);
+
+  // src/bilibili.com/models/blockedUsers.ts
+  var blockedUsers_default = new class {
+    constructor() {
+      __publicField(this, "value", new GMValue("blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4", () => ({})));
+      __publicField(this, "has", (id) => {
+        return id in this.value.get();
+      });
+      __publicField(this, "subscribe", (run3) => {
+        return this.value.subscribe(run3);
+      });
+      __publicField(this, "get", (id) => {
+        const value = this.value.get()[id];
+        if (!value) {
+          return;
+        }
+        const {
+          blockedAt: rawBlockedAt = 0,
+          name = id,
+          note = ""
+        } = typeof value === "boolean" ? {} : value != null ? value : {};
+        const blockedAt = new Date(rawBlockedAt);
+        return {
+          id,
+          blockedAt,
+          name,
+          idAsNumber: Number.parseInt(id, 10),
+          rawBlockedAt,
+          note
+        };
+      });
+      __publicField(this, "distinctID", () => {
+        return Object.keys(this.value.get());
+      });
+      __publicField(this, "add", ({
+        id,
+        name,
+        note
+      }) => {
+        if (this.has(id)) {
+          return;
+        }
+        this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+          [id]: {
+            name: name.trim(),
+            blockedAt: Date.now(),
+            note: note || void 0
+          }
+        }));
+      });
+      __publicField(this, "update", (id, update2) => {
+        var _a5;
+        const existing = this.get(id);
+        if (existing) {
+          this.value.set(__spreadProps(__spreadValues({}, this.value.get()), {
+            [id]: {
+              name: update2.name || existing.name,
+              blockedAt: update2.blockedAt || existing.blockedAt.getTime(),
+              note: ((_a5 = update2.note) != null ? _a5 : existing.note) || void 0
+            }
+          }));
+        }
+      });
+      __publicField(this, "remove", (id) => {
+        if (!this.has(id)) {
+          return;
+        }
+        this.value.set(
+          Object.fromEntries(
+            Object.entries(this.value.get()).filter(([k]) => k !== id)
+          )
+        );
+      });
+      __publicField(this, "toggle", (user, force) => {
+        const want = force != null ? force : !this.has(user.id);
+        if (want) {
+          this.add(user);
+        } else {
+          this.remove(user.id);
+        }
+      });
+    }
+  }();
+
+  // src/utils/compare.ts
+  function compare(a, b) {
+    if (a > b) {
+      return 1;
+    }
+    if (a < b) {
+      return -1;
+    }
+    return 0;
+  }
+
+  // src/utils/isNonNull.ts
+  function isNonNull(v) {
+    return v != null;
+  }
+
+  // node_modules/.pnpm/svelte@5.49.1/node_modules/svelte/src/transition/index.js
+  var linear2 = (x) => x;
+  function cubic_out(t) {
+    const f = t - 1;
+    return f * f * f + 1;
+  }
+  function split_css_unit(value) {
+    const split = typeof value === "string" && value.match(/^\s*(-?[\d.]+)([^\s]*)\s*$/);
+    return split ? [parseFloat(split[1]), split[2] || "px"] : [
+      /** @type {number} */
+      value,
+      "px"
+    ];
+  }
+  function fade(node, { delay = 0, duration = 400, easing = linear2 } = {}) {
+    const o = +getComputedStyle(node).opacity;
+    return {
+      delay,
+      duration,
+      easing,
+      css: (t) => `opacity: ${t * o}`
+    };
+  }
+  function fly(node, { delay = 0, duration = 400, easing = cubic_out, x = 0, y = 0, opacity = 0 } = {}) {
+    const style = getComputedStyle(node);
+    const target_opacity = +style.opacity;
+    const transform = style.transform === "none" ? "" : style.transform;
+    const od = target_opacity * (1 - opacity);
+    const [x_value, x_unit] = split_css_unit(x);
+    const [y_value, y_unit] = split_css_unit(y);
+    return {
+      delay,
+      duration,
+      easing,
+      css: (t, u) => `
+			transform: ${transform} translate(${(1 - t) * x_value}${x_unit}, ${(1 - t) * y_value}${y_unit});
+			opacity: ${target_opacity - od * u}`
+    };
+  }
+
+  // src/bilibili.com/components/PromptDialog.svelte
+  var root_22 = from_html(`<label for="dialog-input" class="block text-sm font-medium mb-1"> </label>`);
+  var root_1 = from_html(`<div class="
+      fixed inset-0
+      bg-black/25 dark:bg-white/25 backdrop-blur-sm
+      flex items-center justify-center p-4
+    " role="dialog" aria-modal="true"><div class="
+        bg-white text-black dark:bg-black dark:text-white rounded-lg shadow-xl w-full max-w-lg
+      " role="document"><form><div class="border-b px-4 py-3 flex justify-between items-center"><h3 class="text-lg font-medium"> </h3> <button type="button" class="p-1 rounded-full hover:bg-gray-100 dark:hover:gray-900 transition-colors" title="关闭" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg></button></div> <div class="p-4"><!> <input id="dialog-input" class="
+              w-full p-2 border border-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-500 rounded-md
+              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+              focus:outline-none shadow-sm
+            " type="text"/></div> <div class="border-t px-4 py-3 flex justify-end gap-2"><button type="button" class="
+              px-4 py-2 rounded-md text-sm font-medium
+              bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors
+            ">取消</button> <button type="submit" class="
+              px-4 py-2 rounded-md text-sm font-medium text-white
+              bg-blue-600 hover:bg-blue-700 transition-colors
+            "> </button></div></form></div></div>`);
+  function PromptDialog($$anchor, $$props) {
+    push($$props, true);
+    let title = prop($$props, "title", 3, "编辑"), label = prop($$props, "label", 3, ""), value = prop($$props, "value", 15, ""), placeholder = prop($$props, "placeholder", 3, ""), actionText = prop($$props, "actionText", 3, "保存");
+    let visible = state(true);
+    let pendingResult = null;
+    let dialogEl = state(void 0);
+    let inputEl = state(void 0);
+    onMount(() => {
+      if (get(inputEl)) {
+        get(inputEl).select();
+        get(inputEl).scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    });
+    function close(v) {
+      pendingResult = v;
+      set(visible, false);
+    }
+    function handleOutroEnd() {
+      $$props.onClose(pendingResult);
+    }
+    var fragment = comment();
+    var node = first_child(fragment);
+    {
+      var consequent_1 = ($$anchor2) => {
+        var div = root_1();
+        div.__click = (e) => {
+          if (e.target === e.currentTarget)
+            close(null);
+        };
+        var div_1 = child(div);
+        div_1.__click = (e) => e.stopPropagation();
+        var form = child(div_1);
+        var div_2 = child(form);
+        var h3 = child(div_2);
+        var text2 = child(h3, true);
+        reset(h3);
+        var button = sibling(h3, 2);
+        button.__click = () => close(null);
+        var svg = child(button);
+        var path = child(svg);
+        reset(svg);
+        reset(button);
+        reset(div_2);
+        var div_3 = sibling(div_2, 2);
+        var node_1 = child(div_3);
+        {
+          var consequent = ($$anchor3) => {
+            var label_1 = root_22();
+            var text_1 = child(label_1, true);
+            reset(label_1);
+            template_effect(() => set_text(text_1, label()));
+            append($$anchor3, label_1);
+          };
+          if_block(node_1, ($$render) => {
+            if (label())
+              $$render(consequent);
+          });
+        }
+        var input = sibling(node_1, 2);
+        remove_input_defaults(input);
+        bind_this(input, ($$value) => set(inputEl, $$value), () => get(inputEl));
+        reset(div_3);
+        var div_4 = sibling(div_3, 2);
+        var button_1 = child(div_4);
+        button_1.__click = () => close(null);
+        var button_2 = sibling(button_1, 2);
+        var text_2 = child(button_2, true);
+        reset(button_2);
+        reset(div_4);
+        reset(form);
+        reset(div_1);
+        bind_this(div_1, ($$value) => set(dialogEl, $$value), () => get(dialogEl));
+        reset(div);
+        template_effect(
+          ($0, $1) => {
+            set_attribute2(div, "data-theme", $0);
+            set_attribute2(div_1, "data-theme", $1);
+            set_text(text2, title());
+            set_attribute2(path, "d", mdiClose);
+            set_attribute2(input, "placeholder", placeholder());
+            set_text(text_2, actionText());
+          },
+          [getCurrentTheme, getCurrentTheme]
+        );
+        event("outroend", div, handleOutroEnd);
+        event("submit", form, (e) => {
+          e.preventDefault();
+          close(value());
+        });
+        bind_value(input, value);
+        transition(3, div_1, () => fly, () => ({ y: 24, duration: 300 }));
+        transition(3, div, () => fade, () => ({ duration: 300 }));
+        append($$anchor2, div);
+      };
+      if_block(node, ($$render) => {
+        if (get(visible))
+          $$render(consequent_1);
+      });
+    }
+    append($$anchor, fragment);
+    pop();
+  }
+  delegate(["click"]);
+
+  // src/bilibili.com/components/SettingsDrawer/UserTable.svelte
+  var root_23 = from_html(`<time> </time>`);
+  var root_12 = from_html(`<div class="absolute left-0 right-0 h-12 flex items-center bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition group"><div class="w-48 flex-none text-right px-2 text-sm"><!></div> <div class="flex-auto text-center hover:underline cursor-pointer px-2 truncate" role="button"> <div class="text-xs text-gray-500 truncate"> </div></div> <div class="w-64 flex-none flex justify-center items-center space-x-2 opacity-0 group-hover:opacity-100 transition"><a target="_blank" class="inline-flex items-center underline text-blue-500 text-sm"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>个人空间</span></a> <button type="button" class="inline-flex items-center underline text-sm"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>取消屏蔽</span></button></div></div>`);
+  var root5 = from_html(`<div class="flex flex-col overflow-hidden max-h-[50vh]"><h1 class="flex-none text-sm text-gray-500 dark:text-gray-200 mb-1">已屏蔽用户 <span class="text-sm"> </span></h1> <div class="flex-none flex items-center bg-gray-200 dark:bg-gray-800 text-center font-bold h-10 pr-2"><div class="w-48 flex-none">屏蔽时间</div> <div class="flex-auto">名称</div> <div class="w-64 flex-none"></div></div> <div class="flex-1 overflow-auto relative"><div></div></div></div> <!>`, 1);
+  function UserTable($$anchor, $$props) {
+    push($$props, true);
+    const $blockedUsers = () => store_get(blockedUsers_default, "$blockedUsers", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    let items = user_derived(() => {
+      const _ = $blockedUsers();
+      return blockedUsers_default.distinctID().map(blockedUsers_default.get).filter(isNonNull).sort((a, b) => {
+        const dateCompare = compare(a.blockedAt, b.blockedAt);
+        if (dateCompare !== 0) {
+          return -dateCompare;
+        }
+        return compare(a.idAsNumber, b.idAsNumber);
+      });
+    });
+    let scrollTop = state(0);
+    const rowHeight = 48;
+    const gap = 8;
+    const itemTotalHeight = rowHeight + gap;
+    const containerHeight = 500;
+    let totalHeight = user_derived(() => get(items).length * itemTotalHeight - (get(items).length > 0 ? gap : 0));
+    let startIndex = user_derived(() => Math.max(0, Math.floor(get(scrollTop) / itemTotalHeight)));
+    let endIndex = user_derived(() => Math.min(get(items).length, Math.ceil((get(scrollTop) + containerHeight) / itemTotalHeight) + 1));
+    let visibleItems = user_derived(() => get(items).slice(get(startIndex), get(endIndex)).map((item, index2) => __spreadProps(__spreadValues({}, item), { top: (get(startIndex) + index2) * itemTotalHeight })));
+    function handleScroll(e) {
+      set(scrollTop, e.target.scrollTop, true);
+    }
+    let editingItem = state(null);
+    var fragment = root5();
+    var div = first_child(fragment);
+    var h1 = child(div);
+    var span = sibling(child(h1));
+    var text2 = child(span);
+    reset(span);
+    reset(h1);
+    var div_1 = sibling(h1, 4);
+    var div_2 = child(div_1);
+    each(div_2, 21, () => get(visibleItems), (item) => item.id, ($$anchor2, item) => {
+      var div_3 = root_12();
+      var div_4 = child(div_3);
+      var node = child(div_4);
+      {
+        var consequent = ($$anchor3) => {
+          var time = root_23();
+          var text_1 = child(time, true);
+          reset(time);
+          template_effect(
+            ($0, $1) => {
+              set_attribute2(time, "datetime", $0);
+              set_text(text_1, $1);
+            },
+            [
+              () => get(item).blockedAt.toISOString(),
+              () => get(item).blockedAt.toLocaleString()
+            ]
+          );
+          append($$anchor3, time);
+        };
+        if_block(node, ($$render) => {
+          if (get(item).rawBlockedAt)
+            $$render(consequent);
+        });
+      }
+      reset(div_4);
+      var div_5 = sibling(div_4, 2);
+      div_5.__click = () => {
+        set(editingItem, get(item), true);
+      };
+      var text_2 = child(div_5);
+      var div_6 = sibling(text_2);
+      var text_3 = child(div_6, true);
+      reset(div_6);
+      reset(div_5);
+      var div_7 = sibling(div_5, 2);
+      var a_1 = child(div_7);
+      var svg = child(a_1);
+      var path = child(svg);
+      reset(svg);
+      next(2);
+      reset(a_1);
+      var button = sibling(a_1, 2);
+      button.__click = () => {
+        blockedUsers_default.remove(get(item).id);
+      };
+      var svg_1 = child(button);
+      var path_1 = child(svg_1);
+      reset(svg_1);
+      next(2);
+      reset(button);
+      reset(div_7);
+      reset(div_3);
+      template_effect(() => {
+        var _a5, _b2, _c2;
+        set_style(div_3, `top: ${(_a5 = get(item).top) != null ? _a5 : ""}px;`);
+        set_text(text_2, `${(_b2 = get(item).name) != null ? _b2 : ""} `);
+        set_attribute2(div_6, "title", get(item).note);
+        set_text(text_3, get(item).note);
+        set_attribute2(a_1, "href", `https://space.bilibili.com/${(_c2 = get(item).id) != null ? _c2 : ""}`);
+        set_attribute2(path, "d", mdiOpenInNew);
+        set_attribute2(path_1, "d", mdiAccountCheckOutline);
+      });
+      append($$anchor2, div_3);
+    });
+    reset(div_2);
+    reset(div_1);
+    reset(div);
+    var node_1 = sibling(div, 2);
+    {
+      var consequent_1 = ($$anchor2) => {
+        {
+          let $0 = user_derived(() => `为 ${get(editingItem).name} 添加备注:`);
+          PromptDialog($$anchor2, {
+            title: "编辑备注",
+            get label() {
+              return get($0);
+            },
+            get value() {
+              return get(editingItem).note;
+            },
+            placeholder: "输入备注...",
+            actionText: "保存备注",
+            onClose: (v) => {
+              if (get(editingItem) && v != null) {
+                blockedUsers_default.update(get(editingItem).id, { note: v });
+              }
+              set(editingItem, null);
+            }
+          });
+        }
+      };
+      if_block(node_1, ($$render) => {
+        if (get(editingItem))
+          $$render(consequent_1);
+      });
+    }
+    template_effect(() => {
+      var _a5, _b2;
+      set_text(text2, `(${(_a5 = get(items).length) != null ? _a5 : ""})`);
+      set_style(div_2, `height: ${(_b2 = get(totalHeight)) != null ? _b2 : ""}px; width: 100%;`);
+    });
+    event("scroll", div_1, handleScroll);
+    append($$anchor, fragment);
+    pop();
+    $$cleanup();
+  }
+  delegate(["click"]);
 
   // src/bilibili.com/models/blockedLiveRooms.ts
   var blockedLiveRooms_default = new class {
@@ -6081,6 +11825,9 @@
       ));
       __publicField(this, "has", (id) => {
         return !!this.value.get()[id];
+      });
+      __publicField(this, "subscribe", (run3) => {
+        return this.value.subscribe(run3);
       });
       __publicField(this, "get", (id) => {
         const value = this.value.get()[id];
@@ -6125,888 +11872,300 @@
     }
   }();
 
-  // src/utils/obtainHTMLElementByDataKey.ts
-  function obtainHTMLElementByDataKey({
-    tag: tag2,
-    key: key2,
-    parentNode = document,
-    onDidCreate
-  }) {
-    const match = parentNode.querySelector(
-      `[data-${key2}]`
-    );
-    if (match) {
-      return match;
-    }
-    const el = document.createElement(tag2);
-    el.setAttribute(`data-${key2}`, "");
-    onDidCreate == null ? void 0 : onDidCreate(el);
-    return el;
-  }
-
-  // src/bilibili.com/style.css
-  var style_default = '/* \n用户脚本样式\nhttps://github.com/NateScarlet/user-scripts/blob/master/src/bilibili.com/\n*/\n\n*, ::before, ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}\n\n::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}\n\n/* \n! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com\n*/\n\n/*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/\n\n*,\n::before,\n::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}\n\n::before,\n::after {\n  --tw-content: \'\';\n}\n\n/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user\'s configured `sans` font-family by default.\n5. Use the user\'s configured `sans` font-feature-settings by default.\n6. Use the user\'s configured `sans` font-variation-settings by default.\n7. Disable tap highlights on iOS\n*/\n\nhtml,\n:host {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */\n  font-feature-settings: normal; /* 5 */\n  font-variation-settings: normal; /* 6 */\n  -webkit-tap-highlight-color: transparent; /* 7 */\n}\n\n/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/\n\nbody {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}\n\n/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/\n\nhr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}\n\n/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/\n\nabbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}\n\n/*\nRemove the default font size and weight for headings.\n*/\n\nh1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n  font-size: inherit;\n  font-weight: inherit;\n}\n\n/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/\n\na {\n  color: inherit;\n  text-decoration: inherit;\n}\n\n/*\nAdd the correct font weight in Edge and Safari.\n*/\n\nb,\nstrong {\n  font-weight: bolder;\n}\n\n/*\n1. Use the user\'s configured `mono` font-family by default.\n2. Use the user\'s configured `mono` font-feature-settings by default.\n3. Use the user\'s configured `mono` font-variation-settings by default.\n4. Correct the odd `em` font sizing in all browsers.\n*/\n\ncode,\nkbd,\nsamp,\npre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */\n  font-feature-settings: normal; /* 2 */\n  font-variation-settings: normal; /* 3 */\n  font-size: 1em; /* 4 */\n}\n\n/*\nAdd the correct font size in all browsers.\n*/\n\nsmall {\n  font-size: 80%;\n}\n\n/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\nsup {\n  top: -0.5em;\n}\n\n/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/\n\ntable {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}\n\n/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit; /* 1 */\n  font-feature-settings: inherit; /* 1 */\n  font-variation-settings: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  letter-spacing: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}\n\n/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/\n\nbutton,\nselect {\n  text-transform: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/\n\nbutton,\ninput:where([type=\'button\']),\ninput:where([type=\'reset\']),\ninput:where([type=\'submit\']) {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}\n\n/*\nUse the modern Firefox focus style for all focusable elements.\n*/\n\n:-moz-focusring {\n  outline: auto;\n}\n\n/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/\n\n:-moz-ui-invalid {\n  box-shadow: none;\n}\n\n/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/\n\nprogress {\n  vertical-align: baseline;\n}\n\n/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/\n\n::-webkit-inner-spin-button,\n::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/\n\n[type=\'search\'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/\n\n::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/*\nAdd the correct display in Chrome and Safari.\n*/\n\nsummary {\n  display: list-item;\n}\n\n/*\nRemoves the default spacing and border for appropriate elements.\n*/\n\nblockquote,\ndl,\ndd,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\nhr,\nfigure,\np,\npre {\n  margin: 0;\n}\n\nfieldset {\n  margin: 0;\n  padding: 0;\n}\n\nlegend {\n  padding: 0;\n}\n\nol,\nul,\nmenu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n/*\nReset default styling for dialogs.\n*/\n\ndialog {\n  padding: 0;\n}\n\n/*\nPrevent resizing textareas horizontally by default.\n*/\n\ntextarea {\n  resize: vertical;\n}\n\n/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user\'s configured gray 400 color.\n*/\n\ninput::-moz-placeholder, textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\ninput::placeholder,\ntextarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n/*\nSet the default cursor for buttons.\n*/\n\nbutton,\n[role="button"] {\n  cursor: pointer;\n}\n\n/*\nMake sure disabled buttons don\'t get the pointer cursor.\n*/\n\n:disabled {\n  cursor: default;\n}\n\n/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/\n\nimg,\nsvg,\nvideo,\ncanvas,\naudio,\niframe,\nembed,\nobject {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}\n\n/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/\n\nimg,\nvideo {\n  max-width: 100%;\n  height: auto;\n}\n\n/* Make elements with the HTML hidden attribute stay hidden by default */\n\n[hidden]:where(:not([hidden="until-found"])) {\n  display: none;\n}\n\n* {\n  font-size: 16px;\n  line-height: 24px;\n}\n\n.static {\n  position: static;\n}\n\n.fixed {\n  position: fixed;\n}\n\n.absolute {\n  position: absolute;\n}\n\n.relative {\n  position: relative;\n}\n\n.inset-0 {\n  inset: 0px;\n}\n\n.inset-y-0 {\n  top: 0px;\n  bottom: 0px;\n}\n\n.left-0 {\n  left: 0px;\n}\n\n.left-2 {\n  left: 0.5rem;\n}\n\n.right-0 {\n  right: 0px;\n}\n\n.top-2 {\n  top: 0.5rem;\n}\n\n.isolate {\n  isolation: isolate;\n}\n\n.z-20 {\n  z-index: 20;\n}\n\n.m-1 {\n  margin: 0.25rem;\n}\n\n.my-1 {\n  margin-top: 0.25rem;\n  margin-bottom: 0.25rem;\n}\n\n.mb-1 {\n  margin-bottom: 0.25rem;\n}\n\n.mr-1 {\n  margin-right: 0.25rem;\n}\n\n.block {\n  display: block;\n}\n\n.inline {\n  display: inline;\n}\n\n.flex {\n  display: flex;\n}\n\n.inline-flex {\n  display: inline-flex;\n}\n\n.\\!hidden {\n  display: none !important;\n}\n\n.hidden {\n  display: none;\n}\n\n.h-10 {\n  height: 2.5rem;\n}\n\n.h-12 {\n  height: 3rem;\n}\n\n.h-6 {\n  height: 1.5rem;\n}\n\n.h-7 {\n  height: 1.75rem;\n}\n\n.h-8 {\n  height: 2rem;\n}\n\n.h-\\[1\\.25em\\] {\n  height: 1.25em;\n}\n\n.max-h-\\[50vh\\] {\n  max-height: 50vh;\n}\n\n.w-32 {\n  width: 8rem;\n}\n\n.w-48 {\n  width: 12rem;\n}\n\n.w-6 {\n  width: 1.5rem;\n}\n\n.w-64 {\n  width: 16rem;\n}\n\n.w-full {\n  width: 100%;\n}\n\n.w-screen {\n  width: 100vw;\n}\n\n.max-w-4xl {\n  max-width: 56rem;\n}\n\n.max-w-lg {\n  max-width: 32rem;\n}\n\n.flex-1 {\n  flex: 1 1 0%;\n}\n\n.flex-auto {\n  flex: 1 1 auto;\n}\n\n.flex-none {\n  flex: none;\n}\n\n.translate-x-full {\n  --tw-translate-x: 100%;\n  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));\n}\n\n.translate-y-10 {\n  --tw-translate-y: 2.5rem;\n  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));\n}\n\n.transform {\n  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));\n}\n\n.cursor-pointer {\n  cursor: pointer;\n}\n\n.cursor-zoom-out {\n  cursor: zoom-out;\n}\n\n.flex-col {\n  flex-direction: column;\n}\n\n.flex-wrap {\n  flex-wrap: wrap;\n}\n\n.items-center {\n  align-items: center;\n}\n\n.justify-end {\n  justify-content: flex-end;\n}\n\n.justify-center {\n  justify-content: center;\n}\n\n.justify-between {\n  justify-content: space-between;\n}\n\n.gap-2 {\n  gap: 0.5rem;\n}\n\n.space-x-2 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-x-reverse: 0;\n  margin-right: calc(0.5rem * var(--tw-space-x-reverse));\n  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));\n}\n\n.space-y-1 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));\n}\n\n.self-end {\n  align-self: flex-end;\n}\n\n.overflow-auto {\n  overflow: auto;\n}\n\n.overflow-hidden {\n  overflow: hidden;\n}\n\n.truncate {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.rounded {\n  border-radius: 0.25rem;\n}\n\n.rounded-full {\n  border-radius: 9999px;\n}\n\n.rounded-lg {\n  border-radius: 0.5rem;\n}\n\n.rounded-md {\n  border-radius: 0.375rem;\n}\n\n.border {\n  border-width: 1px;\n}\n\n.border-b {\n  border-bottom-width: 1px;\n}\n\n.border-t {\n  border-top-width: 1px;\n}\n\n.border-none {\n  border-style: none;\n}\n\n.border-gray-300 {\n  --tw-border-opacity: 1;\n  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));\n}\n\n.bg-\\[rgba\\(33\\2c 33\\2c 33\\2c \\.8\\)\\] {\n  background-color: rgba(33,33,33,.8);\n}\n\n.bg-black\\/25 {\n  background-color: rgb(0 0 0 / 0.25);\n}\n\n.bg-blue-600 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-100 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-200 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-300 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(209 213 219 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-50 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));\n}\n\n.bg-white {\n  --tw-bg-opacity: 1;\n  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));\n}\n\n.bg-white\\/25 {\n  background-color: rgb(255 255 255 / 0.25);\n}\n\n.fill-current {\n  fill: currentColor;\n}\n\n.p-1 {\n  padding: 0.25rem;\n}\n\n.p-2 {\n  padding: 0.5rem;\n}\n\n.p-4 {\n  padding: 1rem;\n}\n\n.px-1 {\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n\n.px-2 {\n  padding-left: 0.5rem;\n  padding-right: 0.5rem;\n}\n\n.px-4 {\n  padding-left: 1rem;\n  padding-right: 1rem;\n}\n\n.py-1 {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n}\n\n.py-2 {\n  padding-top: 0.5rem;\n  padding-bottom: 0.5rem;\n}\n\n.py-3 {\n  padding-top: 0.75rem;\n  padding-bottom: 0.75rem;\n}\n\n.pr-2 {\n  padding-right: 0.5rem;\n}\n\n.text-center {\n  text-align: center;\n}\n\n.text-right {\n  text-align: right;\n}\n\n.align-top {\n  vertical-align: top;\n}\n\n.text-lg {\n  font-size: 20px;\n  line-height: 28px;\n}\n\n.text-sm {\n  font-size: 14px;\n  line-height: 20px;\n}\n\n.text-xs {\n  font-size: 12px;\n  line-height: 14px;\n}\n\n.font-bold {\n  font-weight: 700;\n}\n\n.font-medium {\n  font-weight: 500;\n}\n\n.text-black {\n  --tw-text-opacity: 1;\n  color: rgb(0 0 0 / var(--tw-text-opacity, 1));\n}\n\n.text-blue-500 {\n  --tw-text-opacity: 1;\n  color: rgb(59 130 246 / var(--tw-text-opacity, 1));\n}\n\n.text-gray-500 {\n  --tw-text-opacity: 1;\n  color: rgb(107 114 128 / var(--tw-text-opacity, 1));\n}\n\n.text-white {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity, 1));\n}\n\n.underline {\n  text-decoration-line: underline;\n}\n\n.opacity-0 {\n  opacity: 0;\n}\n\n.opacity-100 {\n  opacity: 1;\n}\n\n.shadow-sm {\n  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);\n  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n\n.shadow-xl {\n  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);\n  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n\n.filter {\n  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);\n}\n\n.backdrop-blur {\n  --tw-backdrop-blur: blur(8px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n.backdrop-blur-sm {\n  --tw-backdrop-blur: blur(4px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n.transition {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.transition-colors {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.transition-opacity {\n  transition-property: opacity;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.transition-transform {\n  transition-property: transform;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.duration-200 {\n  transition-duration: 200ms;\n}\n\n.duration-300 {\n  transition-duration: 300ms;\n}\n\n.ease-in-out {\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n.hover\\:bg-blue-700:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:bg-gray-100:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:bg-gray-200:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:underline:hover {\n  text-decoration-line: underline;\n}\n\n.focus\\:border-blue-500:focus {\n  --tw-border-opacity: 1;\n  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));\n}\n\n.focus\\:outline-none:focus {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n}\n\n.focus\\:ring-2:focus {\n  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);\n  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);\n  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);\n}\n\n.focus\\:ring-blue-500:focus {\n  --tw-ring-opacity: 1;\n  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));\n}\n\n.group:hover .group-hover\\:opacity-100 {\n  opacity: 1;\n}\n\n@media (min-width: 1024px) {\n\n  .lg\\:hidden {\n    display: none;\n  }\n}\n\n.dark\\:border-gray-500:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-border-opacity: 1;\n  border-color: rgb(107 114 128 / var(--tw-border-opacity, 1));\n}\n\n.dark\\:bg-black:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-black\\/25:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(0 0 0 / 0.25);\n}\n\n.dark\\:bg-gray-700:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-800:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-900:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-white\\/25:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(255 255 255 / 0.25);\n}\n\n.dark\\:text-gray-200:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(229 231 235 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-gray-400:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(156 163 175 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-white:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:hover\\:bg-gray-800:hover:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));\n}\n';
-
-  // src/bilibili.com/utils/obtainStyledShadowRoot.ts
-  var key = "36fff111-0148-4cc1-869b-06dfdfc36861";
-  var map = /* @__PURE__ */ new WeakMap();
-  function obtainStyledShadowRoot(el) {
-    var _a5, _b2;
-    const root = (_b2 = (_a5 = map.get(el)) != null ? _a5 : el.shadowRoot) != null ? _b2 : el.attachShadow({ mode: "closed" });
-    map.set(el, root);
-    obtainHTMLElementByDataKey({
-      tag: "style",
-      key,
-      parentNode: root,
-      onDidCreate: (el2) => {
-        el2.innerHTML = style_default;
-        root.prepend(el2);
-      }
-    });
-    return root;
-  }
-
-  // src/bilibili.com/utils/getCurrentTheme.ts
-  var cache;
-  function compute() {
-    const match = getComputedStyle(document.body).backgroundColor.match(
-      /^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*[\d.]+)?\s*\)$/
-    );
-    if (match) {
-      const luminance = (0.299 * Number.parseInt(match[1], 10) + 0.587 * Number.parseInt(match[2], 10) + 0.114 * Number.parseInt(match[3], 10)) / 255;
-      return luminance > 0.5 ? "light" : "dark";
-    }
-    return "light";
-  }
-  function getCurrentTheme() {
-    var _a5;
-    const now = (_a5 = performance == null ? void 0 : performance.now()) != null ? _a5 : Date.now();
-    if (!cache || now >= cache.notAfter) {
-      cache = { value: compute(), notAfter: now + 1e3 };
-    }
-    return cache.value;
-  }
-
-  // src/bilibili.com/components/PromptDialog.ts
-  var PromptDialog = class {
-    constructor(options, onDidClose) {
-      this.options = options;
-      this.onDidClose = onDidClose;
-      __publicField(this, "isOpen", false);
-      __publicField(this, "active", false);
-      __publicField(this, "container");
-      __publicField(this, "shadowRoot");
-      __publicField(this, "id", `prompt-${randomUUID()}`);
-      __publicField(this, "value");
-      this.value = options.value || "";
-    }
-    dispose() {
-      var _a5;
-      (_a5 = this.container) == null ? void 0 : _a5.remove();
-    }
-    open() {
-      if (this.isOpen) {
-        return;
-      }
-      this.container = obtainHTMLElementByID({
-        tag: "div",
-        id: this.id,
-        onDidCreate: (el) => {
-          el.role = "dialog";
-          el.style.position = "fixed";
-          el.style.zIndex = "10000";
-          document.body.appendChild(el);
-        }
-      });
-      this.shadowRoot = obtainStyledShadowRoot(this.container);
-      this.active = true;
-      this.render();
-      setTimeout(() => {
-        this.isOpen = true;
-        this.render();
-        if (this.shadowRoot) {
-          const input = this.shadowRoot.getElementById("dialog-input");
-          if (input instanceof HTMLInputElement) {
-            input.select();
-            input.scrollIntoView({ behavior: "smooth", block: "nearest" });
-          }
-        }
-      }, 20);
-    }
-    close(result) {
-      if (!this.isOpen) {
-        return;
-      }
-      this.isOpen = false;
-      this.render();
-      setTimeout(() => {
-        if (!this.isOpen) {
-          this.dispose();
-        }
-      }, 1e3);
-      this.onDidClose(result);
-    }
-    render() {
-      if (this.shadowRoot) {
-        render(this.active ? this.dialog() : nothing, this.shadowRoot);
-      }
-    }
-    dialog() {
-      const {
-        title = "编辑",
-        label = "",
-        placeholder = "",
-        actionText = "保存"
-      } = this.options;
-      return html`
-      <div
-        data-theme="${getCurrentTheme()}"
-        class="
-          fixed inset-0 
-          bg-black/25 dark:bg-white/25 backdrop-blur-sm
-          flex items-center justify-center p-4
-          transition-opacity duration-300 ease-in-out
-          ${this.isOpen ? "opacity-100" : "opacity-0"}
-        "
-        @click=${(e) => {
-        if (e.target === e.currentTarget)
-          this.close(null);
-      }}
-        @transitionend=${(e) => {
-        if (e.propertyName === "opacity" && !this.isOpen) {
-          if (!this.isOpen) {
-            this.active = false;
-            this.render();
-          }
-        }
-      }}
-      >
-      <div 
-        data-theme="${getCurrentTheme()}"
-        class="
-          bg-white text-black dark:bg-black dark:text-white rounded-lg shadow-xl w-full max-w-lg
-          transform transition-transform duration-300 ease-in-out
-          ${this.isOpen ? "" : "translate-y-10"}
-        "
-        @click=${(e) => e.stopPropagation()}
-        @transitionend=${(e) => {
-        if (e.propertyName === "transform" && !this.isOpen) {
-          this.close(null);
-        }
-      }}
-      >
-        <form
-          @submit=${(e) => {
-        e.preventDefault();
-        return this.close(this.value);
-      }}
-        >
-          <div class="border-b px-4 py-3 flex justify-between items-center">
-            <h3 class="text-lg font-medium">${title}</h3>
-            <button 
-              type="button"
-              class="p-1 rounded-full hover:bg-gray-100 dark:hover:gray-900 transition-colors"
-              @click=${() => this.close(null)}
-            >
-              <svg 
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-              >
-                <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiClose} fill="currentColor">
-              </svg>
-            </button>
-          </div>
-          <div class="p-4">
-            ${label ? html`<label
-                    for="dialog-input"
-                    class="block text-sm font-medium mb-1"
-                  >
-                    ${label}
-                  </label>` : nothing}
-            <input
-              id="dialog-input"
-              class="
-                w-full p-2 border border-gray-300 dark:bg-gray-800 dark:text-white dark:border-gray-500 rounded-md
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                focus:outline-none shadow-sm
-              "
-              type="text"
-              .value="${this.value}"
-              placeholder="${placeholder}"
-              @input="${(e) => {
-        this.value = e.target.value;
-      }}"
-              autofocus
-            />
-          </div>
-          <div class="border-t px-4 py-3 flex justify-end gap-2">
-            <button
-              type="button"
-              class="
-                px-4 py-2 rounded-md text-sm font-medium
-                bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors
-              "
-              @click=${() => this.close(null)}
-            >
-              取消
-            </button>
-            <button
-              type="submit"
-              class="
-                px-4 py-2 rounded-md text-sm font-medium text-white 
-                bg-blue-600 hover:bg-blue-700 transition-colors
-              "
-            >
-              ${actionText}
-            </button>
-          </div>
-        </form>
-      </div>
-    `;
-    }
-  };
-
-  // src/bilibili.com/utils/showPromptDialog.ts
-  function showPromptDialog() {
-    return __async(this, arguments, function* (options = {}) {
-      return yield new Promise((resolve) => {
-        const dialog = new PromptDialog(options, resolve);
-        dialog.open();
-      });
-    });
-  }
-
-  // src/bilibili.com/components/SettingsDrawer.ts
-  var _SettingsDrawer = class _SettingsDrawer {
-    constructor() {
-      __publicField(this, "isOpen", false);
-      __publicField(this, "active", false);
-      __publicField(this, "userTableScrollTop", 0);
-      __publicField(this, "liveRoomTableScrollTop", 0);
-      __publicField(this, "dataVersion", 0);
-      __publicField(this, "userListCache");
-      __publicField(this, "liveRoomListCache");
-      __publicField(this, "open", () => {
-        this.active = true;
-        this.dataVersion += 1;
-        this.render();
-        setTimeout(() => {
-          this.isOpen = true;
-          this.render();
-        }, 20);
-      });
-      __publicField(this, "close", () => {
-        this.isOpen = false;
-        this.render();
-      });
-      __publicField(this, "excludedKeywordsBuffer");
-      __publicField(this, "onExcludeKeywordInput", (e) => {
-        const el = e.target;
-        this.excludedKeywords = el.value;
-        growTextAreaHeight(el);
-      });
-      __publicField(this, "blockedUserPatternsBuffer");
-      __publicField(this, "onBlockedUserPatternInput", (e) => {
-        const el = e.target;
-        this.blockedUserPatterns = el.value;
-        growTextAreaHeight(el);
-      });
-      __publicField(this, "onVideListDurationGteChange", debounce((e) => {
-        const el = e.target;
-        videoListSettings_default.durationGte = el.value;
-        el.value = videoListSettings_default.durationGte.toTimeCode();
-      }, 5e3));
-      __publicField(this, "onVideListDurationLtChange", debounce((e) => {
-        const el = e.target;
-        videoListSettings_default.durationLt = el.value;
-        el.value = videoListSettings_default.durationLt.toTimeCode();
-      }, 5e3));
-      __publicField(this, "onUserTableScroll", (e) => {
-        const el = e.target;
-        this.userTableScrollTop = el.scrollTop;
-        this.render();
-      });
-      __publicField(this, "onLiveRoomTableScroll", (e) => {
-        const el = e.target;
-        this.liveRoomTableScrollTop = el.scrollTop;
-        this.render();
-      });
-      __publicField(this, "render", () => {
-        render(
-          this.html(),
-          obtainStyledShadowRoot(
-            obtainHTMLElementByID({
-              tag: "div",
-              id: _SettingsDrawer.id,
-              onDidCreate: (el) => {
-                el.style.position = "fixed";
-                el.style.zIndex = "9999";
-                document.body.append(el);
-              }
-            })
-          )
-        );
-      });
-    }
-    html() {
-      if (!this.active) {
-        return nothing;
-      }
-      return html`
-    <div
-      data-theme="${getCurrentTheme()}"
-      class="
-        fixed inset-0 
-        bg-white/25 dark:bg-black/25  backdrop-blur
-        cursor-zoom-out transition duration-200 ease-in-out
-        ${this.isOpen ? "opacity-100" : "opacity-0"}
-      "
-      @click=${() => this.close()}
-    >
-    </div>
-    <div
-      data-theme="${getCurrentTheme()}"
-      class="
-        fixed inset-y-0 right-0 w-screen max-w-4xl
-        bg-white text-black dark:bg-black dark:text-white overflow-auto p-2 space-y-1
-        transition-transform
-        ${this.isOpen ? "" : "translate-x-full"}
-      "
-      @transitionend=${() => {
-        if (!this.isOpen) {
-          this.active = false;
-          this.render();
-        }
-      }}
-    >
-      <button 
-        type="button" 
-        class="lg:hidden self-end flex items-center"
-        @click=${() => this.close()}
-      >
-        <svg 
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-[1.25em] align-top"
-        >
-          <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiClose} fill="currentColor">
-        </svg>
-        <span>关闭</span>
-      </button>
-     ${this.homePageSettings()}
-     ${this.searchSettings()}
-     ${this.videoListSettings()}
-     ${this.blockedUserPatternsSettings()}
-     ${this.userTable()}
-     ${this.liveRoomTable()}
-    </div>`;
-    }
-    homePageSettings() {
-      return html`
-      <section>
-        <h1 class="text-sm text-gray-500 dark:text-gray-200">主页</h1>
-        <div class="px-1">
-          <label>
-            <input
-              type="checkbox"
-              .checked="${homePageSettings_default.allowAdblockTips}"
-              @change="${(e) => {
-        const el = e.target;
-        homePageSettings_default.allowAdblockTips = el.checked;
-      }}"
-            />
-            <span>允许</span>
-            <span class="text-sm rounded" 
-              style="
-                color: #e58900;
-                background-color: #fff0e3;
-              "
-            >检测到您的页面...</span>
-            <span>提示</span>
-          </label>
-          <section>
-            <h2 class="text-gray-500 dark:text-gray-200 text-sm">楼层推广卡片</h2>
-            <div class="px-1">
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    ?checked="${homePageSettings_default.floorCard.excludeAll}"
-                    @change="${(e) => {
-        const el = e.target;
-        homePageSettings_default.floorCard.excludeAll = el.checked;
-      }}"
-                  />
-                  <span>屏蔽所有</span>
-                </label>
-              </div>
-              ${(() => {
-        if (homePageSettings_default.floorCard.excludeAll) {
-          return nothing;
-        }
-        if (homePageSettings_default.floorCard.excludeByChannel.length === 0) {
-          return html`<div
-                    class="text-gray-500 dark:text-gray-200 text-sm"
-                  >
-                    可通过指针悬停在卡片上时左上角显示的按钮来屏蔽单个频道的推广
-                  </div>`;
-        }
-        return html`
-                <div>
-                  <h2 class="flex-none text-sm text-gray-500 dark:text-gray-200">
-                    已屏蔽频道 <span class="text-sm">(${homePageSettings_default.floorCard.excludeByChannel.length})</span>
-                  </h1>
-                  <ol class="flex flex-wrap gap-2 items-center">
-                    ${homePageSettings_default.floorCard.excludeByChannel.map(
-          (channel) => {
-            return html`
-                      <li class="bg-gray-300 dark:bg-gray-700 rounded px-1 flex items-center">
-                        <span>${channel}</span>
-                        <button
-                          type="button"
-                          @click=${() => {
-              homePageSettings_default.floorCard.excludeByChannel = homePageSettings_default.floorCard.excludeByChannel.filter(
-                (i) => i !== channel
-              );
-            }}
-                        >
-                          <svg 
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-[1.25em]"
-                          >
-                            <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiClose} fill="currentColor">
-                          </svg>
-                        </button>
-                      </li>`;
-          }
-        )}
-                  </ol>
-                </div>
-              `;
-      })()}
-            </section>
-          </div>
-        </div>
-      </section>
-    `;
-    }
-    get excludedKeywords() {
-      var _a5;
-      return (_a5 = this.excludedKeywordsBuffer) != null ? _a5 : videoListSettings_default.excludeKeywords.join("\n");
-    }
-    set excludedKeywords(v) {
-      this.excludedKeywordsBuffer = v;
-      videoListSettings_default.excludeKeywords = v.split("\n");
-    }
-    videoListSettings() {
-      return html`
-      <section>
-        <h1 class="text-sm text-gray-500 dark:text-gray-200">视频列表</h1>
-        <div class="px-1">
-          <label>
-            <input
-              type="checkbox"
-              ?checked="${videoListSettings_default.allowAdvertisement}"
-              @change="${(e) => {
-        const el = e.target;
-        videoListSettings_default.allowAdvertisement = el.checked;
-      }}"
-            />
-            <span>允许广告（非视频）</span>
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              ?checked="${videoListSettings_default.allowPromoted}"
-              @change="${(e) => {
-        const el = e.target;
-        videoListSettings_default.allowPromoted = el.checked;
-      }}"
-            />
-            <span>允许推广</span>
-          </label>
-          <label class="flex items-center">
-            <span class="flex-none w-32">最短（含）</span>
-            <input
-              class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
-              type="text"
-              placeholder="HH:MM:SS"
-              value="${videoListSettings_default.durationGte.toTimeCode()}"
-              @input="${this.onVideListDurationGteChange}"
-              @keydown="${(e) => e.stopPropagation()}"
-              @blur="${() => {
-        this.onVideListDurationGteChange.flush();
-      }}"
-              @keyup="${(e) => {
-        if (e.key === "Enter") {
-          this.onVideListDurationGteChange(e);
-          this.onVideListDurationGteChange.flush();
-        }
-      }}"
-            />
-          </label>
-          <label class="flex items-center">
-            <span class="flex-none w-32">最长（不含）</span>
-            <input
-              class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
-              type="text"
-              placeholder="HH:MM:SS"
-              value="${videoListSettings_default.durationLt.toTimeCode()}"
-              @input="${this.onVideListDurationLtChange}"
-              @keydown="${(e) => e.stopPropagation()}"
-              @blur="${() => {
-        this.onVideListDurationLtChange.flush();
-      }}"
-              @keyup="${(e) => {
-        if (e.key === "Enter") {
-          this.onVideListDurationLtChange(e);
-          this.onVideListDurationLtChange.flush();
-        }
-      }}"
-            />
-          </label>
-          <label class="flex items-center">
-            <div class="flex-none w-32">排除关键词</div>
-            <div class="flex-auto">
-              <textarea
-                class="w-full border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
-                placeholder=""
-                .value="${this.excludedKeywords}"
-                @input="${this.onExcludeKeywordInput}"
-                @keydown="${(e) => e.stopPropagation()}"
-                @focus="${(e) => growTextAreaHeight(e.target)}"
-                @blur=${() => {
-        this.excludedKeywordsBuffer = void 0;
-      }}
-              ></textarea>
-              <div class="text-gray-500 dark:text-gray-200 text-sm">
-                不显示标题含关键词的视频。每行一个，不区分大小写。
-              </div>
-            </div>
-          </label>
-        </div>
-      </section>
-    `;
-    }
-    searchSettings() {
-      return html`
-      <section>
-        <h1 class="text-sm text-gray-500 dark:text-gray-200">搜索</h1>
-        <div class="px-1">
-          <label>
-            <input
-              type="checkbox"
-              ?checked="${searchSettings_default.strictTitleMatch}"
-              @change="${(e) => {
-        const el = e.target;
-        searchSettings_default.strictTitleMatch = el.checked;
-      }}"
-            />
-            <span>严格标题匹配</span>
-          </label>
-          <div class="text-gray-500 dark:text-gray-200 text-sm">
-            标题必须包含所有关键词，屏蔽联想词和标签匹配
-          </div>
-        </div>
-        <div class="px-1">
-          <label>
-            <input
-              type="checkbox"
-              ?checked="${searchSettings_default.disableNavSuggestion}"
-              @change="${(e) => {
-        const el = e.target;
-        searchSettings_default.disableNavSuggestion = el.checked;
-      }}"
-            />
-            <span>禁用导航栏搜索建议</span>
-          </label>
-          <div class="text-gray-500 dark:text-gray-200 text-sm">
-            仅隐藏文本，不影响默认搜索行为
-          </div>
-        </div>
-      </section>
-    `;
-    }
-    get blockedUserPatterns() {
-      var _a5;
-      return (_a5 = this.blockedUserPatternsBuffer) != null ? _a5 : blockedUserPatterns_default.get().map((i) => i.pattern).join("\n");
-    }
-    set blockedUserPatterns(v) {
-      this.blockedUserPatternsBuffer = v;
-      blockedUserPatterns_default.set(
-        v.split("\n").map((i) => i.trim()).filter((i) => i)
-      );
-    }
-    blockedUserPatternsSettings() {
-      return html`
-      <section>
-        <h1 class="text-sm text-gray-500 dark:text-gray-200">
-          屏蔽名称匹配的用户
-        </h1>
-        <div class="px-1">
-          <textarea
-            class="w-full border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500"
-            placeholder=""
-            .value="${this.blockedUserPatterns}"
-            @input="${this.onBlockedUserPatternInput}"
-            @keydown="${(e) => e.stopPropagation()}"
-            @focus="${(e) => growTextAreaHeight(e.target)}"
-            @blur=${() => {
-        this.blockedUserPatternsBuffer = void 0;
-      }}
-          ></textarea>
-          <div class="text-gray-500 dark:text-gray-200 text-sm">
-            每行一个，支持正则。
-          </div>
-        </div>
-      </section>
-    `;
-    }
-    getSortedBlockedUsers() {
-      if (this.userListCache && this.userListCache.version === this.dataVersion) {
-        return this.userListCache.data;
-      }
-      const data = blockedUsers_default.distinctID().map(blockedUsers_default.get).filter(isNonNull).sort((a, b) => {
-        const dateCompare = compare(a.blockedAt, b.blockedAt);
-        if (dateCompare !== 0) {
-          return -dateCompare;
-        }
-        return compare(a.idAsNumber, b.idAsNumber);
-      });
-      this.userListCache = { version: this.dataVersion, data };
-      return data;
-    }
-    userTable() {
-      const items = this.getSortedBlockedUsers();
-      const rowHeight = 48;
-      const gap = 8;
-      const itemTotalHeight = rowHeight + gap;
-      const totalHeight = items.length * itemTotalHeight - (items.length > 0 ? gap : 0);
-      const containerHeight = 500;
-      const scrollTop = this.userTableScrollTop;
-      const startIndex = Math.max(0, Math.floor(scrollTop / itemTotalHeight));
-      const endIndex = Math.min(
-        items.length,
-        Math.ceil((scrollTop + containerHeight) / itemTotalHeight) + 1
-      );
-      const visibleItems = items.slice(startIndex, endIndex);
-      return html`
-      <div class="flex flex-col overflow-hidden max-h-[50vh]">
-        <h1 class="flex-none text-sm text-gray-500 dark:text-gray-200 mb-1">
-          已屏蔽用户 <span class="text-sm">(${items.length})</span>
-        </h1>
-
-        <!-- Header -->
-        <div
-          class="flex-none flex items-center bg-gray-200 dark:bg-gray-800 text-center font-bold h-10 pr-2"
-        >
-          <div class="w-48 flex-none">屏蔽时间</div>
-          <div class="flex-auto">名称</div>
-          <div class="w-64 flex-none"></div>
-        </div>
-
-        <div
-          class="flex-1 overflow-auto relative"
-          @scroll=${this.onUserTableScroll}
-        >
-          <div style="height: ${totalHeight}px; width: 100%;">
-            ${visibleItems.map((item, index) => {
-        const actualIndex = startIndex + index;
-        const top = actualIndex * itemTotalHeight;
-        const { id, name, note, blockedAt, rawBlockedAt } = item;
-        return html`
-                <div 
-                  class="absolute left-0 right-0 h-12 flex items-center bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition group"
-                  style="top: ${top}px;"
-                >
-                   <div class="w-48 flex-none text-right px-2 text-sm">
-                        ${rawBlockedAt ? html` <time datetime="${blockedAt.toISOString()}">
-                                ${blockedAt.toLocaleString()}
-                              </time>` : nothing}
-                   </div>
-                   <div 
-                      class="flex-auto text-center hover:underline cursor-pointer px-2 truncate"
-                      @click=${() => __async(this, null, function* () {
-          const v = yield showPromptDialog({
-            title: `编辑备注`,
-            label: `为 ${name} 添加备注:`,
-            value: note,
-            placeholder: "输入备注...",
-            actionText: "保存备注"
-          });
-          if (v != null) {
-            blockedUsers_default.update(id, {
-              note: v
-            });
-            this.dataVersion += 1;
-            this.render();
-          }
-        })}
-                   >
-                        ${name}
-                        <div class="text-xs text-gray-500 truncate" title="${note}">${note}</div>
-                   </div>
-                   <div class="w-64 flex-none flex justify-center items-center space-x-2 opacity-0 group-hover:opacity-100 transition">
-                          <a
-                            href="https://space.bilibili.com/${id}"
-                            target="_blank"
-                            class="inline-flex items-center underline text-blue-500 text-sm"
-                          >
-                            <svg 
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="h-[1.25em] mr-1"
-                            >
-                              <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiOpenInNew} fill="currentColor">
-                            </svg>
-                            <span>个人空间</span>
-                          </a>
-                          <button
-                            type="button"
-                            @click=${() => {
-          blockedUsers_default.remove(id);
-          this.dataVersion += 1;
-          this.render();
-        }}
-                            class="inline-flex items-center underline text-sm"
-                          >
-                            <svg 
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="h-[1.25em] mr-1"
-                            >
-                              <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiAccountCheckOutline} fill="currentColor">
-                            </svg>
-                            <span>取消屏蔽</span>
-                          </button>
-                   </div>
-                </div>
-              `;
-      })}
-          </div>
-        </div>
-      </div>
-    `;
-    }
-    getSortedBlockedLiveRooms() {
-      if (this.liveRoomListCache && this.liveRoomListCache.version === this.dataVersion) {
-        return this.liveRoomListCache.data;
-      }
-      const data = blockedLiveRooms_default.distinctID().map(blockedLiveRooms_default.get).sort((a, b) => {
+  // src/bilibili.com/components/SettingsDrawer/LiveRoomTable.svelte
+  var root_13 = from_html(`<div class="absolute left-0 right-0 h-12 flex items-center bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition group"><div class="w-48 flex-none text-right px-2 text-sm"><time> </time></div> <div class="flex-auto text-center truncate px-2"> </div> <div class="w-32 flex-none flex justify-center items-center space-x-2 opacity-0 group-hover:opacity-100 transition"><a target="_blank" class="inline-flex items-center underline text-blue-500 text-sm"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>前往</span></a> <button type="button" class="inline-flex items-center underline text-sm"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>取消屏蔽</span></button></div></div>`);
+  var root6 = from_html(`<div class="flex flex-col overflow-hidden max-h-[50vh]"><h1 class="flex-none text-sm text-gray-500 dark:text-gray-200 mb-1">已屏蔽直播间 <span class="text-sm"> </span></h1> <div class="flex-none flex items-center bg-gray-200 dark:bg-gray-800 text-center font-bold h-10 pr-2"><div class="w-48 flex-none">屏蔽时间</div> <div class="flex-auto">所有者</div> <div class="w-32 flex-none"></div></div> <div class="flex-1 overflow-auto relative"><div></div></div></div>`);
+  function LiveRoomTable($$anchor, $$props) {
+    push($$props, true);
+    const $blockedLiveRooms = () => store_get(blockedLiveRooms_default, "$blockedLiveRooms", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    let items = user_derived(() => {
+      const _ = $blockedLiveRooms();
+      return blockedLiveRooms_default.distinctID().map(blockedLiveRooms_default.get).sort((a, b) => {
         const dateCompare = compare(a.blockedAt, b.blockedAt);
         if (dateCompare !== 0) {
           return -dateCompare;
         }
         return compare(a.id, b.id);
       });
-      this.liveRoomListCache = { version: this.dataVersion, data };
-      return data;
+    });
+    let scrollTop = state(0);
+    const rowHeight = 48;
+    const gap = 8;
+    const itemTotalHeight = rowHeight + gap;
+    const containerHeight = 500;
+    let totalHeight = user_derived(() => get(items).length * itemTotalHeight - (get(items).length > 0 ? gap : 0));
+    let startIndex = user_derived(() => Math.max(0, Math.floor(get(scrollTop) / itemTotalHeight)));
+    let endIndex = user_derived(() => Math.min(get(items).length, Math.ceil((get(scrollTop) + containerHeight) / itemTotalHeight) + 1));
+    let visibleItems = user_derived(() => get(items).slice(get(startIndex), get(endIndex)).map((item, index2) => __spreadProps(__spreadValues({}, item), { top: (get(startIndex) + index2) * itemTotalHeight })));
+    function handleScroll(e) {
+      set(scrollTop, e.target.scrollTop, true);
     }
-    liveRoomTable() {
-      const items = this.getSortedBlockedLiveRooms();
-      const rowHeight = 48;
-      const gap = 8;
-      const itemTotalHeight = rowHeight + gap;
-      const totalHeight = items.length * itemTotalHeight - (items.length > 0 ? gap : 0);
-      const containerHeight = 500;
-      const scrollTop = this.liveRoomTableScrollTop;
-      const startIndex = Math.max(0, Math.floor(scrollTop / itemTotalHeight));
-      const endIndex = Math.min(
-        items.length,
-        Math.ceil((scrollTop + containerHeight) / itemTotalHeight) + 1
+    var div = root6();
+    var h1 = child(div);
+    var span = sibling(child(h1));
+    var text2 = child(span);
+    reset(span);
+    reset(h1);
+    var div_1 = sibling(h1, 4);
+    var div_2 = child(div_1);
+    each(div_2, 21, () => get(visibleItems), (item) => item.id, ($$anchor2, item) => {
+      var div_3 = root_13();
+      var div_4 = child(div_3);
+      var time = child(div_4);
+      var text_1 = child(time, true);
+      reset(time);
+      reset(div_4);
+      var div_5 = sibling(div_4, 2);
+      var text_2 = child(div_5, true);
+      reset(div_5);
+      var div_6 = sibling(div_5, 2);
+      var a_1 = child(div_6);
+      var svg = child(a_1);
+      var path = child(svg);
+      reset(svg);
+      next(2);
+      reset(a_1);
+      var button = sibling(a_1, 2);
+      button.__click = () => {
+        blockedLiveRooms_default.remove(get(item).id);
+      };
+      var svg_1 = child(button);
+      var path_1 = child(svg_1);
+      reset(svg_1);
+      next(2);
+      reset(button);
+      reset(div_6);
+      reset(div_3);
+      template_effect(
+        ($0, $1) => {
+          var _a5, _b2;
+          set_style(div_3, `top: ${(_a5 = get(item).top) != null ? _a5 : ""}px;`);
+          set_attribute2(time, "datetime", $0);
+          set_text(text_1, $1);
+          set_text(text_2, get(item).owner);
+          set_attribute2(a_1, "href", `https://live.bilibili.com/${(_b2 = get(item).id) != null ? _b2 : ""}`);
+          set_attribute2(path, "d", mdiOpenInNew);
+          set_attribute2(path_1, "d", mdiCheck);
+        },
+        [
+          () => get(item).blockedAt.toISOString(),
+          () => get(item).blockedAt.toLocaleString()
+        ]
       );
-      const visibleItems = items.slice(startIndex, endIndex);
-      return html`
-      <div class="flex flex-col overflow-hidden max-h-[50vh]">
-        <h1 class="flex-none text-sm text-gray-500 dark:text-gray-200 mb-1">
-          已屏蔽直播间 <span class="text-sm">(${items.length})</span>
-        </h1>
+      append($$anchor2, div_3);
+    });
+    reset(div_2);
+    reset(div_1);
+    reset(div);
+    template_effect(() => {
+      var _a5, _b2;
+      set_text(text2, `(${(_a5 = get(items).length) != null ? _a5 : ""})`);
+      set_style(div_2, `height: ${(_b2 = get(totalHeight)) != null ? _b2 : ""}px; width: 100%;`);
+    });
+    event("scroll", div_1, handleScroll);
+    append($$anchor, div);
+    pop();
+    $$cleanup();
+  }
+  delegate(["click"]);
 
-        <!-- Header -->
-        <div
-          class="flex-none flex items-center bg-gray-200 dark:bg-gray-800 text-center font-bold h-10 pr-2"
-        >
-          <div class="w-48 flex-none">屏蔽时间</div>
-          <div class="flex-auto">所有者</div>
-          <div class="w-32 flex-none"></div>
-        </div>
+  // src/bilibili.com/components/SettingsDrawer/index.svelte
+  var root_14 = from_html(
+    `<div class="
+      fixed inset-0
+      bg-white/25 dark:bg-black/25 backdrop-blur
+      cursor-zoom-out
+    " role="button" tabindex="-1"></div> <div class="
+      fixed inset-y-0 right-0 w-screen max-w-4xl
+      bg-white text-black dark:bg-black dark:text-white overflow-auto p-2 space-y-1
+    "><button type="button" class="lg:hidden self-end flex items-center"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] align-top"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>关闭</span></button> <!> <!> <!> <!> <!> <!></div>`,
+    1
+  );
+  function SettingsDrawer($$anchor, $$props) {
+    push($$props, true);
+    let isOpen = state(false);
+    function open() {
+      set(isOpen, true);
+    }
+    function close() {
+      set(isOpen, false);
+    }
+    var $$exports = { open, close };
+    var fragment = comment();
+    var node = first_child(fragment);
+    {
+      var consequent = ($$anchor2) => {
+        var fragment_1 = root_14();
+        var div = first_child(fragment_1);
+        div.__click = close;
+        var div_1 = sibling(div, 2);
+        var button = child(div_1);
+        button.__click = close;
+        var svg = child(button);
+        var path = child(svg);
+        reset(svg);
+        next(2);
+        reset(button);
+        var node_1 = sibling(button, 2);
+        HomePageSettings2(node_1, {});
+        var node_2 = sibling(node_1, 2);
+        SearchSettings(node_2, {});
+        var node_3 = sibling(node_2, 2);
+        VideoListSettings2(node_3, {});
+        var node_4 = sibling(node_3, 2);
+        BlockedUserPatternsSettings(node_4, {});
+        var node_5 = sibling(node_4, 2);
+        UserTable(node_5, {});
+        var node_6 = sibling(node_5, 2);
+        LiveRoomTable(node_6, {});
+        reset(div_1);
+        template_effect(
+          ($0, $1) => {
+            set_attribute2(div, "data-theme", $0);
+            set_attribute2(div_1, "data-theme", $1);
+            set_attribute2(path, "d", mdiClose);
+          },
+          [getCurrentTheme, getCurrentTheme]
+        );
+        transition(3, div, () => fade, () => ({ duration: 200 }));
+        transition(3, div_1, () => fly, () => ({ x: 1e3, duration: 200 }));
+        append($$anchor2, fragment_1);
+      };
+      if_block(node, ($$render) => {
+        if (get(isOpen))
+          $$render(consequent);
+      });
+    }
+    append($$anchor, fragment);
+    return pop($$exports);
+  }
+  delegate(["click"]);
 
-        <div
-          class="flex-1 overflow-auto relative"
-          @scroll=${this.onLiveRoomTableScroll}
-        >
-          <div style="height: ${totalHeight}px; width: 100%;">
-            ${visibleItems.map((item, index) => {
-        const actualIndex = startIndex + index;
-        const top = actualIndex * itemTotalHeight;
-        const { id, owner, blockedAt } = item;
-        return html`
-                    <div 
-                      class="absolute left-0 right-0 h-12 flex items-center bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition group"
-                      style="top: ${top}px;"
-                    >
-                      <div class="w-48 flex-none text-right px-2 text-sm">
-                        <time datetime="${blockedAt.toISOString()}">
-                           ${blockedAt.toLocaleString()}
-                        </time>
-                      </div>
-                      <div class="flex-auto text-center truncate px-2">
-                        ${owner}
-                      </div>
-                      <div class="w-32 flex-none flex justify-center items-center space-x-2 opacity-0 group-hover:opacity-100 transition">
-                         <a
-                           href="https://live.bilibili.com/${id}"
-                           target="_blank"
-                           class="inline-flex items-center underline text-blue-500 text-sm"
-                         >
-                           <svg 
-                             viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="h-[1.25em] mr-1"
-                           >
-                              <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiOpenInNew} fill="currentColor">
-                           </svg>
-                           <span>前往</span>
-                         </a>
-                         <button
-                           type="button"
-                           @click=${() => {
-          blockedLiveRooms_default.remove(id);
-          this.dataVersion += 1;
-          this.render();
-        }}
-                           class="inline-flex items-center underline text-sm"
-                         >
-                           <svg 
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="h-[1.25em] mr-1"
-                           >
-                             <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiCheck} fill="currentColor">
-                           </svg>
-                           <span>取消屏蔽</span>
-                         </button>
-                      </div>
-                    </div>
-                `;
-      })}
-          </div>
-        </div>
-      </div>
-    `;
+  // src/utils/obtainHTMLElementByDataKey.ts
+  function obtainHTMLElementByDataKey({
+    tag: tag2,
+    key: key3,
+    parentNode = document,
+    onDidCreate
+  }) {
+    const match = parentNode.querySelector(
+      `[data-${key3}]`
+    );
+    if (match) {
+      return match;
+    }
+    const el = document.createElement(tag2);
+    el.setAttribute(`data-${key3}`, "");
+    onDidCreate == null ? void 0 : onDidCreate(el);
+    return el;
+  }
+
+  // src/bilibili.com/style.css
+  var style_default = '/* \n用户脚本样式\nhttps://github.com/NateScarlet/user-scripts/blob/master/src/bilibili.com/\n*/\n\n*, ::before, ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}\n\n::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}\n\n/* \n! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com\n*/\n\n/*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/\n\n*,\n::before,\n::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}\n\n::before,\n::after {\n  --tw-content: \'\';\n}\n\n/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user\'s configured `sans` font-family by default.\n5. Use the user\'s configured `sans` font-feature-settings by default.\n6. Use the user\'s configured `sans` font-variation-settings by default.\n7. Disable tap highlights on iOS\n*/\n\nhtml,\n:host {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */\n  font-feature-settings: normal; /* 5 */\n  font-variation-settings: normal; /* 6 */\n  -webkit-tap-highlight-color: transparent; /* 7 */\n}\n\n/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/\n\nbody {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}\n\n/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/\n\nhr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}\n\n/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/\n\nabbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}\n\n/*\nRemove the default font size and weight for headings.\n*/\n\nh1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n  font-size: inherit;\n  font-weight: inherit;\n}\n\n/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/\n\na {\n  color: inherit;\n  text-decoration: inherit;\n}\n\n/*\nAdd the correct font weight in Edge and Safari.\n*/\n\nb,\nstrong {\n  font-weight: bolder;\n}\n\n/*\n1. Use the user\'s configured `mono` font-family by default.\n2. Use the user\'s configured `mono` font-feature-settings by default.\n3. Use the user\'s configured `mono` font-variation-settings by default.\n4. Correct the odd `em` font sizing in all browsers.\n*/\n\ncode,\nkbd,\nsamp,\npre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */\n  font-feature-settings: normal; /* 2 */\n  font-variation-settings: normal; /* 3 */\n  font-size: 1em; /* 4 */\n}\n\n/*\nAdd the correct font size in all browsers.\n*/\n\nsmall {\n  font-size: 80%;\n}\n\n/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\nsup {\n  top: -0.5em;\n}\n\n/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/\n\ntable {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}\n\n/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit; /* 1 */\n  font-feature-settings: inherit; /* 1 */\n  font-variation-settings: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  letter-spacing: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}\n\n/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/\n\nbutton,\nselect {\n  text-transform: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/\n\nbutton,\ninput:where([type=\'button\']),\ninput:where([type=\'reset\']),\ninput:where([type=\'submit\']) {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}\n\n/*\nUse the modern Firefox focus style for all focusable elements.\n*/\n\n:-moz-focusring {\n  outline: auto;\n}\n\n/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/\n\n:-moz-ui-invalid {\n  box-shadow: none;\n}\n\n/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/\n\nprogress {\n  vertical-align: baseline;\n}\n\n/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/\n\n::-webkit-inner-spin-button,\n::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/\n\n[type=\'search\'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/\n\n::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/*\nAdd the correct display in Chrome and Safari.\n*/\n\nsummary {\n  display: list-item;\n}\n\n/*\nRemoves the default spacing and border for appropriate elements.\n*/\n\nblockquote,\ndl,\ndd,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\nhr,\nfigure,\np,\npre {\n  margin: 0;\n}\n\nfieldset {\n  margin: 0;\n  padding: 0;\n}\n\nlegend {\n  padding: 0;\n}\n\nol,\nul,\nmenu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n/*\nReset default styling for dialogs.\n*/\n\ndialog {\n  padding: 0;\n}\n\n/*\nPrevent resizing textareas horizontally by default.\n*/\n\ntextarea {\n  resize: vertical;\n}\n\n/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user\'s configured gray 400 color.\n*/\n\ninput::-moz-placeholder, textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\ninput::placeholder,\ntextarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n/*\nSet the default cursor for buttons.\n*/\n\nbutton,\n[role="button"] {\n  cursor: pointer;\n}\n\n/*\nMake sure disabled buttons don\'t get the pointer cursor.\n*/\n\n:disabled {\n  cursor: default;\n}\n\n/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/\n\nimg,\nsvg,\nvideo,\ncanvas,\naudio,\niframe,\nembed,\nobject {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}\n\n/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/\n\nimg,\nvideo {\n  max-width: 100%;\n  height: auto;\n}\n\n/* Make elements with the HTML hidden attribute stay hidden by default */\n\n[hidden]:where(:not([hidden="until-found"])) {\n  display: none;\n}\n\n* {\n  font-size: 16px;\n  line-height: 24px;\n}\n\n.visible {\n  visibility: visible;\n}\n\n.static {\n  position: static;\n}\n\n.fixed {\n  position: fixed;\n}\n\n.absolute {\n  position: absolute;\n}\n\n.relative {\n  position: relative;\n}\n\n.inset-0 {\n  inset: 0px;\n}\n\n.inset-y-0 {\n  top: 0px;\n  bottom: 0px;\n}\n\n.left-0 {\n  left: 0px;\n}\n\n.left-2 {\n  left: 0.5rem;\n}\n\n.right-0 {\n  right: 0px;\n}\n\n.top-2 {\n  top: 0.5rem;\n}\n\n.isolate {\n  isolation: isolate;\n}\n\n.z-20 {\n  z-index: 20;\n}\n\n.z-\\[10000\\] {\n  z-index: 10000;\n}\n\n.z-\\[9999\\] {\n  z-index: 9999;\n}\n\n.m-1 {\n  margin: 0.25rem;\n}\n\n.my-1 {\n  margin-top: 0.25rem;\n  margin-bottom: 0.25rem;\n}\n\n.mb-1 {\n  margin-bottom: 0.25rem;\n}\n\n.mr-1 {\n  margin-right: 0.25rem;\n}\n\n.block {\n  display: block;\n}\n\n.inline {\n  display: inline;\n}\n\n.flex {\n  display: flex;\n}\n\n.inline-flex {\n  display: inline-flex;\n}\n\n.\\!hidden {\n  display: none !important;\n}\n\n.hidden {\n  display: none;\n}\n\n.h-10 {\n  height: 2.5rem;\n}\n\n.h-12 {\n  height: 3rem;\n}\n\n.h-6 {\n  height: 1.5rem;\n}\n\n.h-7 {\n  height: 1.75rem;\n}\n\n.h-8 {\n  height: 2rem;\n}\n\n.h-\\[1\\.25em\\] {\n  height: 1.25em;\n}\n\n.max-h-\\[50vh\\] {\n  max-height: 50vh;\n}\n\n.w-32 {\n  width: 8rem;\n}\n\n.w-48 {\n  width: 12rem;\n}\n\n.w-6 {\n  width: 1.5rem;\n}\n\n.w-64 {\n  width: 16rem;\n}\n\n.w-full {\n  width: 100%;\n}\n\n.w-screen {\n  width: 100vw;\n}\n\n.max-w-4xl {\n  max-width: 56rem;\n}\n\n.max-w-lg {\n  max-width: 32rem;\n}\n\n.flex-1 {\n  flex: 1 1 0%;\n}\n\n.flex-auto {\n  flex: 1 1 auto;\n}\n\n.flex-none {\n  flex: none;\n}\n\n.cursor-pointer {\n  cursor: pointer;\n}\n\n.cursor-zoom-out {\n  cursor: zoom-out;\n}\n\n.flex-col {\n  flex-direction: column;\n}\n\n.flex-wrap {\n  flex-wrap: wrap;\n}\n\n.items-center {\n  align-items: center;\n}\n\n.justify-end {\n  justify-content: flex-end;\n}\n\n.justify-center {\n  justify-content: center;\n}\n\n.justify-between {\n  justify-content: space-between;\n}\n\n.gap-2 {\n  gap: 0.5rem;\n}\n\n.space-x-2 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-x-reverse: 0;\n  margin-right: calc(0.5rem * var(--tw-space-x-reverse));\n  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));\n}\n\n.space-y-1 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));\n}\n\n.self-end {\n  align-self: flex-end;\n}\n\n.overflow-auto {\n  overflow: auto;\n}\n\n.overflow-hidden {\n  overflow: hidden;\n}\n\n.truncate {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.rounded {\n  border-radius: 0.25rem;\n}\n\n.rounded-full {\n  border-radius: 9999px;\n}\n\n.rounded-lg {\n  border-radius: 0.5rem;\n}\n\n.rounded-md {\n  border-radius: 0.375rem;\n}\n\n.border {\n  border-width: 1px;\n}\n\n.border-b {\n  border-bottom-width: 1px;\n}\n\n.border-t {\n  border-top-width: 1px;\n}\n\n.border-none {\n  border-style: none;\n}\n\n.border-gray-300 {\n  --tw-border-opacity: 1;\n  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));\n}\n\n.bg-\\[rgba\\(33\\2c 33\\2c 33\\2c \\.8\\)\\] {\n  background-color: rgba(33,33,33,.8);\n}\n\n.bg-black\\/25 {\n  background-color: rgb(0 0 0 / 0.25);\n}\n\n.bg-blue-600 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-100 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-200 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-300 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(209 213 219 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-50 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));\n}\n\n.bg-white {\n  --tw-bg-opacity: 1;\n  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));\n}\n\n.bg-white\\/25 {\n  background-color: rgb(255 255 255 / 0.25);\n}\n\n.fill-current {\n  fill: currentColor;\n}\n\n.p-1 {\n  padding: 0.25rem;\n}\n\n.p-2 {\n  padding: 0.5rem;\n}\n\n.p-4 {\n  padding: 1rem;\n}\n\n.px-1 {\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n\n.px-2 {\n  padding-left: 0.5rem;\n  padding-right: 0.5rem;\n}\n\n.px-4 {\n  padding-left: 1rem;\n  padding-right: 1rem;\n}\n\n.py-1 {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n}\n\n.py-2 {\n  padding-top: 0.5rem;\n  padding-bottom: 0.5rem;\n}\n\n.py-3 {\n  padding-top: 0.75rem;\n  padding-bottom: 0.75rem;\n}\n\n.pr-2 {\n  padding-right: 0.5rem;\n}\n\n.text-center {\n  text-align: center;\n}\n\n.text-right {\n  text-align: right;\n}\n\n.align-top {\n  vertical-align: top;\n}\n\n.text-lg {\n  font-size: 20px;\n  line-height: 28px;\n}\n\n.text-sm {\n  font-size: 14px;\n  line-height: 20px;\n}\n\n.text-xs {\n  font-size: 12px;\n  line-height: 14px;\n}\n\n.font-bold {\n  font-weight: 700;\n}\n\n.font-medium {\n  font-weight: 500;\n}\n\n.text-black {\n  --tw-text-opacity: 1;\n  color: rgb(0 0 0 / var(--tw-text-opacity, 1));\n}\n\n.text-blue-500 {\n  --tw-text-opacity: 1;\n  color: rgb(59 130 246 / var(--tw-text-opacity, 1));\n}\n\n.text-gray-500 {\n  --tw-text-opacity: 1;\n  color: rgb(107 114 128 / var(--tw-text-opacity, 1));\n}\n\n.text-white {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity, 1));\n}\n\n.underline {\n  text-decoration-line: underline;\n}\n\n.opacity-0 {\n  opacity: 0;\n}\n\n.shadow-sm {\n  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);\n  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n\n.shadow-xl {\n  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);\n  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n\n.filter {\n  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);\n}\n\n.backdrop-blur {\n  --tw-backdrop-blur: blur(8px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n.backdrop-blur-sm {\n  --tw-backdrop-blur: blur(4px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n.transition {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.transition-colors {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.duration-200 {\n  transition-duration: 200ms;\n}\n\n.ease-in-out {\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n.hover\\:bg-blue-700:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:bg-gray-100:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:bg-gray-200:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:underline:hover {\n  text-decoration-line: underline;\n}\n\n.focus\\:border-blue-500:focus {\n  --tw-border-opacity: 1;\n  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));\n}\n\n.focus\\:outline-none:focus {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n}\n\n.focus\\:ring-2:focus {\n  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);\n  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);\n  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);\n}\n\n.focus\\:ring-blue-500:focus {\n  --tw-ring-opacity: 1;\n  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));\n}\n\n.group:hover .group-hover\\:opacity-100 {\n  opacity: 1;\n}\n\n@media (min-width: 1024px) {\n\n  .lg\\:hidden {\n    display: none;\n  }\n}\n\n.dark\\:border-gray-500:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-border-opacity: 1;\n  border-color: rgb(107 114 128 / var(--tw-border-opacity, 1));\n}\n\n.dark\\:bg-black:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-black\\/25:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(0 0 0 / 0.25);\n}\n\n.dark\\:bg-gray-700:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-800:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-900:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-white\\/25:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(255 255 255 / 0.25);\n}\n\n.dark\\:text-gray-200:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(229 231 235 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-gray-400:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(156 163 175 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-white:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:hover\\:bg-gray-800:hover:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));\n}\n';
+
+  // src/bilibili.com/utils/obtainStyledShadowRoot.ts
+  var key2 = "36fff111-0148-4cc1-869b-06dfdfc36861";
+  var map = /* @__PURE__ */ new WeakMap();
+  function obtainStyledShadowRoot(el) {
+    var _a5, _b2;
+    const root15 = (_b2 = (_a5 = map.get(el)) != null ? _a5 : el.shadowRoot) != null ? _b2 : el.attachShadow({ mode: "closed" });
+    map.set(el, root15);
+    obtainHTMLElementByDataKey({
+      tag: "style",
+      key: key2,
+      parentNode: root15,
+      onDidCreate: (el2) => {
+        el2.innerHTML = style_default;
+        root15.prepend(el2);
+      }
+    });
+    return root15;
+  }
+
+  // src/utils/randomUUID.ts
+  function fallback2() {
+    const ts = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = (ts + Math.random()) * 16 % 16 | 0;
+      const v = c === "x" ? r : r & 3 | 8;
+      return v.toString(16);
+    });
+  }
+  function randomUUID() {
+    if (window.isSecureContext && typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+      return crypto.randomUUID();
+    }
+    return fallback2();
+  }
+
+  // src/utils/obtainHTMLElementByID.ts
+  function obtainHTMLElementByID({
+    tag: tag2,
+    id,
+    onDidCreate
+  }) {
+    const match = document.getElementById(id);
+    if (match) {
+      return match;
+    }
+    const el = document.createElement(tag2);
+    el.id = id;
+    onDidCreate == null ? void 0 : onDidCreate(el);
+    return el;
+  }
+
+  // src/bilibili.com/components/SettingsDrawer.ts
+  var _SettingsDrawer = class _SettingsDrawer {
+    constructor() {
+      __publicField(this, "component");
+      __publicField(this, "open", () => {
+        var _a5;
+        (_a5 = this.component) == null ? void 0 : _a5.open();
+      });
+      __publicField(this, "close", () => {
+        var _a5;
+        (_a5 = this.component) == null ? void 0 : _a5.close();
+      });
+    }
+    render() {
+      obtainHTMLElementByID({
+        tag: "div",
+        id: _SettingsDrawer.id,
+        onDidCreate: (el) => {
+          el.style.position = "fixed";
+          el.style.zIndex = "9999";
+          document.body.append(el);
+          this.component = mount(SettingsDrawer, {
+            target: obtainStyledShadowRoot(el)
+          });
+        }
+      });
     }
   };
   __publicField(_SettingsDrawer, "id", `settings-${randomUUID()}`);
-  var SettingsDrawer = _SettingsDrawer;
+  var SettingsDrawer2 = _SettingsDrawer;
+
+  // src/bilibili.com/components/FullHeaderButton.svelte
+  var root7 = from_html(`<button type="button" class="right-entry__outside"><svg viewBox="2 2 20 20" class="right-entry-icon" style="height: 20px; fill: currentColor;"><path fill-rule="evenodd" clip-rule="evenodd"></path></svg> <span class="right-entry-text">屏蔽</span></button>`);
+  function FullHeaderButton($$anchor, $$props) {
+    push($$props, true);
+    var button = root7();
+    button.__click = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      $$props.settings.open();
+    };
+    var svg = child(button);
+    var path = child(svg);
+    reset(svg);
+    next(2);
+    reset(button);
+    template_effect(() => set_attribute2(path, "d", mdiEyeOffOutline));
+    append($$anchor, button);
+    pop();
+  }
+  delegate(["click"]);
 
   // src/bilibili.com/components/FullHeaderButton.ts
   var _FullHeaderButton = class _FullHeaderButton {
@@ -7023,39 +12182,26 @@
           onDidCreate: (el) => {
             el.classList.add("right-entry-item");
             parent.prepend(...[parent.firstChild, el].filter(isNonNull));
+            mount(FullHeaderButton, {
+              target: el,
+              props: {
+                settings: this.settings
+              }
+            });
           }
         });
-        render(
-          html`
-  <button
-    type="button"
-    class="right-entry__outside" 
-    @click=${(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.settings.open();
-          }}
-  >
-    <svg viewBox="2 2 20 20" class="right-entry-icon" style="height: 20px; fill: currentColor;">
-      <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiEyeOffOutline}>
-    </svg>
-    <span class="right-entry-text">屏蔽</span>
-  </button>
-`,
-          container
-        );
       });
       this.settings = settings;
     }
   };
   __publicField(_FullHeaderButton, "id", `full-header-button-${randomUUID()}`);
-  var FullHeaderButton = _FullHeaderButton;
+  var FullHeaderButton2 = _FullHeaderButton;
 
   // src/bilibili.com/models/migrate.ts
   function migrateV1() {
     return __async(this, null, function* () {
-      const key2 = "blockedUserIDs@7ced1613-89d7-4754-8989-2ad0d7cfa9db";
-      const oldValue = yield GM.getValue(key2);
+      const key3 = "blockedUserIDs@7ced1613-89d7-4754-8989-2ad0d7cfa9db";
+      const oldValue = yield GM.getValue(key3);
       if (!oldValue) {
         return;
       }
@@ -7067,7 +12213,7 @@
         "blockedUsers@206ceed9-b514-4902-ad70-aa621fed5cd4",
         JSON.stringify(newValue)
       );
-      yield GM.deleteValue(key2);
+      yield GM.deleteValue(key3);
     });
   }
   function migrate() {
@@ -7101,6 +12247,47 @@
     }
   }
 
+  // src/bilibili.com/components/UserBlockButtonInline.svelte
+  var root8 = from_html(`<span class="h-f-btn"> </span>`);
+  function UserBlockButtonInline($$anchor, $$props) {
+    push($$props, true);
+    const $blockedUsers = () => store_get(blockedUsers_default, "$blockedUsers", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    let isBlocked = user_derived(() => $blockedUsers() && blockedUsers_default.has($$props.user.id));
+    var span = root8();
+    span.__click = (e) => {
+      var _a5, _b2;
+      e.stopPropagation();
+      blockedUsers_default.toggle({
+        id: $$props.user.id,
+        name: (_b2 = (_a5 = document.querySelector("#h-name, .nickname")) == null ? void 0 : _a5.innerText) != null ? _b2 : ""
+      });
+    };
+    var text2 = child(span, true);
+    reset(span);
+    template_effect(() => set_text(text2, get(isBlocked) ? "取消屏蔽" : "屏蔽"));
+    append($$anchor, span);
+    pop();
+    $$cleanup();
+  }
+  delegate(["click"]);
+
+  // src/bilibili.com/components/UserBlockStatus.svelte
+  var root9 = from_html(`<span> </span>`);
+  function UserBlockStatus($$anchor, $$props) {
+    push($$props, true);
+    const $blockedUsers = () => store_get(blockedUsers_default, "$blockedUsers", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    let isBlocked = user_derived(() => $blockedUsers() && blockedUsers_default.has($$props.user.id));
+    var span = root9();
+    var text2 = child(span, true);
+    reset(span);
+    template_effect(() => set_text(text2, get(isBlocked) ? "取消屏蔽" : "屏蔽"));
+    append($$anchor, span);
+    pop();
+    $$cleanup();
+  }
+
   // src/bilibili.com/components/UserBlockButton.ts
   var _UserBlockButton = class _UserBlockButton {
     constructor(user) {
@@ -7108,28 +12295,25 @@
       __publicField(this, "render", () => {
         const parentV1 = document.querySelector(".h-action");
         if (parentV1) {
-          const container = obtainHTMLElementByID({
+          obtainHTMLElementByID({
             tag: "div",
             id: _UserBlockButton.id,
             onDidCreate: (el) => {
               el.style.display = "inline";
               parentV1.append(...[el, parentV1.lastChild].filter(isNonNull));
+              mount(UserBlockButtonInline, {
+                target: el,
+                props: {
+                  user: this.user
+                }
+              });
             }
           });
-          const isBlocked = blockedUsers_default.has(this.user.id);
-          render(
-            html`
-          <span class="h-f-btn" @click=${this.onClick}>
-            ${isBlocked ? "取消屏蔽" : "屏蔽"}
-          </span>
-        `,
-            container
-          );
           return;
         }
         const parentV2 = document.querySelector(".operations .interactions");
         if (parentV2) {
-          const container = obtainHTMLElementByID({
+          obtainHTMLElementByID({
             tag: "div",
             id: _UserBlockButton.id,
             onDidCreate: (el) => {
@@ -7155,25 +12339,23 @@ margin-right: 24px;
                 el.style.backgroundColor = "rgba(255,255,255,.14)";
               });
               el.addEventListener("click", (e) => {
-                this.onClick(e);
+                var _a5, _b2;
+                e.stopPropagation();
+                blockedUsers_default.toggle({
+                  id: this.user.id,
+                  name: (_b2 = (_a5 = document.querySelector("#h-name, .nickname")) == null ? void 0 : _a5.innerText) != null ? _b2 : ""
+                });
               });
               parentV2.append(...[el, parentV2.lastChild].filter(isNonNull));
+              mount(UserBlockStatus, {
+                target: el,
+                props: {
+                  user: this.user
+                }
+              });
             }
           });
-          const isBlocked = blockedUsers_default.has(this.user.id);
-          render(
-            html`<span> ${isBlocked ? "取消屏蔽" : "屏蔽"} </span>`,
-            container
-          );
         }
-      });
-      __publicField(this, "onClick", (e) => {
-        var _a5, _b2;
-        e.stopPropagation();
-        blockedUsers_default.toggle({
-          id: this.user.id,
-          name: (_b2 = (_a5 = document.querySelector("#h-name, .nickname")) == null ? void 0 : _a5.innerText) != null ? _b2 : ""
-        });
       });
     }
   };
@@ -7211,430 +12393,43 @@ margin-right: 24px;
     }
   }
 
-  // src/utils/injectStyle.ts
-  function injectStyle(id, css) {
-    obtainHTMLElementByID({
-      tag: "style",
-      id,
-      onDidCreate: (el) => {
-        document.head.appendChild(el);
-        el.innerHTML = css;
+  // src/bilibili.com/components/VideoHoverButton.svelte
+  var root10 = from_html(`<button type="button"><svg viewBox="-3 -1 28 28" class="h-7 fill-current"><path fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>`);
+  function VideoHoverButton($$anchor, $$props) {
+    push($$props, true);
+    const $blockedUsers = () => store_get(blockedUsers_default, "$blockedUsers", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    let user = prop($$props, "user", 15);
+    function setUser(u) {
+      user(u);
+    }
+    let isBlocked = user_derived(() => $blockedUsers() && blockedUsers_default.has(user().id));
+    var $$exports = { setUser };
+    var button = root10();
+    button.__click = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (get(isBlocked)) {
+        blockedUsers_default.remove(user().id);
+      } else {
+        blockedUsers_default.add(user());
       }
+    };
+    var svg = child(button);
+    var path = child(svg);
+    reset(svg);
+    reset(button);
+    template_effect(() => {
+      set_attribute2(button, "title", get(isBlocked) ? "取消屏蔽此用户" : "屏蔽此用户");
+      set_class(button, 1, `rounded-md cursor-pointer z-20 border-none ${get(isBlocked) ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}`);
+      set_attribute2(path, "d", get(isBlocked) ? mdiAccountCheckOutline : mdiAccountCancelOutline);
     });
+    append($$anchor, button);
+    var $$pop = pop($$exports);
+    $$cleanup();
+    return $$pop;
   }
-
-  // src/bilibili.com/components/VideoHoverButton.ts
-  var VideoHoverButton = class {
-    constructor(parentNode, user) {
-      this.parentNode = parentNode;
-      this.user = user;
-      __publicField(this, "render", () => {
-        const { parentNode } = this;
-        if (!parentNode) {
-          return;
-        }
-        const parentKey = "dde57f95-0cb5-4443-bbeb-2466d63db0f1";
-        const key2 = "a1161956-2be7-4796-9f1b-528707156b11";
-        injectStyle(
-          parentKey,
-          `[data-${parentKey}]:hover [data-${key2}] {
-  filter: opacity(1);
-  transition: filter 0.2s linear 0.2s;
-}
-
-[data-${parentKey}] [data-${key2}] {
-  filter: opacity(0);
-  z-index: 10;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  transition: filter 0.2s linear 0s;
-}
-`
-        );
-        const el = obtainHTMLElementByDataKey({
-          tag: "div",
-          key: key2,
-          parentNode,
-          onDidCreate: (el2) => {
-            parentNode.setAttribute(`data-${parentKey}`, "");
-            parentNode.append(el2);
-          }
-        });
-        const isBlocked = blockedUsers_default.has(this.user.id);
-        render(
-          html`
-<button
-  type="button"
-  title="${isBlocked ? "取消屏蔽此用户" : "屏蔽此用户"}"
-  class="rounded-md cursor-pointer  z-20 border-none ${isBlocked ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}"
-  @click=${(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (isBlocked) {
-              blockedUsers_default.remove(this.user.id);
-            } else {
-              blockedUsers_default.add(this.user);
-            }
-          }}
->
-  <svg viewBox="-3 -1 28 28" class="h-7 fill-current">
-    <path fill-rule="evenodd" clip-rule="evenodd" d=${isBlocked ? mdiAccountCheckOutline : mdiAccountCancelOutline}>
-  </svg>
-</button>
-    `,
-          obtainStyledShadowRoot(el)
-        );
-      });
-    }
-  };
-
-  // src/bilibili.com/components/VideoDetailPatch.ts
-  var VideoDetailPatch = class {
-    constructor(ctx) {
-      this.ctx = ctx;
-      __publicField(this, "blockedTitles", /* @__PURE__ */ new Set());
-      __publicField(this, "render", () => {
-        document.querySelectorAll(".video-page-card-small").forEach((i) => {
-          var _a5, _b2, _c2, _d2, _e, _f, _g;
-          const rawURL = (_a5 = i.querySelector(".upname a")) == null ? void 0 : _a5.getAttribute("href");
-          if (!rawURL) {
-            return;
-          }
-          const user = parseUserURL(rawURL);
-          let hidden = false;
-          let note = "";
-          if (user) {
-            const duration = (_d2 = (_c2 = (_b2 = i.querySelector(".duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d2 : "";
-            const titleEl = i.querySelector(".title");
-            const title = (_e = (titleEl == null ? void 0 : titleEl.getAttribute("title")) || (titleEl == null ? void 0 : titleEl.textContent)) != null ? _e : "";
-            if (title) {
-              note = `${title}`;
-            }
-            const video = parseVideoURL(
-              (_f = titleEl == null ? void 0 : titleEl.parentElement) == null ? void 0 : _f.getAttribute("href")
-            );
-            if (video == null ? void 0 : video.id) {
-              note += `(${video.id})`;
-            }
-            hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
-            if (hidden) {
-              this.blockedTitles.add(title);
-            }
-          } else {
-            hidden = !videoListSettings_default.allowAdvertisement;
-          }
-          setHTMLElementDisplayHidden(i, hidden);
-          if (user && !hidden) {
-            new VideoHoverButton(i.querySelector(".pic-box"), {
-              id: user.id,
-              name: ((_g = i.querySelector(".upname .name")) == null ? void 0 : _g.textContent) || user.id,
-              note
-            }).render();
-          }
-        });
-        document.querySelectorAll(".bpx-player-ending-related-item").forEach((i) => {
-          var _a5;
-          const title = (_a5 = i.querySelector(
-            ".bpx-player-ending-related-item-title"
-          )) == null ? void 0 : _a5.textContent;
-          if (!title) {
-            return;
-          }
-          const hidden = this.blockedTitles.has(title) || this.ctx.shouldExcludeVideo({ title });
-          setHTMLElementDisplayHidden(i, hidden);
-        });
-      });
-    }
-  };
-
-  // src/bilibili.com/components/SSRVideoRankPatch.ts
-  var SSRVideoRankPatch = class {
-    constructor() {
-      __publicField(this, "render", () => {
-        document.querySelectorAll(".rank-item").forEach((i) => {
-          var _a5, _b2, _c2, _d2;
-          const user = parseUserURL(
-            (_b2 = (_a5 = i.querySelector(".up-name")) == null ? void 0 : _a5.parentElement) == null ? void 0 : _b2.getAttribute("href")
-          );
-          if (!user) {
-            return;
-          }
-          const name = (_d2 = (_c2 = i.querySelector(".up-name")) == null ? void 0 : _c2.textContent) != null ? _d2 : "";
-          const isBlocked = blockedUsers_default.has(user.id);
-          setHTMLElementDisplayHidden(i, isBlocked);
-          if (!isBlocked) {
-            new VideoHoverButton(i.querySelector(".img"), {
-              id: user.id,
-              name
-            }).render();
-          }
-        });
-      });
-    }
-  };
-
-  // src/utils/castPlainObject.ts
-  function castPlainObject(value) {
-    if (isPlainObject(value)) {
-      return value;
-    }
-    return { value };
-  }
-
-  // src/utils/evalInContentScope.ts
-  function evalInContentScope(javascript) {
-    try {
-      return JSON.parse(
-        window.eval(`JSON.stringify(eval(${JSON.stringify(javascript)}))`)
-      );
-    } catch (err) {
-      return err;
-    }
-  }
-
-  // src/utils/getElementSelector.ts
-  var attributeName = `data-select-${randomUUID()}`;
-  var nextValue = 1;
-  function getElementSelector(el) {
-    let v = el.getAttribute(attributeName);
-    if (!v) {
-      v = nextValue.toString();
-      nextValue += 1;
-      el.setAttribute(attributeName, v);
-    }
-    return `[${attributeName}='${v}']`;
-  }
-
-  // src/bilibili.com/components/VueVideoRankPatch.ts
-  var VueVideoRankPatch = class {
-    constructor() {
-      __publicField(this, "render", () => {
-        document.querySelectorAll(".video-card").forEach((i) => {
-          const selector = getElementSelector(i);
-          const videoData = evalInContentScope(
-            `document.querySelector(${JSON.stringify(
-              selector
-            )}).__vue__._props.videoData`
-          );
-          const { owner, title, bvid } = castPlainObject(videoData);
-          const { mid, name } = castPlainObject(owner);
-          if (typeof mid !== "number" || typeof name !== "string") {
-            return;
-          }
-          const userID = mid.toString();
-          const isBlocked = blockedUsers_default.has(userID);
-          setHTMLElementDisplayHidden(i, isBlocked);
-          if (!isBlocked) {
-            new VideoHoverButton(i.querySelector(".video-card__content"), {
-              id: userID,
-              name,
-              note: (typeof title === "string" ? title : "") + (typeof bvid === "string" ? `(${bvid})` : "")
-            }).render();
-          }
-        });
-      });
-    }
-  };
-
-  // src/bilibili.com/components/VideoListPatch.ts
-  var _VideoListPatch = class _VideoListPatch {
-    constructor(ctx) {
-      this.ctx = ctx;
-      __publicField(this, "disabled", false);
-      __publicField(this, "render", () => {
-        let matchCount = 0;
-        let listEl;
-        document.querySelectorAll(".bili-video-card").forEach((i) => {
-          var _a5, _b2, _c2, _d2, _e, _f, _g, _h, _i, _j, _k, _l;
-          const rawURL = (_a5 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a5.getAttribute("href");
-          if (!rawURL) {
-            return;
-          }
-          const user = parseUserURL(rawURL);
-          let match = false;
-          let note = "";
-          if (user) {
-            const authorEl = i.querySelector(".bili-video-card__info--author");
-            const authorName = (_b2 = (authorEl == null ? void 0 : authorEl.getAttribute("title")) || (authorEl == null ? void 0 : authorEl.textContent)) != null ? _b2 : "";
-            const duration = (_e = (_d2 = (_c2 = i.querySelector(".bili-video-card__stats__duration")) == null ? void 0 : _c2.textContent) == null ? void 0 : _d2.trim()) != null ? _e : "";
-            const titleEl = i.querySelector(".bili-video-card__info--tit");
-            const title = (_f = (titleEl == null ? void 0 : titleEl.getAttribute("title")) || (titleEl == null ? void 0 : titleEl.textContent)) != null ? _f : "";
-            if (title) {
-              note = `${title}`;
-            }
-            const video = parseVideoURL(
-              (_i = (_g = titleEl == null ? void 0 : titleEl.parentElement) == null ? void 0 : _g.getAttribute("href")) != null ? _i : (_h = titleEl == null ? void 0 : titleEl.querySelector("a")) == null ? void 0 : _h.getAttribute("href")
-            );
-            if (video == null ? void 0 : video.id) {
-              note += `(${video.id})`;
-            }
-            const isPromoted = i.classList.contains("is-rcmd") && !i.classList.contains("enable-no-interest");
-            match = this.ctx.shouldExcludeVideo({
-              user: __spreadProps(__spreadValues({}, user), { name: authorName }),
-              duration,
-              title,
-              isPromoted
-            });
-          } else {
-            match = !videoListSettings_default.allowAdvertisement;
-          }
-          if (match) {
-            matchCount += 1;
-          }
-          let container = i;
-          while (((_j = container.parentElement) == null ? void 0 : _j.childElementCount) === 1 || ((_k = container.parentElement) == null ? void 0 : _k.classList.values().some((cls) => _VideoListPatch.knownParentContainerClass.has(cls)))) {
-            container = container.parentElement;
-          }
-          listEl = container.parentElement || void 0;
-          const hidden = !this.disabled && match;
-          setHTMLElementDisplayHidden(container, hidden);
-          if (user && !hidden) {
-            new VideoHoverButton(i.querySelector(".bili-video-card__image--wrap"), {
-              id: user.id,
-              name: ((_l = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _l.textContent) || user.id,
-              note
-            }).render();
-          }
-        });
-        render(
-          matchCount === 0 ? nothing : html`
-            <div
-              data-theme="${getCurrentTheme()}"
-              class="w-full text-gray-500 dark:text-gray-400 text-center m-1"
-            >
-              ${this.disabled ? html`${matchCount} 条视频符合屏蔽规则` : html`已屏蔽 ${matchCount} 条视频`}
-              <button
-                type="button"
-                class="border rounded py-1 px-2 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition ease-in-out duration-200"
-                @click=${() => {
-            this.disabled = !this.disabled;
-          }}
-              >
-                ${this.disabled ? "屏蔽" : "全部显示"}
-              </button>
-            </div>
-          `,
-          obtainStyledShadowRoot(
-            obtainHTMLElementByID({
-              id: `video-list-patch-status-${_VideoListPatch.id}`,
-              tag: "div",
-              onDidCreate: (el) => {
-                var _a5;
-                (_a5 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a5.insertBefore(el, listEl);
-              }
-            })
-          )
-        );
-      });
-    }
-  };
-  __publicField(_VideoListPatch, "id", randomUUID());
-  __publicField(_VideoListPatch, "knownParentContainerClass", /* @__PURE__ */ new Set([
-    "bili-feed-card",
-    "feed-card"
-  ]));
-  var VideoListPatch = _VideoListPatch;
-
-  // src/bilibili.com/components/AdblockTipPatch.ts
-  var AdblockTipPatch = class {
-    constructor() {
-      __publicField(this, "render", () => {
-        const el = document.querySelector(".adblock-tips");
-        if (el instanceof HTMLElement) {
-          setHTMLElementDisplayHidden(el, !homePageSettings_default.allowAdblockTips);
-        }
-      });
-    }
-  };
-
-  // src/bilibili.com/components/HomePageFloorCardHoverButton.ts
-  var HomePageFloorCardHoverButton = class {
-    constructor(parentNode, floorCard) {
-      this.parentNode = parentNode;
-      this.floorCard = floorCard;
-      __publicField(this, "render", () => {
-        const { parentNode } = this;
-        if (!parentNode) {
-          return;
-        }
-        const parentKey = "51d5da07-ab2d-4342-8496-c3c53980bb74";
-        const key2 = "85e3e435-2ad2-4a7d-839f-69318799db0f";
-        injectStyle(
-          parentKey,
-          `[data-${parentKey}]:hover [data-${key2}] {
-  filter: opacity(1);
-  transition: filter 0.2s linear 0.2s;
-}
-
-[data-${parentKey}] [data-${key2}] {
-  filter: opacity(0);
-  z-index: 10;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  transition: filter 0.2s linear 0s;
-}
-`
-        );
-        const el = obtainHTMLElementByDataKey({
-          tag: "div",
-          key: key2,
-          parentNode,
-          onDidCreate: (el2) => {
-            parentNode.setAttribute(`data-${parentKey}`, "");
-            parentNode.append(el2);
-          }
-        });
-        render(
-          html`
-<button
-  type="button"
-  title="屏蔽此频道的楼层卡片"
-  class="absolute top-2 left-2 rounded-md cursor-pointer text-white bg-[rgba(33,33,33,.8)] z-20 border-none"
-  @click=${(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            homePageSettings_default.floorCard.excludeByChannel = [
-              ...homePageSettings_default.floorCard.excludeByChannel,
-              this.floorCard.channel
-            ];
-          }}
->
-  <svg viewBox="-2 -2 28 28" class="h-7 fill-current">
-    <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiEyeOff}>
-  </svg>
-</button>
-    `,
-          obtainStyledShadowRoot(el)
-        );
-      });
-    }
-  };
-
-  // src/bilibili.com/components/HomePageFloorCardPatch.ts
-  var HomePageFloorCardPatch = class {
-    constructor() {
-      __publicField(this, "render", () => {
-        document.querySelectorAll(".floor-single-card").forEach((el) => {
-          var _a5, _b2;
-          const channel = (_b2 = (_a5 = el.querySelector(".floor-title")) == null ? void 0 : _a5.textContent) == null ? void 0 : _b2.trim();
-          if (!channel) {
-            return;
-          }
-          const i = { channel };
-          const hidden = homePageSettings_default.floorCard.shouldExclude(i);
-          setHTMLElementDisplayHidden(el, hidden);
-          if (!hidden) {
-            new HomePageFloorCardHoverButton(
-              el.querySelector(".cover-container"),
-              i
-            ).render();
-          }
-        });
-      });
-    }
-  };
+  delegate(["click"]);
 
   // src/utils/ExactSearchMatcher.ts
   var ExactSearchMatcher = class {
@@ -7704,6 +12499,564 @@ margin-right: 24px;
     }
   };
 
+  // src/bilibili.com/components/VideoDetailPatch.ts
+  var VideoDetailPatch = class {
+    constructor(ctx) {
+      this.ctx = ctx;
+      __publicField(this, "blockedTitles", /* @__PURE__ */ new Set());
+      __publicField(this, "instances", /* @__PURE__ */ new WeakMap());
+      __publicField(this, "render", () => {
+        document.querySelectorAll(".video-page-card-small").forEach((i) => {
+          var _a5, _b2, _c2, _d, _e, _f, _g;
+          const rawURL = (_a5 = i.querySelector(".upname a")) == null ? void 0 : _a5.getAttribute("href");
+          if (!rawURL) {
+            return;
+          }
+          const user = parseUserURL(rawURL);
+          let hidden = false;
+          let note = "";
+          if (user) {
+            const duration = (_d = (_c2 = (_b2 = i.querySelector(".duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d : "";
+            const titleEl = i.querySelector(".title");
+            const title = (_e = (titleEl == null ? void 0 : titleEl.getAttribute("title")) || (titleEl == null ? void 0 : titleEl.textContent)) != null ? _e : "";
+            if (title) {
+              note = `${title}`;
+            }
+            const video = parseVideoURL(
+              (_f = titleEl == null ? void 0 : titleEl.parentElement) == null ? void 0 : _f.getAttribute("href")
+            );
+            if (video == null ? void 0 : video.id) {
+              note += `(${video.id})`;
+            }
+            hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
+            if (hidden) {
+              this.blockedTitles.add(title);
+            }
+          } else {
+            hidden = !videoListSettings_default.allowAdvertisement;
+          }
+          setHTMLElementDisplayHidden(i, hidden);
+          if (user && !hidden) {
+            const target = i.querySelector(".pic-box");
+            if (target) {
+              const userData = {
+                id: user.id,
+                name: ((_g = i.querySelector(".upname .name")) == null ? void 0 : _g.textContent) || user.id,
+                note
+              };
+              const wrapper = obtainHTMLElementByDataKey({
+                tag: "div",
+                key: "video-detail-hover-button",
+                parentNode: target,
+                onDidCreate: (el) => {
+                  target.append(el);
+                  const s = mount(VideoHoverButton, {
+                    target: el,
+                    props: {
+                      user: userData
+                    }
+                  });
+                  this.instances.set(el, s);
+                }
+              });
+              const comp = this.instances.get(wrapper);
+              if (comp) {
+                comp.setUser(userData);
+              }
+            }
+          }
+        });
+        document.querySelectorAll(".bpx-player-ending-related-item").forEach((i) => {
+          var _a5;
+          const title = (_a5 = i.querySelector(
+            ".bpx-player-ending-related-item-title"
+          )) == null ? void 0 : _a5.textContent;
+          if (!title) {
+            return;
+          }
+          const hidden = this.blockedTitles.has(title) || this.ctx.shouldExcludeVideo({ title });
+          setHTMLElementDisplayHidden(i, hidden);
+        });
+      });
+    }
+  };
+
+  // src/bilibili.com/components/SSRVideoRankPatch.ts
+  var SSRVideoRankPatch = class {
+    constructor() {
+      __publicField(this, "instances", /* @__PURE__ */ new WeakMap());
+      __publicField(this, "render", () => {
+        document.querySelectorAll(".rank-item").forEach((i) => {
+          var _a5, _b2, _c2, _d;
+          const user = parseUserURL(
+            (_b2 = (_a5 = i.querySelector(".up-name")) == null ? void 0 : _a5.parentElement) == null ? void 0 : _b2.getAttribute("href")
+          );
+          if (!user) {
+            return;
+          }
+          const name = (_d = (_c2 = i.querySelector(".up-name")) == null ? void 0 : _c2.textContent) != null ? _d : "";
+          const isBlocked = blockedUsers_default.has(user.id);
+          setHTMLElementDisplayHidden(i, isBlocked);
+          if (!isBlocked) {
+            const target = i.querySelector(".img");
+            if (target) {
+              const userData = {
+                id: user.id,
+                name,
+                note: ""
+              };
+              const wrapper = obtainHTMLElementByDataKey({
+                tag: "div",
+                key: "ssr-video-rank-hover-button",
+                parentNode: target,
+                onDidCreate: (el) => {
+                  target.append(el);
+                  const s = mount(VideoHoverButton, {
+                    target: el,
+                    props: {
+                      user: userData
+                    }
+                  });
+                  this.instances.set(el, s);
+                }
+              });
+              const comp = this.instances.get(wrapper);
+              if (comp) {
+                comp.setUser(userData);
+              }
+            }
+          }
+        });
+      });
+    }
+  };
+
+  // src/utils/castPlainObject.ts
+  function castPlainObject(value) {
+    if (isPlainObject(value)) {
+      return value;
+    }
+    return { value };
+  }
+
+  // src/utils/evalInContentScope.ts
+  function evalInContentScope(javascript) {
+    try {
+      return JSON.parse(
+        window.eval(`JSON.stringify(eval(${JSON.stringify(javascript)}))`)
+      );
+    } catch (err) {
+      return err;
+    }
+  }
+
+  // src/utils/getElementSelector.ts
+  var attributeName = `data-select-${randomUUID()}`;
+  var nextValue = 1;
+  function getElementSelector(el) {
+    let v = el.getAttribute(attributeName);
+    if (!v) {
+      v = nextValue.toString();
+      nextValue += 1;
+      el.setAttribute(attributeName, v);
+    }
+    return `[${attributeName}='${v}']`;
+  }
+
+  // src/bilibili.com/components/VueVideoRankPatch.ts
+  var VueVideoRankPatch = class {
+    constructor() {
+      __publicField(this, "instances", /* @__PURE__ */ new WeakMap());
+      __publicField(this, "render", () => {
+        document.querySelectorAll(".video-card").forEach((i) => {
+          const selector = getElementSelector(i);
+          const videoData = evalInContentScope(
+            `document.querySelector(${JSON.stringify(
+              selector
+            )}).__vue__._props.videoData`
+          );
+          const { owner, title, bvid } = castPlainObject(videoData);
+          const { mid, name } = castPlainObject(owner);
+          if (typeof mid !== "number" || typeof name !== "string") {
+            return;
+          }
+          const userID = mid.toString();
+          const isBlocked = blockedUsers_default.has(userID);
+          setHTMLElementDisplayHidden(i, isBlocked);
+          if (!isBlocked) {
+            const target = i.querySelector(".video-card__content");
+            if (target) {
+              const userData = {
+                id: userID,
+                name,
+                note: (typeof title === "string" ? title : "") + (typeof bvid === "string" ? `(${bvid})` : "")
+              };
+              const wrapper = obtainHTMLElementByDataKey({
+                tag: "div",
+                key: "vue-video-rank-hover-button",
+                parentNode: target,
+                onDidCreate: (el) => {
+                  target.append(el);
+                  const s = mount(VideoHoverButton, {
+                    target: el,
+                    props: {
+                      user: userData
+                    }
+                  });
+                  this.instances.set(el, s);
+                }
+              });
+              const comp = this.instances.get(wrapper);
+              if (comp) {
+                comp.setUser(userData);
+              }
+            }
+          }
+        });
+      });
+    }
+  };
+
+  // src/utils/injectStyle.ts
+  function injectStyle(id, css) {
+    obtainHTMLElementByID({
+      tag: "style",
+      id,
+      onDidCreate: (el) => {
+        document.head.appendChild(el);
+        el.innerHTML = css;
+      }
+    });
+  }
+
+  // src/bilibili.com/components/VideoListPatchStatus.svelte
+  var root_15 = from_html(`<div class="w-full text-gray-500 dark:text-gray-400 text-center m-1"><!> <button type="button" class="border rounded py-1 px-2 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition ease-in-out duration-200"> </button></div>`);
+  function VideoListPatchStatus($$anchor, $$props) {
+    push($$props, true);
+    const $stateStore = () => store_get($$props.stateStore, "$stateStore", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    var fragment = comment();
+    var node = first_child(fragment);
+    {
+      var consequent_1 = ($$anchor2) => {
+        var div = root_15();
+        var node_1 = child(div);
+        {
+          var consequent = ($$anchor3) => {
+            var text2 = text();
+            template_effect(() => {
+              var _a5;
+              return set_text(text2, `${(_a5 = $stateStore().matchCount) != null ? _a5 : ""} 条视频符合屏蔽规则`);
+            });
+            append($$anchor3, text2);
+          };
+          var alternate = ($$anchor3) => {
+            var text_1 = text();
+            template_effect(() => {
+              var _a5;
+              return set_text(text_1, `已屏蔽 ${(_a5 = $stateStore().matchCount) != null ? _a5 : ""} 条视频`);
+            });
+            append($$anchor3, text_1);
+          };
+          if_block(node_1, ($$render) => {
+            if ($stateStore().disabled)
+              $$render(consequent);
+            else
+              $$render(alternate, false);
+          });
+        }
+        var button = sibling(node_1, 2);
+        button.__click = function(...$$args) {
+          var _a5;
+          (_a5 = $$props.onToggle) == null ? void 0 : _a5.apply(this, $$args);
+        };
+        var text_2 = child(button, true);
+        reset(button);
+        reset(div);
+        template_effect(
+          ($0) => {
+            set_attribute2(div, "data-theme", $0);
+            set_text(text_2, $stateStore().disabled ? "屏蔽" : "全部显示");
+          },
+          [getCurrentTheme]
+        );
+        append($$anchor2, div);
+      };
+      if_block(node, ($$render) => {
+        if ($stateStore().matchCount > 0)
+          $$render(consequent_1);
+      });
+    }
+    append($$anchor, fragment);
+    pop();
+    $$cleanup();
+  }
+  delegate(["click"]);
+
+  // src/bilibili.com/components/VideoListPatch.ts
+  var _VideoListPatch = class _VideoListPatch {
+    constructor(ctx) {
+      this.ctx = ctx;
+      __publicField(this, "matchCountStore", writable(0));
+      __publicField(this, "disabledStore", writable(false));
+      __publicField(this, "instances", /* @__PURE__ */ new WeakMap());
+      __publicField(this, "render", () => {
+        injectStyle(
+          _VideoListPatch.parentKey,
+          `[data-${_VideoListPatch.parentKey}]:hover [data-${_VideoListPatch.key}] {
+  filter: opacity(1);
+  transition: filter 0.2s linear 0.2s;
+}
+
+[data-${_VideoListPatch.parentKey}] [data-${_VideoListPatch.key}] {
+  filter: opacity(0);
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transition: filter 0.2s linear 0s;
+}
+`
+        );
+        let matchCount = 0;
+        const disabled = get2(this.disabledStore);
+        let listEl;
+        document.querySelectorAll(".bili-video-card").forEach((i) => {
+          var _a5, _b2, _c2, _d, _e, _f, _g, _h, _i, _j, _k, _l;
+          const rawURL = (_a5 = i.querySelector("a.bili-video-card__info--owner")) == null ? void 0 : _a5.getAttribute("href");
+          if (!rawURL) {
+            return;
+          }
+          const user = parseUserURL(rawURL);
+          let match = false;
+          let note = "";
+          if (user) {
+            const authorEl = i.querySelector(".bili-video-card__info--author");
+            const authorName = (_b2 = (authorEl == null ? void 0 : authorEl.getAttribute("title")) || (authorEl == null ? void 0 : authorEl.textContent)) != null ? _b2 : "";
+            const duration = (_e = (_d = (_c2 = i.querySelector(".bili-video-card__stats__duration")) == null ? void 0 : _c2.textContent) == null ? void 0 : _d.trim()) != null ? _e : "";
+            const titleEl = i.querySelector(".bili-video-card__info--tit");
+            const title = (_f = (titleEl == null ? void 0 : titleEl.getAttribute("title")) || (titleEl == null ? void 0 : titleEl.textContent)) != null ? _f : "";
+            if (title) {
+              note = `${title}`;
+            }
+            const video = parseVideoURL(
+              (_i = (_g = titleEl == null ? void 0 : titleEl.parentElement) == null ? void 0 : _g.getAttribute("href")) != null ? _i : (_h = titleEl == null ? void 0 : titleEl.querySelector("a")) == null ? void 0 : _h.getAttribute("href")
+            );
+            if (video == null ? void 0 : video.id) {
+              note += `(${video.id})`;
+            }
+            const isPromoted = i.classList.contains("is-rcmd") && !i.classList.contains("enable-no-interest");
+            match = this.ctx.shouldExcludeVideo({
+              user: __spreadProps(__spreadValues({}, user), { name: authorName }),
+              duration,
+              title,
+              isPromoted
+            });
+          } else {
+            match = !videoListSettings_default.allowAdvertisement;
+          }
+          if (match) {
+            matchCount += 1;
+          }
+          let container = i;
+          while (((_j = container.parentElement) == null ? void 0 : _j.childElementCount) === 1 || ((_k = container.parentElement) == null ? void 0 : _k.classList.values().some((cls) => _VideoListPatch.knownParentContainerClass.has(cls)))) {
+            container = container.parentElement;
+          }
+          listEl = container.parentElement || void 0;
+          const hidden = !disabled && match;
+          setHTMLElementDisplayHidden(container, hidden);
+          if (user && !hidden) {
+            const target = i.querySelector(".bili-video-card__image--wrap");
+            if (target) {
+              const userData = {
+                id: user.id,
+                name: ((_l = i.querySelector(".bili-video-card__info--author")) == null ? void 0 : _l.textContent) || user.id,
+                note
+              };
+              const wrapper = obtainHTMLElementByDataKey({
+                tag: "div",
+                key: _VideoListPatch.key,
+                parentNode: target,
+                onDidCreate: (el) => {
+                  target.setAttribute(`data-${_VideoListPatch.parentKey}`, "");
+                  target.append(el);
+                  const s = mount(VideoHoverButton, {
+                    target: obtainStyledShadowRoot(el),
+                    props: {
+                      user: userData
+                    }
+                  });
+                  this.instances.set(el, s);
+                }
+              });
+              const comp = this.instances.get(wrapper);
+              if (comp) {
+                comp.setUser(userData);
+              }
+            }
+          }
+        });
+        this.matchCountStore.set(matchCount);
+        obtainHTMLElementByID({
+          id: `video-list-patch-status-${_VideoListPatch.id}`,
+          tag: "div",
+          onDidCreate: (el) => {
+            var _a5;
+            (_a5 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a5.insertBefore(el, listEl);
+            const shadowRoot = obtainStyledShadowRoot(el);
+            const stateStore = writable({ matchCount, disabled });
+            this.matchCountStore.subscribe((v) => {
+              stateStore.update((s) => __spreadProps(__spreadValues({}, s), { matchCount: v }));
+            });
+            this.disabledStore.subscribe((v) => {
+              stateStore.update((s) => __spreadProps(__spreadValues({}, s), { disabled: v }));
+            });
+            mount(VideoListPatchStatus, {
+              target: shadowRoot,
+              props: {
+                stateStore,
+                onToggle: () => {
+                  this.disabledStore.update((v) => !v);
+                  this.render();
+                }
+              }
+            });
+          }
+        });
+      });
+    }
+  };
+  __publicField(_VideoListPatch, "id", randomUUID());
+  __publicField(_VideoListPatch, "parentKey", "dde57f95-0cb5-4443-bbeb-2466d63db0f1");
+  __publicField(_VideoListPatch, "key", "a1161956-2be7-4796-9f1b-528707156b11");
+  __publicField(_VideoListPatch, "knownParentContainerClass", /* @__PURE__ */ new Set([
+    "bili-feed-card",
+    "feed-card"
+  ]));
+  var VideoListPatch = _VideoListPatch;
+
+  // src/bilibili.com/components/AdblockTipPatch.ts
+  var AdblockTipPatch = class {
+    constructor() {
+      __publicField(this, "render", () => {
+        const el = document.querySelector(".adblock-tips");
+        if (el instanceof HTMLElement) {
+          setHTMLElementDisplayHidden(el, !homePageSettings_default.allowAdblockTips);
+        }
+      });
+    }
+  };
+
+  // src/bilibili.com/components/HomePageFloorCardHoverButton.svelte
+  var root11 = from_html(`<button type="button" title="屏蔽此频道的楼层卡片" class="absolute top-2 left-2 rounded-md cursor-pointer text-white bg-[rgba(33,33,33,.8)] z-20 border-none"><svg viewBox="-2 -2 28 28" class="h-7 fill-current"><path fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>`);
+  function HomePageFloorCardHoverButton($$anchor, $$props) {
+    push($$props, true);
+    let floorCard = prop($$props, "floorCard", 15);
+    function setFloorCard(f) {
+      floorCard(f);
+    }
+    var $$exports = { setFloorCard };
+    var button = root11();
+    button.__click = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      homePageSettings_default.floorCard.excludeByChannel = [
+        ...homePageSettings_default.floorCard.excludeByChannel,
+        floorCard().channel
+      ];
+    };
+    var svg = child(button);
+    var path = child(svg);
+    reset(svg);
+    reset(button);
+    template_effect(() => set_attribute2(path, "d", mdiEyeOff));
+    append($$anchor, button);
+    return pop($$exports);
+  }
+  delegate(["click"]);
+
+  // src/bilibili.com/components/HomePageFloorCardPatch.ts
+  var _HomePageFloorCardPatch = class _HomePageFloorCardPatch {
+    constructor() {
+      __publicField(this, "instances", /* @__PURE__ */ new WeakMap());
+      __publicField(this, "render", () => {
+        injectStyle(
+          _HomePageFloorCardPatch.parentKey,
+          `[data-${_HomePageFloorCardPatch.parentKey}]:hover [data-${_HomePageFloorCardPatch.key}] {
+  filter: opacity(1);
+  transition: filter 0.2s linear 0.2s;
+}
+
+[data-${_HomePageFloorCardPatch.parentKey}] [data-${_HomePageFloorCardPatch.key}] {
+  filter: opacity(0);
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transition: filter 0.2s linear 0s;
+}
+`
+        );
+        document.querySelectorAll(".floor-single-card").forEach((el) => {
+          var _a5, _b2;
+          const channel = (_b2 = (_a5 = el.querySelector(".floor-title")) == null ? void 0 : _a5.textContent) == null ? void 0 : _b2.trim();
+          if (!channel) {
+            return;
+          }
+          const i = { channel };
+          const hidden = homePageSettings_default.floorCard.shouldExclude(i);
+          setHTMLElementDisplayHidden(el, hidden);
+          if (!hidden) {
+            const target = el.querySelector(".cover-container");
+            if (target) {
+              const wrapper = obtainHTMLElementByDataKey({
+                tag: "div",
+                key: _HomePageFloorCardPatch.key,
+                parentNode: target,
+                onDidCreate: (el2) => {
+                  target.setAttribute(
+                    `data-${_HomePageFloorCardPatch.parentKey}`,
+                    ""
+                  );
+                  target.append(el2);
+                  const s = mount(HomePageFloorCardHoverButton, {
+                    target: obtainStyledShadowRoot(el2),
+                    props: {
+                      floorCard: i
+                    }
+                  });
+                  this.instances.set(el2, s);
+                }
+              });
+              const comp = this.instances.get(wrapper);
+              if (comp) {
+                comp.setFloorCard(i);
+              }
+            }
+          }
+        });
+      });
+    }
+  };
+  __publicField(_HomePageFloorCardPatch, "parentKey", "51d5da07-ab2d-4342-8496-c3c53980bb74");
+  __publicField(_HomePageFloorCardPatch, "key", "85e3e435-2ad2-4a7d-839f-69318799db0f");
+  var HomePageFloorCardPatch = _HomePageFloorCardPatch;
+
+  // src/bilibili.com/components/MiniHeaderButton.svelte
+  var root12 = from_html(`<div class="item"><span class="name">屏蔽</span></div>`);
+  function MiniHeaderButton($$anchor, $$props) {
+    push($$props, true);
+    var div = root12();
+    div.__click = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      $$props.settings.open();
+    };
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["click"]);
+
   // src/bilibili.com/components/MiniHeaderButton.ts
   var _MiniHeaderButton = class _MiniHeaderButton {
     constructor(settings) {
@@ -7721,36 +13074,29 @@ margin-right: 24px;
           onDidCreate: (el) => {
             el.classList.add("item");
             parent.prepend(...[parent.firstChild, el].filter(isNonNull));
+            mount(MiniHeaderButton, {
+              target: el,
+              props: {
+                settings: this.settings
+              }
+            });
           }
         });
-        render(
-          html`
-        <div
-          @click=${(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.settings.open();
-          }}
-        >
-          <span class="name">屏蔽</span>
-        </div>
-      `,
-          container
-        );
       });
       this.settings = settings;
     }
   };
   __publicField(_MiniHeaderButton, "id", `mini-header-button-${randomUUID()}`);
-  var MiniHeaderButton = _MiniHeaderButton;
+  var MiniHeaderButton2 = _MiniHeaderButton;
 
   // src/bilibili.com/components/PlaylistPatch.ts
   var PlaylistPatch = class {
     constructor(ctx) {
       this.ctx = ctx;
+      __publicField(this, "instances", /* @__PURE__ */ new WeakMap());
       __publicField(this, "render", () => {
         document.querySelectorAll(".video-card").forEach((i) => {
-          var _a5, _b2, _c2, _d2, _e, _f, _g, _h;
+          var _a5, _b2, _c2, _d, _e, _f, _g, _h;
           const rawURL = (_a5 = i.querySelector("a.upname")) == null ? void 0 : _a5.getAttribute("href");
           if (!rawURL) {
             return;
@@ -7758,7 +13104,7 @@ margin-right: 24px;
           const user = parseUserURL(rawURL);
           let hidden = false;
           if (user) {
-            const duration = (_d2 = (_c2 = (_b2 = i.querySelector(".duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d2 : "";
+            const duration = (_d = (_c2 = (_b2 = i.querySelector(".duration")) == null ? void 0 : _b2.textContent) == null ? void 0 : _c2.trim()) != null ? _d : "";
             const title = (_g = ((_e = i.querySelector(".title")) == null ? void 0 : _e.getAttribute("title")) || ((_f = i.querySelector(".title")) == null ? void 0 : _f.textContent)) != null ? _g : "";
             hidden = this.ctx.shouldExcludeVideo({ user, duration, title });
           } else {
@@ -7766,10 +13112,33 @@ margin-right: 24px;
           }
           setHTMLElementDisplayHidden(i, hidden);
           if (user && !hidden) {
-            new VideoHoverButton(i.querySelector(".pic-box"), {
-              id: user.id,
-              name: ((_h = i.querySelector(".upname .name")) == null ? void 0 : _h.textContent) || user.id
-            }).render();
+            const target = i.querySelector(".pic-box");
+            if (target) {
+              const userData = {
+                id: user.id,
+                name: ((_h = i.querySelector(".upname .name")) == null ? void 0 : _h.textContent) || user.id,
+                note: ""
+              };
+              const wrapper = obtainHTMLElementByDataKey({
+                tag: "div",
+                key: "playlist-video-hover-button",
+                parentNode: target,
+                onDidCreate: (el) => {
+                  target.append(el);
+                  const s = mount(VideoHoverButton, {
+                    target: el,
+                    props: {
+                      user: userData
+                    }
+                  });
+                  this.instances.set(el, s);
+                }
+              });
+              const comp = this.instances.get(wrapper);
+              if (comp) {
+                comp.setUser(userData);
+              }
+            }
           }
         });
       });
@@ -7794,26 +13163,98 @@ margin-right: 24px;
     }
   }
 
-  // src/bilibili.com/components/LiveRoomHoverButton.ts
-  var LiveRoomHoverButton = class {
-    constructor(parentNode, room) {
-      this.parentNode = parentNode;
-      this.room = room;
+  // src/bilibili.com/components/LiveRoomHoverButton.svelte
+  var root13 = from_html(`<button type="button" style="z-index: 200;"><svg viewBox="0 0 24 24" class="h-8 fill-current"><path fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>`);
+  function LiveRoomHoverButton($$anchor, $$props) {
+    push($$props, true);
+    const $blockedLiveRooms = () => store_get(blockedLiveRooms_default, "$blockedLiveRooms", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    let room = prop($$props, "room", 15);
+    function setRoom(r) {
+      room(r);
+    }
+    let isBlocked = user_derived(() => $blockedLiveRooms() && blockedLiveRooms_default.has(room().id));
+    var $$exports = { setRoom };
+    var button = root13();
+    button.__click = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      blockedLiveRooms_default.toggle(room(), !get(isBlocked));
+    };
+    var svg = child(button);
+    var path = child(svg);
+    reset(svg);
+    reset(button);
+    template_effect(() => {
+      set_attribute2(button, "title", get(isBlocked) ? "取消屏蔽此直播间" : "屏蔽此直播间");
+      set_class(button, 1, `absolute top-2 left-2 p-1 rounded-md cursor-pointer isolate border-none ${get(isBlocked) ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}`);
+      set_attribute2(path, "d", get(isBlocked) ? mdiCheckCircleOutline : mdiCancel);
+    });
+    append($$anchor, button);
+    var $$pop = pop($$exports);
+    $$cleanup();
+    return $$pop;
+  }
+  delegate(["click"]);
+
+  // src/bilibili.com/components/LiveRoomListStatus.svelte
+  var root_16 = from_html(`<div style="width: 100%; color: #6b7280; text-align: center; margin: 4px; font-size: 14px;"> <button type="button"> </button></div>`);
+  function LiveRoomListStatus($$anchor, $$props) {
+    const $matchCountStore = () => store_get($$props.matchCountStore, "$matchCountStore", $$stores);
+    const $disabledStore = () => store_get($$props.disabledStore, "$disabledStore", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    let matchCount = user_derived($matchCountStore);
+    let disabled = user_derived($disabledStore);
+    let isHovered = state(false);
+    var fragment = comment();
+    var node = first_child(fragment);
+    {
+      var consequent = ($$anchor2) => {
+        var div = root_16();
+        var text2 = child(div);
+        var button = sibling(text2);
+        button.__click = function(...$$args) {
+          var _a5;
+          (_a5 = $$props.onToggleDisabled) == null ? void 0 : _a5.apply(this, $$args);
+        };
+        var text_1 = child(button, true);
+        reset(button);
+        reset(div);
+        template_effect(() => {
+          set_text(text2, `${get(disabled) ? `${get(matchCount)} 个直播间符合屏蔽规则` : `已屏蔽 ${get(matchCount)} 个直播间`} `);
+          set_style(button, `border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 8px; color: black; background-color: ${get(isHovered) ? "#f3f4f6" : "transparent"}; transition: background-color 0.2s ease-in-out; cursor: pointer; margin-left: 8px;`);
+          set_text(text_1, get(disabled) ? "屏蔽" : "全部显示");
+        });
+        event("mouseenter", button, () => set(isHovered, true));
+        event("mouseleave", button, () => set(isHovered, false));
+        append($$anchor2, div);
+      };
+      if_block(node, ($$render) => {
+        if (get(matchCount) > 0)
+          $$render(consequent);
+      });
+    }
+    append($$anchor, fragment);
+    $$cleanup();
+  }
+  delegate(["click"]);
+
+  // src/bilibili.com/components/LiveRoomListPatch.ts
+  var _LiveRoomPatch = class _LiveRoomPatch {
+    constructor(ctx) {
+      this.ctx = ctx;
+      __publicField(this, "disabledStore", writable(false));
+      __publicField(this, "matchCountStore", writable(0));
+      __publicField(this, "instances", /* @__PURE__ */ new WeakMap());
       __publicField(this, "render", () => {
-        const { parentNode } = this;
-        if (!parentNode) {
-          return;
-        }
-        const parentKey = "321c1408-3ba8-4f8e-8ec8-4c491cf648c6";
-        const key2 = "c2ad7200-7141-46cd-a0ce-ba71ca52e396";
         injectStyle(
-          parentKey,
-          `[data-${parentKey}]:hover [data-${key2}] {
+          _LiveRoomPatch.parentKey,
+          `[data-${_LiveRoomPatch.parentKey}]:hover [data-${_LiveRoomPatch.key}] {
   filter: opacity(1);
   transition: filter 0.2s linear 0.2s;
 }
 
-[data-${parentKey}] [data-${key2}] {
+[data-${_LiveRoomPatch.parentKey}] [data-${_LiveRoomPatch.key}] {
   filter: opacity(0);
   z-index: 10;
   position: absolute;
@@ -7823,47 +13264,8 @@ margin-right: 24px;
 }
 `
         );
-        const el = obtainHTMLElementByDataKey({
-          tag: "div",
-          key: key2,
-          parentNode,
-          onDidCreate: (el2) => {
-            parentNode.setAttribute(`data-${parentKey}`, "");
-            parentNode.append(el2);
-          }
-        });
-        const isBlocked = blockedLiveRooms_default.has(this.room.id);
-        render(
-          html`
-  <button
-    type="button"
-    title="${isBlocked ? "取消屏蔽此直播间" : "屏蔽此直播间"}"
-    class="absolute top-2 left-2 p-1 rounded-md cursor-pointer isolate border-none ${isBlocked ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}"
-    style="z-index: 200;"
-    @click=${(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            blockedLiveRooms_default.toggle(this.room, !isBlocked);
-          }}
-  >
-    <svg viewBox="0 0 24 24" class="h-8 fill-current">
-      <path fill-rule="evenodd" clip-rule="evenodd" d=${isBlocked ? mdiCheckCircleOutline : mdiCancel}>
-    </svg>
-  </button>
-    `,
-          obtainStyledShadowRoot(el)
-        );
-      });
-    }
-  };
-
-  // src/bilibili.com/components/LiveRoomListPatch.ts
-  var _LiveRoomPatch = class _LiveRoomPatch {
-    constructor(ctx) {
-      this.ctx = ctx;
-      __publicField(this, "disabled", false);
-      __publicField(this, "render", () => {
         let matchCount = 0;
+        const disabled = get2(this.disabledStore);
         let listEl;
         document.querySelectorAll("a#card").forEach((i) => {
           var _a5, _b2;
@@ -7884,46 +13286,87 @@ margin-right: 24px;
             container = container.parentElement;
           }
           listEl = container.parentElement || void 0;
-          const hidden = !this.disabled && match;
+          const hidden = !disabled && match;
           setHTMLElementDisplayHidden(container, hidden);
           if (!hidden) {
-            new LiveRoomHoverButton(i.querySelector(".Item_cover-wrap_BmU4h"), {
-              id: room.id,
-              owner: ((_b2 = i.querySelector(".Item_nickName_KO2QE")) == null ? void 0 : _b2.textContent) || room.id
-            }).render();
+            const target = i.querySelector(".Item_cover-wrap_BmU4h");
+            if (target) {
+              const roomData = {
+                id: room.id,
+                owner: ((_b2 = i.querySelector(".Item_nickName_KO2QE")) == null ? void 0 : _b2.textContent) || room.id
+              };
+              const wrapper = obtainHTMLElementByDataKey({
+                tag: "div",
+                key: _LiveRoomPatch.key,
+                parentNode: target,
+                onDidCreate: (el) => {
+                  target.setAttribute(`data-${_LiveRoomPatch.parentKey}`, "");
+                  target.append(el);
+                  const s = mount(LiveRoomHoverButton, {
+                    target: obtainStyledShadowRoot(el),
+                    props: {
+                      room: roomData
+                    }
+                  });
+                  this.instances.set(el, s);
+                }
+              });
+              const comp = this.instances.get(wrapper);
+              if (comp) {
+                comp.setRoom(roomData);
+              }
+            }
           }
         });
-        render(
-          matchCount === 0 ? nothing : html`
-            <div class="w-full text-gray-500 text-center m-1">
-              ${this.disabled ? html`${matchCount} 个直播间符合屏蔽规则` : html`已屏蔽 ${matchCount} 个直播间`}
-              <button
-                type="button"
-                class="border rounded py-1 px-2 text-black hover:bg-gray-200 transition ease-in-out duration-200"
-                @click=${() => {
-            this.disabled = !this.disabled;
-          }}
-              >
-                ${this.disabled ? "屏蔽" : "全部显示"}
-              </button>
-            </div>
-          `,
-          obtainStyledShadowRoot(
-            obtainHTMLElementByID({
-              id: `live-room-list-patch-status-${_LiveRoomPatch.id}`,
-              tag: "div",
-              onDidCreate: (el) => {
-                var _a5;
-                (_a5 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a5.insertBefore(el, listEl);
+        this.matchCountStore.set(matchCount);
+        obtainHTMLElementByID({
+          id: `live-room-list-patch-status-${_LiveRoomPatch.id}`,
+          tag: "div",
+          onDidCreate: (el) => {
+            var _a5;
+            (_a5 = listEl == null ? void 0 : listEl.parentElement) == null ? void 0 : _a5.insertBefore(el, listEl);
+            const shadowRoot = obtainStyledShadowRoot(el);
+            mount(LiveRoomListStatus, {
+              target: shadowRoot,
+              props: {
+                matchCountStore: this.matchCountStore,
+                disabledStore: this.disabledStore,
+                onToggleDisabled: () => {
+                  this.disabledStore.update((v) => !v);
+                  this.render();
+                }
               }
-            })
-          )
-        );
+            });
+          }
+        });
       });
     }
   };
   __publicField(_LiveRoomPatch, "id", randomUUID());
+  __publicField(_LiveRoomPatch, "parentKey", "321c1408-3ba8-4f8e-8ec8-4c491cf648c6");
+  __publicField(_LiveRoomPatch, "key", "c2ad7200-7141-46cd-a0ce-ba71ca52e396");
   var LiveRoomPatch = _LiveRoomPatch;
+
+  // src/bilibili.com/components/LiveHeaderButton.svelte
+  var root14 = from_html(`<div style="display: flex; align-items: center; margin: 0 20px; flex-direction: column; gap: 4px; padding: 12px; font-size: 14px; cursor: pointer; color: inherit;"><svg viewBox="2 2 20 20" style="height: 20px; fill: currentColor;"><path fill-rule="evenodd" clip-rule="evenodd"></path></svg> <span>屏蔽</span></div>`);
+  function LiveHeaderButton($$anchor, $$props) {
+    push($$props, true);
+    var div = root14();
+    div.__click = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      $$props.onClick();
+    };
+    var svg = child(div);
+    var path = child(svg);
+    reset(svg);
+    next(2);
+    reset(div);
+    template_effect(() => set_attribute2(path, "d", mdiEyeOffOutline));
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["click"]);
 
   // src/bilibili.com/components/LiveHeaderButton.ts
   var _LiveHeaderButton = class _LiveHeaderButton {
@@ -7940,32 +13383,20 @@ margin-right: 24px;
           onDidCreate: (el) => {
             el.style.fontSize = "14px";
             parent.append(...[el, parent.lastChild].filter(isNonNull));
+            mount(LiveHeaderButton, {
+              target: el,
+              props: {
+                onClick: () => this.settings.open()
+              }
+            });
           }
         });
-        render(
-          html`
-      <div
-        style="display: flex; align-items: center; margin: 0 20px;flex-direction: column;gap: 4px;padding: 12px;font-size: 14px; cursor: pointer;"
-        @click=${(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.settings.open();
-          }}
-      >
-        <svg viewBox="2 2 20 20" style="height: 20px; fill: currentColor;">
-          <path fill-rule="evenodd" clip-rule="evenodd" d=${mdiEyeOffOutline}>
-        </svg>
-        <span>屏蔽</span>
-      </div>
-      `,
-          container
-        );
       });
       this.settings = settings;
     }
   };
   __publicField(_LiveHeaderButton, "id", `live-header-button-${randomUUID()}`);
-  var LiveHeaderButton = _LiveHeaderButton;
+  var LiveHeaderButton2 = _LiveHeaderButton;
 
   // src/bilibili.com/components/NavSearchSuggestionPatch.ts
   var NavSearchSuggestionPatch = class {
@@ -8007,7 +13438,7 @@ margin-right: 24px;
     return __async(this, null, function* () {
       var _a5;
       const rawURL = window.location.href;
-      const settings = new SettingsDrawer();
+      const settings = new SettingsDrawer2();
       const navSuggestion = new NavSearchSuggestionPatch();
       const components = [settings, navSuggestion];
       const user = parseUserURL(rawURL);
@@ -8015,17 +13446,17 @@ margin-right: 24px;
       let headerButton;
       yield waitUntil({
         ready: () => {
-          var _a6, _b2, _c2, _d2;
+          var _a6, _b2, _c2, _d;
           if (((_b2 = (_a6 = document.querySelector(".right-entry")) == null ? void 0 : _a6.childElementCount) != null ? _b2 : 0) >= 2) {
-            headerButton = new FullHeaderButton(settings);
+            headerButton = new FullHeaderButton2(settings);
             return true;
           }
-          if (((_d2 = (_c2 = document.querySelector(".nav-user-center .user-con:nth-child(2)")) == null ? void 0 : _c2.childElementCount) != null ? _d2 : 0) >= 2) {
-            headerButton = new MiniHeaderButton(settings);
+          if (((_d = (_c2 = document.querySelector(".nav-user-center .user-con:nth-child(2)")) == null ? void 0 : _c2.childElementCount) != null ? _d : 0) >= 2) {
+            headerButton = new MiniHeaderButton2(settings);
             return true;
           }
           if (document.querySelector(".link-navbar .right-part")) {
-            headerButton = new LiveHeaderButton(settings);
+            headerButton = new LiveHeaderButton2(settings);
             return true;
           }
           navSuggestion.render();
@@ -8095,22 +13526,13 @@ margin-right: 24px;
           }
           app.render();
         }),
-        scheduleNext: (next) => {
-          const stack = new DisposableStack();
-          stack.adopt(setTimeout(next, 100), clearTimeout);
-          return stack;
+        scheduleNext: (next2) => {
+          const stack2 = new DisposableStack();
+          stack2.adopt(setTimeout(next2, 100), clearTimeout);
+          return stack2;
         }
       });
     });
   }
   main();
 })();
-/*! Bundled license information:
-
-lit-html/development/lit-html.js:
-  (**
-   * @license
-   * Copyright 2017 Google LLC
-   * SPDX-License-Identifier: BSD-3-Clause
-   *)
-*/

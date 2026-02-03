@@ -15,6 +15,14 @@ export default new (class {
     return id in this.value.get();
   };
 
+  public readonly subscribe = (
+    run: (
+      value: Record<string, BlockedUser | true | undefined> | undefined
+    ) => void
+  ) => {
+    return this.value.subscribe(run);
+  };
+
   public readonly get = (id: string) => {
     const value = this.value.get()[id];
     if (!value) {
@@ -24,7 +32,7 @@ export default new (class {
       blockedAt: rawBlockedAt = 0,
       name = id,
       note = '',
-    } = typeof value === 'boolean' ? {} : value ?? {};
+    } = typeof value === 'boolean' ? {} : (value ?? {});
     const blockedAt = new Date(rawBlockedAt);
     return {
       id,

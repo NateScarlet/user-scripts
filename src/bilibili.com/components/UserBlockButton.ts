@@ -1,7 +1,9 @@
 import isNonNull from '@/utils/isNonNull';
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
-import { render, html } from 'lit-html';
+import { mount } from 'svelte';
 import randomUUID from '@/utils/randomUUID';
+import UserBlockButtonInline from './UserBlockButtonInline.svelte';
+import UserBlockStatus from './UserBlockStatus.svelte';
 import blockedUsers from '../models/blockedUsers';
 
 export default class UserBlockButton {
@@ -12,29 +14,26 @@ export default class UserBlockButton {
   public readonly render = () => {
     const parentV1 = document.querySelector('.h-action');
     if (parentV1) {
-      const container = obtainHTMLElementByID({
+      obtainHTMLElementByID({
         tag: 'div',
         id: UserBlockButton.id,
         onDidCreate: (el) => {
           el.style.display = 'inline';
           parentV1.append(...[el, parentV1.lastChild].filter(isNonNull));
+          mount(UserBlockButtonInline, {
+            target: el,
+            props: {
+              user: this.user,
+            },
+          });
         },
       });
-      const isBlocked = blockedUsers.has(this.user.id);
-      render(
-        html`
-          <span class="h-f-btn" @click=${this.onClick}>
-            ${isBlocked ? '取消屏蔽' : '屏蔽'}
-          </span>
-        `,
-        container
-      );
       return;
     }
 
     const parentV2 = document.querySelector('.operations .interactions');
     if (parentV2) {
-      const container = obtainHTMLElementByID({
+      obtainHTMLElementByID({
         tag: 'div',
         id: UserBlockButton.id,
         onDidCreate: (el) => {
@@ -61,26 +60,23 @@ margin-right: 24px;
             el.style.backgroundColor = 'rgba(255,255,255,.14)';
           });
           el.addEventListener('click', (e) => {
-            this.onClick(e);
+            e.stopPropagation();
+            blockedUsers.toggle({
+              id: this.user.id,
+              name:
+                (document.querySelector('#h-name, .nickname') as HTMLElement)
+                  ?.innerText ?? '',
+            });
           });
           parentV2.append(...[el, parentV2.lastChild].filter(isNonNull));
+          mount(UserBlockStatus, {
+            target: el,
+            props: {
+              user: this.user,
+            },
+          });
         },
       });
-      const isBlocked = blockedUsers.has(this.user.id);
-      render(
-        html`<span> ${isBlocked ? '取消屏蔽' : '屏蔽'} </span>`,
-        container
-      );
     }
-  };
-
-  public readonly onClick = (e: MouseEvent) => {
-    e.stopPropagation();
-    blockedUsers.toggle({
-      id: this.user.id,
-      name:
-        document.querySelector<HTMLElement>('#h-name, .nickname')?.innerText ??
-        '',
-    });
   };
 }

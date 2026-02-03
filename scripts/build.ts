@@ -1,16 +1,20 @@
 import { context } from 'esbuild';
-import { readFile, readdir, stat } from 'fs/promises';
+import { fileURLToPath } from 'url';
+import { readdir, stat } from 'fs/promises';
 import { createHash } from 'crypto';
-
+import esbuildSvelte from 'esbuild-svelte';
+import svelteConfig from '../svelte.config.mjs';
 import { execSync } from 'child_process';
 import moment from 'moment';
 import * as fs from 'fs/promises';
 import * as pathLib from 'path';
 
+const __dirname = pathLib.dirname(fileURLToPath(import.meta.url));
+
 const METADATA_START = '// ==UserScript==';
 const METADATA_END = '// ==/UserScript==';
 
-function shell(command) {
+function shell(command: string) {
   return execSync(command).toString().trimEnd();
 }
 
@@ -63,20 +67,7 @@ export async function build(watch = false) {
     charset: 'utf8',
     conditions: ['development'],
     plugins: [
-      {
-        name: 'lit-html',
-        setup(build) {
-          build.onLoad({ filter: /[\/\\]lit-html.js$/ }, async ({ path }) => {
-            const source = await readFile(path, 'utf-8');
-            return {
-              contents: source.replace(
-                'const DEV_MODE = true',
-                'const DEV_MODE = false'
-              ),
-            };
-          });
-        },
-      },
+      esbuildSvelte(svelteConfig),
       {
         name: 'save',
         setup(build) {
@@ -169,7 +160,10 @@ export async function build(watch = false) {
   await ctx.dispose();
 }
 
-if (require.main === module) {
+if (
+  process.argv[1] &&
+  fileURLToPath(import.meta.url) === pathLib.resolve(process.argv[1])
+) {
   (async () => {
     await build(process.argv.includes('--watch'));
   })();

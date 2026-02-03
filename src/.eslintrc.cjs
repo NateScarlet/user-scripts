@@ -19,7 +19,6 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: true,
-    tsconfigRootDir: __dirname,
   },
   settings: {
     'import/resolver': {
