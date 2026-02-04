@@ -152,9 +152,10 @@ async function main() {
       app.render();
     },
     scheduleNext: (next) => {
-      const stack = new DisposableStack();
-      stack.adopt(setTimeout(next, 100), clearTimeout);
-      return stack;
+      const handle = setTimeout(next, 100);
+      return {
+        dispose: () => clearTimeout(handle),
+      };
     },
   });
 }

@@ -47,7 +47,6 @@
   "dependencies": {
     "@mdi/js": "^7.2.96",
     "@types/mustache": "^4.1.2",
-    "core-js": "^3.48.0",
     "es-toolkit": "^1.39.9",
     "mustache": "^4.2.0",
     "svelte": "^5.49.1"

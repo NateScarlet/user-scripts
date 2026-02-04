@@ -109,11 +109,11 @@ export default class VideoListPatch {
       let container = i;
       while (
         container.parentElement?.childElementCount === 1 ||
-        container.parentElement?.classList
-          .values()
-          .some((cls) => VideoListPatch.knownParentContainerClass.has(cls))
+        Array.from(container.parentElement?.classList.values() ?? []).some(
+          (cls) => VideoListPatch.knownParentContainerClass.has(cls)
+        )
       ) {
-        container = container.parentElement;
+        container = container.parentElement!;
       }
       listEl = container.parentElement || undefined;
       const hidden = !disabled && match;

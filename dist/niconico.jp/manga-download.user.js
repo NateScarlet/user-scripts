@@ -5,32 +5,11 @@
 // @grant    none
 // @include	 https://seiga.nicovideo.jp/watch/*
 // @run-at   document-idle
-// @version   2026.02.04+3802dc6c
+// @version   2026.02.04+937f5bb0
 // ==/UserScript==
 
 "use strict";
 (() => {
-  var __async = (__this, __arguments, generator) => {
-    return new Promise((resolve, reject) => {
-      var fulfilled = (value) => {
-        try {
-          step(generator.next(value));
-        } catch (e) {
-          reject(e);
-        }
-      };
-      var rejected = (value) => {
-        try {
-          step(generator.throw(value));
-        } catch (e) {
-          reject(e);
-        }
-      };
-      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-      step((generator = generator.apply(__this, __arguments)).next());
-    });
-  };
-
   // src/utils/urlLastPart.ts
   function urlLastPart(url) {
     return url.split("/").filter((i) => i).slice(-1)[0];
@@ -51,11 +30,9 @@
   }
 
   // src/utils/sleep.ts
-  function sleep(duration) {
-    return __async(this, null, function* () {
-      return new Promise((resolve) => {
-        setTimeout(resolve, duration);
-      });
+  async function sleep(duration) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, duration);
     });
   }
 
@@ -530,79 +507,74 @@
   }
 
   // src/utils/imageToCanvas.ts
-  function imageToCanvas(_0) {
-    return __async(this, arguments, function* (img, {
-      background
-    } = {}) {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext("2d");
-      if (background) {
-        ctx.fillStyle = background;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-      ctx.drawImage(img, 0, 0);
-      if (img.src && img.crossOrigin !== "anonymous" && isCanvasTainted(canvas)) {
-        const corsImage = new Image();
-        corsImage.crossOrigin = "anonymous";
-        corsImage.src = img.src;
-        yield corsImage.decode();
-        return imageToCanvas(corsImage, { background });
-      }
-      return canvas;
-    });
+  async function imageToCanvas(img, {
+    background
+  } = {}) {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    if (background) {
+      ctx.fillStyle = background;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    ctx.drawImage(img, 0, 0);
+    if (img.src && img.crossOrigin !== "anonymous" && isCanvasTainted(canvas)) {
+      const corsImage = new Image();
+      corsImage.crossOrigin = "anonymous";
+      corsImage.src = img.src;
+      await corsImage.decode();
+      return imageToCanvas(corsImage, { background });
+    }
+    return canvas;
   }
 
   // src/niconico.jp/manga-download.user.ts
   var __name__ = "NicoNico manga download";
-  (function() {
-    return __async(this, null, function* () {
-      var _a, _b, _c, _d;
-      const images = [];
-      const title = (_b = (_a = document.querySelector("meta[property='og:title']")) == null ? void 0 : _a.content) != null ? _b : document.title;
-      const startTime = Date.now();
-      const loopNext = () => {
-        if (Date.now() - startTime < 3e5) {
-          return true;
-        }
-        throw new Error(`${__name__}: timeout`);
-      };
-      const pages = document.querySelectorAll("li.page");
-      for (let index = 0; index < pages.length; index += 1) {
-        const li = pages.item(index);
-        while (loopNext()) {
-          const pageIndex = Number.parseInt((_c = li.dataset.pageIndex) != null ? _c : "", 10) || index;
-          let canvas = li.querySelector("canvas:not(.balloon)");
-          const image = li.querySelector("img[data-image-id]");
-          if (image) {
-            canvas = canvas != null ? canvas : yield imageToCanvas(image);
-          }
-          if (!canvas || canvas.width === 1) {
-            li.scrollIntoView();
-            console.log(`${__name__}: waiting page: ${pageIndex}`);
-            yield sleep(1e3);
-            continue;
-          }
-          images.push({
-            src: canvas.toDataURL(),
-            alt: li.id,
-            title: `p${pageIndex + 1}`
-          });
-          break;
-        }
+  (async function() {
+    const images = [];
+    const title = document.querySelector("meta[property='og:title']")?.content ?? document.title;
+    const startTime = Date.now();
+    const loopNext = () => {
+      if (Date.now() - startTime < 3e5) {
+        return true;
       }
-      (_d = pages.item(0)) == null ? void 0 : _d.scrollIntoView();
-      const data = mustache_default.render(manga_reader_default, {
-        title,
-        window,
-        images,
-        style: style_default
-      });
-      console.log(`${__name__}: got ${images.length} page(s)`);
-      const file = new Blob([data], { type: "text/html" });
-      downloadFile(file, `${title}.html`);
+      throw new Error(`${__name__}: timeout`);
+    };
+    const pages = document.querySelectorAll("li.page");
+    for (let index = 0; index < pages.length; index += 1) {
+      const li = pages.item(index);
+      while (loopNext()) {
+        const pageIndex = Number.parseInt(li.dataset.pageIndex ?? "", 10) || index;
+        let canvas = li.querySelector("canvas:not(.balloon)");
+        const image = li.querySelector("img[data-image-id]");
+        if (image) {
+          canvas = canvas ?? await imageToCanvas(image);
+        }
+        if (!canvas || canvas.width === 1) {
+          li.scrollIntoView();
+          console.log(`${__name__}: waiting page: ${pageIndex}`);
+          await sleep(1e3);
+          continue;
+        }
+        images.push({
+          src: canvas.toDataURL(),
+          alt: li.id,
+          title: `p${pageIndex + 1}`
+        });
+        break;
+      }
+    }
+    pages.item(0)?.scrollIntoView();
+    const data = mustache_default.render(manga_reader_default, {
+      title,
+      window,
+      images,
+      style: style_default
     });
+    console.log(`${__name__}: got ${images.length} page(s)`);
+    const file = new Blob([data], { type: "text/html" });
+    downloadFile(file, `${title}.html`);
   })();
 })();
 /*! Bundled license information:

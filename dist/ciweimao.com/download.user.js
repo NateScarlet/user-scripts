@@ -5,32 +5,11 @@
 // @grant    none
 // @include	 https://www.ciweimao.com/chapter/*
 // @run-at   document-idle
-// @version   2026.02.04+736fd1bd
+// @version   2026.02.04+185bb62f
 // ==/UserScript==
 
 "use strict";
 (() => {
-  var __async = (__this, __arguments, generator) => {
-    return new Promise((resolve, reject) => {
-      var fulfilled = (value) => {
-        try {
-          step(generator.next(value));
-        } catch (e) {
-          reject(e);
-        }
-      };
-      var rejected = (value) => {
-        try {
-          step(generator.throw(value));
-        } catch (e) {
-          reject(e);
-        }
-      };
-      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
-      step((generator = generator.apply(__this, __arguments)).next());
-    });
-  };
-
   // src/utils/elementRootText.ts
   function elementRootText(element) {
     let ret = "";
@@ -58,116 +37,105 @@
   }
 
   // src/utils/imageToCanvas.ts
-  function imageToCanvas(_0) {
-    return __async(this, arguments, function* (img, {
-      background
-    } = {}) {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext("2d");
-      if (background) {
-        ctx.fillStyle = background;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-      ctx.drawImage(img, 0, 0);
-      if (img.src && img.crossOrigin !== "anonymous" && isCanvasTainted(canvas)) {
-        const corsImage = new Image();
-        corsImage.crossOrigin = "anonymous";
-        corsImage.src = img.src;
-        yield corsImage.decode();
-        return imageToCanvas(corsImage, { background });
-      }
-      return canvas;
-    });
+  async function imageToCanvas(img, {
+    background
+  } = {}) {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    if (background) {
+      ctx.fillStyle = background;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    ctx.drawImage(img, 0, 0);
+    if (img.src && img.crossOrigin !== "anonymous" && isCanvasTainted(canvas)) {
+      const corsImage = new Image();
+      corsImage.crossOrigin = "anonymous";
+      corsImage.src = img.src;
+      await corsImage.decode();
+      return imageToCanvas(corsImage, { background });
+    }
+    return canvas;
   }
 
   // src/utils/imageToMarkdown.ts
-  function imageToMarkdown(_0) {
-    return __async(this, arguments, function* (img, {
-      background
-    } = {}) {
-      return canvasToMarkdown(
-        yield imageToCanvas(img, { background }),
-        img.alt,
-        img.title
-      );
-    });
+  async function imageToMarkdown(img, {
+    background
+  } = {}) {
+    return canvasToMarkdown(
+      await imageToCanvas(img, { background }),
+      img.alt,
+      img.title
+    );
   }
 
   // src/utils/loadImage.ts
-  function loadImage(url) {
-    return __async(this, null, function* () {
-      const img = new Image();
-      img.src = url;
-      img.alt = url;
-      yield img.decode();
-      return img;
-    });
+  async function loadImage(url) {
+    const img = new Image();
+    img.src = url;
+    img.alt = url;
+    await img.decode();
+    return img;
   }
 
   // src/utils/sleep.ts
-  function sleep(duration) {
-    return __async(this, null, function* () {
-      return new Promise((resolve) => {
-        setTimeout(resolve, duration);
-      });
+  async function sleep(duration) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, duration);
     });
   }
 
   // src/ciweimao.com/download.user.ts
   var __name__ = "刺猬猫章节自动下载";
-  (function() {
-    return __async(this, null, function* () {
-      var _a, _b, _c;
-      const chapter = (_c = (_b = (_a = document.querySelector("#J_BookCnt .chapter")) == null ? void 0 : _a.firstChild) == null ? void 0 : _b.textContent) != null ? _c : "";
-      let lines = [];
-      let startTime = Date.now();
-      while (lines.length === 0 && Date.now() - startTime < 6e4) {
-        yield sleep(1e3);
-        for (const i of document.querySelectorAll("#J_BookImage")) {
-          const match = i.style.backgroundImage.match(/(?:url\(")?(.+)(?:"\))?/);
-          if (!match) {
-            continue;
-          }
-          const url = match[1];
-          const line = yield imageToMarkdown(yield loadImage(url));
-          lines.push(line);
+  (async function() {
+    const chapter = document.querySelector("#J_BookCnt .chapter")?.firstChild?.textContent ?? "";
+    let lines = [];
+    const startTime = Date.now();
+    while (lines.length === 0 && Date.now() - startTime < 6e4) {
+      await sleep(1e3);
+      for (const i of document.querySelectorAll("#J_BookImage")) {
+        const match = i.style.backgroundImage.match(/(?:url\(")?(.+)(?:"\))?/);
+        if (!match) {
+          continue;
         }
-        for (const i of document.querySelectorAll("#J_BookRead p.chapter")) {
-          const line = elementRootText(i);
-          lines.push(line);
-          for (const img of i.querySelectorAll("img")) {
-            yield img.decode();
-            lines.push(yield imageToMarkdown(img));
-          }
-        }
-        for (const i of document.querySelectorAll("p.author_say")) {
-          const line = elementRootText(i);
-          lines.push(`    ${line}`);
-          for (const img of i.querySelectorAll("img")) {
-            yield img.decode();
-            lines.push(yield imageToMarkdown(img));
-          }
-        }
-        lines = lines.filter((i) => i.length > 0);
+        const url = match[1];
+        const line = await imageToMarkdown(await loadImage(url));
+        lines.push(line);
       }
-      console.log(`${__name__}: 获取到 ${lines.length} 行`);
-      const file = new Blob([`# ${chapter}
+      for (const i of document.querySelectorAll("#J_BookRead p.chapter")) {
+        const line = elementRootText(i);
+        lines.push(line);
+        for (const img of i.querySelectorAll("img")) {
+          await img.decode();
+          lines.push(await imageToMarkdown(img));
+        }
+      }
+      for (const i of document.querySelectorAll("p.author_say")) {
+        const line = elementRootText(i);
+        lines.push(`    ${line}`);
+        for (const img of i.querySelectorAll("img")) {
+          await img.decode();
+          lines.push(await imageToMarkdown(img));
+        }
+      }
+      lines = lines.filter((i) => i.length > 0);
+    }
+    console.log(`${__name__}: 获取到 ${lines.length} 行`);
+    const file = new Blob([`# ${chapter}
 
 `, lines.join("\n\n") + "\n"], {
-        type: "text/markdown"
-      });
-      const anchor = document.createElement("a");
-      anchor.href = URL.createObjectURL(file);
-      anchor.download = `${location.pathname.split("/").slice(-1)[0]} ${document.title}.md`;
-      anchor.style["display"] = "none";
-      document.body.append(anchor);
-      anchor.click();
-      setTimeout(() => {
-        document.body.removeChild(anchor);
-        URL.revokeObjectURL(anchor.href);
-      }, 0);
+      type: "text/markdown"
     });
+    const anchor = document.createElement("a");
+    anchor.href = URL.createObjectURL(file);
+    anchor.download = `${location.pathname.split("/").slice(-1)[0]} ${document.title}.md`;
+    anchor.style["display"] = "none";
+    document.body.append(anchor);
+    anchor.click();
+    setTimeout(() => {
+      document.body.removeChild(anchor);
+      URL.revokeObjectURL(anchor.href);
+    }, 0);
   })();
 })();

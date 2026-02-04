@@ -60,7 +60,7 @@ export async function build(watch = false) {
     entryPoints,
     bundle: true,
     treeShaking: true,
-    target: 'es2015',
+    target: 'es2020',
     outdir: workspacePath('dist'),
     write: false,
     metafile: true,
