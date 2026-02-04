@@ -4,9 +4,9 @@
   import HomePageSettings from './HomePageSettings.svelte';
   import SearchSettings from './SearchSettings.svelte';
   import VideoListSettings from './VideoListSettings.svelte';
-  import BlockedUserPatternsSettings from './BlockedUserPatternsSettings.svelte';
-  import UserTable from './UserTable.svelte';
-  import LiveRoomTable from './LiveRoomTable.svelte';
+  import BlockedUserPatternSettings from './BlockedUserPatternSettings.svelte';
+  import BlockedUsersSettings from './BlockedUsersSettings.svelte';
+  import BlockedLiveRoomsSettings from './BlockedLiveRoomsSettings.svelte';
   import { fade, fly } from 'svelte/transition';
 
   let isOpen = $state(false);
@@ -68,8 +68,8 @@
     <HomePageSettings />
     <SearchSettings />
     <VideoListSettings />
-    <BlockedUserPatternsSettings />
-    <UserTable />
-    <LiveRoomTable />
+    <BlockedUserPatternSettings />
+    <BlockedUsersSettings />
+    <BlockedLiveRoomsSettings />
   </div>
 {/if}

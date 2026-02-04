@@ -1,5 +1,5 @@
 import { mount } from 'svelte';
-import SettingsDrawerComponent from './SettingsDrawer/index.svelte';
+import Component from './SettingsDrawer/SettingsDrawer.svelte';
 import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 import randomUUID from '@/utils/randomUUID';
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
@@ -7,7 +7,7 @@ import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
 export default class SettingsDrawer {
   private static readonly id: string = `settings-${randomUUID()}`;
 
-  private component?: SettingsDrawerComponent;
+  private component?: Component;
 
   public readonly open = () => {
     this.component?.open();
@@ -17,7 +17,7 @@ export default class SettingsDrawer {
     this.component?.close();
   };
 
-  render() {
+  public readonly render = () => {
     obtainHTMLElementByID({
       tag: 'div',
       id: SettingsDrawer.id,
@@ -25,10 +25,10 @@ export default class SettingsDrawer {
         el.style.position = 'fixed';
         el.style.zIndex = '9999';
         document.body.append(el);
-        this.component = mount(SettingsDrawerComponent, {
+        this.component = mount(Component, {
           target: obtainStyledShadowRoot(el),
         });
       },
     });
-  }
+  };
 }
