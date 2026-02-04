@@ -22,7 +22,7 @@
     onClose,
   }: Props = $props();
 
-  let visible = $state(true);
+  let visible = $state(false);
   let pendingResult: string | null = null;
 
   // Svelte 5 建议 bind:this 的变量也使用 $state
@@ -30,6 +30,11 @@
   let inputEl = $state<HTMLInputElement>();
 
   onMount(() => {
+    // 挂载后显示以触发进入动画
+    visible = true;
+  });
+
+  $effect(() => {
     if (inputEl) {
       inputEl.select();
       inputEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

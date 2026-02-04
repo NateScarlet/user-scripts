@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2026.02.04+a5cef658
+// @version   2026.02.04+61137b11
 // ==/UserScript==
 
 "use strict";
@@ -6960,11 +6960,14 @@ ${component_stack}
   function PromptDialog($$anchor, $$props) {
     push($$props, true);
     let title = prop($$props, "title", 3, "编辑"), label = prop($$props, "label", 3, ""), value = prop($$props, "value", 15, ""), placeholder = prop($$props, "placeholder", 3, ""), actionText = prop($$props, "actionText", 3, "保存");
-    let visible = state(true);
+    let visible = state(false);
     let pendingResult = null;
     let dialogEl = state(void 0);
     let inputEl = state(void 0);
     onMount(() => {
+      set(visible, true);
+    });
+    user_effect(() => {
       if (get(inputEl)) {
         get(inputEl).select();
         get(inputEl).scrollIntoView({ behavior: "smooth", block: "nearest" });
