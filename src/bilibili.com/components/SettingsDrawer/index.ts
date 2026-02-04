@@ -1,6 +1,6 @@
 import { mount } from 'svelte';
-import Component from './SettingsDrawer/SettingsDrawer.svelte';
-import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
+import Component from './SettingsDrawer.svelte';
+import obtainStyledShadowRoot from '../../utils/obtainStyledShadowRoot';
 import randomUUID from '@/utils/randomUUID';
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
 
