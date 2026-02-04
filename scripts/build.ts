@@ -67,6 +67,21 @@ export async function build(watch = false) {
     charset: 'utf8',
     conditions: ['development'],
     plugins: [
+      {
+        name: 'disable-svelte-custom-elements',
+        setup(build) {
+          build.onLoad({ filter: /custom-element\.js$/ }, async (args) => {
+            if (!args.path.replace(/\\/g, '/').includes('/svelte/')) {
+              return;
+            }
+            return {
+              contents:
+                'export function create_custom_element() { throw new Error("svelte custom element is disabled"); };',
+              loader: 'js',
+            };
+          });
+        },
+      },
       esbuildSvelte(svelteConfig),
       {
         name: 'save',

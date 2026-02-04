@@ -5,7 +5,7 @@
 // @grant    GM.xmlHttpRequest
 // @run-at   document-end
 // @include	 *
-// @version   2023.08.27+d1f0a919
+// @version   2023.08.27+972c4d57
 // ==/UserScript==
 
 "use strict";
@@ -143,7 +143,7 @@
     return __async(this, null, function* () {
       document.addEventListener(
         "mouseover",
-        (e) => __async(this, null, function* () {
+        (e) => __async(null, null, function* () {
           if (e.target instanceof HTMLAnchorElement) {
             const el = e.target;
             const res = parseURL(el.href);

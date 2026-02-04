@@ -5,7 +5,7 @@
 // @grant    none
 // @include	 https://seiga.nicovideo.jp/watch/*
 // @run-at   document-idle
-// @version   2026.02.04+a85e759f
+// @version   2026.02.04+3802dc6c
 // ==/UserScript==
 
 "use strict";
@@ -374,18 +374,12 @@
       value = void 0;
       token = tokens[i];
       symbol = token[0];
-      if (symbol === "#")
-        value = this.renderSection(token, context, partials, originalTemplate, config);
-      else if (symbol === "^")
-        value = this.renderInverted(token, context, partials, originalTemplate, config);
-      else if (symbol === ">")
-        value = this.renderPartial(token, context, partials, config);
-      else if (symbol === "&")
-        value = this.unescapedValue(token, context);
-      else if (symbol === "name")
-        value = this.escapedValue(token, context, config);
-      else if (symbol === "text")
-        value = this.rawValue(token);
+      if (symbol === "#") value = this.renderSection(token, context, partials, originalTemplate, config);
+      else if (symbol === "^") value = this.renderInverted(token, context, partials, originalTemplate, config);
+      else if (symbol === ">") value = this.renderPartial(token, context, partials, config);
+      else if (symbol === "&") value = this.unescapedValue(token, context);
+      else if (symbol === "name") value = this.escapedValue(token, context, config);
+      else if (symbol === "text") value = this.rawValue(token);
       if (value !== void 0)
         buffer += value;
     }
@@ -398,8 +392,7 @@
     function subRender(template) {
       return self.render(template, context, partials, config);
     }
-    if (!value)
-      return;
+    if (!value) return;
     if (isArray(value)) {
       for (var j = 0, valueLength = value.length; j < valueLength; ++j) {
         buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate, config);
@@ -433,8 +426,7 @@
     return partialByNl.join("\n");
   };
   Writer.prototype.renderPartial = function renderPartial(token, context, partials, config) {
-    if (!partials)
-      return;
+    if (!partials) return;
     var tags = this.getConfigTags(config);
     var value = isFunction(partials) ? partials(token[1]) : partials[token[1]];
     if (value != null) {

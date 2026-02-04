@@ -12,7 +12,7 @@
     "@typescript-eslint/parser": "^5.59.11",
     "autoprefixer": "^10.4.13",
     "cross-env": "^10.1.0",
-    "esbuild": "^0.18.4",
+    "esbuild": "^0.27.2",
     "esbuild-svelte": "^0.9.4",
     "eslint": "^8.43.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -46,7 +46,7 @@
   "dependencies": {
     "@mdi/js": "^7.2.96",
     "@types/mustache": "^4.1.2",
-    "core-js": "^3.44.0",
+    "core-js": "^3.48.0",
     "es-toolkit": "^1.39.9",
     "mustache": "^4.2.0",
     "svelte": "^5.49.1"
