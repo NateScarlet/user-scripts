@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade, fly } from 'svelte/transition';
-  import getCurrentTheme from '../utils/getCurrentTheme';
+  import getCurrentTheme from '../../utils/getCurrentTheme';
   import { mdiClose } from '@mdi/js';
   import { onMount, untrack } from 'svelte';
 

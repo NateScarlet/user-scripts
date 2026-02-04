@@ -3,7 +3,7 @@
   import blockedUsers from '../../models/blockedUsers';
   import compare from '../../../utils/compare';
   import isNonNull from '../../../utils/isNonNull';
-  import PromptDialog from '../PromptDialog.svelte';
+  import PromptDialog from './PromptDialog.svelte';
 
   // Derived state: sorted items
   // using $derived and accessing $blockedUsers
