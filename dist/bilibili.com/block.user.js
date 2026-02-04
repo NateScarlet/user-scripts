@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2026.02.04+61137b11
+// @version   2026.02.04+7136145f
 // ==/UserScript==
 
 "use strict";
@@ -5794,13 +5794,13 @@ ${component_stack}
   }();
 
   // src/bilibili.com/components/SettingsDrawer/HomePageSettings.svelte
-  var root_2 = from_html(`<div class="text-gray-500 dark:text-gray-200 text-sm">可通过指针悬停在卡片上时左上角显示的按钮来屏蔽单个频道的推广</div>`);
-  var root_4 = from_html(`<li class="bg-gray-300 dark:bg-gray-700 rounded px-1 flex items-center"><span> </span> <button type="button"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em]"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg></button></li>`);
-  var root_3 = from_html(`<div><h2 class="flex-none text-sm text-gray-500 dark:text-gray-200">已屏蔽频道 <span class="text-sm"> </span></h2> <ol class="flex flex-wrap gap-2 items-center"></ol></div>`);
-  var root = from_html(`<section><h1 class="text-sm text-gray-500 dark:text-gray-200">主页</h1> <div class="px-1"><label><input type="checkbox"/> <span>允许</span> <span class="text-sm rounded" style="
-          color: #e58900;
-          background-color: #fff0e3;
-        ">检测到您的页面...</span> <span>提示</span></label> <section><h2 class="text-gray-500 dark:text-gray-200 text-sm">楼层推广卡片</h2> <div class="px-1"><div><label><input type="checkbox"/> <span>屏蔽所有</span></label></div> <!></div></section></div></section>`);
+  var root_2 = from_html(`<div class="text-gray-500 dark:text-gray-400 text-sm italic py-1">可通过指针悬停在卡片上时左上角显示的按钮来屏蔽单个频道的推广</div>`);
+  var root_4 = from_html(`<li class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md pl-2 pr-1 py-1 flex items-center shadow-sm"><span class="text-sm text-gray-700 dark:text-gray-300"> </span> <button type="button" class="ml-1 p-0.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 hover:text-red-500 transition-colors" title="移除"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg></button></li>`);
+  var root_3 = from_html(`<div><div class="text-sm text-gray-500 dark:text-gray-400 mb-2">已屏蔽频道 <span class="font-mono bg-gray-200 dark:bg-gray-700 px-1.5 rounded-md text-xs text-gray-700 dark:text-gray-300 ml-1"> </span></div> <ol class="flex flex-wrap gap-2 items-center"></ol></div>`);
+  var root = from_html(`<section><h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">主页</h2> <div class="space-y-4"><label class="flex items-start gap-3 cursor-pointer group"><input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"/> <div class="select-none"><span class="text-gray-700 dark:text-gray-300 font-medium group-hover:text-black dark:group-hover:text-white transition-colors">允许</span> <span class="text-xs px-1.5 py-0.5 rounded font-medium mx-1" style="
+            color: #e58900;
+            background-color: #fff0e3;
+          ">检测到您的页面...</span> <span class="text-gray-700 dark:text-gray-300 font-medium group-hover:text-black dark:group-hover:text-white transition-colors">提示</span></div></label> <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700"><h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">楼层推广卡片</h3> <div class="space-y-3"><label class="flex items-center gap-3 cursor-pointer group"><input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"/> <span class="text-gray-700 dark:text-gray-300 font-medium group-hover:text-black dark:group-hover:text-white transition-colors">屏蔽所有</span></label> <!></div></div></div></section>`);
   function HomePageSettings2($$anchor, $$props) {
     push($$props, true);
     const $homePageSettings = () => store_get(homePageSettings_default, "$homePageSettings", $$stores);
@@ -5813,11 +5813,10 @@ ${component_stack}
     input.__change = (e) => {
       homePageSettings_default.allowAdblockTips = e.currentTarget.checked;
     };
-    next(6);
+    next(2);
     reset(label);
-    var section_1 = sibling(label, 2);
-    var div_1 = sibling(child(section_1), 2);
-    var div_2 = child(div_1);
+    var div_1 = sibling(label, 2);
+    var div_2 = sibling(child(div_1), 2);
     var label_1 = child(div_2);
     var input_1 = child(label_1);
     remove_input_defaults(input_1);
@@ -5826,8 +5825,7 @@ ${component_stack}
     };
     next(2);
     reset(label_1);
-    reset(div_2);
-    var node = sibling(div_2, 2);
+    var node = sibling(label_1, 2);
     {
       var consequent_1 = ($$anchor2) => {
         var fragment = comment();
@@ -5839,12 +5837,12 @@ ${component_stack}
           };
           var alternate = ($$anchor3) => {
             var div_4 = root_3();
-            var h2 = child(div_4);
-            var span = sibling(child(h2));
-            var text2 = child(span);
+            var div_5 = child(div_4);
+            var span = sibling(child(div_5));
+            var text2 = child(span, true);
             reset(span);
-            reset(h2);
-            var ol = sibling(h2, 2);
+            reset(div_5);
+            var ol = sibling(div_5, 2);
             each(ol, 5, () => $homePageSettings()?.floorCard?.excludeByChannel ?? [], (channel) => channel, ($$anchor4, channel) => {
               var li = root_4();
               var span_1 = child(li);
@@ -5867,7 +5865,7 @@ ${component_stack}
             });
             reset(ol);
             reset(div_4);
-            template_effect(() => set_text(text2, `(${($homePageSettings()?.floorCard?.excludeByChannel ?? []).length ?? ""})`));
+            template_effect(() => set_text(text2, ($homePageSettings()?.floorCard?.excludeByChannel ?? []).length));
             append($$anchor3, div_4);
           };
           if_block(node_1, ($$render) => {
@@ -5881,8 +5879,8 @@ ${component_stack}
         if (!($homePageSettings()?.floorCard?.excludeAll ?? false)) $$render(consequent_1);
       });
     }
+    reset(div_2);
     reset(div_1);
-    reset(section_1);
     reset(div);
     reset(section);
     template_effect(() => {
@@ -5938,14 +5936,15 @@ ${component_stack}
   var searchSettings_default = searchSettings;
 
   // src/bilibili.com/components/SettingsDrawer/SearchSettings.svelte
-  var root2 = from_html(`<section><h1 class="text-sm text-gray-500 dark:text-gray-200">搜索</h1> <div class="px-1"><label><input type="checkbox"/> <span>严格标题匹配</span></label> <div class="text-gray-500 dark:text-gray-200 text-sm">标题必须包含所有关键词，屏蔽联想词和标签匹配</div></div> <div class="px-1"><label><input type="checkbox"/> <span>禁用导航栏搜索建议</span></label> <div class="text-gray-500 dark:text-gray-200 text-sm">仅隐藏文本，不影响默认搜索行为</div></div></section>`);
+  var root2 = from_html(`<section><h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">搜索</h2> <div class="space-y-4"><div class="p-3 -mx-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"><label class="flex items-start gap-3 cursor-pointer group pointer-events-auto"><input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"/> <div><div class="text-gray-900 dark:text-gray-100 font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">严格标题匹配</div> <div class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">标题必须包含所有关键词，屏蔽联想词和标签匹配</div></div></label></div> <div class="p-3 -mx-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"><label class="flex items-start gap-3 cursor-pointer group pointer-events-auto"><input type="checkbox" class="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"/> <div><div class="text-gray-900 dark:text-gray-100 font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">禁用导航栏搜索建议</div> <div class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">仅隐藏文本，不影响默认搜索行为</div></div></label></div></div></section>`);
   function SearchSettings($$anchor, $$props) {
     push($$props, true);
     const $searchSettings = () => store_get(searchSettings_default, "$searchSettings", $$stores);
     const [$$stores, $$cleanup] = setup_stores();
     var section = root2();
     var div = sibling(child(section), 2);
-    var label = child(div);
+    var div_1 = child(div);
+    var label = child(div_1);
     var input = child(label);
     remove_input_defaults(input);
     input.__change = (e) => {
@@ -5953,10 +5952,9 @@ ${component_stack}
     };
     next(2);
     reset(label);
-    next(2);
-    reset(div);
-    var div_1 = sibling(div, 2);
-    var label_1 = child(div_1);
+    reset(div_1);
+    var div_2 = sibling(div_1, 2);
+    var label_1 = child(div_2);
     var input_1 = child(label_1);
     remove_input_defaults(input_1);
     input_1.__change = (e) => {
@@ -5964,8 +5962,8 @@ ${component_stack}
     };
     next(2);
     reset(label_1);
-    next(2);
-    reset(div_1);
+    reset(div_2);
+    reset(div);
     reset(section);
     template_effect(() => {
       set_checked(input, $searchSettings()?.strictTitleMatch ?? false);
@@ -6641,7 +6639,25 @@ ${component_stack}
   }
 
   // src/bilibili.com/components/SettingsDrawer/VideoListSettings.svelte
-  var root3 = from_html(`<section><h1 class="text-sm text-gray-500 dark:text-gray-200">视频列表</h1> <div class="px-1"><label><input type="checkbox"/> <span>允许广告（非视频）</span></label> <label><input type="checkbox"/> <span>允许推广</span></label> <label class="flex items-center"><span class="flex-none w-32">最短（含）</span> <input class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500" type="text" placeholder="HH:MM:SS"/></label> <label class="flex items-center"><span class="flex-none w-32">最长（不含）</span> <input class="flex-auto border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500" type="text" placeholder="HH:MM:SS"/></label> <label class="flex items-center"><div class="flex-none w-32">排除关键词</div> <div class="flex-auto"><textarea class="w-full border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500" placeholder=""></textarea> <div class="text-gray-500 dark:text-gray-200 text-sm">不显示标题含关键词的视频。每行一个，不区分大小写。</div></div></label></div></section>`);
+  var root3 = from_html(`<section><h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">视频列表</h2> <div class="space-y-4"><div class="space-y-3"><label class="flex items-center gap-3 cursor-pointer group"><input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"/> <span class="text-gray-700 dark:text-gray-300 font-medium group-hover:text-black dark:group-hover:text-white transition-colors">允许广告（非视频）</span></label> <label class="flex items-center gap-3 cursor-pointer group"><input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600"/> <span class="text-gray-700 dark:text-gray-300 font-medium group-hover:text-black dark:group-hover:text-white transition-colors">允许推广</span></label></div> <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-4"><h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">时长限制</h3> <div class="grid grid-cols-2 gap-3"><label><div class="text-xs text-gray-500 dark:text-gray-400 mb-1">最短（含）</div> <input class="
+              w-full px-3 py-2 bg-white dark:bg-gray-800
+              border border-gray-300 dark:border-gray-700 rounded-lg
+              focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
+              text-gray-900 dark:text-gray-100 placeholder-gray-400
+              text-sm
+            " type="text" placeholder="HH:MM:SS"/></label> <label><div class="text-xs text-gray-500 dark:text-gray-400 mb-1">最长（不含）</div> <input class="
+              w-full px-3 py-2 bg-white dark:bg-gray-800
+              border border-gray-300 dark:border-gray-700 rounded-lg
+              focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
+              text-gray-900 dark:text-gray-100 placeholder-gray-400
+              text-sm
+            " type="text" placeholder="HH:MM:SS"/></label></div></div> <div class="space-y-2"><label class="block text-sm font-semibold text-gray-900 dark:text-gray-100">排除关键词 <span class="text-xs font-normal text-gray-500 dark:text-gray-400 ml-2">每行一个，不区分大小写</span></label> <textarea class="
+          w-full px-3 py-2 bg-white dark:bg-gray-800
+          border border-gray-300 dark:border-gray-700 rounded-lg
+          focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
+          text-gray-900 dark:text-gray-100 placeholder-gray-400
+          min-h-[100px] resize-y
+        " placeholder="输入关键词..."></textarea> <div class="text-xs text-gray-500 dark:text-gray-400">不显示标题含这些关键词的视频。</div></div></div></section>`);
   function VideoListSettings2($$anchor, $$props) {
     push($$props, true);
     const $videoListSettings = () => store_get(videoListSettings_default, "$videoListSettings", $$stores);
@@ -6662,7 +6678,8 @@ ${component_stack}
     }
     var section = root3();
     var div = sibling(child(section), 2);
-    var label = child(div);
+    var div_1 = child(div);
+    var label = child(div_1);
     var input = child(label);
     remove_input_defaults(input);
     input.__change = (e) => {
@@ -6678,7 +6695,10 @@ ${component_stack}
     };
     next(2);
     reset(label_1);
-    var label_2 = sibling(label_1, 2);
+    reset(div_1);
+    var div_2 = sibling(div_1, 2);
+    var div_3 = sibling(child(div_2), 2);
+    var label_2 = child(div_3);
     var input_2 = sibling(child(label_2), 2);
     remove_input_defaults(input_2);
     input_2.__keydown = (e) => e.stopPropagation();
@@ -6688,9 +6708,10 @@ ${component_stack}
     remove_input_defaults(input_3);
     input_3.__keydown = (e) => e.stopPropagation();
     reset(label_3);
-    var label_4 = sibling(label_3, 2);
-    var div_1 = sibling(child(label_4), 2);
-    var textarea = child(div_1);
+    reset(div_3);
+    reset(div_2);
+    var div_4 = sibling(div_2, 2);
+    var textarea = sibling(child(div_4), 2);
     remove_textarea_child(textarea);
     textarea.__input = (e) => {
       const el = e.currentTarget;
@@ -6699,8 +6720,7 @@ ${component_stack}
     };
     textarea.__keydown = (e) => e.stopPropagation();
     next(2);
-    reset(div_1);
-    reset(label_4);
+    reset(div_4);
     reset(div);
     reset(section);
     template_effect(() => {
@@ -6762,7 +6782,13 @@ ${component_stack}
   }();
 
   // src/bilibili.com/components/SettingsDrawer/BlockedUserPatternSettings.svelte
-  var root4 = from_html(`<section><h1 class="text-sm text-gray-500 dark:text-gray-200">屏蔽名称匹配的用户</h1> <div class="px-1"><textarea class="w-full border my-1 p-1 dark:bg-gray-800 dark:text-white dark:border-gray-500" placeholder=""></textarea> <div class="text-gray-500 dark:text-gray-200 text-sm">每行一个，支持正则。</div></div></section>`);
+  var root4 = from_html(`<section><h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">屏蔽名称匹配的用户</h2> <div class="space-y-2"><div class="relative"><textarea class="
+          w-full px-3 py-2 bg-white dark:bg-gray-800
+          border border-gray-300 dark:border-gray-700 rounded-lg
+          focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none
+          text-gray-900 dark:text-gray-100 placeholder-gray-400
+          min-h-[100px] resize-y
+        " placeholder="输入匹配规则..."></textarea></div> <div class="text-xs text-gray-500 dark:text-gray-400">每行一个，支持正则表达式。</div></div></section>`);
   function BlockedUserPatternSettings($$anchor, $$props) {
     push($$props, true);
     const $blockedUserPatterns = () => store_get(blockedUserPatterns_default, "$blockedUserPatterns", $$stores);
@@ -6776,7 +6802,8 @@ ${component_stack}
     }
     var section = root4();
     var div = sibling(child(section), 2);
-    var textarea = child(div);
+    var div_1 = child(div);
+    var textarea = child(div_1);
     remove_textarea_child(textarea);
     textarea.__input = (e) => {
       const el = e.currentTarget;
@@ -6784,6 +6811,7 @@ ${component_stack}
       growTextAreaHeight(el);
     };
     textarea.__keydown = (e) => e.stopPropagation();
+    reset(div_1);
     next(2);
     reset(div);
     reset(section);
@@ -7063,8 +7091,8 @@ ${component_stack}
 
   // src/bilibili.com/components/SettingsDrawer/BlockedUsersSettings.svelte
   var root_23 = from_html(`<time> </time>`);
-  var root_12 = from_html(`<div class="absolute left-0 right-0 h-12 flex items-center bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition group"><div class="w-48 flex-none text-right px-2 text-sm"><!></div> <div class="flex-auto text-center hover:underline cursor-pointer px-2 truncate" role="button"> <div class="text-xs text-gray-500 truncate"> </div></div> <div class="w-64 flex-none flex justify-center items-center space-x-2 opacity-0 group-hover:opacity-100 transition"><a target="_blank" class="inline-flex items-center underline text-blue-500 text-sm"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>个人空间</span></a> <button type="button" class="inline-flex items-center underline text-sm"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>取消屏蔽</span></button></div></div>`);
-  var root5 = from_html(`<div class="flex flex-col overflow-hidden max-h-[50vh]"><h1 class="flex-none text-sm text-gray-500 dark:text-gray-200 mb-1">已屏蔽用户 <span class="text-sm"> </span></h1> <div class="flex-none flex items-center bg-gray-200 dark:bg-gray-800 text-center font-bold h-10 pr-2"><div class="w-48 flex-none">屏蔽时间</div> <div class="flex-auto">名称</div> <div class="w-64 flex-none"></div></div> <div class="flex-1 overflow-auto relative"><div></div></div></div> <!>`, 1);
+  var root_12 = from_html(`<div class="absolute left-0 right-0 h-12 flex items-center bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-100 dark:border-gray-800/50 last:border-0 group"><div class="w-48 flex-none text-right px-4 text-xs text-gray-500 dark:text-gray-400 font-mono"><!></div> <div class="flex-auto text-center cursor-pointer px-4 truncate font-medium text-gray-900 dark:text-gray-100" role="button"><span class="hover:underline"> </span> <div class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5"> </div></div> <div class="w-64 flex-none flex justify-center items-center space-x-4 opacity-0 group-hover:opacity-100 transition-opacity"><a target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-xs font-medium"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>个人空间</span></a> <button type="button" class="inline-flex items-center text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-xs font-medium"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>取消屏蔽</span></button></div></div>`);
+  var root5 = from_html(`<div class="space-y-4"><h2 class="flex-none text-lg font-bold text-gray-900 dark:text-gray-100">已屏蔽用户 <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> </span></h2> <div class="flex flex-col overflow-hidden max-h-[600px] border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900 shadow-sm"><div class="flex-none flex items-center bg-gray-50 dark:bg-gray-950/50 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 h-10 pr-2 border-b border-gray-200 dark:border-gray-800"><div class="w-48 flex-none">屏蔽时间</div> <div class="flex-auto">名称</div> <div class="w-64 flex-none">操作</div></div> <div class="flex-1 overflow-auto relative custom-scrollbar"><div></div></div></div></div> <!>`, 1);
   function BlockedUsersSettings($$anchor, $$props) {
     push($$props, true);
     const $blockedUsers = () => store_get(blockedUsers_default, "$blockedUsers", $$stores);
@@ -7083,7 +7111,7 @@ ${component_stack}
     const rowHeight = 48;
     const gap = 8;
     const itemTotalHeight = rowHeight + gap;
-    const containerHeight = 500;
+    const containerHeight = 600;
     let totalHeight = user_derived(() => get(items).length * itemTotalHeight - (get(items).length > 0 ? gap : 0));
     let startIndex = user_derived(() => Math.max(0, Math.floor(get(scrollTop) / itemTotalHeight)));
     let endIndex = user_derived(() => Math.min(get(items).length, Math.ceil((get(scrollTop) + containerHeight) / itemTotalHeight) + 1));
@@ -7094,17 +7122,18 @@ ${component_stack}
     let editingItem = state(null);
     var fragment = root5();
     var div = first_child(fragment);
-    var h1 = child(div);
-    var span = sibling(child(h1));
+    var h2 = child(div);
+    var span = sibling(child(h2));
     var text2 = child(span);
     reset(span);
-    reset(h1);
-    var div_1 = sibling(h1, 4);
-    var div_2 = child(div_1);
-    each(div_2, 21, () => get(visibleItems), (item) => item.id, ($$anchor2, item) => {
-      var div_3 = root_12();
-      var div_4 = child(div_3);
-      var node = child(div_4);
+    reset(h2);
+    var div_1 = sibling(h2, 2);
+    var div_2 = sibling(child(div_1), 2);
+    var div_3 = child(div_2);
+    each(div_3, 21, () => get(visibleItems), (item) => item.id, ($$anchor2, item) => {
+      var div_4 = root_12();
+      var div_5 = child(div_4);
+      var node = child(div_5);
       {
         var consequent = ($$anchor3) => {
           var time = root_23();
@@ -7126,18 +7155,20 @@ ${component_stack}
           if (get(item).rawBlockedAt) $$render(consequent);
         });
       }
-      reset(div_4);
-      var div_5 = sibling(div_4, 2);
-      div_5.__click = () => {
+      reset(div_5);
+      var div_6 = sibling(div_5, 2);
+      div_6.__click = () => {
         set(editingItem, get(item), true);
       };
-      var text_2 = child(div_5);
-      var div_6 = sibling(text_2);
-      var text_3 = child(div_6, true);
+      var span_1 = child(div_6);
+      var text_2 = child(span_1, true);
+      reset(span_1);
+      var div_7 = sibling(span_1, 2);
+      var text_3 = child(div_7, true);
+      reset(div_7);
       reset(div_6);
-      reset(div_5);
-      var div_7 = sibling(div_5, 2);
-      var a_1 = child(div_7);
+      var div_8 = sibling(div_6, 2);
+      var a_1 = child(div_8);
       var svg = child(a_1);
       var path = child(svg);
       reset(svg);
@@ -7152,19 +7183,20 @@ ${component_stack}
       reset(svg_1);
       next(2);
       reset(button);
-      reset(div_7);
-      reset(div_3);
+      reset(div_8);
+      reset(div_4);
       template_effect(() => {
-        set_style(div_3, `top: ${get(item).top ?? ""}px;`);
-        set_text(text_2, `${get(item).name ?? ""} `);
-        set_attribute2(div_6, "title", get(item).note);
+        set_style(div_4, `top: ${get(item).top ?? ""}px;`);
+        set_text(text_2, get(item).name);
+        set_attribute2(div_7, "title", get(item).note);
         set_text(text_3, get(item).note);
         set_attribute2(a_1, "href", `https://space.bilibili.com/${get(item).id ?? ""}`);
         set_attribute2(path, "d", mdiOpenInNew);
         set_attribute2(path_1, "d", mdiAccountCheckOutline);
       });
-      append($$anchor2, div_3);
+      append($$anchor2, div_4);
     });
+    reset(div_3);
     reset(div_2);
     reset(div_1);
     reset(div);
@@ -7198,9 +7230,9 @@ ${component_stack}
     }
     template_effect(() => {
       set_text(text2, `(${get(items).length ?? ""})`);
-      set_style(div_2, `height: ${get(totalHeight) ?? ""}px; width: 100%;`);
+      set_style(div_3, `height: ${get(totalHeight) ?? ""}px; width: 100%;`);
     });
-    event("scroll", div_1, handleScroll);
+    event("scroll", div_2, handleScroll);
     append($$anchor, fragment);
     pop();
     $$cleanup();
@@ -7265,8 +7297,8 @@ ${component_stack}
   }();
 
   // src/bilibili.com/components/SettingsDrawer/BlockedLiveRoomsSettings.svelte
-  var root_13 = from_html(`<div class="absolute left-0 right-0 h-12 flex items-center bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition group"><div class="w-48 flex-none text-right px-2 text-sm"><time> </time></div> <div class="flex-auto text-center truncate px-2"> </div> <div class="w-32 flex-none flex justify-center items-center space-x-2 opacity-0 group-hover:opacity-100 transition"><a target="_blank" class="inline-flex items-center underline text-blue-500 text-sm"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>前往</span></a> <button type="button" class="inline-flex items-center underline text-sm"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>取消屏蔽</span></button></div></div>`);
-  var root6 = from_html(`<div class="flex flex-col overflow-hidden max-h-[50vh]"><h1 class="flex-none text-sm text-gray-500 dark:text-gray-200 mb-1">已屏蔽直播间 <span class="text-sm"> </span></h1> <div class="flex-none flex items-center bg-gray-200 dark:bg-gray-800 text-center font-bold h-10 pr-2"><div class="w-48 flex-none">屏蔽时间</div> <div class="flex-auto">所有者</div> <div class="w-32 flex-none"></div></div> <div class="flex-1 overflow-auto relative"><div></div></div></div>`);
+  var root_13 = from_html(`<div class="absolute left-0 right-0 h-12 flex items-center bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-100 dark:border-gray-800/50 last:border-0 group"><div class="w-48 flex-none text-right px-4 text-xs text-gray-500 dark:text-gray-400 font-mono"><time> </time></div> <div class="flex-auto text-center truncate px-4 font-medium text-gray-900 dark:text-gray-100"> </div> <div class="w-48 flex-none flex justify-center items-center space-x-4 opacity-0 group-hover:opacity-100 transition-opacity"><a target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-xs font-medium"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>前往</span></a> <button type="button" class="inline-flex items-center text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-xs font-medium"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>取消屏蔽</span></button></div></div>`);
+  var root6 = from_html(`<div class="space-y-4"><h2 class="flex-none text-lg font-bold text-gray-900 dark:text-gray-100">已屏蔽直播间 <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> </span></h2> <div class="flex flex-col overflow-hidden max-h-[600px] border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900 shadow-sm"><div class="flex-none flex items-center bg-gray-50 dark:bg-gray-950/50 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 h-10 pr-2 border-b border-gray-200 dark:border-gray-800"><div class="w-48 flex-none">屏蔽时间</div> <div class="flex-auto">所有者</div> <div class="w-48 flex-none">操作</div></div> <div class="flex-1 overflow-auto relative custom-scrollbar"><div></div></div></div></div>`);
   function BlockedLiveRoomsSettings($$anchor, $$props) {
     push($$props, true);
     const $blockedLiveRooms = () => store_get(blockedLiveRooms_default, "$blockedLiveRooms", $$stores);
@@ -7285,7 +7317,7 @@ ${component_stack}
     const rowHeight = 48;
     const gap = 8;
     const itemTotalHeight = rowHeight + gap;
-    const containerHeight = 500;
+    const containerHeight = 600;
     let totalHeight = user_derived(() => get(items).length * itemTotalHeight - (get(items).length > 0 ? gap : 0));
     let startIndex = user_derived(() => Math.max(0, Math.floor(get(scrollTop) / itemTotalHeight)));
     let endIndex = user_derived(() => Math.min(get(items).length, Math.ceil((get(scrollTop) + containerHeight) / itemTotalHeight) + 1));
@@ -7294,25 +7326,26 @@ ${component_stack}
       set(scrollTop, e.target.scrollTop, true);
     }
     var div = root6();
-    var h1 = child(div);
-    var span = sibling(child(h1));
+    var h2 = child(div);
+    var span = sibling(child(h2));
     var text2 = child(span);
     reset(span);
-    reset(h1);
-    var div_1 = sibling(h1, 4);
-    var div_2 = child(div_1);
-    each(div_2, 21, () => get(visibleItems), (item) => item.id, ($$anchor2, item) => {
-      var div_3 = root_13();
-      var div_4 = child(div_3);
-      var time = child(div_4);
+    reset(h2);
+    var div_1 = sibling(h2, 2);
+    var div_2 = sibling(child(div_1), 2);
+    var div_3 = child(div_2);
+    each(div_3, 21, () => get(visibleItems), (item) => item.id, ($$anchor2, item) => {
+      var div_4 = root_13();
+      var div_5 = child(div_4);
+      var time = child(div_5);
       var text_1 = child(time, true);
       reset(time);
-      reset(div_4);
-      var div_5 = sibling(div_4, 2);
-      var text_2 = child(div_5, true);
       reset(div_5);
       var div_6 = sibling(div_5, 2);
-      var a_1 = child(div_6);
+      var text_2 = child(div_6, true);
+      reset(div_6);
+      var div_7 = sibling(div_6, 2);
+      var a_1 = child(div_7);
       var svg = child(a_1);
       var path = child(svg);
       reset(svg);
@@ -7327,11 +7360,11 @@ ${component_stack}
       reset(svg_1);
       next(2);
       reset(button);
-      reset(div_6);
-      reset(div_3);
+      reset(div_7);
+      reset(div_4);
       template_effect(
         ($0, $1) => {
-          set_style(div_3, `top: ${get(item).top ?? ""}px;`);
+          set_style(div_4, `top: ${get(item).top ?? ""}px;`);
           set_attribute2(time, "datetime", $0);
           set_text(text_1, $1);
           set_text(text_2, get(item).owner);
@@ -7344,16 +7377,17 @@ ${component_stack}
           () => get(item).blockedAt.toLocaleString()
         ]
       );
-      append($$anchor2, div_3);
+      append($$anchor2, div_4);
     });
+    reset(div_3);
     reset(div_2);
     reset(div_1);
     reset(div);
     template_effect(() => {
       set_text(text2, `(${get(items).length ?? ""})`);
-      set_style(div_2, `height: ${get(totalHeight) ?? ""}px; width: 100%;`);
+      set_style(div_3, `height: ${get(totalHeight) ?? ""}px; width: 100%;`);
     });
-    event("scroll", div_1, handleScroll);
+    event("scroll", div_2, handleScroll);
     append($$anchor, div);
     pop();
     $$cleanup();
@@ -7364,12 +7398,23 @@ ${component_stack}
   var root_14 = from_html(
     `<div class="
       fixed inset-0
-      bg-white/25 dark:bg-black/25 backdrop-blur
+      bg-black/40 backdrop-blur-sm
       cursor-zoom-out
+      z-50
     " role="button" tabindex="-1"></div> <div class="
-      fixed inset-y-0 right-0 w-screen max-w-4xl
-      bg-white text-black dark:bg-black dark:text-white overflow-auto p-2 space-y-1
-    "><button type="button" class="lg:hidden self-end flex items-center"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-[1.25em] align-top"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg> <span>关闭</span></button> <!> <!> <!> <!> <!> <!></div>`,
+      fixed inset-y-0 right-0 w-full max-w-screen-2xl
+      bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100
+      shadow-2xl z-50 flex flex-col
+    "><header class="
+        flex-none flex items-center justify-between
+        px-6 py-4
+        border-b border-gray-200 dark:border-gray-800
+      "><h2 class="text-xl font-bold">设置</h2> <button type="button" class="
+          p-2 rounded-full
+          hover:bg-gray-100 dark:hover:bg-gray-800
+          text-gray-500 dark:text-gray-400
+          transition-colors
+        " title="关闭"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg></button></header> <div class="flex-1 overflow-y-auto p-4 lg:p-6 custom-scrollbar"><div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start"><div class="space-y-6 lg:space-y-8"><div class="bg-gray-50 dark:bg-gray-900/30 rounded-2xl p-5 border border-gray-100 dark:border-gray-800"><!></div> <div class="bg-gray-50 dark:bg-gray-900/30 rounded-2xl p-5 border border-gray-100 dark:border-gray-800"><!></div></div> <div class="bg-gray-50 dark:bg-gray-900/30 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 h-full"><!></div> <div class="bg-gray-50 dark:bg-gray-900/30 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 h-full"><!></div></div> <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mt-6 lg:mt-8"><div class="bg-gray-50 dark:bg-gray-900/30 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 min-w-0"><!></div> <div class="bg-gray-50 dark:bg-gray-900/30 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 min-w-0"><!></div></div> <div class="h-8"></div></div></div>`,
     1
   );
   function SettingsDrawer($$anchor, $$props) {
@@ -7390,25 +7435,47 @@ ${component_stack}
         var div = first_child(fragment_1);
         div.__click = close;
         var div_1 = sibling(div, 2);
-        var button = child(div_1);
+        var header = child(div_1);
+        var button = sibling(child(header), 2);
         button.__click = close;
         var svg = child(button);
         var path = child(svg);
         reset(svg);
-        next(2);
         reset(button);
-        var node_1 = sibling(button, 2);
+        reset(header);
+        var div_2 = sibling(header, 2);
+        var div_3 = child(div_2);
+        var div_4 = child(div_3);
+        var div_5 = child(div_4);
+        var node_1 = child(div_5);
         HomePageSettings2(node_1, {});
-        var node_2 = sibling(node_1, 2);
+        reset(div_5);
+        var div_6 = sibling(div_5, 2);
+        var node_2 = child(div_6);
         SearchSettings(node_2, {});
-        var node_3 = sibling(node_2, 2);
+        reset(div_6);
+        reset(div_4);
+        var div_7 = sibling(div_4, 2);
+        var node_3 = child(div_7);
         VideoListSettings2(node_3, {});
-        var node_4 = sibling(node_3, 2);
+        reset(div_7);
+        var div_8 = sibling(div_7, 2);
+        var node_4 = child(div_8);
         BlockedUserPatternSettings(node_4, {});
-        var node_5 = sibling(node_4, 2);
+        reset(div_8);
+        reset(div_3);
+        var div_9 = sibling(div_3, 2);
+        var div_10 = child(div_9);
+        var node_5 = child(div_10);
         BlockedUsersSettings(node_5, {});
-        var node_6 = sibling(node_5, 2);
+        reset(div_10);
+        var div_11 = sibling(div_10, 2);
+        var node_6 = child(div_11);
         BlockedLiveRoomsSettings(node_6, {});
+        reset(div_11);
+        reset(div_9);
+        next(2);
+        reset(div_2);
         reset(div_1);
         template_effect(
           ($0, $1) => {
@@ -7419,7 +7486,7 @@ ${component_stack}
           [getCurrentTheme, getCurrentTheme]
         );
         transition(3, div, () => fade, () => ({ duration: 200 }));
-        transition(3, div_1, () => fly, () => ({ x: 1e3, duration: 200 }));
+        transition(3, div_1, () => fly, () => ({ x: "100%", duration: 300, opacity: 1 }));
         append($$anchor2, fragment_1);
       };
       if_block(node, ($$render) => {
@@ -7451,7 +7518,7 @@ ${component_stack}
   }
 
   // src/bilibili.com/style.css
-  var style_default = '/* \n用户脚本样式\nhttps://github.com/NateScarlet/user-scripts/blob/master/src/bilibili.com/\n*/\n\n*, ::before, ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}\n\n::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}\n\n/* \n! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com\n*/\n\n/*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/\n\n*,\n::before,\n::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}\n\n::before,\n::after {\n  --tw-content: \'\';\n}\n\n/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user\'s configured `sans` font-family by default.\n5. Use the user\'s configured `sans` font-feature-settings by default.\n6. Use the user\'s configured `sans` font-variation-settings by default.\n7. Disable tap highlights on iOS\n*/\n\nhtml,\n:host {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */\n  font-feature-settings: normal; /* 5 */\n  font-variation-settings: normal; /* 6 */\n  -webkit-tap-highlight-color: transparent; /* 7 */\n}\n\n/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/\n\nbody {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}\n\n/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/\n\nhr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}\n\n/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/\n\nabbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}\n\n/*\nRemove the default font size and weight for headings.\n*/\n\nh1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n  font-size: inherit;\n  font-weight: inherit;\n}\n\n/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/\n\na {\n  color: inherit;\n  text-decoration: inherit;\n}\n\n/*\nAdd the correct font weight in Edge and Safari.\n*/\n\nb,\nstrong {\n  font-weight: bolder;\n}\n\n/*\n1. Use the user\'s configured `mono` font-family by default.\n2. Use the user\'s configured `mono` font-feature-settings by default.\n3. Use the user\'s configured `mono` font-variation-settings by default.\n4. Correct the odd `em` font sizing in all browsers.\n*/\n\ncode,\nkbd,\nsamp,\npre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */\n  font-feature-settings: normal; /* 2 */\n  font-variation-settings: normal; /* 3 */\n  font-size: 1em; /* 4 */\n}\n\n/*\nAdd the correct font size in all browsers.\n*/\n\nsmall {\n  font-size: 80%;\n}\n\n/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\nsup {\n  top: -0.5em;\n}\n\n/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/\n\ntable {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}\n\n/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit; /* 1 */\n  font-feature-settings: inherit; /* 1 */\n  font-variation-settings: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  letter-spacing: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}\n\n/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/\n\nbutton,\nselect {\n  text-transform: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/\n\nbutton,\ninput:where([type=\'button\']),\ninput:where([type=\'reset\']),\ninput:where([type=\'submit\']) {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}\n\n/*\nUse the modern Firefox focus style for all focusable elements.\n*/\n\n:-moz-focusring {\n  outline: auto;\n}\n\n/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/\n\n:-moz-ui-invalid {\n  box-shadow: none;\n}\n\n/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/\n\nprogress {\n  vertical-align: baseline;\n}\n\n/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/\n\n::-webkit-inner-spin-button,\n::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/\n\n[type=\'search\'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/\n\n::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/*\nAdd the correct display in Chrome and Safari.\n*/\n\nsummary {\n  display: list-item;\n}\n\n/*\nRemoves the default spacing and border for appropriate elements.\n*/\n\nblockquote,\ndl,\ndd,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\nhr,\nfigure,\np,\npre {\n  margin: 0;\n}\n\nfieldset {\n  margin: 0;\n  padding: 0;\n}\n\nlegend {\n  padding: 0;\n}\n\nol,\nul,\nmenu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n/*\nReset default styling for dialogs.\n*/\n\ndialog {\n  padding: 0;\n}\n\n/*\nPrevent resizing textareas horizontally by default.\n*/\n\ntextarea {\n  resize: vertical;\n}\n\n/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user\'s configured gray 400 color.\n*/\n\ninput::-moz-placeholder, textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\ninput::placeholder,\ntextarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n/*\nSet the default cursor for buttons.\n*/\n\nbutton,\n[role="button"] {\n  cursor: pointer;\n}\n\n/*\nMake sure disabled buttons don\'t get the pointer cursor.\n*/\n\n:disabled {\n  cursor: default;\n}\n\n/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/\n\nimg,\nsvg,\nvideo,\ncanvas,\naudio,\niframe,\nembed,\nobject {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}\n\n/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/\n\nimg,\nvideo {\n  max-width: 100%;\n  height: auto;\n}\n\n/* Make elements with the HTML hidden attribute stay hidden by default */\n\n[hidden]:where(:not([hidden="until-found"])) {\n  display: none;\n}\n\n* {\n  font-size: 16px;\n  line-height: 24px;\n}\n\n.visible {\n  visibility: visible;\n}\n\n.static {\n  position: static;\n}\n\n.fixed {\n  position: fixed;\n}\n\n.absolute {\n  position: absolute;\n}\n\n.relative {\n  position: relative;\n}\n\n.inset-0 {\n  inset: 0px;\n}\n\n.inset-y-0 {\n  top: 0px;\n  bottom: 0px;\n}\n\n.left-0 {\n  left: 0px;\n}\n\n.left-2 {\n  left: 0.5rem;\n}\n\n.right-0 {\n  right: 0px;\n}\n\n.top-2 {\n  top: 0.5rem;\n}\n\n.isolate {\n  isolation: isolate;\n}\n\n.z-20 {\n  z-index: 20;\n}\n\n.m-1 {\n  margin: 0.25rem;\n}\n\n.my-1 {\n  margin-top: 0.25rem;\n  margin-bottom: 0.25rem;\n}\n\n.mb-1 {\n  margin-bottom: 0.25rem;\n}\n\n.mr-1 {\n  margin-right: 0.25rem;\n}\n\n.block {\n  display: block;\n}\n\n.inline {\n  display: inline;\n}\n\n.flex {\n  display: flex;\n}\n\n.inline-flex {\n  display: inline-flex;\n}\n\n.\\!hidden {\n  display: none !important;\n}\n\n.hidden {\n  display: none;\n}\n\n.h-10 {\n  height: 2.5rem;\n}\n\n.h-12 {\n  height: 3rem;\n}\n\n.h-6 {\n  height: 1.5rem;\n}\n\n.h-7 {\n  height: 1.75rem;\n}\n\n.h-8 {\n  height: 2rem;\n}\n\n.h-\\[1\\.25em\\] {\n  height: 1.25em;\n}\n\n.max-h-\\[50vh\\] {\n  max-height: 50vh;\n}\n\n.w-32 {\n  width: 8rem;\n}\n\n.w-48 {\n  width: 12rem;\n}\n\n.w-6 {\n  width: 1.5rem;\n}\n\n.w-64 {\n  width: 16rem;\n}\n\n.w-full {\n  width: 100%;\n}\n\n.w-screen {\n  width: 100vw;\n}\n\n.max-w-4xl {\n  max-width: 56rem;\n}\n\n.max-w-lg {\n  max-width: 32rem;\n}\n\n.flex-1 {\n  flex: 1 1 0%;\n}\n\n.flex-auto {\n  flex: 1 1 auto;\n}\n\n.flex-none {\n  flex: none;\n}\n\n.cursor-pointer {\n  cursor: pointer;\n}\n\n.cursor-zoom-out {\n  cursor: zoom-out;\n}\n\n.flex-col {\n  flex-direction: column;\n}\n\n.flex-wrap {\n  flex-wrap: wrap;\n}\n\n.items-center {\n  align-items: center;\n}\n\n.justify-end {\n  justify-content: flex-end;\n}\n\n.justify-center {\n  justify-content: center;\n}\n\n.justify-between {\n  justify-content: space-between;\n}\n\n.gap-2 {\n  gap: 0.5rem;\n}\n\n.space-x-2 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-x-reverse: 0;\n  margin-right: calc(0.5rem * var(--tw-space-x-reverse));\n  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));\n}\n\n.space-y-1 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));\n}\n\n.self-end {\n  align-self: flex-end;\n}\n\n.overflow-auto {\n  overflow: auto;\n}\n\n.overflow-hidden {\n  overflow: hidden;\n}\n\n.truncate {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.rounded {\n  border-radius: 0.25rem;\n}\n\n.rounded-full {\n  border-radius: 9999px;\n}\n\n.rounded-lg {\n  border-radius: 0.5rem;\n}\n\n.rounded-md {\n  border-radius: 0.375rem;\n}\n\n.border {\n  border-width: 1px;\n}\n\n.border-b {\n  border-bottom-width: 1px;\n}\n\n.border-t {\n  border-top-width: 1px;\n}\n\n.border-none {\n  border-style: none;\n}\n\n.border-gray-300 {\n  --tw-border-opacity: 1;\n  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));\n}\n\n.bg-\\[rgba\\(33\\2c 33\\2c 33\\2c \\.8\\)\\] {\n  background-color: rgba(33,33,33,.8);\n}\n\n.bg-black\\/25 {\n  background-color: rgb(0 0 0 / 0.25);\n}\n\n.bg-blue-600 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-100 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-200 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-300 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(209 213 219 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-50 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));\n}\n\n.bg-white {\n  --tw-bg-opacity: 1;\n  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));\n}\n\n.bg-white\\/25 {\n  background-color: rgb(255 255 255 / 0.25);\n}\n\n.fill-current {\n  fill: currentColor;\n}\n\n.p-1 {\n  padding: 0.25rem;\n}\n\n.p-2 {\n  padding: 0.5rem;\n}\n\n.p-4 {\n  padding: 1rem;\n}\n\n.px-1 {\n  padding-left: 0.25rem;\n  padding-right: 0.25rem;\n}\n\n.px-2 {\n  padding-left: 0.5rem;\n  padding-right: 0.5rem;\n}\n\n.px-4 {\n  padding-left: 1rem;\n  padding-right: 1rem;\n}\n\n.py-1 {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n}\n\n.py-2 {\n  padding-top: 0.5rem;\n  padding-bottom: 0.5rem;\n}\n\n.py-3 {\n  padding-top: 0.75rem;\n  padding-bottom: 0.75rem;\n}\n\n.pr-2 {\n  padding-right: 0.5rem;\n}\n\n.text-center {\n  text-align: center;\n}\n\n.text-right {\n  text-align: right;\n}\n\n.align-top {\n  vertical-align: top;\n}\n\n.text-lg {\n  font-size: 20px;\n  line-height: 28px;\n}\n\n.text-sm {\n  font-size: 14px;\n  line-height: 20px;\n}\n\n.text-xs {\n  font-size: 12px;\n  line-height: 14px;\n}\n\n.font-bold {\n  font-weight: 700;\n}\n\n.font-medium {\n  font-weight: 500;\n}\n\n.text-black {\n  --tw-text-opacity: 1;\n  color: rgb(0 0 0 / var(--tw-text-opacity, 1));\n}\n\n.text-blue-500 {\n  --tw-text-opacity: 1;\n  color: rgb(59 130 246 / var(--tw-text-opacity, 1));\n}\n\n.text-gray-500 {\n  --tw-text-opacity: 1;\n  color: rgb(107 114 128 / var(--tw-text-opacity, 1));\n}\n\n.text-white {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity, 1));\n}\n\n.underline {\n  text-decoration-line: underline;\n}\n\n.opacity-0 {\n  opacity: 0;\n}\n\n.shadow-sm {\n  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);\n  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n\n.shadow-xl {\n  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);\n  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n\n.filter {\n  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);\n}\n\n.backdrop-blur {\n  --tw-backdrop-blur: blur(8px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n.backdrop-blur-sm {\n  --tw-backdrop-blur: blur(4px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n.transition {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.transition-colors {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.duration-200 {\n  transition-duration: 200ms;\n}\n\n.ease-in-out {\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n.hover\\:bg-blue-700:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:bg-gray-100:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:bg-gray-200:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:underline:hover {\n  text-decoration-line: underline;\n}\n\n.focus\\:border-blue-500:focus {\n  --tw-border-opacity: 1;\n  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));\n}\n\n.focus\\:outline-none:focus {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n}\n\n.focus\\:ring-2:focus {\n  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);\n  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);\n  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);\n}\n\n.focus\\:ring-blue-500:focus {\n  --tw-ring-opacity: 1;\n  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));\n}\n\n.group:hover .group-hover\\:opacity-100 {\n  opacity: 1;\n}\n\n@media (min-width: 1024px) {\n\n  .lg\\:hidden {\n    display: none;\n  }\n}\n\n.dark\\:border-gray-500:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-border-opacity: 1;\n  border-color: rgb(107 114 128 / var(--tw-border-opacity, 1));\n}\n\n.dark\\:bg-black:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-black\\/25:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(0 0 0 / 0.25);\n}\n\n.dark\\:bg-gray-700:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-800:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-900:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-white\\/25:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(255 255 255 / 0.25);\n}\n\n.dark\\:text-gray-200:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(229 231 235 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-gray-400:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(156 163 175 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-white:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:hover\\:bg-gray-800:hover:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));\n}\n';
+  var style_default = '/* \n用户脚本样式\nhttps://github.com/NateScarlet/user-scripts/blob/master/src/bilibili.com/\n*/\n\n*, ::before, ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}\n\n::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-gradient-from-position:  ;\n  --tw-gradient-via-position:  ;\n  --tw-gradient-to-position:  ;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n  --tw-contain-size:  ;\n  --tw-contain-layout:  ;\n  --tw-contain-paint:  ;\n  --tw-contain-style:  ;\n}\n\n/* \n! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com\n*/\n\n/*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/\n\n*,\n::before,\n::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}\n\n::before,\n::after {\n  --tw-content: \'\';\n}\n\n/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user\'s configured `sans` font-family by default.\n5. Use the user\'s configured `sans` font-feature-settings by default.\n6. Use the user\'s configured `sans` font-variation-settings by default.\n7. Disable tap highlights on iOS\n*/\n\nhtml,\n:host {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */\n  font-feature-settings: normal; /* 5 */\n  font-variation-settings: normal; /* 6 */\n  -webkit-tap-highlight-color: transparent; /* 7 */\n}\n\n/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/\n\nbody {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}\n\n/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/\n\nhr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}\n\n/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/\n\nabbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}\n\n/*\nRemove the default font size and weight for headings.\n*/\n\nh1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n  font-size: inherit;\n  font-weight: inherit;\n}\n\n/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/\n\na {\n  color: inherit;\n  text-decoration: inherit;\n}\n\n/*\nAdd the correct font weight in Edge and Safari.\n*/\n\nb,\nstrong {\n  font-weight: bolder;\n}\n\n/*\n1. Use the user\'s configured `mono` font-family by default.\n2. Use the user\'s configured `mono` font-feature-settings by default.\n3. Use the user\'s configured `mono` font-variation-settings by default.\n4. Correct the odd `em` font sizing in all browsers.\n*/\n\ncode,\nkbd,\nsamp,\npre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */\n  font-feature-settings: normal; /* 2 */\n  font-variation-settings: normal; /* 3 */\n  font-size: 1em; /* 4 */\n}\n\n/*\nAdd the correct font size in all browsers.\n*/\n\nsmall {\n  font-size: 80%;\n}\n\n/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/\n\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\n\nsub {\n  bottom: -0.25em;\n}\n\nsup {\n  top: -0.5em;\n}\n\n/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/\n\ntable {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}\n\n/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit; /* 1 */\n  font-feature-settings: inherit; /* 1 */\n  font-variation-settings: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  letter-spacing: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}\n\n/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/\n\nbutton,\nselect {\n  text-transform: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/\n\nbutton,\ninput:where([type=\'button\']),\ninput:where([type=\'reset\']),\ninput:where([type=\'submit\']) {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}\n\n/*\nUse the modern Firefox focus style for all focusable elements.\n*/\n\n:-moz-focusring {\n  outline: auto;\n}\n\n/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/\n\n:-moz-ui-invalid {\n  box-shadow: none;\n}\n\n/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/\n\nprogress {\n  vertical-align: baseline;\n}\n\n/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/\n\n::-webkit-inner-spin-button,\n::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/\n\n[type=\'search\'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/\n\n::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n\n/*\nAdd the correct display in Chrome and Safari.\n*/\n\nsummary {\n  display: list-item;\n}\n\n/*\nRemoves the default spacing and border for appropriate elements.\n*/\n\nblockquote,\ndl,\ndd,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\nhr,\nfigure,\np,\npre {\n  margin: 0;\n}\n\nfieldset {\n  margin: 0;\n  padding: 0;\n}\n\nlegend {\n  padding: 0;\n}\n\nol,\nul,\nmenu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n/*\nReset default styling for dialogs.\n*/\n\ndialog {\n  padding: 0;\n}\n\n/*\nPrevent resizing textareas horizontally by default.\n*/\n\ntextarea {\n  resize: vertical;\n}\n\n/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user\'s configured gray 400 color.\n*/\n\ninput::-moz-placeholder, textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\ninput::placeholder,\ntextarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}\n\n/*\nSet the default cursor for buttons.\n*/\n\nbutton,\n[role="button"] {\n  cursor: pointer;\n}\n\n/*\nMake sure disabled buttons don\'t get the pointer cursor.\n*/\n\n:disabled {\n  cursor: default;\n}\n\n/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/\n\nimg,\nsvg,\nvideo,\ncanvas,\naudio,\niframe,\nembed,\nobject {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}\n\n/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/\n\nimg,\nvideo {\n  max-width: 100%;\n  height: auto;\n}\n\n/* Make elements with the HTML hidden attribute stay hidden by default */\n\n[hidden]:where(:not([hidden="until-found"])) {\n  display: none;\n}\n\n* {\n  font-size: 16px;\n  line-height: 24px;\n}\n\n.pointer-events-auto {\n  pointer-events: auto;\n}\n\n.visible {\n  visibility: visible;\n}\n\n.static {\n  position: static;\n}\n\n.fixed {\n  position: fixed;\n}\n\n.absolute {\n  position: absolute;\n}\n\n.relative {\n  position: relative;\n}\n\n.inset-0 {\n  inset: 0px;\n}\n\n.inset-y-0 {\n  top: 0px;\n  bottom: 0px;\n}\n\n.left-0 {\n  left: 0px;\n}\n\n.left-2 {\n  left: 0.5rem;\n}\n\n.right-0 {\n  right: 0px;\n}\n\n.top-2 {\n  top: 0.5rem;\n}\n\n.isolate {\n  isolation: isolate;\n}\n\n.z-20 {\n  z-index: 20;\n}\n\n.z-50 {\n  z-index: 50;\n}\n\n.m-1 {\n  margin: 0.25rem;\n}\n\n.-mx-2 {\n  margin-left: -0.5rem;\n  margin-right: -0.5rem;\n}\n\n.mx-1 {\n  margin-left: 0.25rem;\n  margin-right: 0.25rem;\n}\n\n.mb-1 {\n  margin-bottom: 0.25rem;\n}\n\n.mb-2 {\n  margin-bottom: 0.5rem;\n}\n\n.mb-3 {\n  margin-bottom: 0.75rem;\n}\n\n.mb-4 {\n  margin-bottom: 1rem;\n}\n\n.ml-1 {\n  margin-left: 0.25rem;\n}\n\n.ml-2 {\n  margin-left: 0.5rem;\n}\n\n.mr-1 {\n  margin-right: 0.25rem;\n}\n\n.mt-0\\.5 {\n  margin-top: 0.125rem;\n}\n\n.mt-1 {\n  margin-top: 0.25rem;\n}\n\n.mt-6 {\n  margin-top: 1.5rem;\n}\n\n.block {\n  display: block;\n}\n\n.inline {\n  display: inline;\n}\n\n.flex {\n  display: flex;\n}\n\n.inline-flex {\n  display: inline-flex;\n}\n\n.grid {\n  display: grid;\n}\n\n.\\!hidden {\n  display: none !important;\n}\n\n.hidden {\n  display: none;\n}\n\n.h-10 {\n  height: 2.5rem;\n}\n\n.h-12 {\n  height: 3rem;\n}\n\n.h-4 {\n  height: 1rem;\n}\n\n.h-6 {\n  height: 1.5rem;\n}\n\n.h-7 {\n  height: 1.75rem;\n}\n\n.h-8 {\n  height: 2rem;\n}\n\n.h-full {\n  height: 100%;\n}\n\n.max-h-\\[600px\\] {\n  max-height: 600px;\n}\n\n.min-h-\\[100px\\] {\n  min-height: 100px;\n}\n\n.w-4 {\n  width: 1rem;\n}\n\n.w-48 {\n  width: 12rem;\n}\n\n.w-6 {\n  width: 1.5rem;\n}\n\n.w-64 {\n  width: 16rem;\n}\n\n.w-full {\n  width: 100%;\n}\n\n.min-w-0 {\n  min-width: 0px;\n}\n\n.max-w-lg {\n  max-width: 32rem;\n}\n\n.max-w-screen-2xl {\n  max-width: 1536px;\n}\n\n.flex-1 {\n  flex: 1 1 0%;\n}\n\n.flex-auto {\n  flex: 1 1 auto;\n}\n\n.flex-none {\n  flex: none;\n}\n\n.cursor-pointer {\n  cursor: pointer;\n}\n\n.cursor-zoom-out {\n  cursor: zoom-out;\n}\n\n.select-none {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n          user-select: none;\n}\n\n.resize-y {\n  resize: vertical;\n}\n\n.grid-cols-1 {\n  grid-template-columns: repeat(1, minmax(0, 1fr));\n}\n\n.grid-cols-2 {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n\n.flex-col {\n  flex-direction: column;\n}\n\n.flex-wrap {\n  flex-wrap: wrap;\n}\n\n.items-start {\n  align-items: flex-start;\n}\n\n.items-center {\n  align-items: center;\n}\n\n.justify-end {\n  justify-content: flex-end;\n}\n\n.justify-center {\n  justify-content: center;\n}\n\n.justify-between {\n  justify-content: space-between;\n}\n\n.gap-2 {\n  gap: 0.5rem;\n}\n\n.gap-3 {\n  gap: 0.75rem;\n}\n\n.gap-6 {\n  gap: 1.5rem;\n}\n\n.space-x-4 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-x-reverse: 0;\n  margin-right: calc(1rem * var(--tw-space-x-reverse));\n  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));\n}\n\n.space-y-2 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));\n}\n\n.space-y-3 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));\n}\n\n.space-y-4 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(1rem * var(--tw-space-y-reverse));\n}\n\n.space-y-6 > :not([hidden]) ~ :not([hidden]) {\n  --tw-space-y-reverse: 0;\n  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));\n  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));\n}\n\n.overflow-auto {\n  overflow: auto;\n}\n\n.overflow-hidden {\n  overflow: hidden;\n}\n\n.overflow-y-auto {\n  overflow-y: auto;\n}\n\n.truncate {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.rounded {\n  border-radius: 0.25rem;\n}\n\n.rounded-2xl {\n  border-radius: 1rem;\n}\n\n.rounded-full {\n  border-radius: 9999px;\n}\n\n.rounded-lg {\n  border-radius: 0.5rem;\n}\n\n.rounded-md {\n  border-radius: 0.375rem;\n}\n\n.rounded-xl {\n  border-radius: 0.75rem;\n}\n\n.border {\n  border-width: 1px;\n}\n\n.border-b {\n  border-bottom-width: 1px;\n}\n\n.border-t {\n  border-top-width: 1px;\n}\n\n.border-none {\n  border-style: none;\n}\n\n.border-gray-100 {\n  --tw-border-opacity: 1;\n  border-color: rgb(243 244 246 / var(--tw-border-opacity, 1));\n}\n\n.border-gray-200 {\n  --tw-border-opacity: 1;\n  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));\n}\n\n.border-gray-300 {\n  --tw-border-opacity: 1;\n  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));\n}\n\n.bg-\\[rgba\\(33\\2c 33\\2c 33\\2c \\.8\\)\\] {\n  background-color: rgba(33,33,33,.8);\n}\n\n.bg-black\\/25 {\n  background-color: rgb(0 0 0 / 0.25);\n}\n\n.bg-black\\/40 {\n  background-color: rgb(0 0 0 / 0.4);\n}\n\n.bg-blue-600 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-100 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-200 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));\n}\n\n.bg-gray-50 {\n  --tw-bg-opacity: 1;\n  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));\n}\n\n.bg-white {\n  --tw-bg-opacity: 1;\n  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));\n}\n\n.fill-current {\n  fill: currentColor;\n}\n\n.p-0\\.5 {\n  padding: 0.125rem;\n}\n\n.p-1 {\n  padding: 0.25rem;\n}\n\n.p-2 {\n  padding: 0.5rem;\n}\n\n.p-3 {\n  padding: 0.75rem;\n}\n\n.p-4 {\n  padding: 1rem;\n}\n\n.p-5 {\n  padding: 1.25rem;\n}\n\n.px-1\\.5 {\n  padding-left: 0.375rem;\n  padding-right: 0.375rem;\n}\n\n.px-2 {\n  padding-left: 0.5rem;\n  padding-right: 0.5rem;\n}\n\n.px-3 {\n  padding-left: 0.75rem;\n  padding-right: 0.75rem;\n}\n\n.px-4 {\n  padding-left: 1rem;\n  padding-right: 1rem;\n}\n\n.px-6 {\n  padding-left: 1.5rem;\n  padding-right: 1.5rem;\n}\n\n.py-0\\.5 {\n  padding-top: 0.125rem;\n  padding-bottom: 0.125rem;\n}\n\n.py-1 {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n}\n\n.py-2 {\n  padding-top: 0.5rem;\n  padding-bottom: 0.5rem;\n}\n\n.py-3 {\n  padding-top: 0.75rem;\n  padding-bottom: 0.75rem;\n}\n\n.py-4 {\n  padding-top: 1rem;\n  padding-bottom: 1rem;\n}\n\n.pl-2 {\n  padding-left: 0.5rem;\n}\n\n.pr-1 {\n  padding-right: 0.25rem;\n}\n\n.pr-2 {\n  padding-right: 0.5rem;\n}\n\n.text-center {\n  text-align: center;\n}\n\n.text-right {\n  text-align: right;\n}\n\n.font-mono {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;\n}\n\n.text-lg {\n  font-size: 20px;\n  line-height: 28px;\n}\n\n.text-sm {\n  font-size: 14px;\n  line-height: 20px;\n}\n\n.text-xl {\n  font-size: 24px;\n  line-height: 32px;\n}\n\n.text-xs {\n  font-size: 12px;\n  line-height: 14px;\n}\n\n.font-bold {\n  font-weight: 700;\n}\n\n.font-medium {\n  font-weight: 500;\n}\n\n.font-normal {\n  font-weight: 400;\n}\n\n.font-semibold {\n  font-weight: 600;\n}\n\n.italic {\n  font-style: italic;\n}\n\n.text-black {\n  --tw-text-opacity: 1;\n  color: rgb(0 0 0 / var(--tw-text-opacity, 1));\n}\n\n.text-blue-600 {\n  --tw-text-opacity: 1;\n  color: rgb(37 99 235 / var(--tw-text-opacity, 1));\n}\n\n.text-gray-400 {\n  --tw-text-opacity: 1;\n  color: rgb(156 163 175 / var(--tw-text-opacity, 1));\n}\n\n.text-gray-500 {\n  --tw-text-opacity: 1;\n  color: rgb(107 114 128 / var(--tw-text-opacity, 1));\n}\n\n.text-gray-700 {\n  --tw-text-opacity: 1;\n  color: rgb(55 65 81 / var(--tw-text-opacity, 1));\n}\n\n.text-gray-900 {\n  --tw-text-opacity: 1;\n  color: rgb(17 24 39 / var(--tw-text-opacity, 1));\n}\n\n.text-red-600 {\n  --tw-text-opacity: 1;\n  color: rgb(220 38 38 / var(--tw-text-opacity, 1));\n}\n\n.text-white {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity, 1));\n}\n\n.placeholder-gray-400::-moz-placeholder {\n  --tw-placeholder-opacity: 1;\n  color: rgb(156 163 175 / var(--tw-placeholder-opacity, 1));\n}\n\n.placeholder-gray-400::placeholder {\n  --tw-placeholder-opacity: 1;\n  color: rgb(156 163 175 / var(--tw-placeholder-opacity, 1));\n}\n\n.opacity-0 {\n  opacity: 0;\n}\n\n.shadow-2xl {\n  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);\n  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n\n.shadow-sm {\n  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);\n  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n\n.shadow-xl {\n  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);\n  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);\n  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n}\n\n.outline-none {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n}\n\n.filter {\n  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);\n}\n\n.backdrop-blur-sm {\n  --tw-backdrop-blur: blur(4px);\n  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);\n}\n\n.transition {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.transition-colors {\n  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.transition-opacity {\n  transition-property: opacity;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  transition-duration: 150ms;\n}\n\n.duration-200 {\n  transition-duration: 200ms;\n}\n\n.ease-in-out {\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n.last\\:border-0:last-child {\n  border-width: 0px;\n}\n\n.hover\\:bg-blue-700:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:bg-gray-100:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:bg-gray-200:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:bg-gray-50:hover {\n  --tw-bg-opacity: 1;\n  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));\n}\n\n.hover\\:text-blue-700:hover {\n  --tw-text-opacity: 1;\n  color: rgb(29 78 216 / var(--tw-text-opacity, 1));\n}\n\n.hover\\:text-red-500:hover {\n  --tw-text-opacity: 1;\n  color: rgb(239 68 68 / var(--tw-text-opacity, 1));\n}\n\n.hover\\:text-red-700:hover {\n  --tw-text-opacity: 1;\n  color: rgb(185 28 28 / var(--tw-text-opacity, 1));\n}\n\n.hover\\:underline:hover {\n  text-decoration-line: underline;\n}\n\n.focus\\:border-blue-500:focus {\n  --tw-border-opacity: 1;\n  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));\n}\n\n.focus\\:outline-none:focus {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n}\n\n.focus\\:ring-2:focus {\n  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);\n  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);\n  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);\n}\n\n.focus\\:ring-blue-500:focus {\n  --tw-ring-opacity: 1;\n  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));\n}\n\n.group:hover .group-hover\\:text-black {\n  --tw-text-opacity: 1;\n  color: rgb(0 0 0 / var(--tw-text-opacity, 1));\n}\n\n.group:hover .group-hover\\:text-blue-600 {\n  --tw-text-opacity: 1;\n  color: rgb(37 99 235 / var(--tw-text-opacity, 1));\n}\n\n.group:hover .group-hover\\:opacity-100 {\n  opacity: 1;\n}\n\n@media (min-width: 1024px) {\n\n  .lg\\:mt-8 {\n    margin-top: 2rem;\n  }\n\n  .lg\\:grid-cols-2 {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  .lg\\:grid-cols-3 {\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n  }\n\n  .lg\\:gap-8 {\n    gap: 2rem;\n  }\n\n  .lg\\:space-y-8 > :not([hidden]) ~ :not([hidden]) {\n    --tw-space-y-reverse: 0;\n    margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));\n    margin-bottom: calc(2rem * var(--tw-space-y-reverse));\n  }\n\n  .lg\\:p-6 {\n    padding: 1.5rem;\n  }\n}\n\n.dark\\:border-gray-500:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-border-opacity: 1;\n  border-color: rgb(107 114 128 / var(--tw-border-opacity, 1));\n}\n\n.dark\\:border-gray-600:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-border-opacity: 1;\n  border-color: rgb(75 85 99 / var(--tw-border-opacity, 1));\n}\n\n.dark\\:border-gray-700:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-border-opacity: 1;\n  border-color: rgb(55 65 81 / var(--tw-border-opacity, 1));\n}\n\n.dark\\:border-gray-800:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-border-opacity: 1;\n  border-color: rgb(31 41 55 / var(--tw-border-opacity, 1));\n}\n\n.dark\\:border-gray-800\\/50:where([data-theme="dark"], [data-theme="dark"] *) {\n  border-color: rgb(31 41 55 / 0.5);\n}\n\n.dark\\:bg-black:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-700:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-800:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-900:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-900\\/30:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(17 24 39 / 0.3);\n}\n\n.dark\\:bg-gray-950:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(3 7 18 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:bg-gray-950\\/50:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(3 7 18 / 0.5);\n}\n\n.dark\\:bg-white\\/25:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(255 255 255 / 0.25);\n}\n\n.dark\\:text-blue-400:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(96 165 250 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-gray-100:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(243 244 246 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-gray-300:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(209 213 219 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-gray-400:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(156 163 175 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-red-400:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(248 113 113 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:text-white:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:hover\\:bg-gray-700:hover:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:hover\\:bg-gray-800:hover:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-bg-opacity: 1;\n  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));\n}\n\n.dark\\:hover\\:bg-gray-800\\/50:hover:where([data-theme="dark"], [data-theme="dark"] *) {\n  background-color: rgb(31 41 55 / 0.5);\n}\n\n.dark\\:hover\\:text-blue-300:hover:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(147 197 253 / var(--tw-text-opacity, 1));\n}\n\n.dark\\:hover\\:text-red-300:hover:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(252 165 165 / var(--tw-text-opacity, 1));\n}\n\n.group:hover .dark\\:group-hover\\:text-blue-400:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(96 165 250 / var(--tw-text-opacity, 1));\n}\n\n.group:hover .dark\\:group-hover\\:text-white:where([data-theme="dark"], [data-theme="dark"] *) {\n  --tw-text-opacity: 1;\n  color: rgb(255 255 255 / var(--tw-text-opacity, 1));\n}\n';
 
   // src/bilibili.com/utils/obtainStyledShadowRoot.ts
   var key2 = "36fff111-0148-4cc1-869b-06dfdfc36861";
