@@ -21,7 +21,7 @@ export default class MiniHeaderButton {
     if (!parent) {
       return;
     }
-    const container = obtainHTMLElementByID({
+    void obtainHTMLElementByID({
       tag: 'div',
       id: MiniHeaderButton.id,
       onDidCreate: (el) => {

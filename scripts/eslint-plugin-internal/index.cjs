@@ -1,49 +1,48 @@
 /// <reference types="node" />
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const utils = require("@typescript-eslint/utils");
+const utils = require('@typescript-eslint/utils');
 
 /** @type {import('eslint').ESLint.Plugin} */
 module.exports = {
   configs: {
     recommended: {
       rules: {
-        "internal/no-private-identifier": "error",
-        "internal/prefer-instance-function": "error",
+        'internal/no-private-identifier': 'error',
+        'internal/prefer-instance-function': 'error',
       },
     },
   },
   rules: {
-    "no-private-identifier": {
+    'no-private-identifier': {
       meta: {
-        type: "suggestion",
+        type: 'suggestion',
         docs: {
-          url: "https://google.github.io/styleguide/tsguide.html#private-fields",
+          url: 'https://google.github.io/styleguide/tsguide.html#private-fields',
         },
       },
       create: (ctx) => ({
         PrivateIdentifier: (node) => {
           ctx.report({
             node,
-            message: "use Typescript visibility annotations instead",
+            message: 'use Typescript visibility annotations instead',
           });
         },
       }),
     },
     /** @type {utils.TSESLint.RuleModule} */
-    "prefer-instance-function": {
+    'prefer-instance-function': {
       meta: {
-        type: "suggestion",
+        type: 'suggestion',
         hasSuggestions: true,
-        fixable: "code",
+        fixable: 'code',
         docs: {
-          url: "https://github.com/Microsoft/TypeScript/wiki/%27this%27-in-TypeScript#use-instance-functions",
+          url: 'https://github.com/Microsoft/TypeScript/wiki/%27this%27-in-TypeScript#use-instance-functions',
         },
       },
       create: (ctx) => {
         return {
           /** @type {utils.TSESLint.RuleListener['MethodDefinition']} */
-          "MethodDefinition[kind=method]:matches(:not([accessibility]),[accessibility=public])":
+          'MethodDefinition[kind=method]:matches(:not([accessibility]),[accessibility=public])':
             (node) => {
               if (node.value.generator) {
                 // generator is unlikely to used as callback
@@ -52,29 +51,29 @@ module.exports = {
               ctx.report({
                 node,
                 message:
-                  "should use instance function if method can be used as callback",
+                  'should use instance function if method can be used as callback',
                 fix: (fixer) => {
                   return [
-                    fixer.insertTextBefore(node.value.body, "=> "),
+                    fixer.insertTextBefore(node.value.body, '=> '),
                     fixer.replaceTextRange(
                       [node.range[0], node.key.range[1]],
                       `public readonly ${node.key.name} = ${
-                        node.value.async ? "async " : ""
+                        node.value.async ? 'async ' : ''
                       }`
                     ),
                   ];
                 },
                 suggest: [
                   {
-                    desc: "mark as private",
+                    desc: 'mark as private',
                     fix: (fixer) => {
-                      return fixer.insertTextBefore(node.key, "private ");
+                      return fixer.insertTextBefore(node.key, 'private ');
                     },
                   },
                   {
-                    desc: "mark as protected",
+                    desc: 'mark as protected',
                     fix: (fixer) => {
-                      return fixer.insertTextBefore(node.key, "protected ");
+                      return fixer.insertTextBefore(node.key, 'protected ');
                     },
                   },
                 ],

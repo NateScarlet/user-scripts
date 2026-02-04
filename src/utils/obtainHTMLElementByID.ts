@@ -1,5 +1,5 @@
 export default function obtainHTMLElementByID<
-  K extends keyof HTMLElementTagNameMap
+  K extends keyof HTMLElementTagNameMap,
 >({
   tag,
   id,

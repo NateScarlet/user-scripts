@@ -26,7 +26,6 @@ export default new (class {
       patterns.map((pattern) => {
         let finalPattern = pattern;
         try {
-          // eslint-disable-next-line no-new
           new RegExp(pattern);
         } catch {
           finalPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

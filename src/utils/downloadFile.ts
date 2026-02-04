@@ -2,7 +2,7 @@ import urlLastPart from './urlLastPart';
 
 export default function downloadFile(
   file: Blob,
-  filename: string = `${urlLastPart(location.pathname)} ${document.title}.md`
+  filename = `${urlLastPart(location.pathname)} ${document.title}.md`
 ): void {
   const anchor = document.createElement('a');
   anchor.href = URL.createObjectURL(file);

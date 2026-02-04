@@ -20,7 +20,7 @@ const __name__ = '刺猬猫章节自动下载';
     '';
   let lines: string[] = [];
 
-  let startTime = Date.now();
+  const startTime = Date.now();
 
   while (lines.length === 0 && Date.now() - startTime < 60e3) {
     await sleep(1e3);

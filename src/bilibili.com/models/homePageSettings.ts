@@ -1,13 +1,13 @@
 import GMValue from '@/utils/GMValue';
 import type { Readable } from 'svelte/store';
 
-type HomePageSettingsValue = {
+interface HomePageSettingsValue {
   allowAdblockTips?: boolean;
   floorCard?: {
     excludeAll?: boolean;
     excludeByChannel?: string[];
   };
-};
+}
 
 export default new (class HomePageSettings
   implements Readable<HomePageSettingsValue | undefined>

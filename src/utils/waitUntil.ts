@@ -1,5 +1,3 @@
-/* eslint-disable no-await-in-loop */
-
 export default async function waitUntil({
   ready,
   timeoutMs = 60e3,

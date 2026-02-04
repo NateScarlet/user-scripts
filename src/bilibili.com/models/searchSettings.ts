@@ -1,11 +1,11 @@
 import GMValue from '@/utils/GMValue';
 import type { Readable } from 'svelte/store';
 
-type SearchSettingsValue = {
+interface SearchSettingsValue {
   strictTitleMatch?: boolean;
   disableNavSuggestion?: boolean;
   trending?: 'off';
-};
+}
 
 class SearchSettingsModel implements Readable<SearchSettingsValue | undefined> {
   private readonly value = new GMValue<SearchSettingsValue>(

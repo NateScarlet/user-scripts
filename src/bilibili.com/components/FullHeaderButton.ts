@@ -19,7 +19,7 @@ export default class FullHeaderButton {
     if (!parent) {
       return;
     }
-    const container = obtainHTMLElementByID({
+    void obtainHTMLElementByID({
       tag: 'li',
       id: FullHeaderButton.id,
       onDidCreate: (el) => {

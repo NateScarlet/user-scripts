@@ -1,7 +1,7 @@
 export default function canvasToHTML(
   canvas: HTMLCanvasElement,
-  alt: string = '',
-  title: string = ''
+  alt = '',
+  title = ''
 ): string {
   return `<img src="${canvas.toDataURL()}" alt="${alt}" title="${title}"/>`;
 }

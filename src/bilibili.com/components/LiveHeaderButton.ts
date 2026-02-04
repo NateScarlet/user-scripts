@@ -4,7 +4,6 @@ import randomUUID from '@/utils/randomUUID';
 import isNonNull from '@/utils/isNonNull';
 import SettingsDrawer from './SettingsDrawer';
 import LiveHeaderButtonComponent from './LiveHeaderButton.svelte';
-import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 
 export default class LiveHeaderButton {
   private static readonly id = `live-header-button-${randomUUID()}`;
@@ -21,7 +20,7 @@ export default class LiveHeaderButton {
     if (!parent) {
       return;
     }
-    const container = obtainHTMLElementByID({
+    void obtainHTMLElementByID({
       tag: 'div',
       id: LiveHeaderButton.id,
       onDidCreate: (el) => {

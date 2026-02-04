@@ -10,7 +10,7 @@
   // We need to access $blockedUsers to make it reactive
   let items = $derived.by(() => {
     // Access $blockedUsers to subscribe
-    const _ = $blockedUsers;
+    void $blockedUsers;
 
     return blockedUsers
       .distinctID()

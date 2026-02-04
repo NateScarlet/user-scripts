@@ -170,7 +170,7 @@ export default class Duration {
     return !this.invalid;
   }
 
-  public static readonly fromMilliseconds = (milliseconds: number = 0) => {
+  public static readonly fromMilliseconds = (milliseconds = 0) => {
     const d: DurationOptions = {};
     let ms = milliseconds;
     if (ms < 0) {

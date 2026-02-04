@@ -1,9 +1,6 @@
 <script lang="ts">
   import { mdiClose } from '@mdi/js';
   import homePageSettings from '../../models/homePageSettings';
-
-  // 避免 svelete 认为是全局变量
-  void homePageSettings;
 </script>
 
 <section>

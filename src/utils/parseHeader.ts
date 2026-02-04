@@ -1,5 +1,5 @@
 export default function parseHeader(headers: string): Map<string, string[]> {
-  const ret: Map<string, string[]> = new Map();
+  const ret = new Map<string, string[]>();
   for (const line of headers.split('\r\n')) {
     if (!line) {
       continue;
@@ -8,7 +8,7 @@ export default function parseHeader(headers: string): Map<string, string[]> {
     if (!match) {
       throw new Error(`malformed header: ${line}`);
     }
-    const [_, key, value] = match;
+    const [, key, value] = match;
     if (!ret.has(key)) {
       ret.set(key, []);
     }

@@ -1,7 +1,5 @@
 <script lang="ts">
   import searchSettings from '../../models/searchSettings';
-
-  void searchSettings;
 </script>
 
 <section>
