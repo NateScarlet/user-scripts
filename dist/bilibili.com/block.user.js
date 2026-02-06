@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2026.02.04+7136145f
+// @version   2026.02.06+ed386cd0
 // ==/UserScript==
 
 "use strict";
@@ -7838,44 +7838,6 @@ margin-right: 24px;
     }
   }
 
-  // src/bilibili.com/components/VideoHoverButton.svelte
-  var root10 = from_html(`<button type="button"><svg viewBox="-3 -1 28 28" class="h-7 fill-current"><path fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>`);
-  function VideoHoverButton($$anchor, $$props) {
-    push($$props, true);
-    const $blockedUsers = () => store_get(blockedUsers_default, "$blockedUsers", $$stores);
-    const [$$stores, $$cleanup] = setup_stores();
-    let user = prop($$props, "user", 15);
-    function setUser(u) {
-      user(u);
-    }
-    let isBlocked = user_derived(() => $blockedUsers() && blockedUsers_default.has(user().id));
-    var $$exports = { setUser };
-    var button = root10();
-    button.__click = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (get(isBlocked)) {
-        blockedUsers_default.remove(user().id);
-      } else {
-        blockedUsers_default.add(user());
-      }
-    };
-    var svg = child(button);
-    var path = child(svg);
-    reset(svg);
-    reset(button);
-    template_effect(() => {
-      set_attribute2(button, "title", get(isBlocked) ? "取消屏蔽此用户" : "屏蔽此用户");
-      set_class(button, 1, `rounded-md cursor-pointer z-20 border-none ${get(isBlocked) ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}`);
-      set_attribute2(path, "d", get(isBlocked) ? mdiAccountCheckOutline : mdiAccountCancelOutline);
-    });
-    append($$anchor, button);
-    var $$pop = pop($$exports);
-    $$cleanup();
-    return $$pop;
-  }
-  delegate(["click"]);
-
   // src/utils/ExactSearchMatcher.ts
   var ExactSearchMatcher = class {
     constructor(q) {
@@ -7941,12 +7903,100 @@ margin-right: 24px;
     }
   };
 
+  // src/utils/injectStyle.ts
+  function injectStyle(id, css) {
+    obtainHTMLElementByID({
+      tag: "style",
+      id,
+      onDidCreate: (el) => {
+        document.head.appendChild(el);
+        el.innerHTML = css;
+      }
+    });
+  }
+
+  // src/bilibili.com/components/VideoHoverButton.svelte
+  var root10 = from_html(`<button type="button"><svg viewBox="-3 -1 28 28" class="h-7 fill-current"><path fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>`);
+  function VideoHoverButton($$anchor, $$props) {
+    push($$props, true);
+    const $blockedUsers = () => store_get(blockedUsers_default, "$blockedUsers", $$stores);
+    const [$$stores, $$cleanup] = setup_stores();
+    let user = prop($$props, "user", 15);
+    function setUser(u) {
+      user(u);
+    }
+    let isBlocked = user_derived(() => $blockedUsers() && blockedUsers_default.has(user().id));
+    var $$exports = { setUser };
+    var button = root10();
+    button.__click = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (get(isBlocked)) {
+        blockedUsers_default.remove(user().id);
+      } else {
+        blockedUsers_default.add(user());
+      }
+    };
+    var svg = child(button);
+    var path = child(svg);
+    reset(svg);
+    reset(button);
+    template_effect(() => {
+      set_attribute2(button, "title", get(isBlocked) ? "取消屏蔽此用户" : "屏蔽此用户");
+      set_class(button, 1, `rounded-md cursor-pointer z-20 border-none ${get(isBlocked) ? "bg-white text-black" : "text-white bg-[rgba(33,33,33,.8)]"}`);
+      set_attribute2(path, "d", get(isBlocked) ? mdiAccountCheckOutline : mdiAccountCancelOutline);
+    });
+    append($$anchor, button);
+    var $$pop = pop($$exports);
+    $$cleanup();
+    return $$pop;
+  }
+  delegate(["click"]);
+
+  // src/bilibili.com/components/renderVideoHoverButton.ts
+  var instances = /* @__PURE__ */ new WeakMap();
+  function renderVideoHoverButton(parentNode, user) {
+    const parentKey = "dde57f95-0cb5-4443-bbeb-2466d63db0f1";
+    const key3 = "a1161956-2be7-4796-9f1b-528707156b11";
+    injectStyle(
+      parentKey,
+      `[data-${parentKey}]:hover [data-${key3}] {
+  filter: opacity(1);
+  transition: filter 0.2s linear 0.2s;
+}
+
+[data-${parentKey}] [data-${key3}] {
+  filter: opacity(0);
+  z-index: 10;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transition: filter 0.2s linear 0s;
+}
+`
+    );
+    const el = obtainHTMLElementByDataKey({
+      tag: "div",
+      key: key3,
+      parentNode,
+      onDidCreate: (el2) => {
+        parentNode.setAttribute(`data-${parentKey}`, "");
+        parentNode.append(el2);
+        const s = mount(VideoHoverButton, {
+          target: obtainStyledShadowRoot(el2),
+          props: { user }
+        });
+        instances.set(el2, s);
+      }
+    });
+    instances.get(el)?.setUser(user);
+  }
+
   // src/bilibili.com/components/VideoDetailPatch.ts
   var VideoDetailPatch = class {
     constructor(ctx) {
       this.ctx = ctx;
       this.blockedTitles = /* @__PURE__ */ new Set();
-      this.instances = /* @__PURE__ */ new WeakMap();
       this.render = () => {
         document.querySelectorAll(".video-page-card-small").forEach((i) => {
           const rawURL = i.querySelector(".upname a")?.getAttribute("href");
@@ -7980,30 +8030,11 @@ margin-right: 24px;
           if (user && !hidden) {
             const target = i.querySelector(".pic-box");
             if (target) {
-              const userData = {
+              renderVideoHoverButton(target, {
                 id: user.id,
                 name: i.querySelector(".upname .name")?.textContent || user.id,
                 note
-              };
-              const wrapper = obtainHTMLElementByDataKey({
-                tag: "div",
-                key: "video-detail-hover-button",
-                parentNode: target,
-                onDidCreate: (el) => {
-                  target.append(el);
-                  const s = mount(VideoHoverButton, {
-                    target: el,
-                    props: {
-                      user: userData
-                    }
-                  });
-                  this.instances.set(el, s);
-                }
               });
-              const comp = this.instances.get(wrapper);
-              if (comp) {
-                comp.setUser(userData);
-              }
             }
           }
         });
@@ -8024,7 +8055,6 @@ margin-right: 24px;
   // src/bilibili.com/components/SSRVideoRankPatch.ts
   var SSRVideoRankPatch = class {
     constructor() {
-      this.instances = /* @__PURE__ */ new WeakMap();
       this.render = () => {
         document.querySelectorAll(".rank-item").forEach((i) => {
           const user = parseUserURL(
@@ -8039,30 +8069,11 @@ margin-right: 24px;
           if (!isBlocked) {
             const target = i.querySelector(".img");
             if (target) {
-              const userData = {
+              renderVideoHoverButton(target, {
                 id: user.id,
                 name,
                 note: ""
-              };
-              const wrapper = obtainHTMLElementByDataKey({
-                tag: "div",
-                key: "ssr-video-rank-hover-button",
-                parentNode: target,
-                onDidCreate: (el) => {
-                  target.append(el);
-                  const s = mount(VideoHoverButton, {
-                    target: el,
-                    props: {
-                      user: userData
-                    }
-                  });
-                  this.instances.set(el, s);
-                }
               });
-              const comp = this.instances.get(wrapper);
-              if (comp) {
-                comp.setUser(userData);
-              }
             }
           }
         });
@@ -8118,7 +8129,6 @@ margin-right: 24px;
   // src/bilibili.com/components/VueVideoRankPatch.ts
   var VueVideoRankPatch = class {
     constructor() {
-      this.instances = /* @__PURE__ */ new WeakMap();
       this.render = () => {
         document.querySelectorAll(".video-card").forEach((i) => {
           const selector = getElementSelector(i);
@@ -8138,48 +8148,17 @@ margin-right: 24px;
           if (!isBlocked) {
             const target = i.querySelector(".video-card__content");
             if (target) {
-              const userData = {
+              renderVideoHoverButton(target, {
                 id: userID,
                 name,
                 note: (typeof title === "string" ? title : "") + (typeof bvid === "string" ? `(${bvid})` : "")
-              };
-              const wrapper = obtainHTMLElementByDataKey({
-                tag: "div",
-                key: "vue-video-rank-hover-button",
-                parentNode: target,
-                onDidCreate: (el) => {
-                  target.append(el);
-                  const s = mount(VideoHoverButton, {
-                    target: el,
-                    props: {
-                      user: userData
-                    }
-                  });
-                  this.instances.set(el, s);
-                }
               });
-              const comp = this.instances.get(wrapper);
-              if (comp) {
-                comp.setUser(userData);
-              }
             }
           }
         });
       };
     }
   };
-
-  // src/utils/injectStyle.ts
-  function injectStyle(id, css) {
-    obtainHTMLElementByID({
-      tag: "style",
-      id,
-      onDidCreate: (el) => {
-        document.head.appendChild(el);
-        el.innerHTML = css;
-      }
-    });
-  }
 
   // src/bilibili.com/components/VideoListPatchStatus.svelte
   var root_15 = from_html(`<div class="w-full text-gray-500 dark:text-gray-400 text-center m-1"><!> <button type="button" class="border rounded py-1 px-2 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 transition ease-in-out duration-200"> </button></div>`);
@@ -8241,25 +8220,7 @@ margin-right: 24px;
       this.ctx = ctx;
       this.matchCountStore = writable(0);
       this.disabledStore = writable(false);
-      this.instances = /* @__PURE__ */ new WeakMap();
       this.render = () => {
-        injectStyle(
-          _VideoListPatch.parentKey,
-          `[data-${_VideoListPatch.parentKey}]:hover [data-${_VideoListPatch.key}] {
-  filter: opacity(1);
-  transition: filter 0.2s linear 0.2s;
-}
-
-[data-${_VideoListPatch.parentKey}] [data-${_VideoListPatch.key}] {
-  filter: opacity(0);
-  z-index: 10;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  transition: filter 0.2s linear 0s;
-}
-`
-        );
         let matchCount = 0;
         const disabled = get2(this.disabledStore);
         let listEl;
@@ -8311,31 +8272,11 @@ margin-right: 24px;
           if (user && !hidden) {
             const target = i.querySelector(".bili-video-card__image--wrap");
             if (target) {
-              const userData = {
+              renderVideoHoverButton(target, {
                 id: user.id,
                 name: i.querySelector(".bili-video-card__info--author")?.textContent || user.id,
                 note
-              };
-              const wrapper = obtainHTMLElementByDataKey({
-                tag: "div",
-                key: _VideoListPatch.key,
-                parentNode: target,
-                onDidCreate: (el) => {
-                  target.setAttribute(`data-${_VideoListPatch.parentKey}`, "");
-                  target.append(el);
-                  const s = mount(VideoHoverButton, {
-                    target: obtainStyledShadowRoot(el),
-                    props: {
-                      user: userData
-                    }
-                  });
-                  this.instances.set(el, s);
-                }
               });
-              const comp = this.instances.get(wrapper);
-              if (comp) {
-                comp.setUser(userData);
-              }
             }
           }
         });
@@ -8369,8 +8310,6 @@ margin-right: 24px;
     }
   };
   _VideoListPatch.id = randomUUID();
-  _VideoListPatch.parentKey = "dde57f95-0cb5-4443-bbeb-2466d63db0f1";
-  _VideoListPatch.key = "a1161956-2be7-4796-9f1b-528707156b11";
   _VideoListPatch.knownParentContainerClass = /* @__PURE__ */ new Set([
     "bili-feed-card",
     "feed-card"
@@ -8533,7 +8472,6 @@ margin-right: 24px;
   var PlaylistPatch = class {
     constructor(ctx) {
       this.ctx = ctx;
-      this.instances = /* @__PURE__ */ new WeakMap();
       this.render = () => {
         document.querySelectorAll(".video-card").forEach((i) => {
           const rawURL = i.querySelector("a.upname")?.getAttribute("href");
@@ -8553,30 +8491,11 @@ margin-right: 24px;
           if (user && !hidden) {
             const target = i.querySelector(".pic-box");
             if (target) {
-              const userData = {
+              renderVideoHoverButton(target, {
                 id: user.id,
                 name: i.querySelector(".upname .name")?.textContent || user.id,
                 note: ""
-              };
-              const wrapper = obtainHTMLElementByDataKey({
-                tag: "div",
-                key: "playlist-video-hover-button",
-                parentNode: target,
-                onDidCreate: (el) => {
-                  target.append(el);
-                  const s = mount(VideoHoverButton, {
-                    target: el,
-                    props: {
-                      user: userData
-                    }
-                  });
-                  this.instances.set(el, s);
-                }
               });
-              const comp = this.instances.get(wrapper);
-              if (comp) {
-                comp.setUser(userData);
-              }
             }
           }
         });

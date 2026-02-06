@@ -1,16 +1,12 @@
 import setHTMLElementDisplayHidden from '@/utils/setHTMLElementDisplayHidden';
-import obtainHTMLElementByDataKey from '@/utils/obtainHTMLElementByDataKey';
 import parseUserURL from '../utils/parseUserURL';
-import VideoHoverButton from './VideoHoverButton.svelte';
 import videoListSettings from '../models/videoListSettings';
 import Context from '../Context';
-import { mount } from 'svelte';
+import renderVideoHoverButton from './renderVideoHoverButton';
 
 // spell-checker: word upname
 export default class PlaylistPatch {
   constructor(private readonly ctx: Context) {}
-
-  private readonly instances = new WeakMap<HTMLElement, VideoHoverButton>();
 
   public readonly render = () => {
     document.querySelectorAll<HTMLElement>('.video-card').forEach((i) => {
@@ -38,30 +34,11 @@ export default class PlaylistPatch {
       if (user && !hidden) {
         const target = i.querySelector('.pic-box');
         if (target) {
-          const userData = {
+          renderVideoHoverButton(target, {
             id: user.id,
             name: i.querySelector('.upname .name')?.textContent || user.id,
             note: '',
-          };
-          const wrapper = obtainHTMLElementByDataKey({
-            tag: 'div',
-            key: 'playlist-video-hover-button',
-            parentNode: target,
-            onDidCreate: (el) => {
-              target.append(el);
-              const s = mount(VideoHoverButton, {
-                target: el,
-                props: {
-                  user: userData,
-                },
-              });
-              this.instances.set(el, s);
-            },
           });
-          const comp = this.instances.get(wrapper);
-          if (comp) {
-            comp.setUser(userData);
-          }
         }
       }
     });

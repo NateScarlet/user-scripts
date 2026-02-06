@@ -1,17 +1,15 @@
 import setHTMLElementDisplayHidden from '@/utils/setHTMLElementDisplayHidden';
-import injectStyle from '@/utils/injectStyle';
 import obtainHTMLElementByID from '@/utils/obtainHTMLElementByID';
-import obtainHTMLElementByDataKey from '@/utils/obtainHTMLElementByDataKey';
 import randomUUID from '@/utils/randomUUID';
 import { mount } from 'svelte';
 import { writable, get } from 'svelte/store';
 import parseUserURL from '../utils/parseUserURL';
-import VideoHoverButton from './VideoHoverButton.svelte';
 import videoListSettings from '../models/videoListSettings';
 import Context from '../Context';
 import obtainStyledShadowRoot from '../utils/obtainStyledShadowRoot';
 import parseVideoURL from '../utils/parseVideoURL';
 import VideoListPatchStatus from './VideoListPatchStatus.svelte';
+import renderVideoHoverButton from './renderVideoHoverButton';
 
 // spell-checker: word bili
 
@@ -21,10 +19,6 @@ export default class VideoListPatch {
   private readonly disabledStore = writable(false);
 
   private static readonly id = randomUUID();
-  private static readonly parentKey = 'dde57f95-0cb5-4443-bbeb-2466d63db0f1';
-  private static readonly key = 'a1161956-2be7-4796-9f1b-528707156b11';
-
-  private readonly instances = new WeakMap<HTMLElement, VideoHoverButton>();
 
   private static readonly knownParentContainerClass = new Set([
     'bili-feed-card',
@@ -34,24 +28,6 @@ export default class VideoListPatch {
   constructor(private readonly ctx: Context) {}
 
   public readonly render = () => {
-    injectStyle(
-      VideoListPatch.parentKey,
-      `\
-[data-${VideoListPatch.parentKey}]:hover [data-${VideoListPatch.key}] {
-  filter: opacity(1);
-  transition: filter 0.2s linear 0.2s;
-}
-
-[data-${VideoListPatch.parentKey}] [data-${VideoListPatch.key}] {
-  filter: opacity(0);
-  z-index: 10;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  transition: filter 0.2s linear 0s;
-}
-`
-    );
     let matchCount = 0;
     const disabled = get(this.disabledStore);
 
@@ -121,33 +97,13 @@ export default class VideoListPatch {
       if (user && !hidden) {
         const target = i.querySelector('.bili-video-card__image--wrap');
         if (target) {
-          const userData = {
+          renderVideoHoverButton(target, {
             id: user.id,
             name:
               i.querySelector('.bili-video-card__info--author')?.textContent ||
               user.id,
             note,
-          };
-          const wrapper = obtainHTMLElementByDataKey({
-            tag: 'div',
-            key: VideoListPatch.key,
-            parentNode: target,
-            onDidCreate: (el) => {
-              target.setAttribute(`data-${VideoListPatch.parentKey}`, '');
-              target.append(el);
-              const s = mount(VideoHoverButton, {
-                target: obtainStyledShadowRoot(el),
-                props: {
-                  user: userData,
-                },
-              });
-              this.instances.set(el, s);
-            },
           });
-          const comp = this.instances.get(wrapper);
-          if (comp) {
-            comp.setUser(userData);
-          }
         }
       }
     });
@@ -160,12 +116,6 @@ export default class VideoListPatch {
       onDidCreate: (el) => {
         listEl?.parentElement?.insertBefore(el, listEl);
         const shadowRoot = obtainStyledShadowRoot(el);
-        // Note: The VideoListPatchStatus component expects { stateStore }
-        // where stateStore is Writable<{ matchCount: number; disabled: boolean }>
-        // But here I have separate stores. I should combine them or update the component.
-        // It's cleaner to update the component or create a derived store.
-        // But I can't create derived store easily inside this render loop without potential issues.
-        // Let's create a combined store.
         const stateStore = writable({ matchCount, disabled });
         this.matchCountStore.subscribe((v) => {
           stateStore.update((s) => ({ ...s, matchCount: v }));
