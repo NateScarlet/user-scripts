@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2026.02.06+ed386cd0
+// @version   2026.04.01+7cf3d230
 // ==/UserScript==
 
 "use strict";
@@ -7826,14 +7826,27 @@ margin-right: 24px;
   }
 
   // src/utils/setHTMLElementDisplayHidden.ts
+  var elementToComment = /* @__PURE__ */ new WeakMap();
   function setHTMLElementDisplayHidden(el, want) {
-    const actual = el.style.display === "none";
-    if (actual === want) {
+    const comment2 = elementToComment.get(el);
+    const isHidden = !!comment2;
+    if (isHidden === want) {
       return;
     }
     if (want) {
+      const placeholder = document.createComment("hidden-element-placeholder");
+      el.before(placeholder);
+      elementToComment.set(el, placeholder);
       el.style.display = "none";
+      if (el.parentElement) {
+        el.parentElement.appendChild(el);
+      }
     } else {
+      if (comment2 && comment2.parentElement) {
+        comment2.before(el);
+        comment2.remove();
+      }
+      elementToComment.delete(el);
       el.style.display = "";
     }
   }
