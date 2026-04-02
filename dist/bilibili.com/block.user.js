@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2026.04.01+7cf3d230
+// @version   2026.04.02+544f1ca2
 // ==/UserScript==
 
 "use strict";
@@ -29,128 +29,80 @@
   var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "write to private field"), setter ? setter.call(obj, value) : member.set(obj, value), value);
   var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "access private method"), method);
 
-  // src/utils/isAbortError.ts
-  function isAbortError(err) {
-    return err instanceof DOMException && err.name === "AbortError";
-  }
-
-  // src/utils/Polling.ts
-  var PollingContext = class {
-    constructor() {
-      /** stack 直到下次执行或中止轮询才会被清理 */
-      this.cleanups = [];
-      this.isDisposed = false;
-      this.stopPolling = () => {
-        this.dispose();
-      };
-      this.dispose = () => {
-        if (this.isDisposed) {
-          return;
-        }
-        this.isDisposed = true;
-        while (this.cleanups.length > 0) {
-          const cleanup = this.cleanups.pop();
-          try {
-            cleanup?.();
-          } catch (err) {
-            console.error(err);
-          }
-        }
-      };
-    }
-    get signal() {
-      if (this.lazySignal == null) {
-        const ctr = new AbortController();
-        this.cleanups.push(() => ctr.abort());
-        this.lazySignal = ctr.signal;
+  // node_modules/.pnpm/es-toolkit@1.39.9/node_modules/es-toolkit/dist/function/debounce.mjs
+  function debounce(func, debounceMs, { signal, edges } = {}) {
+    let pendingThis = void 0;
+    let pendingArgs = null;
+    const leading = edges != null && edges.includes("leading");
+    const trailing = edges == null || edges.includes("trailing");
+    const invoke = () => {
+      if (pendingArgs !== null) {
+        func.apply(pendingThis, pendingArgs);
+        pendingThis = void 0;
+        pendingArgs = null;
       }
-      return this.lazySignal;
-    }
-    get disposed() {
-      return this.isDisposed;
-    }
-  };
-  function createOptions({
-    update: update2,
-    scheduleNext = (next2) => {
-      const handle = requestAnimationFrame(next2);
-      return {
-        dispose: () => cancelAnimationFrame(handle)
-      };
-    },
-    onError
-  }) {
-    return {
-      update: update2,
-      scheduleNext,
-      onError
     };
-  }
-  var Polling = class {
-    constructor(...options) {
-      this.start = () => {
-        this.run();
-      };
-      this.stop = () => {
-        this.active?.dispose();
-      };
-      this.options = createOptions(...options);
-      this.start();
-    }
-    async run() {
-      if (this.active != null) {
+    const onTimerEnd = () => {
+      if (trailing) {
+        invoke();
+      }
+      cancel();
+    };
+    let timeoutId = null;
+    const schedule = () => {
+      if (timeoutId != null) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        timeoutId = null;
+        onTimerEnd();
+      }, debounceMs);
+    };
+    const cancelTimer = () => {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+    };
+    const cancel = () => {
+      cancelTimer();
+      pendingThis = void 0;
+      pendingArgs = null;
+    };
+    const flush = () => {
+      invoke();
+    };
+    const debounced = function(...args) {
+      if (signal?.aborted) {
         return;
       }
-      try {
-        while (!this.active?.disposed) {
-          const ctx = new PollingContext();
-          this.active?.dispose();
-          this.active = ctx;
-          try {
-            await this.options.update(ctx);
-          } catch (err) {
-            if (!isAbortError(err)) {
-              this.options.onError?.(err);
-            }
-          }
-          if (ctx.disposed) {
-            return;
-          }
-          try {
-            await new Promise((resolve, reject) => {
-              if (ctx.disposed) {
-                resolve();
-                return;
-              }
-              ctx.cleanups.push(resolve);
-              let nextTask;
-              try {
-                nextTask = this.options.scheduleNext(resolve);
-                if (nextTask) {
-                  const task = nextTask;
-                  ctx.cleanups.push(() => task.dispose());
-                }
-              } catch (err) {
-                reject(err);
-              }
-            });
-          } catch (err) {
-            ctx.dispose();
-            this.options.onError?.(err);
-          }
-        }
-      } finally {
-        this.active?.dispose();
-        this.active = void 0;
+      pendingThis = this;
+      pendingArgs = args;
+      const isFirstCall = timeoutId == null;
+      schedule();
+      if (leading && isFirstCall) {
+        invoke();
       }
+    };
+    debounced.schedule = schedule;
+    debounced.cancel = cancel;
+    debounced.flush = flush;
+    signal?.addEventListener("abort", cancel, { once: true });
+    return debounced;
+  }
+
+  // node_modules/.pnpm/es-toolkit@1.39.9/node_modules/es-toolkit/dist/predicate/isPlainObject.mjs
+  function isPlainObject(value) {
+    if (!value || typeof value !== "object") {
+      return false;
     }
-    get isRunning() {
-      return this.active?.disposed === false;
+    const proto = Object.getPrototypeOf(value);
+    const hasObjectPrototype = proto === null || proto === Object.prototype || Object.getPrototypeOf(proto) === null;
+    if (!hasObjectPrototype) {
+      return false;
     }
-    dispose() {
-      this.stop();
-    }
-  };
+    return Object.prototype.toString.call(value) === "[object Object]";
+  }
 
   // src/utils/waitUntil.ts
   async function waitUntil({
@@ -5643,6 +5595,129 @@ ${component_stack}
     return cache.value;
   }
 
+  // src/utils/isAbortError.ts
+  function isAbortError(err) {
+    return err instanceof DOMException && err.name === "AbortError";
+  }
+
+  // src/utils/Polling.ts
+  var PollingContext = class {
+    constructor() {
+      /** stack 直到下次执行或中止轮询才会被清理 */
+      this.cleanups = [];
+      this.isDisposed = false;
+      this.stopPolling = () => {
+        this.dispose();
+      };
+      this.dispose = () => {
+        if (this.isDisposed) {
+          return;
+        }
+        this.isDisposed = true;
+        while (this.cleanups.length > 0) {
+          const cleanup = this.cleanups.pop();
+          try {
+            cleanup?.();
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      };
+    }
+    get signal() {
+      if (this.lazySignal == null) {
+        const ctr = new AbortController();
+        this.cleanups.push(() => ctr.abort());
+        this.lazySignal = ctr.signal;
+      }
+      return this.lazySignal;
+    }
+    get disposed() {
+      return this.isDisposed;
+    }
+  };
+  function createOptions({
+    update: update2,
+    scheduleNext = (next2) => {
+      const handle = requestAnimationFrame(next2);
+      return {
+        dispose: () => cancelAnimationFrame(handle)
+      };
+    },
+    onError
+  }) {
+    return {
+      update: update2,
+      scheduleNext,
+      onError
+    };
+  }
+  var Polling = class {
+    constructor(...options) {
+      this.start = () => {
+        this.run();
+      };
+      this.stop = () => {
+        this.active?.dispose();
+      };
+      this.options = createOptions(...options);
+      this.start();
+    }
+    async run() {
+      if (this.active != null) {
+        return;
+      }
+      try {
+        while (!this.active?.disposed) {
+          const ctx = new PollingContext();
+          this.active?.dispose();
+          this.active = ctx;
+          try {
+            await this.options.update(ctx);
+          } catch (err) {
+            if (!isAbortError(err)) {
+              this.options.onError?.(err);
+            }
+          }
+          if (ctx.disposed) {
+            return;
+          }
+          try {
+            await new Promise((resolve, reject) => {
+              if (ctx.disposed) {
+                resolve();
+                return;
+              }
+              ctx.cleanups.push(resolve);
+              let nextTask;
+              try {
+                nextTask = this.options.scheduleNext(resolve);
+                if (nextTask) {
+                  const task = nextTask;
+                  ctx.cleanups.push(() => task.dispose());
+                }
+              } catch (err) {
+                reject(err);
+              }
+            });
+          } catch (err) {
+            ctx.dispose();
+            this.options.onError?.(err);
+          }
+        }
+      } finally {
+        this.active?.dispose();
+        this.active = void 0;
+      }
+    }
+    get isRunning() {
+      return this.active?.disposed === false;
+    }
+    dispose() {
+      this.stop();
+    }
+  };
+
   // src/utils/GMValue.ts
   var GMValue = class {
     constructor(key3, defaultValue) {
@@ -8094,19 +8169,6 @@ margin-right: 24px;
     }
   };
 
-  // node_modules/.pnpm/es-toolkit@1.39.9/node_modules/es-toolkit/dist/predicate/isPlainObject.mjs
-  function isPlainObject(value) {
-    if (!value || typeof value !== "object") {
-      return false;
-    }
-    const proto = Object.getPrototypeOf(value);
-    const hasObjectPrototype = proto === null || proto === Object.prototype || Object.getPrototypeOf(proto) === null;
-    if (!hasObjectPrototype) {
-      return false;
-    }
-    return Object.prototype.toString.call(value) === "[object Object]";
-  }
-
   // src/utils/castPlainObject.ts
   function castPlainObject(value) {
     if (isPlainObject(value)) {
@@ -8877,22 +8939,21 @@ margin-right: 24px;
     await migrate();
     let initialRouteKey = routeKey();
     let app = await createApp();
-    new Polling({
-      update: async () => {
-        const currentRouteKey = routeKey();
-        if (currentRouteKey !== initialRouteKey) {
-          app = await createApp();
-          initialRouteKey = currentRouteKey;
-        }
-        app.render();
-      },
-      scheduleNext: (next2) => {
-        const handle = setTimeout(next2, 100);
-        return {
-          dispose: () => clearTimeout(handle)
-        };
+    const run3 = debounce(async () => {
+      const currentRouteKey = routeKey();
+      if (currentRouteKey !== initialRouteKey) {
+        app = await createApp();
+        initialRouteKey = currentRouteKey;
       }
+      app.render();
+    }, 100);
+    const observer = new MutationObserver(run3);
+    observer.observe(document, {
+      childList: true,
+      subtree: true
     });
+    window.addEventListener("popstate", run3);
+    run3();
   }
   main();
 })();

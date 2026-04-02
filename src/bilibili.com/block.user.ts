@@ -16,7 +16,7 @@
 
 // spell-checker: word bili bilibili upname datetime
 
-import Polling from '@/utils/Polling';
+import { debounce } from 'es-toolkit';
 import waitUntil from '@/utils/waitUntil';
 import type Component from './components/Component';
 import SettingsDrawer from './components/SettingsDrawer';
@@ -141,23 +141,25 @@ async function main() {
   let initialRouteKey = routeKey();
   let app = await createApp();
 
-  new Polling({
-    update: async () => {
-      const currentRouteKey = routeKey();
-      if (currentRouteKey !== initialRouteKey) {
-        // route changed
-        app = await createApp();
-        initialRouteKey = currentRouteKey;
-      }
-      app.render();
-    },
-    scheduleNext: (next) => {
-      const handle = setTimeout(next, 100);
-      return {
-        dispose: () => clearTimeout(handle),
-      };
-    },
+  const run = debounce(async () => {
+    const currentRouteKey = routeKey();
+    if (currentRouteKey !== initialRouteKey) {
+      // route changed
+      app = await createApp();
+      initialRouteKey = currentRouteKey;
+    }
+    app.render();
+  }, 100);
+
+  const observer = new MutationObserver(run);
+  observer.observe(document, {
+    childList: true,
+    subtree: true,
   });
+  window.addEventListener('popstate', run);
+
+  // Initial call
+  run();
 }
 
 main();
