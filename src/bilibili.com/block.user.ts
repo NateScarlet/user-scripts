@@ -73,7 +73,6 @@ async function createApp(): Promise<Component> {
     },
   });
   if (headerButton) {
-    console.log(headerButton);
     components.push(headerButton);
   }
 
@@ -136,7 +135,9 @@ function routeKey() {
 }
 
 async function main() {
-  await migrate();
+  migrate().catch((err) => {
+    console.error('migration failed', err);
+  });
 
   let initialRouteKey = routeKey();
   let app = await createApp();
@@ -161,5 +162,4 @@ async function main() {
   // Initial call
   run();
 }
-
 main();

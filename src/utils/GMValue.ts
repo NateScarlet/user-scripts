@@ -2,6 +2,7 @@ import Polling from './Polling';
 
 export default class GMValue<T> {
   private value: T | undefined;
+  private rawValue: string | undefined;
 
   private loadingCount = 0;
 
@@ -55,22 +56,22 @@ export default class GMValue<T> {
     this.loadingCount += 1;
     this.currentAction = (async () => {
       try {
-        const value = await GM.getValue(this.key);
-        let newValue: T | undefined;
-        if (value == null) {
-          newValue = undefined;
-        } else if (typeof value === 'string') {
-          newValue = JSON.parse(value);
-        } else {
+        const rawValue = await GM.getValue(this.key);
+        if (typeof rawValue !== 'string' && rawValue != null) {
           throw new Error(
-            `GMValue(${this.key}): unrecognizable value '${value}'`
+            `GMValue(${this.key}): unrecognizable value '${rawValue}'`
           );
         }
-
-        if (JSON.stringify(this.value) !== JSON.stringify(newValue)) {
-          this.value = newValue;
-          this.listeners.forEach((i) => i(this.value));
+        if (rawValue === this.rawValue) {
+          return;
         }
+        this.rawValue = rawValue;
+        if (rawValue == null) {
+          this.value = undefined;
+        } else {
+          this.value = JSON.parse(rawValue);
+        }
+        this.listeners.forEach((i) => i(this.value));
       } finally {
         this.loadingCount -= 1;
       }
@@ -83,9 +84,11 @@ export default class GMValue<T> {
     this.currentAction = (async () => {
       try {
         if (this.value == null) {
+          this.rawValue = undefined;
           await GM.deleteValue(this.key);
         } else {
-          await GM.setValue(this.key, JSON.stringify(this.value));
+          this.rawValue = JSON.stringify(this.value);
+          await GM.setValue(this.key, this.rawValue);
         }
         this.listeners.forEach((i) => i(this.value));
       } finally {

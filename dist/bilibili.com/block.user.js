@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2026.04.02+544f1ca2
+// @version   2026.04.03+28ef014d
 // ==/UserScript==
 
 "use strict";
@@ -5743,21 +5743,22 @@ ${component_stack}
         this.loadingCount += 1;
         this.currentAction = (async () => {
           try {
-            const value = await GM.getValue(this.key);
-            let newValue;
-            if (value == null) {
-              newValue = void 0;
-            } else if (typeof value === "string") {
-              newValue = JSON.parse(value);
-            } else {
+            const rawValue = await GM.getValue(this.key);
+            if (typeof rawValue !== "string" && rawValue != null) {
               throw new Error(
-                `GMValue(${this.key}): unrecognizable value '${value}'`
+                `GMValue(${this.key}): unrecognizable value '${rawValue}'`
               );
             }
-            if (JSON.stringify(this.value) !== JSON.stringify(newValue)) {
-              this.value = newValue;
-              this.listeners.forEach((i) => i(this.value));
+            if (rawValue === this.rawValue) {
+              return;
             }
+            this.rawValue = rawValue;
+            if (rawValue == null) {
+              this.value = void 0;
+            } else {
+              this.value = JSON.parse(rawValue);
+            }
+            this.listeners.forEach((i) => i(this.value));
           } finally {
             this.loadingCount -= 1;
           }
@@ -5769,9 +5770,11 @@ ${component_stack}
         this.currentAction = (async () => {
           try {
             if (this.value == null) {
+              this.rawValue = void 0;
               await GM.deleteValue(this.key);
             } else {
-              await GM.setValue(this.key, JSON.stringify(this.value));
+              this.rawValue = JSON.stringify(this.value);
+              await GM.setValue(this.key, this.rawValue);
             }
             this.listeners.forEach((i) => i(this.value));
           } finally {
@@ -7726,7 +7729,7 @@ ${component_stack}
   // src/bilibili.com/models/migrate.ts
   async function migrateV1() {
     const key3 = "blockedUserIDs@7ced1613-89d7-4754-8989-2ad0d7cfa9db";
-    const oldValue = await GM.getValue(key3);
+    const oldValue = await GM.getValue(key3, "");
     if (!oldValue) {
       return;
     }
@@ -8889,7 +8892,6 @@ margin-right: 24px;
       }
     });
     if (headerButton) {
-      console.log(headerButton);
       components.push(headerButton);
     }
     const data = {
@@ -8936,7 +8938,9 @@ margin-right: 24px;
     return pathname;
   }
   async function main() {
-    await migrate();
+    migrate().catch((err) => {
+      console.error("migration failed", err);
+    });
     let initialRouteKey = routeKey();
     let app = await createApp();
     const run3 = debounce(async () => {
