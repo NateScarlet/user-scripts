@@ -9,7 +9,8 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["*.ts", "scripts/*.ts", "src/**/*.ts"]
+  "include": ["*.ts", "scripts/*.ts", "src/**/*.ts", "tests/**/*.ts"]
 }

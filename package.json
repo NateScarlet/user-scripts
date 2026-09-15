@@ -39,7 +39,7 @@
   "scripts": {
     "build": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --no-warnings\" gulp build",
     "dev": "cross-env NODE_OPTIONS=\"--loader ts-node/esm --no-warnings\" gulp dev",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test \"tests/**/*.test.ts\"",
     "check": "svelte-check --workspace src && eslint --fix"
   },
   "author": "NateScarlet",
