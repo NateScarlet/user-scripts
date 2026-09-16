@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   TWEET_GRAPHQL_OPERATION_PATTERN,
+  buildTitle,
   collectMediaItems,
   extractAuthor,
   extractMedia,
@@ -184,6 +185,30 @@ test('作者 / 正文 / 时间', () => {
   const created = tweetCreatedAt(tweet);
   assert.equal(created?.toISOString(), '2025-04-24T10:25:00.000Z');
   assert.equal(formatUTCDate(created!), '2025-04-24');
+});
+
+test('标题去除正文中的链接', () => {
+  const author = extractAuthor(tweetResult());
+  // 正文已把链接渲染为 <a>，标题（进而文件名）不应再带链接文本
+  assert.equal(
+    buildTitle(author, 'day41 https://t.co/JHWgG68RHe'),
+    'nanata (@Nanata0418) 在 X 上：day41'
+  );
+  // 链接位于正文中间
+  assert.equal(
+    buildTitle(author, '看看 https://x.com/a/b 这个'),
+    'nanata (@Nanata0418) 在 X 上：看看 这个'
+  );
+  // 无链接正文不受影响
+  assert.equal(
+    buildTitle(author, '无链接正文'),
+    'nanata (@Nanata0418) 在 X 上：无链接正文'
+  );
+  // 仅含链接（如图片推文）时回退到无正文提示
+  assert.equal(
+    buildTitle(author, 'https://t.co/JHWgG68RHe'),
+    'nanata (@Nanata0418) 在 X 上：（无正文）'
+  );
 });
 
 test('X 自带翻译提取', () => {

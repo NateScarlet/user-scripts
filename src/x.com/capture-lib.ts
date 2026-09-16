@@ -602,7 +602,12 @@ export function buildTitle(author: Author | undefined, text: string): string {
   const prefix = author?.name
     ? `${author.name} (@${author.screenName})`
     : '推文';
-  const excerpt = text.replace(/\s+/g, ' ').slice(0, 100);
+  // 与 renderText 识别同一范围的链接；标题（进而文件名）不保留链接文本
+  const excerpt = text
+    .replace(/https?:\/\/[^\s<]+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 100);
   return `${prefix} 在 X 上：${excerpt || '（无正文）'}`;
 }
 

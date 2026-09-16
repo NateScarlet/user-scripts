@@ -6,7 +6,7 @@
 // @include  https://twitter.com/*
 // @grant    unsafeWindow
 // @run-at   document-start
-// @version   2026.09.17+b4d65e4e
+// @version   2026.09.17+f2dfffb7
 // ==/UserScript==
 
 "use strict";
@@ -407,7 +407,7 @@
   }
   function buildTitle(author, text) {
     const prefix = author?.name ? `${author.name} (@${author.screenName})` : "推文";
-    const excerpt = text.replace(/\s+/g, " ").slice(0, 100);
+    const excerpt = text.replace(/https?:\/\/[^\s<]+/g, "").replace(/\s+/g, " ").trim().slice(0, 100);
     return `${prefix} 在 X 上：${excerpt || "（无正文）"}`;
   }
   function renderMedia(media) {
