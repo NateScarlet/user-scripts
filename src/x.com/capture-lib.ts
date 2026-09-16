@@ -55,6 +55,10 @@ export interface MediaItem {
    * （2014 起 Twitter 让多图只占一个短链），因此分片判定必须叠加尺寸一致性。
    */
   displayUrl?: string;
+  /** t.co 短链（GraphQL url 字段），出现在 full_text 中对应媒体的位置 */
+  tcoUrl?: string;
+  /** 在 full_text 中的位置区间 [start, end)（Rune offset） */
+  indices?: [number, number];
 }
 
 export interface ImageEntry {
@@ -366,6 +370,12 @@ export function extractMedia(
       width,
       height,
       displayUrl: asString(item.display_url),
+      tcoUrl: asString(item.url),
+      indices: Array.isArray(item.indices) &&
+        typeof item.indices[0] === 'number' &&
+        typeof item.indices[1] === 'number'
+        ? [item.indices[0], item.indices[1]]
+        : undefined,
     });
   }
   return result;
@@ -559,6 +569,26 @@ export function renderText(text: string): string {
   );
 }
 
+/**
+ * 从正文移除媒体 t.co 链接。Twitter 网站将这些链接渲染为图片/视频卡片，
+ * 不显示为文本。同推文的多张媒体共享同一 t.co 链接，只需移除一次。
+ * 移除后折叠多余空白。
+ */
+export function removeMediaLinks(text: string, media: MediaItem[]): string {
+  if (media.length === 0 || text === '') {
+    return text;
+  }
+  const seen = new Set<string>();
+  for (const m of media) {
+    if (m.tcoUrl === undefined || seen.has(m.tcoUrl)) {
+      continue;
+    }
+    seen.add(m.tcoUrl);
+    text = text.split(m.tcoUrl).join('');
+  }
+  return text.replace(/\s+/g, ' ').trim();
+}
+
 export function tweetURL(tweetResult: Record<string, unknown>): string {
   const id = tweetIdOf(tweetResult) ?? '';
   const author = extractAuthor(tweetResult);
@@ -616,8 +646,10 @@ export function renderTweet(
       : `<time datetime="${createdAt.toISOString()}">${escapeHTMLText(
           formatDateTime(createdAt)
         )}</time>`;
+  // 从正文移除媒体 t.co 链接（#66：Twitter 网站将 t.co 渲染为图片，不显示为文本）
+  const cleanedText = removeMediaLinks(text, mediaItems);
   const textHTML =
-    text === '' ? '' : `<div class="capture-text">${renderText(text)}</div>`;
+    cleanedText === '' ? '' : `<div class="capture-text">${renderText(cleanedText)}</div>`;
   // X 自带翻译：原文与译文同时显示，译文前加语言标识
   const translatedHTML =
     translation === undefined
@@ -704,8 +736,11 @@ export function renderDocument(
   const createdAt = tweetCreatedAt(tweetResult);
   const text = tweetText(tweetResult);
   const url = tweetURL(tweetResult);
-  const title = buildTitle(author, text);
-  const imageURLs = collectMediaItems(tweetResult)
+  const mediaItems = extractMedia(tweetResult);
+  // 从正文移除媒体 t.co 链接（#66），用于标题与 OG 描述
+  const cleanedText = removeMediaLinks(text, mediaItems);
+  const title = buildTitle(author, cleanedText);
+  const imageURLs = mediaItems
     .map((media) => images[media.mediaKey]?.url)
     .filter((i): i is string => i !== undefined);
 
@@ -714,7 +749,7 @@ export function renderDocument(
     '@context': 'https://schema.org',
     '@type': 'SocialMediaPosting',
     headline: title,
-    text,
+    text: cleanedText,
     url,
     author: {
       '@type': 'Person',
@@ -737,7 +772,7 @@ export function renderDocument(
     `<meta property="og:url" content="${escapeHTMLText(url)}">`,
     `<meta property="og:title" content="${escapeHTMLText(title)}">`,
     `<meta property="og:description" content="${escapeHTMLText(
-      text.slice(0, 200)
+      cleanedText.slice(0, 200)
     )}">`,
     ...(imageURLs[0] === undefined
       ? []

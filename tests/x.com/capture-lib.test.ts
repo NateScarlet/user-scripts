@@ -50,6 +50,8 @@ function tweetResult(): Record<string, unknown> {
             media_url_https: 'https://pbs.twimg.com/media/GpSxzlHbYAUBbsv.jpg',
             type: 'photo',
             display_url: 'pic.x.com/HyV5137sLO',
+            url: 'https://t.co/JHWgG68RHe',
+            indices: [6, 29],
             original_info: { width: 732, height: 1486 },
           },
         ],

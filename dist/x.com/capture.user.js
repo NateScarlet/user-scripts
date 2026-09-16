@@ -6,7 +6,7 @@
 // @include  https://twitter.com/*
 // @grant    unsafeWindow
 // @run-at   document-start
-// @version   2026.09.16+081923a3
+// @version   2026.09.17+b4d65e4e
 // ==/UserScript==
 
 "use strict";
@@ -265,7 +265,9 @@
         altText: asString(item.ext_alt_text),
         width,
         height,
-        displayUrl: asString(item.display_url)
+        displayUrl: asString(item.display_url),
+        tcoUrl: asString(item.url),
+        indices: Array.isArray(item.indices) && typeof item.indices[0] === "number" && typeof item.indices[1] === "number" ? [item.indices[0], item.indices[1]] : void 0
       });
     }
     return result;
@@ -383,6 +385,20 @@
       '<a href="$1" rel="nofollow">$1</a>'
     );
   }
+  function removeMediaLinks(text, media) {
+    if (media.length === 0 || text === "") {
+      return text;
+    }
+    const seen = /* @__PURE__ */ new Set();
+    for (const m of media) {
+      if (m.tcoUrl === void 0 || seen.has(m.tcoUrl)) {
+        continue;
+      }
+      seen.add(m.tcoUrl);
+      text = text.split(m.tcoUrl).join("");
+    }
+    return text.replace(/\s+/g, " ").trim();
+  }
   function tweetURL(tweetResult) {
     const id = tweetIdOf(tweetResult) ?? "";
     const author = extractAuthor(tweetResult);
@@ -416,7 +432,8 @@
     const timeHTML = createdAt === void 0 ? "" : `<time datetime="${createdAt.toISOString()}">${escapeHTMLText(
       formatDateTime(createdAt)
     )}</time>`;
-    const textHTML = text === "" ? "" : `<div class="capture-text">${renderText(text)}</div>`;
+    const cleanedText = removeMediaLinks(text, mediaItems);
+    const textHTML = cleanedText === "" ? "" : `<div class="capture-text">${renderText(cleanedText)}</div>`;
     const translatedHTML = translation === void 0 ? "" : `<div class="capture-text capture-text-translated"><span class="capture-translate-label">翻译（${escapeHTMLText(
       translation.sourceLanguage
     )} → ${escapeHTMLText(
@@ -474,13 +491,15 @@
     const createdAt = tweetCreatedAt(tweetResult);
     const text = tweetText(tweetResult);
     const url = tweetURL(tweetResult);
-    const title = buildTitle(author, text);
-    const imageURLs = collectMediaItems(tweetResult).map((media) => images[media.mediaKey]?.url).filter((i) => i !== void 0);
+    const mediaItems = extractMedia(tweetResult);
+    const cleanedText = removeMediaLinks(text, mediaItems);
+    const title = buildTitle(author, cleanedText);
+    const imageURLs = mediaItems.map((media) => images[media.mediaKey]?.url).filter((i) => i !== void 0);
     const ldJSON = {
       "@context": "https://schema.org",
       "@type": "SocialMediaPosting",
       headline: title,
-      text,
+      text: cleanedText,
       url,
       author: {
         "@type": "Person",
@@ -499,7 +518,7 @@
       `<meta property="og:url" content="${escapeHTMLText(url)}">`,
       `<meta property="og:title" content="${escapeHTMLText(title)}">`,
       `<meta property="og:description" content="${escapeHTMLText(
-        text.slice(0, 200)
+        cleanedText.slice(0, 200)
       )}">`,
       ...imageURLs[0] === void 0 ? [] : [
         `<meta property="og:image" content="${escapeHTMLText(imageURLs[0])}">`
