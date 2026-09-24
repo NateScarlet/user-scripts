@@ -12,7 +12,7 @@
 // @include	 https://t.bilibili.com/*
 // @include	 https://message.bilibili.com/*
 // @run-at   document-start
-// @version   2026.04.03+28ef014d
+// @version   2026.09.24+be4b7334
 // ==/UserScript==
 
 "use strict";
@@ -856,8 +856,8 @@ ${component_stack}
       this.apply();
       var effects = [];
       var render_effects = [];
-      for (const root15 of root_effects) {
-        __privateMethod(this, _Batch_instances, traverse_effect_tree_fn).call(this, root15, effects, render_effects);
+      for (const root16 of root_effects) {
+        __privateMethod(this, _Batch_instances, traverse_effect_tree_fn).call(this, root16, effects, render_effects);
       }
       if (this.is_deferred()) {
         __privateMethod(this, _Batch_instances, defer_effects_fn).call(this, render_effects);
@@ -1013,9 +1013,9 @@ ${component_stack}
    * @param {Effect[]} effects
    * @param {Effect[]} render_effects
    */
-  traverse_effect_tree_fn = function(root15, effects, render_effects) {
-    root15.f ^= CLEAN;
-    var effect2 = root15.first;
+  traverse_effect_tree_fn = function(root16, effects, render_effects) {
+    root16.f ^= CLEAN;
+    var effect2 = root16.first;
     var pending_boundary = null;
     while (effect2 !== null) {
       var flags2 = effect2.f;
@@ -1100,8 +1100,8 @@ ${component_stack}
           if (queued_root_effects.length > 0) {
             current_batch = batch;
             batch.apply();
-            for (const root15 of queued_root_effects) {
-              __privateMethod(_a3 = batch, _Batch_instances, traverse_effect_tree_fn).call(_a3, root15, [], []);
+            for (const root16 of queued_root_effects) {
+              __privateMethod(_a3 = batch, _Batch_instances, traverse_effect_tree_fn).call(_a3, root16, [], []);
             }
             batch.deactivate();
           }
@@ -3170,7 +3170,7 @@ ${component_stack}
     }
     return false;
   }
-  function schedule_possible_effect_self_invalidation(signal, effect2, root15 = true) {
+  function schedule_possible_effect_self_invalidation(signal, effect2, root16 = true) {
     var reactions = signal.reactions;
     if (reactions === null) return;
     if (!async_mode_flag && current_sources !== null && includes.call(current_sources, signal)) {
@@ -3186,7 +3186,7 @@ ${component_stack}
           false
         );
       } else if (effect2 === reaction) {
-        if (root15) {
+        if (root16) {
           set_signal_status(reaction, DIRTY);
         } else if ((reaction.f & CLEAN) !== 0) {
           set_signal_status(reaction, MAYBE_DIRTY);
@@ -7602,18 +7602,18 @@ ${component_stack}
   var key2 = "36fff111-0148-4cc1-869b-06dfdfc36861";
   var map = /* @__PURE__ */ new WeakMap();
   function obtainStyledShadowRoot(el) {
-    const root15 = map.get(el) ?? el.shadowRoot ?? el.attachShadow({ mode: "closed" });
-    map.set(el, root15);
+    const root16 = map.get(el) ?? el.shadowRoot ?? el.attachShadow({ mode: "closed" });
+    map.set(el, root16);
     obtainHTMLElementByDataKey({
       tag: "style",
       key: key2,
-      parentNode: root15,
+      parentNode: root16,
       onDidCreate: (el2) => {
         el2.innerHTML = style_default;
-        root15.prepend(el2);
+        root16.prepend(el2);
       }
     });
-    return root15;
+    return root16;
   }
 
   // src/utils/randomUUID.ts
@@ -8864,6 +8864,60 @@ margin-right: 24px;
     }
   };
 
+  // src/bilibili.com/components/FullHeaderButton2609.svelte
+  var root15 = from_html(`<div class="v-popover-wrap"><a href="javascript:void(0)" class="right-entry__item-trigger"><div class="trigger-icon-wrap"><svg viewBox="2 2 20 20" class="trigger-icon" style="height: 20px; fill: currentColor;"><path fill-rule="evenodd" clip-rule="evenodd"></path></svg></div> <span class="trigger-text">屏蔽</span></a></div>`);
+  function FullHeaderButton2609($$anchor, $$props) {
+    push($$props, true);
+    var div = root15();
+    var a = child(div);
+    a.__click = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      $$props.settings.open();
+    };
+    var div_1 = child(a);
+    var svg = child(div_1);
+    var path = child(svg);
+    reset(svg);
+    reset(div_1);
+    next(2);
+    reset(a);
+    reset(div);
+    template_effect(() => set_attribute2(path, "d", mdiEyeOffOutline));
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["click"]);
+
+  // src/bilibili.com/components/FullHeaderButton2609.ts
+  var _FullHeaderButton2609 = class _FullHeaderButton2609 {
+    constructor(settings) {
+      this.render = () => {
+        const parent = document.querySelector(".right-entry__main");
+        if (!parent) {
+          return;
+        }
+        void obtainHTMLElementByID({
+          tag: "div",
+          id: _FullHeaderButton2609.id,
+          onDidCreate: (el) => {
+            el.classList.add("right-entry__item");
+            parent.prepend(...[parent.firstChild, el].filter(isNonNull));
+            mount(FullHeaderButton2609, {
+              target: el,
+              props: {
+                settings: this.settings
+              }
+            });
+          }
+        });
+      };
+      this.settings = settings;
+    }
+  };
+  _FullHeaderButton2609.id = `full-header-button-${randomUUID()}`;
+  var FullHeaderButton26092 = _FullHeaderButton2609;
+
   // src/bilibili.com/block.user.ts
   async function createApp() {
     const rawURL = window.location.href;
@@ -8875,7 +8929,10 @@ margin-right: 24px;
     let headerButton;
     await waitUntil({
       ready: () => {
-        if ((document.querySelector(".right-entry")?.childElementCount ?? 0) >= 2) {
+        if ((document.querySelector(".right-entry__main")?.childElementCount ?? 0) >= 2) {
+          headerButton = new FullHeaderButton26092(settings);
+          return true;
+        } else if ((document.querySelector(".right-entry")?.childElementCount ?? 0) >= 2) {
           headerButton = new FullHeaderButton2(settings);
           return true;
         }

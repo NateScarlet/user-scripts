@@ -37,6 +37,7 @@ import PlaylistPatch from './components/PlaylistPatch';
 import LiveRoomPatch from './components/LiveRoomListPatch';
 import LiveHeaderButton from './components/LiveHeaderButton';
 import NavSearchSuggestionPatch from './components/NavSearchSuggestionPatch';
+import FullHeaderButton2609 from './components/FullHeaderButton2609';
 
 export {};
 
@@ -52,6 +53,12 @@ async function createApp(): Promise<Component> {
   await waitUntil({
     ready: () => {
       if (
+        (document.querySelector('.right-entry__main')?.childElementCount ??
+          0) >= 2
+      ) {
+        headerButton = new FullHeaderButton2609(settings);
+        return true;
+      } else if (
         (document.querySelector('.right-entry')?.childElementCount ?? 0) >= 2
       ) {
         headerButton = new FullHeaderButton(settings);
