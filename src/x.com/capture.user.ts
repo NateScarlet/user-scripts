@@ -102,9 +102,33 @@ function clearCaptureTimer(): void {
 
 // #region 网络挂钩（复用页面自身请求，不自行构造请求）
 
+/**
+ * 读取 XHR 响应正文。responseType 非 ""/"text" 时按规范读 responseText 会抛
+ * InvalidStateError，此时改从 response 取（json 直接序列化，其余类型放弃，
+ * 不阻塞页面请求本身）。
+ */
+function readXHRBody(xhr: XMLHttpRequest): string | undefined {
+  if (xhr.responseType === '' || xhr.responseType === 'text') {
+    return xhr.responseText;
+  }
+  if (xhr.responseType === 'json') {
+    try {
+      return JSON.stringify(xhr.response);
+    } catch (err) {
+      console.warn(LOG_PREFIX, '无法序列化 json 响应', err);
+      return undefined;
+    }
+  }
+  captureLog('响应类型不是文本，跳过', xhr.responseType);
+  return undefined;
+}
+
 function hookNetwork(): boolean {
   try {
-    // XHR 挂钩：patch 页面真实的 XMLHttpRequest.prototype.open
+    // 只挂钩 XHR，不触碰 window.fetch。
+    // 风控层会校验 window.fetch 的原生性（name/toString/身份），一旦被替换即判定
+    // 环境被篡改并让请求直接失败（Firefox 下表现为页面级 NetworkError），
+    // 登录等早期请求必炸。X 的 GraphQL 请求走 XHR，仅靠本挂钩即可拿到响应正文。
     const originalOpen = pageWindow.XMLHttpRequest.prototype.open;
     pageWindow.XMLHttpRequest.prototype.open = exportToPage(function (
       this: XMLHttpRequest,
@@ -115,7 +139,15 @@ function hookNetwork(): boolean {
       const urlString = typeof url === 'string' ? url : url.href;
       if (TWEET_GRAPHQL_OPERATION_PATTERN.test(urlString)) {
         this.addEventListener('load', () => {
-          handleGraphQLResponse(urlString, this.responseText);
+          // 解析失败只影响捕获，不能让异常冒泡到页面的 load 事件
+          try {
+            const body = readXHRBody(this);
+            if (body !== undefined) {
+              handleGraphQLResponse(urlString, body);
+            }
+          } catch (err) {
+            console.error(LOG_PREFIX, '读取 XHR 响应失败', err);
+          }
         });
       }
       // 原样转发参数，不能补显式 undefined：Firefox 对显式传入的
@@ -123,47 +155,6 @@ function hookNetwork(): boolean {
       // 导致页面随后设置 timeout/responseType 时抛 DOMException
       Reflect.apply(originalOpen, this, [method, url, ...rest]);
     });
-
-    // fetch 挂钩：Firefox 页面 window.fetch 可能同样只读，无法覆盖时仅保留 XHR
-    const originalFetch = pageWindow.fetch;
-    const wrappedFetch = exportToPage(async function wrappedFetch(
-      this: Window,
-      input: RequestInfo | URL,
-      init?: RequestInit
-    ): Promise<Response> {
-      const response = await originalFetch.call(pageWindow, input, init);
-      const urlString =
-        typeof input === 'string'
-          ? input
-          : input instanceof URL
-            ? input.href
-            : input.url;
-      if (TWEET_GRAPHQL_OPERATION_PATTERN.test(urlString)) {
-        try {
-          const clone = response.clone();
-          void inspectFetchResponse(urlString, clone);
-        } catch (err) {
-          console.error(LOG_PREFIX, '处理 fetch 响应失败', err);
-        }
-      }
-      return response;
-    });
-    try {
-      pageWindow.fetch = wrappedFetch;
-    } catch {
-      try {
-        Object.defineProperty(pageWindow, 'fetch', {
-          configurable: true,
-          value: wrappedFetch,
-        });
-      } catch {
-        console.warn(
-          LOG_PREFIX,
-          '无法覆盖页面 window.fetch（只读），仅保留 XHR 挂钩'
-        );
-        return false;
-      }
-    }
     return true;
   } catch (err) {
     console.error(LOG_PREFIX, '网络挂钩安装失败', err);
@@ -191,14 +182,6 @@ function hookHistory(): void {
   } catch (err) {
     console.error(LOG_PREFIX, 'history 挂钩安装失败', err);
   }
-}
-
-async function inspectFetchResponse(
-  url: string,
-  clone: Response
-): Promise<void> {
-  const text = await clone.text();
-  handleGraphQLResponse(url, text);
 }
 
 // #endregion
@@ -470,11 +453,11 @@ function showCaptureHint(): void {
 
 // #endregion
 
-const fetchHooked = hookNetwork();
+const xhrHooked = hookNetwork();
 hookHistory();
 onURLChange();
 captureLog(
   '脚本已启动',
   location.href,
-  `fetch=${fetchHooked ? '已挂钩' : '未挂钩（XHR 仍可用）'}`
+  `xhr=${xhrHooked ? '已挂钩' : '未挂钩'}`
 );

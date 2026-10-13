@@ -6,7 +6,7 @@
 // @include  https://twitter.com/*
 // @grant    unsafeWindow
 // @run-at   document-start
-// @version   2026.09.17+f2dfffb7
+// @version   2026.10.13+6e54ff9d
 // ==/UserScript==
 
 "use strict";
@@ -624,6 +624,21 @@ ${serializeJSONPretty(images)}
       captureTimer = void 0;
     }
   }
+  function readXHRBody(xhr) {
+    if (xhr.responseType === "" || xhr.responseType === "text") {
+      return xhr.responseText;
+    }
+    if (xhr.responseType === "json") {
+      try {
+        return JSON.stringify(xhr.response);
+      } catch (err) {
+        console.warn(LOG_PREFIX, "无法序列化 json 响应", err);
+        return void 0;
+      }
+    }
+    captureLog("响应类型不是文本，跳过", xhr.responseType);
+    return void 0;
+  }
   function hookNetwork() {
     try {
       const originalOpen = pageWindow.XMLHttpRequest.prototype.open;
@@ -631,41 +646,18 @@ ${serializeJSONPretty(images)}
         const urlString = typeof url === "string" ? url : url.href;
         if (TWEET_GRAPHQL_OPERATION_PATTERN.test(urlString)) {
           this.addEventListener("load", () => {
-            handleGraphQLResponse(urlString, this.responseText);
+            try {
+              const body = readXHRBody(this);
+              if (body !== void 0) {
+                handleGraphQLResponse(urlString, body);
+              }
+            } catch (err) {
+              console.error(LOG_PREFIX, "读取 XHR 响应失败", err);
+            }
           });
         }
         Reflect.apply(originalOpen, this, [method, url, ...rest]);
       });
-      const originalFetch = pageWindow.fetch;
-      const wrappedFetch = exportToPage(async function wrappedFetch2(input, init) {
-        const response = await originalFetch.call(pageWindow, input, init);
-        const urlString = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
-        if (TWEET_GRAPHQL_OPERATION_PATTERN.test(urlString)) {
-          try {
-            const clone = response.clone();
-            void inspectFetchResponse(urlString, clone);
-          } catch (err) {
-            console.error(LOG_PREFIX, "处理 fetch 响应失败", err);
-          }
-        }
-        return response;
-      });
-      try {
-        pageWindow.fetch = wrappedFetch;
-      } catch {
-        try {
-          Object.defineProperty(pageWindow, "fetch", {
-            configurable: true,
-            value: wrappedFetch
-          });
-        } catch {
-          console.warn(
-            LOG_PREFIX,
-            "无法覆盖页面 window.fetch（只读），仅保留 XHR 挂钩"
-          );
-          return false;
-        }
-      }
       return true;
     } catch (err) {
       console.error(LOG_PREFIX, "网络挂钩安装失败", err);
@@ -687,10 +679,6 @@ ${serializeJSONPretty(images)}
     } catch (err) {
       console.error(LOG_PREFIX, "history 挂钩安装失败", err);
     }
-  }
-  async function inspectFetchResponse(url, clone) {
-    const text = await clone.text();
-    handleGraphQLResponse(url, text);
   }
   function handleGraphQLResponse(url, body) {
     const expectedTweetId = currentTweetId;
@@ -913,12 +901,12 @@ ${serializeJSONPretty(images)}
     document.documentElement.append(hint);
     window.setTimeout(() => hint.remove(), HINT_AUTO_DISMISS_MS);
   }
-  var fetchHooked = hookNetwork();
+  var xhrHooked = hookNetwork();
   hookHistory();
   onURLChange();
   captureLog(
     "脚本已启动",
     location.href,
-    `fetch=${fetchHooked ? "已挂钩" : "未挂钩（XHR 仍可用）"}`
+    `xhr=${xhrHooked ? "已挂钩" : "未挂钩"}`
   );
 })();
