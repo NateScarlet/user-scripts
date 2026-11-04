@@ -6,7 +6,7 @@
 // @include  https://twitter.com/*
 // @grant    unsafeWindow
 // @run-at   document-start
-// @version   2026.10.13+6e54ff9d
+// @version   2026.11.04+64652cb3
 // ==/UserScript==
 
 "use strict";
@@ -140,6 +140,26 @@
     }
     return normalized;
   }
+  var NAMED_ENTITY_VALUES = {
+    lt: "<",
+    gt: ">",
+    quot: '"',
+    apos: "'",
+    amp: "&"
+  };
+  var HTML_ENTITY_PATTERN = /&(lt|gt|quot|apos|amp|#\d+|#x[0-9a-fA-F]+);/g;
+  function decodeHTMLText(text) {
+    return text.replace(HTML_ENTITY_PATTERN, (entity, name) => {
+      const named = NAMED_ENTITY_VALUES[name];
+      if (named !== void 0) {
+        return named;
+      }
+      if (name.startsWith("#x")) {
+        return String.fromCodePoint(parseInt(name.slice(2), 16));
+      }
+      return String.fromCodePoint(parseInt(name.slice(1), 10));
+    });
+  }
   function extractAuthor(tweetResult) {
     const core = tweetResult.core;
     if (!isPlainObject(core)) {
@@ -155,8 +175,12 @@
     }
     const userCore = isPlainObject(user.core) ? user.core : void 0;
     const userLegacy = isPlainObject(user.legacy) ? user.legacy : void 0;
-    const name = asString(userCore?.name) ?? asString(userLegacy?.name) ?? "";
-    const screenName = asString(userCore?.screen_name) ?? asString(userLegacy?.screen_name) ?? "";
+    const name = decodeHTMLText(
+      asString(userCore?.name) ?? asString(userLegacy?.name) ?? ""
+    );
+    const screenName = decodeHTMLText(
+      asString(userCore?.screen_name) ?? asString(userLegacy?.screen_name) ?? ""
+    );
     if (name === "" && screenName === "") {
       return void 0;
     }
@@ -171,13 +195,13 @@
         if (isPlainObject(noteResult)) {
           const noteText = asString(noteResult.text);
           if (noteText !== void 0) {
-            return noteText;
+            return decodeHTMLText(noteText);
           }
         }
       }
     }
     const legacy = tweetResult.legacy;
-    return isPlainObject(legacy) ? asString(legacy.full_text) ?? "" : "";
+    return isPlainObject(legacy) ? decodeHTMLText(asString(legacy.full_text) ?? "") : "";
   }
   function tweetTranslation(tweetResult) {
     const grok = tweetResult.grok_translated_post_with_availability;
@@ -193,7 +217,7 @@
       return void 0;
     }
     return {
-      translation,
+      translation: decodeHTMLText(translation),
       sourceLanguage: asString(data.source_language) ?? "",
       destinationLanguage: asString(data.destination_language) ?? ""
     };
@@ -258,11 +282,12 @@
       const originalInfo = isPlainObject(item.original_info) ? item.original_info : void 0;
       const width = typeof originalInfo?.width === "number" ? originalInfo.width : void 0;
       const height = typeof originalInfo?.height === "number" ? originalInfo.height : void 0;
+      const altTextRaw = asString(item.ext_alt_text);
       result.push({
         mediaKey,
         url: originalMediaURL(mediaUrlHttps, type),
         type,
-        altText: asString(item.ext_alt_text),
+        altText: altTextRaw === void 0 ? void 0 : decodeHTMLText(altTextRaw),
         width,
         height,
         displayUrl: asString(item.display_url),

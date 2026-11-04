@@ -202,6 +202,37 @@ export function findTweetResult(
 
 // #region 推文数据提取
 
+const NAMED_ENTITY_VALUES: Readonly<Record<string, string>> = {
+  lt: '<',
+  gt: '>',
+  quot: '"',
+  apos: "'",
+  amp: '&',
+};
+
+const HTML_ENTITY_PATTERN = /&(lt|gt|quot|apos|amp|#\d+|#x[0-9a-fA-F]+);/g;
+
+/**
+ * 解码一层 HTML 实体。X 的 GraphQL 响应把显示文本实体化（作者写的 `->` 下发为
+ * `-&gt;`），提取边界统一解出纯文本，渲染阶段再经 `escapeHTMLText` 转义一次，
+ * 否则浏览器会显示 `-&gt;`。URL 类字段不经过本函数。
+ *
+ * 单趟替换：`replace` 不会重新扫描替换结果，因此 `&amp;lt;` 只得到字面量 `&lt;`，
+ * `&#38;amp;` 只得到 `&amp;`。不依赖 DOM，可在 node 测试中直接调用。
+ */
+export function decodeHTMLText(text: string): string {
+  return text.replace(HTML_ENTITY_PATTERN, (entity, name: string) => {
+    const named: string | undefined = NAMED_ENTITY_VALUES[name];
+    if (named !== undefined) {
+      return named;
+    }
+    if (name.startsWith('#x')) {
+      return String.fromCodePoint(parseInt(name.slice(2), 16));
+    }
+    return String.fromCodePoint(parseInt(name.slice(1), 10));
+  });
+}
+
 /** 作者、正文、时间分属新旧两种结构（legacy 正在被拆解），双路径兼容 */
 export function extractAuthor(
   tweetResult: Record<string, unknown>
@@ -220,15 +251,19 @@ export function extractAuthor(
   }
   const userCore = isPlainObject(user.core) ? user.core : undefined;
   const userLegacy = isPlainObject(user.legacy) ? user.legacy : undefined;
-  const name = asString(userCore?.name) ?? asString(userLegacy?.name) ?? '';
-  const screenName =
-    asString(userCore?.screen_name) ?? asString(userLegacy?.screen_name) ?? '';
+  const name = decodeHTMLText(
+    asString(userCore?.name) ?? asString(userLegacy?.name) ?? ''
+  );
+  const screenName = decodeHTMLText(
+    asString(userCore?.screen_name) ?? asString(userLegacy?.screen_name) ?? ''
+  );
   if (name === '' && screenName === '') {
     return undefined;
   }
   return { name, screenName };
 }
 
+/** 正文（note_tweet 优先，其次 legacy.full_text），返回已解码的纯文本 */
 export function tweetText(tweetResult: Record<string, unknown>): string {
   // 长推文正文优先（note_tweet），其次 legacy.full_text
   const noteTweet = tweetResult.note_tweet;
@@ -239,13 +274,15 @@ export function tweetText(tweetResult: Record<string, unknown>): string {
       if (isPlainObject(noteResult)) {
         const noteText = asString(noteResult.text);
         if (noteText !== undefined) {
-          return noteText;
+          return decodeHTMLText(noteText);
         }
       }
     }
   }
   const legacy = tweetResult.legacy;
-  return isPlainObject(legacy) ? (asString(legacy.full_text) ?? '') : '';
+  return isPlainObject(legacy)
+    ? decodeHTMLText(asString(legacy.full_text) ?? '')
+    : '';
 }
 
 export interface TweetTranslation {
@@ -274,7 +311,7 @@ export function tweetTranslation(
     return undefined;
   }
   return {
-    translation,
+    translation: decodeHTMLText(translation),
     sourceLanguage: asString(data.source_language) ?? '',
     destinationLanguage: asString(data.destination_language) ?? '',
   };
@@ -362,20 +399,23 @@ export function extractMedia(
       typeof originalInfo?.height === 'number'
         ? originalInfo.height
         : undefined;
+    const altTextRaw = asString(item.ext_alt_text);
     result.push({
       mediaKey,
       url: originalMediaURL(mediaUrlHttps, type),
       type,
-      altText: asString(item.ext_alt_text),
+      altText:
+        altTextRaw === undefined ? undefined : decodeHTMLText(altTextRaw),
       width,
       height,
       displayUrl: asString(item.display_url),
       tcoUrl: asString(item.url),
-      indices: Array.isArray(item.indices) &&
+      indices:
+        Array.isArray(item.indices) &&
         typeof item.indices[0] === 'number' &&
         typeof item.indices[1] === 'number'
-        ? [item.indices[0], item.indices[1]]
-        : undefined,
+          ? [item.indices[0], item.indices[1]]
+          : undefined,
     });
   }
   return result;
@@ -654,7 +694,9 @@ export function renderTweet(
   // 从正文移除媒体 t.co 链接（#66：Twitter 网站将 t.co 渲染为图片，不显示为文本）
   const cleanedText = removeMediaLinks(text, mediaItems);
   const textHTML =
-    cleanedText === '' ? '' : `<div class="capture-text">${renderText(cleanedText)}</div>`;
+    cleanedText === ''
+      ? ''
+      : `<div class="capture-text">${renderText(cleanedText)}</div>`;
   // X 自带翻译：原文与译文同时显示，译文前加语言标识
   const translatedHTML =
     translation === undefined

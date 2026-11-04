@@ -4,6 +4,7 @@ import {
   TWEET_GRAPHQL_OPERATION_PATTERN,
   buildTitle,
   collectMediaItems,
+  decodeHTMLText,
   extractAuthor,
   extractMedia,
   findTweetResult,
@@ -63,6 +64,14 @@ function tweetResult(): Record<string, unknown> {
 
 function legacyOf(tweet: Record<string, unknown>): Record<string, unknown> {
   return tweet.legacy as Record<string, unknown>;
+}
+
+/** 只替换正文文本的推文，保持其余结构不变 */
+function tweetWithText(fullText: string): Record<string, unknown> {
+  return {
+    ...tweetResult(),
+    legacy: { ...legacyOf(tweetResult()), full_text: fullText },
+  };
 }
 
 /** 构造 TweetDetail 响应：instructions 按 TimelineAddEntries 承载焦点推文 */
@@ -185,6 +194,169 @@ test('作者 / 正文 / 时间', () => {
   const created = tweetCreatedAt(tweet);
   assert.equal(created?.toISOString(), '2025-04-24T10:25:00.000Z');
   assert.equal(formatUTCDate(created!), '2025-04-24');
+});
+
+test('解码一层 HTML 实体', () => {
+  assert.equal(decodeHTMLText('foo -&gt; foo2'), 'foo -> foo2');
+  assert.equal(decodeHTMLText('&lt;b&gt;'), '<b>');
+  assert.equal(decodeHTMLText('&quot;x&quot; &#39;y&#39;'), '"x" \'y\'');
+  assert.equal(decodeHTMLText('a &amp; b'), 'a & b');
+  // 只解一层：`&amp;lt;` 解出字面量 `&lt;`，不会被继续解成 `<`
+  assert.equal(decodeHTMLText('&amp;lt;'), '&lt;');
+  assert.equal(decodeHTMLText('&amp;amp;'), '&amp;');
+  // 数字形式的 `&` 同样只解一层
+  assert.equal(decodeHTMLText('&#38;amp;'), '&amp;');
+  assert.equal(decodeHTMLText('&#38;lt;'), '&lt;');
+  assert.equal(decodeHTMLText('&amp;#60;'), '&#60;');
+  // 数字实体（十进制与十六进制）
+  assert.equal(decodeHTMLText('&#60;tag&#62;'), '<tag>');
+  assert.equal(decodeHTMLText('&#x3c;tag&#x3e;'), '<tag>');
+  // 无实体原样返回
+  assert.equal(decodeHTMLText('a -> b'), 'a -> b');
+});
+
+test('实体化文本在提取边界解码为纯文本', () => {
+  const tweet = {
+    ...tweetResult(),
+    core: {
+      user_results: {
+        result: {
+          core: { name: 'A &amp; B', screen_name: 'a_b' },
+          rest_id: '972267391802662912',
+        },
+      },
+    },
+    legacy: {
+      ...legacyOf(tweetResult()),
+      full_text: 'foo -&gt; foo2',
+      extended_entities: {
+        media: [
+          {
+            media_key: '3_1915351241234014213',
+            media_url_https: 'https://pbs.twimg.com/media/GpSxzlHbYAUBbsv.jpg',
+            type: 'photo',
+            display_url: 'pic.x.com/HyV5137sLO',
+            url: 'https://t.co/JHWgG68RHe',
+            indices: [6, 29],
+            original_info: { width: 732, height: 1486 },
+            ext_alt_text: 'a &gt; b',
+          },
+        ],
+      },
+    },
+    note_tweet: undefined,
+    grok_translated_post_with_availability: {
+      is_available: true,
+      data: {
+        destination_language: 'zh',
+        source_language: 'ko',
+        translation: 'a &gt; b',
+      },
+    },
+  };
+  assert.equal(tweetText(tweet), 'foo -> foo2');
+  assert.deepEqual(extractAuthor(tweet), { name: 'A & B', screenName: 'a_b' });
+  assert.equal(extractMedia(tweet)[0]!.altText, 'a > b');
+  assert.equal(tweetTranslation(tweet)!.translation, 'a > b');
+
+  // 作者名实体同样在输出中单层转义
+  const html = renderDocument(tweet, '{}', {});
+  assert.ok(
+    html.includes('<title>A &amp; B (@a_b) 在 X 上：foo -&gt; foo2</title>')
+  );
+  const ldMatch = html.match(
+    /<script type="application\/ld\+json">\n([\s\S]*?)\n<\/script>/
+  );
+  assert.equal(
+    (JSON.parse(ldMatch![1]!) as { author: { name: string } }).author.name,
+    'A & B'
+  );
+});
+
+test('实体化正文只产生单层转义产物', () => {
+  const tweet = tweetWithText('foo -&gt; foo2');
+  const rawResponse = JSON.stringify({
+    full_text: 'foo -&gt; foo2',
+  });
+  const html = renderDocument(tweet, rawResponse, {});
+  // 正文源码只有一层 `&gt;`，浏览器渲染为 `->`
+  assert.ok(html.includes('<div class="capture-text">foo -&gt; foo2</div>'));
+  assert.equal(html.includes('-&amp;gt;'), false, '无二次转义');
+  // 标题 / OG / JSON-LD 承载解码后的纯文本
+  assert.ok(
+    html.includes('<title>nanata (@Nanata0418) 在 X 上：foo -&gt; foo2</title>')
+  );
+  assert.ok(
+    html.includes(
+      '<meta property="og:title" content="nanata (@Nanata0418) 在 X 上：foo -&gt; foo2">'
+    )
+  );
+  assert.ok(
+    html.includes('<meta property="og:description" content="foo -&gt; foo2">')
+  );
+  const ldMatch = html.match(
+    /<script type="application\/ld\+json">\n([\s\S]*?)\n<\/script>/
+  );
+  const ldJSON = JSON.parse(ldMatch![1]!) as Record<string, unknown>;
+  assert.equal(ldJSON.text, 'foo -> foo2');
+  assert.equal(ldJSON.headline, 'nanata (@Nanata0418) 在 X 上：foo -> foo2');
+  // raw 块逐字保留响应原文中的实体
+  assert.ok(html.includes('"full_text": "foo -&gt; foo2"'));
+});
+
+test('作者字面量输入的实体保持可见', () => {
+  // 作者真的输入了 `&gt;`：响应下发 `&amp;gt;`，解一层后回到字面量
+  const tweet = tweetWithText('&amp;gt;');
+  assert.equal(tweetText(tweet), '&gt;');
+  const html = renderDocument(tweet, '{}', {});
+  assert.ok(html.includes('<div class="capture-text">&amp;gt;</div>'));
+});
+
+test('解码后仍然转义恶意标记', () => {
+  // 双重写法：实体化（响应实际形态）与原始形态都需要照旧被转义
+  const malicious =
+    'safe &lt;/script&gt;&lt;script&gt;alert(1)&lt;/script&gt; </script><script>alert(2)</script>';
+  const tweet = tweetWithText(malicious);
+  const rawResponse = JSON.stringify({ full_text: malicious });
+  const html = renderDocument(tweet, rawResponse, {});
+  assert.ok(
+    html.includes(
+      'safe &lt;/script&gt;&lt;script&gt;alert(1)&lt;/script&gt; &lt;/script&gt;&lt;script&gt;alert(2)&lt;/script&gt;'
+    ),
+    '正文把解码后的标记完整转义'
+  );
+  assert.equal(
+    html.includes('<script>alert(1)</script>'),
+    false,
+    '文档中不存在可执行的注入标记'
+  );
+  // raw 块保留响应原文（`</` 的既有 JSON 转义不影响解析结果）
+  const rawMatch = html.match(
+    /<script type="application\/json" id="twitter-capture-raw">\n([\s\S]*?)\n<\/script>/
+  );
+  assert.ok(rawMatch);
+  assert.equal(
+    (JSON.parse(rawMatch[1]!) as { full_text: string }).full_text,
+    malicious
+  );
+});
+
+test('引用推文的正文同样解码', () => {
+  const quoted = { ...tweetWithText('q -&gt; q2'), rest_id: '111' };
+  const tweet = {
+    ...tweetWithText('foo -&gt; foo2'),
+    quoted_status_result: { result: quoted },
+  };
+  const html = renderDocument(tweet, '{}', {});
+  assert.equal(html.includes('-&amp;gt;'), false);
+  assert.ok(
+    html.includes('<div class="capture-text">foo -&gt; foo2</div>'),
+    '主推文正文解码'
+  );
+  assert.ok(
+    html.includes('<div class="capture-text">q -&gt; q2</div>'),
+    '引用推文正文解码'
+  );
 });
 
 test('标题去除正文中的链接', () => {
